@@ -1,16 +1,15 @@
 ###
 ### Build stage ###
 ###
-FROM ruby:3.0.6 AS builder
+FROM ruby:3.3.13-trixie AS builder
 
 RUN apt-get update && apt-get install -y ca-certificates curl gnupg
 RUN mkdir -p /etc/apt/keyrings && \
   curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg && \
-  echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_20.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list
+  echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_24.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list
 
 RUN apt-get update -qq && apt-get install -y nodejs postgresql-client
 RUN npm install -g yarn
-RUN gem install bundler -v 2.3
 
 ENV APP_ROOT /astuto
 WORKDIR ${APP_ROOT}
@@ -56,7 +55,7 @@ EXPOSE 3000
 ###
 ### Prod stage ###
 ###
-FROM ruby:3.0.6-slim AS prod
+FROM ruby:3.3.13-slim-trixie AS prod
 
 RUN apt-get update -qq && \
   apt-get install -yq  \
@@ -66,7 +65,6 @@ RUN apt-get update -qq && \
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
   truncate -s 0 /var/log/*log
 
-RUN gem install bundler -v 2.3
 
 ENV APP_ROOT /astuto
 WORKDIR ${APP_ROOT}
