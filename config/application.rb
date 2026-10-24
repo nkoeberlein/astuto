@@ -11,7 +11,6 @@ module App
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.1
     config.active_support.cache_format_version = 7.1
-    config.active_support.to_time_preserves_timezone = :zone
 
     # Always read SECRET_KEY_BASE from the environment, also in development and test.
     # Webhook encryption and API key digests are derived from it, so it must not change.

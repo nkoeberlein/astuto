@@ -5,7 +5,7 @@ ruby '3.3.13'
 
 gem 'rake', '13.2.1'
 
-gem 'rails', '8.0.5.1'
+gem 'rails', '8.1.4'
 
 # Asset pipeline (no longer bundled with Rails 7)
 gem 'sprockets-rails', '3.5.2'
