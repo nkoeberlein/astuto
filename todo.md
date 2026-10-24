@@ -6,28 +6,33 @@ Issue-Nummern beziehen sich auf `astuto/astuto`. Phasen siehe [roadmap.md](roadm
 ## P0 – Fork übernehmen und Plattform absichern
 
 ### Setup
-- [ ] Lokales Setup prüfen (`docker compose up`), Testsuite einmal komplett laufen lassen und Ausgangszustand notieren
-- [ ] `.github/workflows/push-to-registry.yml` auf GHCR umstellen (`ghcr.io/nkoeberlein/astuto`), `riggraz/astuto` entfernen
-- [ ] `run-tests.yml`: Actions-Versionen aktualisieren, Runner `ubuntu-24.04`
+- [x] Lokales Setup prüfen: Original-Image baute nicht mehr (Debian 11 EOL). Nach Ruby-3.3-Upgrade: 374 Tests, 2 Fehler (UserMailer, Keyword-Argumente unter Rails 6.1 + Ruby ≥ 3.2, wird mit Rails 7.0 behoben)
+- [ ] `spec/system/user_o_auth_sign_up_and_log_in.rb` in `…_spec.rb` umbenennen (läuft bisher nie)
+- [ ] Lokaler Port 3000 ist hier durch einen SSH-Tunnel belegt: `ASTUTO_PORT=3456 docker compose up`
+- [x] `.github/workflows/push-to-registry.yml` auf GHCR umstellen (`ghcr.io/nkoeberlein/astuto`), `riggraz/astuto` entfernen
+- [x] `run-tests.yml`: Runner `ubuntu-24.04`
 - [ ] README: EOL-Hinweis durch Fork-Hinweis ersetzen, Image-Name und Doku-Link anpassen
 - [ ] Remote `upstream` nur noch als Archiv betrachten; Upstream-Branch `add-image-upload` sichern
 
 ### Upstream-PRs übernehmen
-- [ ] #477 Gravatar-Avatar-Fix (1 Zeile)
-- [ ] #470 `config/initializers/hosts.rb` mit `RAILS_HOSTS` (prüfen, mit Phase-2-Proxy-Konfig zusammenlegen)
-- [ ] #460 Nutzersuche in Site Settings › Users (schließt #159)
-- [ ] #463 Türkische Übersetzung
-- [ ] #459 `serialize-javascript` 6.0.2
+- [x] #477 Gravatar-Avatar-Fix (1 Zeile)
+- [x] #470 `config/initializers/hosts.rb` mit `RAILS_HOSTS` (prüfen, mit Phase-2-Proxy-Konfig zusammenlegen)
+- [x] #460 Nutzersuche in Site Settings › Users (schließt #159). Nachgebessert: Liste wurde nicht gefiltert, Backend-Filter war defekt
+- [x] #463 Türkische Übersetzung (Datei übernommen, Sprache aber noch nicht auswählbar, siehe P2)
+- [x] #459 `serialize-javascript` 6.0.2
 
 ### Plattform-Upgrade
-- [ ] Ruby 3.0.6 → 3.3.x (`.ruby-version`, `Gemfile`, `Dockerfile` ×2) (#456)
+- [x] Ruby 3.0.6 → 3.3.13, Debian 11 → 13 trixie (`.ruby-version`, `Gemfile`, `Dockerfile` ×2) (#456)
 - [ ] Rails 6.1 → 7.0 (`rails app:update`, Zeitwerk und Deprecations prüfen, Tests grün)
-- [ ] Rails 7.0 → 7.1 → 7.2 (jeweils eigener Commit, Tests grün)
-- [ ] Devise 4.7.3 → 4.9.x, Puma 5 → 6, `spring` entfernen
+- [ ] Rails 7.0 → 7.1 → 7.2 → 8.0 → 8.1 (jeweils eigener Commit, Tests grün; nur 8.1 bekommt noch Updates)
+- [ ] Danach Ruby 3.3 → 4.0
+- [ ] Devise 4.7.3 → 5.x (ab Rails 7.0), Puma 5 → 7, `spring` entfernen
 - [ ] Übrige Gems aktualisieren (`bundle outdated`), `bundler-audit` ohne Treffer
-- [ ] Node 20 → 22 LTS im Dockerfile, `yarn audit` ohne kritische Treffer
-- [ ] PostgreSQL 14.5 → 16 inkl. Upgrade-Anleitung (`pg_dump`/`pg_upgrade`) (#247)
-- [ ] Docker-Multi-Arch-Build amd64 + arm64 mit `docker/build-push-action` + QEMU (#399, #254, #475)
+- [x] Node 20 → 24 LTS im Dockerfile (Builder)
+- [ ] Node 24 → 26 LTS ab 28.10.2026
+- [ ] `yarn audit` ohne kritische Treffer
+- [ ] **Dringend (PG 14 EOL 12.11.2026):** PostgreSQL 14.5 → 19 (#247): Dev-Compose läuft auf 19rc1, Anleitung in `UPGRADING.md` (Dump/Restore getestet). Offen: bei GA auf `postgres:19-trixie` umstellen, README-Compose anpassen
+- [x] Docker-Multi-Arch-Build amd64 + arm64 mit `docker/build-push-action` + QEMU (#399, #254, #475), in der CI noch nicht gelaufen
 - [ ] Dependabot oder Renovate für Bundler, npm, Docker und Actions einrichten
 
 ### Sicherheit
@@ -77,10 +82,10 @@ Issue-Nummern beziehen sich auf `astuto/astuto`. Phasen siehe [roadmap.md](roadm
 ## P2 – Frontend und Quick Wins
 
 ### Frontend-Modernisierung
-- [ ] React 16 → 18 (`react-dom/client`, `react_ujs` prüfen)
+- [ ] React 16 → 19 (`ReactDOM.render` entfällt: `react_ujs`/`react-rails` ersetzen oder eigenen Mount mit `createRoot`; `react-redux` 9, `defaultProps`/String-Refs prüfen)
 - [ ] `react-beautiful-dnd` → `@hello-pangea/dnd`
 - [ ] Bootstrap 4 → 5.3, jQuery und popper.js 1 entfernen (#407 ersetzen)
-- [ ] TypeScript 4.3 → 5.x, `tsc --noEmit` in der CI
+- [ ] TypeScript 4.3 → 7.x, `tsconfig` anpassen, Typprüfung (`tsc --noEmit`) in der CI
 - [ ] 59 `any` in `app/javascript` durch echte Typen ersetzen
 - [ ] Aufteilen: `GeneralSiteSettingsP.tsx` (461), `WebhookForm.tsx` (414), `PostP.tsx` (320), `common/_index.scss` (352)
 - [ ] `authenticityToken`-Prop-Drilling durch zentralen Helper ersetzen (#165)
@@ -89,6 +94,7 @@ Issue-Nummern beziehen sich auf `astuto/astuto`. Phasen siehe [roadmap.md](roadm
 - [ ] `app/controllers` (22 Dateien) nach Bereichen gliedern (z. B. `site_settings/`)
 
 ### Quick-Win-Features
+- [ ] Vorhandene Übersetzungen freischalten: `tr`, `cs`, `el`, `hi`, `ja`, `ko`, `nl`, `pl`, `sr`, `sv` fehlen in `I18n.available_locales` (`config/initializers/locale.rb`) und im Sprachmenü (`GeneralSiteSettingsP.tsx`); vorher Vollständigkeit prüfen
 - [ ] Roadmap abschaltbar (#361)
 - [ ] Standard-Sortierung pro Board/Instanz (#193, #363, #483)
 - [ ] Login nur per OAuth, E-Mail/Passwort-Formular ausblendbar (#471)

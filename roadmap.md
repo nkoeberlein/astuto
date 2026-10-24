@@ -26,14 +26,15 @@ Stand: 24.10.2026 · Basis: Commit `ac6ad92` (identisch mit `astuto/astuto@main`
 
 | Komponente | Ist | Ziel |
 |---|---|---|
-| Ruby | 3.0.6 (EOL seit 04/2024) | 3.3 / 3.4 |
-| Rails | 6.1.7.9 (EOL seit 10/2024) | 7.2 → 8.x |
-| Devise | 4.7.3 | 4.9.x |
-| Node (Build) | 20 (EOL 04/2026) | 22 LTS |
-| PostgreSQL | 14.5 | 16 / 17 |
-| React | 16.14 | 18 |
+| Ruby | 3.0.6 (EOL seit 04/2024) | 4.0 (Zwischenschritt 3.3 für Rails 6.1–8.1) |
+| Rails | 6.1.7.9 (EOL seit 10/2024) | 8.1 (nur 8.1 bekommt noch Updates) |
+| Devise | 4.7.3 | 5.x (braucht Rails ≥ 7.0) |
+| Node (Build) | 20 (EOL 04/2026) | 26 LTS (ab 28.10.2026), bis dahin 24 LTS |
+| PostgreSQL | 14.5 (**EOL 12.11.2026**) | 18 |
+| React | 16.14 | 19.x |
 | Bootstrap | 4.6 (EOL) | 5.3 |
-| TypeScript | 4.3 | 5.x |
+| TypeScript | 4.3 | 7.x |
+| Docker-Basis | Debian 11 bullseye (EOL 08/2026, Image baut nicht mehr) | Debian 13 trixie |
 | Docker-Image | nur amd64 | amd64 + arm64 |
 
 ## 2. Entscheidung: weiterpflegen oder neu schreiben?
