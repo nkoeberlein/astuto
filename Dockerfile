@@ -33,6 +33,11 @@ RUN bundle install
 COPY package.json yarn.lock ${APP_ROOT}/
 RUN yarn install --check-files
 
+# Install v2 frontend packages (frontend/)
+COPY frontend/package.json frontend/package-lock.json ${APP_ROOT}/frontend/
+# --include=dev: Vite and friends are build tools; only the build output ships
+RUN cd frontend && npm ci --include=dev --no-audit --no-fund
+
 # Copy all files
 COPY . ${APP_ROOT}/
 
@@ -42,6 +47,9 @@ RUN RSWAG_SWAGGERIZE=true RAILS_ENV=test bundle exec rake rswag:specs:swaggerize
 # Compile assets if production
 # SECRET_KEY_BASE=1 is a workaround (see https://github.com/rails/rails/issues/32947)
 RUN if [ "$ENVIRONMENT" = "production" ]; then SECRET_KEY_BASE=1 ./bin/rails assets:precompile; fi
+
+# Build v2 frontend into public/next if production
+RUN if [ "$ENVIRONMENT" = "production" ]; then cd frontend && npm run build; fi
 
 ###
 ### Dev stage ###

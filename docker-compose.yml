@@ -21,6 +21,22 @@ services:
       - "${ASTUTO_PORT:-3000}:3000"
     depends_on:
       - db
+  # v2 frontend dev server (Vite), open http://localhost:5173/next/
+  frontend:
+    image: node:24-trixie-slim
+    working_dir: /astuto/frontend
+    command: sh -c "npm ci --no-audit --no-fund && npm run dev"
+    environment:
+      BACKEND_URL: http://web:3000
+    volumes:
+      - .:/astuto
+      # Linux packages, kept apart from a node_modules installed on the host
+      - frontend_node_modules:/astuto/frontend/node_modules
+    ports:
+      - "${FRONTEND_PORT:-5173}:5173"
+    depends_on:
+      - web
 
 volumes:
   pgdata:
+  frontend_node_modules:

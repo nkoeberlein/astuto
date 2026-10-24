@@ -44,3 +44,5 @@ yarn-debug.log*
 
 # Ignore Swagger spec file
 /swagger/*
+# v2 frontend build output (frontend/ -> public/next)
+/public/next
