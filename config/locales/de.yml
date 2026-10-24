@@ -314,3 +314,6 @@ de:
       status_active: 'Aktiv'
       status_blocked: 'Gesperrt'
       status_deleted: 'Gelöscht'
+      search_placeholder: 'Nach Name oder E-Mail suchen'
+      filter_all_statuses: 'Alle Status'
+      filter_all_roles: 'Alle Rollen'

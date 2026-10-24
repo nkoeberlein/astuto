@@ -6,17 +6,21 @@ import Box from '../../common/Box';
 import SiteSettingsInfoBox from '../../common/SiteSettingsInfoBox';
 
 import { UsersState } from '../../../reducers/usersReducer';
-import { UserRoles, USER_STATUS_ACTIVE, USER_STATUS_BLOCKED, USER_STATUS_DELETED } from '../../../interfaces/IUser';
+import {
+  UserRoles,
+  UserStatuses,
+  USER_ROLE_USER,
+  USER_ROLE_MODERATOR,
+  USER_ROLE_ADMIN,
+  USER_ROLE_OWNER,
+  USER_STATUS_ACTIVE,
+  USER_STATUS_BLOCKED,
+  USER_STATUS_DELETED,
+} from '../../../interfaces/IUser';
 import HttpStatus from '../../../constants/http_status';
 import Spinner from '../../common/Spinner';
 
-export const LocalUserRoles = {
-  Admin: "admin",
-  Moderator: "moderator",
-  User: "user",
-} as const;
-
-export type LocalUserRoles = (typeof LocalUserRoles)[keyof typeof LocalUserRoles];
+const FILTER_ALL = 'all';
 
 interface Props {
   users: UsersState;
@@ -42,8 +46,8 @@ interface Props {
 
 interface State {
   searchQuery: string;
-  statusFilter: string;
-  roleFilter: string;
+  statusFilter: UserStatuses | typeof FILTER_ALL;
+  roleFilter: UserRoles | typeof FILTER_ALL;
 }
 
 class UsersModerationP extends React.Component<Props, State> {
@@ -51,9 +55,9 @@ class UsersModerationP extends React.Component<Props, State> {
     super(props);
 
     this.state = {
-      searchQuery: "",
-      statusFilter: "all",
-      roleFilter: "all",
+      searchQuery: '',
+      statusFilter: FILTER_ALL,
+      roleFilter: FILTER_ALL,
     };
 
     this._handleUpdateUserRole = this._handleUpdateUserRole.bind(this);
@@ -92,11 +96,11 @@ class UsersModerationP extends React.Component<Props, State> {
   }
 
   _handleStatusChange(event: React.ChangeEvent<HTMLSelectElement>) {
-    this.setState({ statusFilter: event.target.value });
+    this.setState({ statusFilter: event.target.value as State['statusFilter'] });
   }
 
   _handleRoleChange(event: React.ChangeEvent<HTMLSelectElement>) {
-    this.setState({ roleFilter: event.target.value });
+    this.setState({ roleFilter: event.target.value as State['roleFilter'] });
   }
 
   render() {
@@ -114,18 +118,14 @@ class UsersModerationP extends React.Component<Props, State> {
     const numberOfBlockedUsers = users.items.filter(u => u.status === USER_STATUS_BLOCKED).length;
     const numberOfDeletedUsers = users.items.filter(u => u.status === USER_STATUS_DELETED).length;
 
+    const query = searchQuery.trim().toLowerCase();
     const filteredUsers = users.items.filter((user) => {
       const matchesSearch =
-        !searchQuery.trim() ||
-        user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        user.fullName?.toLowerCase().includes(searchQuery.toLowerCase());
-
-      const matchesStatus =
-        statusFilter === "all" ||
-        (statusFilter === "blocked" && user.status === USER_STATUS_BLOCKED) ||
-        (statusFilter === "active" && user.status === USER_STATUS_ACTIVE);
-
-      const matchesRole = roleFilter === "all" || user.role === (roleFilter as UserRoles);
+        query === '' ||
+        user.email.toLowerCase().includes(query) ||
+        (user.fullName || '').toLowerCase().includes(query);
+      const matchesStatus = statusFilter === FILTER_ALL || user.status === statusFilter;
+      const matchesRole = roleFilter === FILTER_ALL || user.role === roleFilter;
 
       return matchesSearch && matchesStatus && matchesRole;
     });
@@ -134,29 +134,31 @@ class UsersModerationP extends React.Component<Props, State> {
       <>
         <Box>
           <h2>{I18n.t('moderation.users.title')}</h2>
-          <div style={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}>
+          <div className="usersFilters">
             <input
               type="text"
               className="form-control"
-              placeholder={I18n.t('search.placeholder')}
+              placeholder={I18n.t('moderation.users.search_placeholder')}
               value={searchQuery}
               onChange={this._handleSearchChange}
             />
-            <select className="selectPicker" style={{ width: "auto" }} value={statusFilter} onChange={this._handleStatusChange}>
-              <option value="all">{I18n.t('search.all_users')}</option>
-              <option value="active">{I18n.t('search.active_users')}</option>
-              <option value="blocked">{I18n.t('search.blocked_users')}</option>
+            <select className="selectPicker" value={statusFilter} onChange={this._handleStatusChange}>
+              <option value={FILTER_ALL}>{I18n.t('moderation.users.filter_all_statuses')}</option>
+              <option value={USER_STATUS_ACTIVE}>{I18n.t('moderation.users.status_active')}</option>
+              <option value={USER_STATUS_BLOCKED}>{I18n.t('moderation.users.status_blocked')}</option>
+              <option value={USER_STATUS_DELETED}>{I18n.t('moderation.users.status_deleted')}</option>
             </select>
-            <select className="selectPicker" style={{ width: "auto" }} value={roleFilter} onChange={this._handleRoleChange}>
-              <option value="all">{I18n.t('search.all_roles')}</option>
-              <option value={LocalUserRoles.Admin}>{I18n.t('search.admin')}</option>
-              <option value={LocalUserRoles.Moderator}>{I18n.t('search.moderator')}</option>
-              <option value={LocalUserRoles.User}>{I18n.t('search.user')}</option>
+            <select className="selectPicker" value={roleFilter} onChange={this._handleRoleChange}>
+              <option value={FILTER_ALL}>{I18n.t('moderation.users.filter_all_roles')}</option>
+              <option value={USER_ROLE_OWNER}>{I18n.t('moderation.users.role_owner')}</option>
+              <option value={USER_ROLE_ADMIN}>{I18n.t('moderation.users.role_admin')}</option>
+              <option value={USER_ROLE_MODERATOR}>{I18n.t('moderation.users.role_moderator')}</option>
+              <option value={USER_ROLE_USER}>{I18n.t('moderation.users.role_user')}</option>
             </select>
           </div>
 
           <p className="userCount">
-            {filteredUsers.length} {I18n.t('activerecord.models.user', { count: filteredUsers.length })} (
+            {numberOfUsers} {I18n.t('activerecord.models.user', { count: numberOfUsers })} (
             {numberOfActiveUsers} {I18n.t('moderation.users.status_active')},&nbsp;
             {numberOfBlockedUsers} {I18n.t('moderation.users.status_blocked')},&nbsp;
             {numberOfDeletedUsers} {I18n.t('moderation.users.status_deleted')})
@@ -165,7 +167,7 @@ class UsersModerationP extends React.Component<Props, State> {
           <ul className="usersList">
             {
               users.areLoading === false ?
-                users.items.map((user, i) => (
+                filteredUsers.map(user => (
                   <UserEditable
                     user={user}
                     updateUserRole={this._handleUpdateUserRole}
@@ -173,7 +175,7 @@ class UsersModerationP extends React.Component<Props, State> {
 
                     currentUserEmail={currentUserEmail}
                     currentUserRole={currentUserRole}
-                    key={i}
+                    key={user.id}
                   />
                 ))
                 :
