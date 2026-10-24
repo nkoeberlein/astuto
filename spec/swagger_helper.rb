@@ -2,6 +2,7 @@
 
 require 'rails_helper'
 require_relative 'support/swagger_schemas'
+require_relative 'support/swagger_app_schemas'
 
 RSpec.configure do |config|
   # Specify a root folder where Swagger JSON files are generated
@@ -123,6 +124,18 @@ RSpec.configure do |config|
           }
         },
       }
+    },
+    'app/v1/openapi.yaml' => {
+      openapi: '3.0.1',
+      info: {
+        title: 'Astuto Evolution App API',
+        version: 'app-v1',
+        description: 'JSON API used by the Astuto Evolution web frontend. Authentication via session cookie; ' \
+                     'write requests need the X-CSRF-Token header from GET /api/app/v1/session. ' \
+                     'For integrations use the public API under /api/v1.'
+      },
+      paths: {},
+      components: { schemas: Swagger::AppSchemas.all }
     }
   }
 

@@ -4,6 +4,7 @@ de:
       or: 'oder'
     errors:
       unknown: 'Ein unbekannter Fehler ist aufgetreten, bitte versuchen Sie es erneut'
+      not_found: 'Seite nicht gefunden'
     validations:
       required: '%{attribute} ist erforderlich'
       email: 'Ungültige E-Mail-Adresse'
@@ -138,6 +139,7 @@ de:
       to_label: 'Bis'
     posts_list:
       empty: 'Es existieren keine Beiträge'
+      load_more: 'Mehr laden'
   post:
     edit_button: 'Bearbeiten'
     published_by: 'Herausgegeben von'
