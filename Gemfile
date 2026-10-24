@@ -46,8 +46,8 @@ gem 'pundit', '2.5.2'
 # I18n (forward locales to JS)
 gem 'i18n-js', '3.9.2'
 
-# React
-gem 'react-rails', '2.6.2'
+# React (legacy UI; the npm package react_ujs stays on 2.6 because 3.x requires React 18)
+gem 'react-rails', '3.3.1'
 
 # Pagination
 gem 'kaminari', '1.3.0'
@@ -59,7 +59,7 @@ gem 'rack-attack', '6.8.0'
 gem 'friendly_id', '5.7.0'
 
 # Billing
-gem 'stripe', '11.2.0'
+gem 'stripe', '20.0.0'
 
 # Serve swagger docs
 gem 'rswag-api', '2.17.0'
@@ -73,11 +73,7 @@ gem 'capybara', '3.40.0'
 gem 'rack-cors', '3.0.0'
 
 # ActiveJob backend
-gem 'sidekiq', '8.0.10'
-
-# react-rails 2.6 breaks with connection_pool 3 (needed by sidekiq >= 8.1).
-# Remove this pin together with react-rails (UI rebuild).
-gem 'connection_pool', '~> 2.5'
+gem 'sidekiq', '8.1.7'
 
 # Cron jobs with sidekiq
 gem 'sidekiq-cron', '2.4.0'
@@ -89,6 +85,10 @@ group :development, :test do
   gem 'debug', '1.11.1', platforms: [:mri, :windows], require: false
   
   gem 'factory_bot_rails', '6.5.1'
+
+  # Security checks (bin/ci): known gem vulnerabilities and static analysis
+  gem 'bundler-audit', '0.9.3', require: false
+  gem 'brakeman', '8.1.0', require: false
 end
 
 group :development do
