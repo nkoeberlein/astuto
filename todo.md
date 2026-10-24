@@ -29,7 +29,7 @@ Issue-Nummern beziehen sich auf `astuto/astuto`. Phasen siehe [roadmap.md](roadm
 - [x] Ruby 3.3 → 4.0.9 (Bundler 4.0.20), 374/0 Tests
 - [ ] `load_defaults` von 6.1 schrittweise auf 8.1 heben (jeweils `new_framework_defaults_*.rb` durchgehen)
 - [ ] Sidekiq 8.0 → 8.1 und `connection_pool`-Pin entfernen, sobald `react-rails` weg ist
-- [ ] Stripe-Gem 11 (entfällt mit SaaS-Billing), `react-rails`/`i18n-js` 3 (entfallen mit UI-Neubau)
+- [ ] Stripe-Gem 11 → 20 (falls Billing bleibt), `react-rails`/`i18n-js` 3 (entfallen mit UI-Neubau)
 - [ ] `bundler-audit` und `brakeman` einführen; lokales `bin/ci` (Rails 8.1) für RSpec statt Minitest einrichten
 - [x] Upgrade-Hinweis: Sidekiq 8 braucht Redis ≥ 7 (in `UPGRADING.md`)
 - [x] Node 20 → 24 LTS im Dockerfile (Builder)
@@ -82,10 +82,19 @@ Issue-Nummern beziehen sich auf `astuto/astuto`. Phasen siehe [roadmap.md](roadm
 - [ ] Fehlende Übersetzungstexte (#466)
 - [ ] System-Spec „Post bearbeiten/löschen“ reparieren (#210)
 
-### SaaS-Ballast (entschieden: Self-Hosting ist die Nische)
-- [ ] Stripe-Billing, Tenant-Signup, Custom-Domain-API (`ASTUTO_CNAME_API_*`), Promo-Banner und Tenant-Mails entfernen
+### Multi-Tenancy und SaaS-Teile (entschieden: Multi-Tenancy bleibt)
+- [ ] Multi-Tenancy-Modus (`MULTI_TENANCY=true`) mit Subdomains und Custom Domains testen, Doku schreiben; App-API und neues Frontend im Multi-Tenancy-Modus prüfen
+- [ ] Entscheidung Geschäftsmodell (roadmap.md, Abschnitt 7): Stripe-Billing modernisieren (gehostete Variante) oder entfernen
+- [ ] astuto.io-spezifische Teile entfernen bzw. konfigurierbar machen: Promo-Banner, `ASTUTO_CNAME_API_*`, Mails mit astuto.io-Links
 - [ ] Mailer-Standardabsender `noreply@astuto.io` / `notifications@astuto.io` durch Adresse aus `BASE_URL` bzw. Pflicht-ENV ersetzen
-- [ ] Multi-Tenancy vorerst behalten, nach UI-Neubau neu bewerten (#76)
+- [ ] Instanz-Admin-Oberfläche für Tenants (anlegen, sperren, Domains) (#76)
+
+### Mittelstand (roadmap.md, Abschnitt 7)
+- [ ] SAML-Login und LDAP/AD (#8), Login nur per SSO (#471)
+- [ ] Audit-Log für Moderation und Einstellungen
+- [ ] DSGVO: Datenexport und Löschung pro Person, Aufbewahrungsfristen
+- [ ] Health-Check-Endpunkt, Prometheus-Metriken, Backup/Restore-Anleitung, Helm-Chart
+- [ ] FAQ „AGPL im Unternehmen“
 
 ## P1 – Altes Frontend ersetzen (Kern von v2)
 
@@ -95,7 +104,8 @@ Empfehlung (roadmap.md, Abschnitt 3): getrenntes Frontend mit React 19 + TS 7 + 
 - [x] App-API `/api/app/v1` lesend: `session`, `translations/:locale`, `boards`, `boards/:id/posts`, `post_statuses`, `posts/:id`, `posts/:id/comments` (rswag-Specs, OpenAPI `app/v1/openapi.yaml`, TS-Typen generiert)
 - [x] `frontend/`: Vite 8, React 19, TS 7, TanStack Router + Query, Tailwind 4, shadcn/ui, Biome, Vitest; CI-Workflow `frontend.yml`
 - [x] Auslieferung im selben Image unter `/next` (`SpaController`), Compose-Dienst `frontend` für Vite
-- [ ] Schreibende Endpunkte + UI: Post anlegen (auch anonym, Moderation), Vote, Kommentar/Antwort, Follow; CSRF-Fluss testen
+- [x] Schreibende Endpunkte + UI: Post anlegen (anonym, Freigabe-Policy, Honeypot + Mindestzeit), Vote (idempotent, optimistisch), Kommentar/Antwort (Antworten nur im selben Post), Moderator-Update, Follow; CSRF-Fluss mit aktiviertem Schutz getestet
+- [ ] Posts und Kommentare bearbeiten/löschen, Status ändern (Moderation) im neuen Frontend
 - [ ] Roadmap-Seite, Login/Registrierung/Passwort als SPA-Seiten (Devise-JSON), OAuth-Buttons
 - [ ] CI: OpenAPI neu erzeugen und gegen `frontend/src/api/schema.d.ts` vergleichen (Drift-Check)
 - [ ] Meta-Tags (Titel, Beschreibung, Open Graph) für öffentliche Seiten serverseitig in `SpaController`
@@ -179,6 +189,6 @@ Empfehlung (roadmap.md, Abschnitt 3): getrenntes Frontend mit React 19 + TS 7 + 
 - [ ] GitHub-Integration (#365)
 - [ ] Custom JavaScript (#376), nur mit CSP und Admin-Warnung
 - [ ] Mehrere Marken pro Instanz (#76)
-- [ ] Automatischer Login nach Tenant-Signup (#263), nur falls Multi-Tenancy bleibt
+- [ ] Automatischer Login nach Tenant-Signup (#263)
 - [ ] Übersetzungen: Crowdin-PR #417 übernehmen, Polnisch (#450), Übersetzungsprozess festlegen (#121)
 - [ ] Bounties (#438), vorerst nicht vorgesehen

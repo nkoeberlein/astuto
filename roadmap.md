@@ -11,6 +11,7 @@ Astuto Evolution führt das archivierte [astuto/astuto](https://github.com/astut
 | Zielgruppe | Warum Astuto Evolution |
 |---|---|
 | Kleine und mittlere SaaS-Teams | Kein Preis pro Nutzer oder Seat wie bei Canny oder Featurebase; ein Docker-Image |
+| **Mittelständische Unternehmen (kommerziell)** | Self-Hosting im eigenen Rechenzentrum, mehrere Produkte/Marken pro Instanz (Multi-Tenancy), SSO, Datenschutz, optional Support und SLA |
 | EU-/DACH-Firmen, Behörden, Bildung | Daten bleiben im eigenen Haus, keine Telemetrie, KI optional mit lokalem Modell |
 | Open-Source-Projekte | Kostenlos, AGPL, öffentliche Roadmap, Feedback ohne Account |
 | Interne IT / Unternehmensportale | Self-Hosting, OAuth/SSO, später LDAP |
@@ -23,7 +24,7 @@ Astuto Evolution führt das archivierte [astuto/astuto](https://github.com/astut
 **Prinzipien:**
 1. Läuft mit einem Image plus PostgreSQL, ohne weitere Pflichtdienste.
 2. KI ist optional („Bring your own model“: OpenAI-kompatible API, Anthropic, lokal per Ollama). Ohne KI funktioniert alles.
-3. Keine Telemetrie, keine Paywall-Features.
+3. Keine Telemetrie. Kostenloses Self-Hosting mit vollem Funktionsumfang, auch kommerziell. Geld verdient das Projekt höchstens mit Dienstleistungen (Hosting, Support, SLA), nicht mit gesperrten Funktionen (siehe 7.).
 4. Kompatibel zu Astuto 1.x: bestehende Installationen lassen sich mit Anleitung migrieren.
 
 ## 2. Ausgangslage
@@ -33,7 +34,7 @@ Astuto Evolution führt das archivierte [astuto/astuto](https://github.com/astut
 | Upstream | `astuto/astuto` archiviert, End of Life seit 09.01.2026 (#487). 2.343 Sterne, 186 Forks, kein aktiver Nachfolger. |
 | Offene Upstream-Issues | 72 (ca. 15 Bugs bzw. Betriebsprobleme, ca. 45 Feature-Wünsche). Sie bilden den Startbestand für die Planung. |
 | Codebasis | ca. 4.900 Zeilen Ruby, ca. 16.000 Zeilen TS/TSX, 374 Tests. Sauber strukturiert (Controller → Policies → Workflows → Models). |
-| SaaS-Ballast | Multi-Tenancy, Stripe-Billing, Custom-Domain-API und Tenant-Signup des eingestellten astuto.io-Angebots (ca. 20 Dateien) |
+| Multi-Tenancy und SaaS-Teile | `tenant_id` in allen Tabellen, Tenant-Signup, Custom Domains, Stripe-Billing des eingestellten astuto.io-Angebots (ca. 20 Dateien) |
 | Lizenz | AGPL-3.0 (bleibt) |
 
 ### Plattform – Stand und Ziel
@@ -73,7 +74,7 @@ Astuto Evolution führt das archivierte [astuto/astuto](https://github.com/astut
 
 **Anforderungen an die neue UI:** Mobile first, Dark Mode, WCAG 2.2 AA, Branding über CSS-Variablen, ein Komponentensatz auch für das einbettbare Widget, Übersetzungen aus den bestehenden YAML-Dateien (als JSON exportiert).
 
-**SaaS-Code:** Stripe-Billing, Tenant-Signup und Custom-Domain-API entfernen, weil die Nische Self-Hosting ist. Multi-Tenancy vorerst behalten (#76).
+**Multi-Tenancy bleibt (entschieden).** Mehrere Feedback-Portale pro Instanz sind für Unternehmen mit mehreren Produkten oder Marken und für Agenturen wichtig (#76) und die Grundlage einer möglichen gehosteten Variante. Tenant-Signup, Custom Domains und Stripe-Billing bleiben vorerst erhalten. Ob Billing modernisiert oder entfernt wird, hängt vom Geschäftsmodell ab (siehe 7.).
 
 ## 4. Phasen
 
@@ -88,7 +89,7 @@ Astuto Evolution führt das archivierte [astuto/astuto](https://github.com/astut
 - [ ] `load_defaults` 6.1 → 8.1 schrittweise
 - [ ] PostgreSQL 19 bei GA (Anleitung in [UPGRADING.md](UPGRADING.md) ist fertig und getestet)
 - [ ] Node 26 LTS (ab 28.10.2026), Dependabot, `bundler-audit`, Security-Policy (`SECURITY.md`)
-- [ ] SaaS-Billing entfernen (siehe 3.)
+- [ ] Multi-Tenancy-Modus testen und dokumentieren (Subdomains, Custom Domains, Tenant-Verwaltung); Billing je nach Geschäftsmodell (siehe 7.)
 
 ### Phase 2 – Betrieb und Bugfixes · P1
 Die häufigsten Probleme aus den Upstream-Issues: HTTPS hinter Reverse Proxy (#478, #201), OAuth-Cookie (#472), SMTP (#330 u. a.), Webhook-Fehler sichtbar machen (#458), konfigurierbare DB (#326, #207), Standard-Admin-Passwort, unsicherer SMTP-Standard. Details in todo.md.
@@ -97,7 +98,8 @@ Die häufigsten Probleme aus den Upstream-Issues: HTTPS hinter Reverse Proxy (#4
 1. ✅ Entscheidung: v3 wird **TanStack Start + Drizzle + Tailwind** → v2 bekommt ein getrenntes React-Frontend
 2. ✅ `frontend/` mit Vite 8, React 19, **TypeScript 7**, TanStack Router/Query, Tailwind 4, shadcn/ui, **Biome** (statt ESLint/Prettier), Vitest; eigener CI-Workflow; Build ins Image, ausgeliefert unter `/next`
 3. ✅ App-API `/api/app/v1` (lesend: Session, Übersetzungen, Boards, Status, Posts, Kommentare), OpenAPI per rswag, generierte TS-Typen
-4. ✅ Board-Seite (Suche, Sortierung, Statusfilter, Mehr laden) und Post-Detail mit Kommentaren · offen: Roadmap, Auth-Seiten, schreibende Aktionen (Post anlegen, Vote, Kommentar, Follow)
+4. ✅ Board-Seite (Suche, Sortierung, Statusfilter, Mehr laden) und Post-Detail mit Kommentaren
+5. ✅ Schreibende Aktionen: Post anlegen (auch anonym, mit Freigabe-Regeln und Spam-Schutz), Vote (optimistisch), Kommentar und Antwort, Moderator-Updates, Follow; CSRF-Fluss getestet · offen: Roadmap-Seite, Auth-Seiten, Moderation, Site Settings
 5. Moderation und Site Settings
 6. Altes Frontend und dessen Gems/Pakete entfernen; Sidekiq 8.1
 (Bei SvelteKit stattdessen: Hotwire-Views mit ViewComponent und Tailwind, Seite für Seite.)
@@ -161,6 +163,33 @@ Die häufigsten Probleme aus den Upstream-Issues: HTTPS hinter Reverse Proxy (#4
 **Lizenz (Entscheidung offen):**
 - v2 ist ein abgeleitetes Werk und bleibt **AGPL-3.0** mit den ursprünglichen Copyright-Hinweisen.
 - v3 als Neuentwicklung könnte eine andere Lizenz bekommen, aber nur ohne übernommenen Code, ohne Logo und Grafiken und ohne die Übersetzungsdateien der Community. Das v2-Frontend ist neu geschrieben, nutzt aber die Astuto-Übersetzungen.
-- **Empfehlung: v3 bleibt AGPL-3.0.** Übersetzungen, Logo, Schema-Wissen und Community-Beiträge dürfen dann weiterverwendet werden, und die AGPL schützt die Nische (Self-Hosting) vor geschlossenen SaaS-Ablegern.
+- Soll es in v3 zusätzlich eine kommerzielle Lizenz für den Mittelstand geben (Abschnitt 7), ist ab dem ersten v3-Commit eine CLA nötig.
+- **Empfehlung: v3 bleibt AGPL-3.0**, bei Bedarf dual lizenziert. Übersetzungen, Logo, Schema-Wissen und Community-Beiträge dürfen dann weiterverwendet werden, und die AGPL schützt die Nische (Self-Hosting) vor geschlossenen SaaS-Ablegern.
 
 **GitHub (Entscheidung offen):** Den Fork vom archivierten Upstream lösen lassen (GitHub-Support), damit Codesuche und Sichtbarkeit normal funktionieren. v3 im selben Repository entwickeln (Orphan-Branch, beim Release zu `main`, v2 als `v2`-Branch) oder in einer Organisation `astuto-evolution`.
+
+## 7. Kommerzieller Einsatz im Mittelstand
+
+**Ziel:** Kostenloses Self-Hosting bleibt der Kern. Zugleich soll Astuto Evolution für mittelständische Unternehmen (etwa 50–1.000 Mitarbeitende) im kommerziellen Einsatz taugen: intern, für Kundenportale und für mehrere Produkte.
+
+**Was diese Zielgruppe erwartet** (fließt in die Prioritäten der todo.md ein):
+- **Identität:** SSO über OIDC (vorhanden: beliebige OAuth2-Anbieter), zusätzlich **SAML** und **LDAP/AD** (#8), Login nur über SSO (#471), automatische Rollen über Gruppen
+- **Mandanten:** mehrere Portale pro Instanz mit eigener Domain und eigenem Branding (vorhanden, testen und dokumentieren), Verwaltung über eine Instanz-Admin-Oberfläche
+- **Compliance:** Audit-Log (wer hat was geändert), DSGVO-Funktionen (Export und Löschung pro Person, Aufbewahrungsfristen), Datenverarbeitung ohne Drittanbieter, KI nur opt-in mit eigenem Modell
+- **Betrieb:** Backup/Restore-Anleitung, mehrere Web-Instanzen hinter Load Balancer, Health-Check-Endpunkt, Prometheus-Metriken, Helm-Chart, signierte Images mit SBOM
+- **Vertrauen:** `SECURITY.md` mit Meldeweg, Sicherheitsupdates mit Fristen, dokumentierte Versionen mit Supportzeitraum (LTS)
+- **Integration:** Jira, Azure DevOps, Teams, Slack (Webhook-Vorlagen zuerst), REST-API und MCP
+
+**Lizenz und Mittelstand:** Die AGPL-3.0 erlaubt kommerzielle Nutzung ohne Einschränkung. Pflichten entstehen erst, wenn jemand den Code *ändert* und Nutzern über das Netz anbietet: Dann muss er die Änderungen veröffentlichen. Manche Rechtsabteilungen lehnen AGPL trotzdem grundsätzlich ab. Optionen:
+- **v2:** Eine zusätzliche kommerzielle Lizenz ist nicht möglich, weil der Upstream-Code von Dritten unter AGPL steht. Abhilfe: eine kurze FAQ „AGPL im Unternehmen“ (unveränderter Betrieb verpflichtet zu nichts).
+- **v3 (Neuentwicklung):** Duale Lizenzierung (AGPL + kommerzielle Lizenz) wird möglich, aber nur mit einer **CLA** für alle Beiträge ab Beginn von v3 und ohne übernommene Upstream-Inhalte (Übersetzungen, Logo). Das hängt eng mit der Lizenzfrage in Abschnitt 6 zusammen.
+
+**Mögliche Einnahmen ohne Paywall** (Entscheidung offen):
+
+| Modell | Passt zu | Voraussetzung |
+|---|---|---|
+| Gehostete Variante (Managed, EU-Hosting) | Firmen ohne eigenen Betrieb | Multi-Tenancy (vorhanden), Billing (vorhanden, Stripe-Gem modernisieren) |
+| Support und SLA | Mittelstand mit eigener Installation | Versionierung mit LTS, Ansprechpartner |
+| Kommerzielle Lizenz | AGPL-scheue Rechtsabteilungen | erst in v3, CLA |
+| Einrichtung und Integration (Dienstleistung) | SSO, Migration von Canny/UserVoice | Import-Funktion (#368) |
+
