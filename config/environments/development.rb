@@ -4,7 +4,6 @@ Rails.application.configure do
   config.hosts << ".localhost:3000"
   config.hosts << ".lvh.me:3000" # used to test oauth strategies in development
   config.hosts << ".ngrok-free.app"
-  config.hosts << ".riggraz.dev"
 
   # 0 if using localhost, 1 if using lvh.me
   config.action_dispatch.tld_length = 0

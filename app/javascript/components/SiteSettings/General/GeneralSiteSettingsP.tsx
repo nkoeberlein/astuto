@@ -2,6 +2,8 @@ import * as React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import I18n from 'i18n-js';
 
+import { projectDocsUrl } from '../../../constants/project';
+
 import Box from '../../common/Box';
 import SiteSettingsInfoBox from '../../common/SiteSettingsInfoBox';
 import Button from '../../common/Button';
@@ -278,7 +280,7 @@ const GeneralSiteSettingsP = ({
               }
               <div style={{marginTop: 8}}>
                 <ActionLink
-                  onClick={() => window.open('https://github.com/astuto/astuto-docs/blob/main/docs/custom-domain.md', '_blank')}
+                  onClick={() => window.open(projectDocsUrl('custom-domain.md'), '_blank')}
                   icon={<LearnMoreIcon />}
                 >
                   {I18n.t('site_settings.general.custom_domain_learn_more')}

@@ -1,6 +1,8 @@
 import * as React from 'react';
 import I18n from 'i18n-js';
 
+import { projectDocsUrl } from '../../../constants/project';
+
 import { AuthenticationPages } from './AuthenticationSiteSettingsP';
 import Button from '../../common/Button';
 import { IOAuth } from '../../../interfaces/IOAuth';
@@ -35,7 +37,7 @@ const OAuthProvidersList = ({
 
     <p style={{textAlign: 'left'}}>
       <ActionLink
-        onClick={() => window.open('https://github.com/astuto/astuto-docs/blob/main/docs/oauth/oauth-configuration-basics.md', '_blank')}
+        onClick={() => window.open(projectDocsUrl('oauth/oauth-configuration-basics.md'), '_blank')}
         icon={<LearnMoreIcon />}
       >
         {I18n.t('site_settings.authentication.learn_more')}

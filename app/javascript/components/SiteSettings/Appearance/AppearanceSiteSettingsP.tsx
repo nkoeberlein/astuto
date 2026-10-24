@@ -3,6 +3,8 @@ import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import I18n from 'i18n-js';
 
+import { projectDocsUrl } from '../../../constants/project';
+
 import Box from '../../common/Box';
 import SiteSettingsInfoBox from '../../common/SiteSettingsInfoBox';
 import Button from '../../common/Button';
@@ -78,7 +80,7 @@ const AppearanceSiteSettingsP = ({
 
         <p style={{textAlign: 'left'}}>
           <ActionLink
-            onClick={() => window.open('https://github.com/astuto/astuto-docs/blob/main/docs/appearance.md', '_blank')}
+            onClick={() => window.open(projectDocsUrl('appearance.md'), '_blank')}
             icon={<LearnMoreIcon />}
           >
             {I18n.t('site_settings.appearance.learn_more')}

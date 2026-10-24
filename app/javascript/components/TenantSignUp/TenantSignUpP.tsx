@@ -1,4 +1,6 @@
 import * as React from 'react';
+
+import { PROJECT_REPOSITORY_URL } from '../../constants/project';
 import { useState } from 'react';
 
 import TenantSignUpForm from './TenantSignUpForm';
@@ -176,7 +178,7 @@ const TenantSignUpP = ({
       <div className="tenantSignUpContainer">
         <Box>
           <p>It is not possible to sign up to Astuto.</p>
-          <p>You can <a href="https://github.com/astuto/astuto">self-host your own instance</a> instead.</p>
+          <p>You can <a href={PROJECT_REPOSITORY_URL}>self-host your own instance</a> instead.</p>
         </Box>
       </div>
     </>

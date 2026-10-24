@@ -26,7 +26,7 @@ RSpec.configure do |config|
       paths: {},
       servers: [
         {
-          url: 'https://your-company.astuto.io'
+          url: 'https://feedback.example.com'
         }
       ],
       tags: [
