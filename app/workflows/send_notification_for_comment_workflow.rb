@@ -8,6 +8,8 @@ class SendNotificationForCommentWorkflow
   def run
     if comment.is_post_update # Post update
       comment.post.followers.each do |follower|
+        next if follower.id == comment.user_id || !follower.notifications_enabled?
+
         UserMailer.notify_follower_of_post_update(comment: comment, follower: follower).deliver_later
       end
       return

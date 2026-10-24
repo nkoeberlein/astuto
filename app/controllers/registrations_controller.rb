@@ -61,6 +61,10 @@ class RegistrationsController < Devise::RegistrationsController
       redirect_to edit_user_registration_path and return
     end
 
+    # When SMTP is not configured in production, apply email changes immediately
+    # instead of locking the user behind an undeliverable reconfirmation email (#476).
+    resource.skip_reconfirmation! if Rails.env.production? && ENV['EMAIL_DELIVERY_METHOD'] != 'smtp'
+
     super
   end
 

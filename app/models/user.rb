@@ -65,6 +65,11 @@ class User < ApplicationRecord
     skip_reconfirmation!
   end
 
+  # Deliver Devise emails (confirmation, password reset, email changed) via ActiveJob (#444)
+  def send_devise_notification(notification, *args)
+    devise_mailer.send(notification, self, *args).deliver_later
+  end
+
   def gravatar_url
     gravatar_id = Digest::MD5::hexdigest(email.downcase)
     "https://secure.gravatar.com/avatar/#{gravatar_id}?d=retro"
