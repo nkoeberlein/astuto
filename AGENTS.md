@@ -10,7 +10,7 @@ Astuto Evolution: community continuation of Astuto, a self-hosted customer feedb
 - `app/jobs` – ActiveJob (`RunWebhook`, recap emails); backend is async or Sidekiq via `ACTIVE_JOB_BACKEND`
 - `app/javascript` – React 16 + Redux + TypeScript (`actions/`, `reducers/`, `components/`, `containers/`), mounted via react-rails
 - `config/locales` – backend i18n; `app/javascript/translations` – frontend i18n (i18n-js, Crowdin)
-- `spec/` – RSpec: models, policies, requests, API (rswag), system tests (Capybara + Chrome)
+- `spec/` – RSpec: models, policies, requests, API (rswag), system tests (Capybara + Chrome); 374 examples
 
 ## Commands
 - Dev: `docker compose up` (app on :3000, override with `ASTUTO_PORT`; default admin `admin@example.com` / `password`)
@@ -24,7 +24,9 @@ Astuto Evolution: community continuation of Astuto, a self-hosted customer feedb
 - The DB is migrated automatically by `docker-entrypoint.sh` on container start.
 
 ## Gotchas
-- Stack upgrade in progress (see roadmap): backend Ruby 3.3 / Rails 7.0 now, target Rails 8.1 / Ruby 4.0. The React 16 frontend will be replaced, not migrated: do not invest in it beyond fixes.
+- Backend is on Ruby 4.0 / Rails 8.1 / Devise 5 (`load_defaults` still 6.1). The React 16/Redux/Bootstrap 4 frontend will be replaced in v2, not migrated: do not invest in it beyond fixes. v3 plans a full TypeScript rewrite (see `roadmap.md`).
+- `connection_pool` is pinned to 2.x because `react-rails` 2.6 breaks with 3.x; remove both together.
+- The production image build generates API docs with `RAILS_ENV=test` without test gems installed: gems in the test group must not be auto-required (`require: false`).
 - Postgres ≥ 18 images store data under `/var/lib/postgresql/<major>/docker`; see `UPGRADING.md`.
 - Behind a reverse proxy, `X-Forwarded-Proto` must be set or OAuth callbacks use `http` (upstream #478).
 - OAuth `token_state` cookie uses `domain: ".#{request.domain}"`, which breaks on multi-part TLDs and IPs (upstream #472).
