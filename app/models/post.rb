@@ -39,9 +39,36 @@ class Post < ApplicationRecord
     end
 
     def search_by_name_or_description(s)
-      s = s || ''
-      s = sanitize_sql_like(s)
-      where("posts.title ILIKE ? OR posts.description ILIKE ?", "%#{s}%", "%#{s}%")
+      query = s.to_s.strip
+      return all if query.blank?
+
+      like_pattern = "%#{sanitize_sql_like(query)}%"
+      ts_vector = "to_tsvector('simple', coalesce(posts.title, '') || ' ' || coalesce(posts.description, ''))"
+      where(
+        "#{ts_vector} @@ websearch_to_tsquery('simple', :q) OR posts.title ILIKE :like OR coalesce(posts.description, '') ILIKE :like",
+        q: query,
+        like: like_pattern
+      )
+    end
+
+    # Finds potential duplicate posts using PostgreSQL full-text search (tsvector + ts_rank)
+    # across title and description, matching any significant token (>= 3 chars) and ranking
+    # posts that match more tokens higher.
+    def similar_to(text, board_id: nil, limit: 5)
+      tokens = text.to_s.scan(/[[:alnum:]]{3,}/).map(&:downcase).uniq.first(10)
+      return none if tokens.empty?
+
+      ts_query_str = tokens.map { |t| "#{t}:*" }.join(' | ')
+      ts_vector_sql = "to_tsvector('simple', coalesce(posts.title, '') || ' ' || coalesce(posts.description, ''))"
+      ts_query_sql = sanitize_sql_array(["to_tsquery('simple', ?)", ts_query_str])
+      rank_sql = Arel.sql("ts_rank(#{ts_vector_sql}, #{ts_query_sql}) DESC, posts.created_at DESC")
+
+      scope = where(approval_status: 'approved')
+      scope = scope.where(board_id: board_id) if board_id.present?
+      scope
+        .where("#{ts_vector_sql} @@ to_tsquery('simple', ?)", ts_query_str)
+        .order(rank_sql)
+        .limit(limit)
     end
 
     def order_by(sort_by)

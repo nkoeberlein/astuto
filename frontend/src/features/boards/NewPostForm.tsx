@@ -1,7 +1,9 @@
-import { useNavigate } from '@tanstack/react-router'
+import { useQuery } from '@tanstack/react-query'
+import { Link, useNavigate } from '@tanstack/react-router'
 import { type FormEvent, useId, useState } from 'react'
 import type { Board, Session } from '@/api/client'
 import { useCreatePost } from '@/api/mutations'
+import { similarPostsQuery } from '@/api/queries'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -62,6 +64,8 @@ function PostForm(props: Props & { onClose: (pending: boolean) => void }) {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [titleMissing, setTitleMissing] = useState(false)
+  const similarPosts = useQuery(similarPostsQuery(board.slug, title))
+  const duplicateSuggestions = (similarPosts.data?.posts ?? []).slice(0, 5)
 
   const { user } = session
   const allowAnonymous = session.tenant.settings.allowAnonymousFeedback
@@ -107,6 +111,32 @@ function PostForm(props: Props & { onClose: (pending: boolean) => void }) {
             {titleMissing && (
               <p className="text-sm text-destructive">{t('board.new_post.no_title')}</p>
             )}
+            {duplicateSuggestions.length > 0 && (
+              <section
+                aria-label={t('board.new_post.similar_posts_title')}
+                className="rounded-md border bg-muted/40 p-3 text-sm space-y-1.5"
+              >
+                <p className="font-medium text-muted-foreground">
+                  {t('board.new_post.similar_posts_title')}
+                </p>
+                <ul className="space-y-1">
+                  {duplicateSuggestions.map((item) => (
+                    <li key={item.id} className="flex items-center justify-between gap-2">
+                      <Link
+                        to="/posts/$postSlug"
+                        params={{ postSlug: item.slug }}
+                        className="truncate text-primary hover:underline"
+                      >
+                        {item.title}
+                      </Link>
+                      <span className="shrink-0 text-xs text-muted-foreground">
+                        ▲ {item.likesCount}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
           </div>
           <div className="space-y-1.5">
             <Label htmlFor={ids.description}>{t('board.new_post.description')}</Label>
@@ -117,6 +147,7 @@ function PostForm(props: Props & { onClose: (pending: boolean) => void }) {
               onChange={(event) => setDescription(event.target.value)}
             />
           </div>
+
 
           {/* Honeypot: hidden from people, bots tend to fill it */}
           <input

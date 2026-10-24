@@ -69,6 +69,28 @@ export const postQuery = (postSlug: string) =>
       unwrap(api.GET('/api/app/v1/posts/{id}', { params: { path: { id: postSlug } } })),
   })
 
+export const similarPostsQuery = (boardSlug: string, query: string) => {
+  const trimmed = query.trim()
+  return queryOptions({
+    queryKey: ['boards', boardSlug, 'similarPosts', trimmed],
+    queryFn: () =>
+      unwrap(
+        api.GET('/api/app/v1/boards/{board_id}/posts', {
+          params: {
+            path: { board_id: boardSlug },
+            query: {
+              page: 1,
+              sort_by: 'most_voted',
+              search: trimmed,
+            },
+          },
+        }),
+      ),
+    enabled: trimmed.length >= 3,
+    staleTime: 30_000,
+  })
+}
+
 export const commentsQuery = (postSlug: string) =>
   queryOptions({
     queryKey: ['posts', postSlug, 'comments'],

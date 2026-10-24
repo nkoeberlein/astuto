@@ -138,6 +138,7 @@ en:
       non_anonymous_submission_help: 'You are posting as %{name}'
       submit_success: 'Feedback published! You will be redirected soon...'
       submit_pending: 'Your feedback has been submitted and is now pending moderator approval!'
+      similar_posts_title: 'Similar posts already exist — vote on one instead?'
     search_box:
       title: 'Search'
     filter_box:

@@ -123,6 +123,7 @@ de:
       non_anonymous_submission_help: 'Sie posten als %{name}'
       submit_success: 'Feedback veröffentlicht! Du wirst gleich weitergeleitet...'
       submit_pending: 'Ihr Feedback wurde übermittelt und wartet nun auf die Freigabe eines Moderators!'
+      similar_posts_title: 'Ähnliche Beiträge existieren bereits – lieber dort abstimmen?'
     search_box:
       title: 'Suchen'
     filter_box:
