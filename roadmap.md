@@ -40,34 +40,40 @@ Astuto Evolution führt das archivierte [astuto/astuto](https://github.com/astut
 
 | Komponente | Upstream | Jetzt (`develop`) | Ziel 2.0 |
 |---|---|---|---|
-| Ruby | 3.0.6 (EOL) | 3.3.13 | 4.0 |
-| Rails | 6.1 (EOL) | **7.0.10** | 8.1 |
-| Devise | 4.7.3 | 4.9.4 | 5.x |
+| Ruby | 3.0.6 (EOL) | **4.0.9** | 4.0 ✓ |
+| Rails | 6.1 (EOL) | **8.1.4** | 8.1 ✓ |
+| Devise | 4.7.3 | **5.0.4** | 5.x ✓ |
 | PostgreSQL | 14.5 (EOL 12.11.2026) | 19rc1 (Dev) | 19 |
 | Node (Build) | 20 (EOL) | 24 LTS | 26 LTS |
 | Debian-Basis | 11 (EOL, Image baute nicht mehr) | 13 trixie | 13 trixie |
 | Docker-Image | `riggraz/astuto`, amd64 | CI: `ghcr.io/nkoeberlein/astuto`, amd64 + arm64 | ✓ |
-| Frontend | React 16, Redux, Bootstrap 4 | unverändert | Neubau (siehe 3.) |
+| Frontend | React 16, Redux, Bootstrap 4 | unverändert | ersetzt (siehe 3.); v3: komplett TypeScript |
 
-## 3. Grundsatzentscheidungen
+## 3. Versionsstrategie
 
-**Backend behalten und modernisieren.** Es ist klein, getestet und funktional breit (Boards, Roadmap, Moderation, OAuth2, Webhooks, REST-API). Ein Neubau würde Monate kosten, ohne neuen Nutzen.
-
-**Frontend neu bauen.** Das alte Frontend (React 16, Redux, Bootstrap 4, Klassenkomponenten) auf React 19 zu migrieren kostet fast so viel wie ein Neubau. Am Ende stünde trotzdem die alte Oberfläche. Deshalb bleibt es nur in Betrieb, bis es ersetzt ist.
-
-**Empfohlene UI-Architektur** (Entscheidung offen):
-
-| Option | Bewertung |
+| Version | Ziel |
 |---|---|
-| **A: Inertia.js (inertia-rails) + React 19 + TypeScript 7 + Tailwind 4 + shadcn/ui, Build mit Vite** ✅ | Rails-Controller und Pundit bleiben, kein separates API-Backend und kein Redux nötig; SSR für öffentliche Seiten (SEO); Seite für Seite migrierbar neben dem alten Frontend; moderne Komponentenbibliothek |
-| B: Hotwire (Turbo + Stimulus) + ViewComponent | Sehr Rails-nah, wenig JS; aber reichhaltige Interaktionen (Drag-and-drop-Roadmap, Widget) sind mühsamer, React-Know-how geht verloren |
-| C: Separates SPA (z. B. Next.js) gegen die REST-API | Zwei Deployments, widerspricht „ein Image“ |
+| **v2** | Pakete modernisieren (✅ Backend fertig), den kompletten React-16/Redux/Bootstrap-4-Teil entsorgen und ersetzen: entweder durch sauberes **Rails 8 (Hotwire)** oder durch ein **strikt getrenntes, modernes Frontend** gegen eine Rails-JSON-API. Dazu MCP und Betriebsfixes. |
+| **v3** | Umstellung auf **komplett TypeScript**: TanStack Start *oder* SvelteKit, mit Drizzle (PostgreSQL) und Tailwind. Rails entfällt. |
 
-**TanStack:** nicht als Fundament. TanStack Start/Router würden Rails ersetzen bzw. das Routing doppeln, das Inertia übernimmt. Gezielt ja: **TanStack Table** (Basis der shadcn-Datentabellen für Admin-Listen), **TanStack Query** nur für clientseitige Live-Daten (Duplikatsuche beim Tippen, Widget, Endlos-Listen). Formulare weiter mit react-hook-form.
+### Die Wahl für v3 bestimmt das v2-Frontend (Entscheidung offen)
 
-Anforderungen an die neue UI: Mobile first, Dark Mode, WCAG 2.2 AA, ein Komponentensatz auch für das einbettbare Widget, Theme über CSS-Variablen (Branding), i18n weiter über die YAML-Dateien.
+| v3-Stack | Passendes v2-Frontend | Warum |
+|---|---|---|
+| **TanStack Start (React)** ✅ empfohlen | **Getrenntes Frontend:** React 19 + TypeScript 7 + TanStack Router/Query + Tailwind 4 + shadcn/ui, gebaut mit Vite, als SPA gegen eine versionierte Rails-JSON-API (OpenAPI aus rswag → generierter TS-Client) | Die v2-Oberfläche lebt in v3 weiter. In v3 wird nur das Backend ersetzt (Rails → TanStack-Start-Serverfunktionen + Drizzle). Der Übergang erfolgt schrittweise, Endpunkt für Endpunkt („Strangler“). |
+| **SvelteKit** | **Rails 8 mit Hotwire** (Turbo + Stimulus, ViewComponent, Tailwind) | Ein React-Frontend wäre bei SvelteKit Wegwerfarbeit. Hotwire ist für v2 der günstigste saubere Weg. Mitnehmen lassen sich nur Design und Tailwind-Klassen. |
 
-**SaaS-Code:** Stripe-Billing, Tenant-Signup und Custom-Domain-API entfernen, weil die Nische Self-Hosting ist. Multi-Tenancy vorerst behalten: Agenturen könnten mehrere Portale in einer Instanz betreiben (#76). Nach dem UI-Neubau neu bewerten.
+**Empfehlung: TanStack.** Das Team bleibt bei React, die Arbeit am v2-Frontend ist nicht verloren, und v3 wird zu einem Backend-Tausch statt zu einem zweiten Komplett-Neubau. Das Ökosystem (shadcn/ui, TanStack Table/Query/Form) deckt Admin-Tabellen, Formulare und das Widget ab.
+
+**Folgen der Empfehlung für v2:**
+- Rails wird zur reinen API- und Auth-Schicht. Die heutigen JSON-Endpunkte des alten Frontends werden zu einer dokumentierten `/api/app/v1`-Schnittstelle (Session-Cookie + CSRF); die öffentliche `/api/v1` für Integrationen (API-Key) bleibt.
+- Auslieferung weiter als **ein Image**: Rails liefert das gebaute SPA als statische Dateien aus. SSR für SEO der öffentlichen Boards kommt mit v3 (TanStack Start). Bis dahin werden Meta-Tags serverseitig gesetzt.
+- Devise bleibt für Login, OAuth und Mails; die Login-Seiten werden SPA-Seiten gegen JSON-Endpunkte.
+- Das alte Frontend wird Seite für Seite ersetzt und am Ende vollständig entfernt (`react-rails`, `react_ujs`, Redux, Bootstrap, jQuery, Turbolinks, Webpack, `i18n-js` 3, `connection_pool`-Pin).
+
+**Anforderungen an die neue UI:** Mobile first, Dark Mode, WCAG 2.2 AA, Branding über CSS-Variablen, ein Komponentensatz auch für das einbettbare Widget, Übersetzungen aus den bestehenden YAML-Dateien (als JSON exportiert).
+
+**SaaS-Code:** Stripe-Billing, Tenant-Signup und Custom-Domain-API entfernen, weil die Nische Self-Hosting ist. Multi-Tenancy vorerst behalten (#76).
 
 ## 4. Phasen
 
@@ -77,9 +83,9 @@ Anforderungen an die neue UI: Mobile first, Dark Mode, WCAG 2.2 AA, ein Komponen
 - Umbenennung in **Astuto Evolution**, Links auf `nkoeberlein/astuto`, README und CONTRIBUTING neu
 - Ausgangszustand: 374 Tests
 
-### Phase 1 – Plattform (in Arbeit) · P0
-- [x] Ruby 3.3, Debian trixie, Node 24 · [x] Rails 7.0 · [x] `load_defaults` 6.1
-- [ ] Rails 7.1 → 7.2 → 8.0 → 8.1, danach Ruby 4.0, Devise 5, Puma 7
+### Phase 1 – Plattform (Backend fertig) · P0
+- [x] Ruby 4.0.9, Rails 8.1.4, Devise 5, Puma 8, Sidekiq 8.0, Debian trixie, Node 24 – 374/0 Tests, keine Deprecations, Produktions-Image läuft
+- [ ] `load_defaults` 6.1 → 8.1 schrittweise
 - [ ] PostgreSQL 19 bei GA (Anleitung in [UPGRADING.md](UPGRADING.md) ist fertig und getestet)
 - [ ] Node 26 LTS (ab 28.10.2026), Dependabot, `bundler-audit`, Security-Policy (`SECURITY.md`)
 - [ ] SaaS-Billing entfernen (siehe 3.)
@@ -87,12 +93,14 @@ Anforderungen an die neue UI: Mobile first, Dark Mode, WCAG 2.2 AA, ein Komponen
 ### Phase 2 – Betrieb und Bugfixes · P1
 Die häufigsten Probleme aus den Upstream-Issues: HTTPS hinter Reverse Proxy (#478, #201), OAuth-Cookie (#472), SMTP (#330 u. a.), Webhook-Fehler sichtbar machen (#458), konfigurierbare DB (#326, #207), Standard-Admin-Passwort, unsicherer SMTP-Standard. Details in todo.md.
 
-### Phase 3 – UI-Neubau · P1 (Kern von 2.0)
-1. Grundgerüst: Vite, Inertia, React 19, TS 7, Tailwind 4, shadcn/ui, ESLint/Prettier, Typprüfung in CI; Designsystem mit Branding-Variablen
-2. Öffentliche Seiten zuerst: Board-Liste, Board, Post-Detail mit Kommentaren, Roadmap, Login und Registrierung (SSR)
-3. Moderation und Site Settings
-4. Altes Frontend entfernen (`react-rails`, Redux, Bootstrap, jQuery, Turbolinks)
-5. Einbettbares Widget aus denselben Komponenten (Phase 5)
+### Phase 3 – Altes Frontend ersetzen · P1 (Kern von v2)
+1. Entscheidung TanStack vs. SvelteKit für v3 (siehe 3.)
+2. Bei TanStack: `frontend/`-Verzeichnis mit Vite, React 19, TS 7, TanStack Router/Query, Tailwind 4, shadcn/ui; ESLint/Prettier, Typprüfung und Vitest in der CI
+3. App-API `/api/app/v1` aus den bestehenden JSON-Endpunkten, OpenAPI per rswag, generierter TS-Client
+4. Öffentliche Seiten: Board-Liste, Board, Post-Detail und Kommentare, Roadmap; Auth-Seiten
+5. Moderation und Site Settings
+6. Altes Frontend und dessen Gems/Pakete entfernen; Sidekiq 8.1
+(Bei SvelteKit stattdessen: Hotwire-Views mit ViewComponent und Tailwind, Seite für Seite.)
 
 ### Phase 4 – KI und MCP · P1 (MCP in 2.0, Rest 2.x)
 - **MCP-Server** (Streamable HTTP unter `/mcp`, Auth per API-Key, später OAuth). Tools: Posts suchen, lesen, anlegen, Status ändern, kommentieren, Votes und Trends abfragen, Roadmap lesen. Damit triagieren Claude, Cursor und andere Assistenten Feedback direkt. Unter den Self-Hosted-Tools hat das sonst nur Quackback.
@@ -120,7 +128,8 @@ Die häufigsten Probleme aus den Upstream-Issues: HTTPS hinter Reverse Proxy (#4
 | Version | Inhalt | Kriterium |
 |---|---|---|
 | `2.0.0-alpha` | Phase 1 + 2 | Rails 8.1, Ruby 4.0, PG 19, Tests grün, Image auf GHCR, Migration aus 1.x dokumentiert |
-| `2.0.0-beta` | + Phase 3 (öffentliche Seiten), MCP-Server | Neue UI für alle Besucherseiten, MCP mit Grundwerkzeugen |
-| `2.0.0` | + Phase 3 komplett | Altes Frontend entfernt, Doku übernommen |
+| `2.0.0-beta` | + Phase 3 (öffentliche Seiten), MCP-Server | Neues Frontend für alle Besucherseiten, MCP mit Grundwerkzeugen |
+| `2.0.0` | + Phase 3 komplett | React 16/Redux/Bootstrap 4 vollständig entfernt, Doku übernommen |
 | `2.1` | Phase 4 | Duplikaterkennung, KI-Funktionen, Changelog |
 | `2.2+` | Phase 5 | Widget, Import, private Boards, LDAP |
+| `3.0.0` | Komplett TypeScript | TanStack Start (oder SvelteKit) + Drizzle + Tailwind, Rails entfernt, Daten-Migration aus v2 automatisch |

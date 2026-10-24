@@ -85,21 +85,30 @@ Issue-Nummern beziehen sich auf `astuto/astuto`. Phasen siehe [roadmap.md](roadm
 - [ ] Mailer-Standardabsender `noreply@astuto.io` / `notifications@astuto.io` durch Adresse aus `BASE_URL` bzw. Pflicht-ENV ersetzen
 - [ ] Multi-Tenancy vorerst behalten, nach UI-Neubau neu bewerten (#76)
 
-## P1 – UI-Neubau (Kern von 2.0)
+## P1 – Altes Frontend ersetzen (Kern von v2)
 
-Empfehlung: Inertia.js + React 19 + TypeScript 7 + Tailwind 4 + shadcn/ui, Build mit Vite (Begründung in roadmap.md, Abschnitt 3). Altes Frontend nicht mehr migrieren, nur lauffähig halten.
+Empfehlung (roadmap.md, Abschnitt 3): getrenntes Frontend mit React 19 + TS 7 + TanStack Router/Query + Tailwind 4 + shadcn/ui gegen eine Rails-JSON-API, damit es in v3 (TanStack Start + Drizzle) weiterlebt. Altes Frontend nur noch lauffähig halten.
 
-- [ ] Architektur bestätigen (Inertia vs. Hotwire)
-- [ ] Grundgerüst: `vite_rails`, `inertia_rails`, React 19, TS 7, Tailwind 4, shadcn/ui; ESLint + Prettier; `tsc --noEmit` in der CI
+- [ ] **Entscheidung v3-Stack: TanStack Start oder SvelteKit** (bestimmt das v2-Frontend: TanStack → getrenntes React-Frontend, SvelteKit → Rails 8 Hotwire)
+- [ ] App-API `/api/app/v1` (Session + CSRF) aus den bestehenden JSON-Endpunkten ableiten, mit rswag dokumentieren, TS-Client generieren
+- [ ] `frontend/`: Vite, React 19, TS 7, TanStack Router + Query, Tailwind 4, shadcn/ui, ESLint + Prettier, Vitest, `tsc --noEmit` in der CI
+- [ ] Auslieferung im selben Image: SPA-Build nach `public/`, Rails liefert `index.html` für App-Routen, Meta-Tags serverseitig für öffentliche Seiten
 - [ ] Designsystem: Branding über CSS-Variablen (bestehende Site-Settings-Farben), Dark Mode, WCAG 2.2 AA, mobile first
-- [ ] i18n: YAML-Übersetzungen weiter nutzen (Inertia-Shared-Props oder i18n-js 4)
-- [ ] Öffentliche Seiten mit SSR: Board-Liste, Board, Post-Detail und Kommentare, Roadmap
-- [ ] Auth-Seiten: Login, Registrierung, Passwort, OAuth-Buttons (Devise-Views)
+- [ ] i18n: YAML-Übersetzungen als JSON exportieren und im Frontend nutzen
+- [ ] Öffentliche Seiten: Board-Liste, Board, Post-Detail und Kommentare, Roadmap
+- [ ] Auth-Seiten: Login, Registrierung, Passwort, OAuth-Buttons (Devise mit JSON-Endpunkten)
 - [ ] Moderation (Feedback-Queue, Nutzer) und Site Settings (General, Boards, Status, Roadmap, Auth, Appearance, Webhooks, API)
-- [ ] System-Tests (Capybara) für jede neue Seite übernehmen bzw. anpassen
-- [ ] Altes Frontend entfernen: `react-rails`, `react_ujs`, Redux, Bootstrap, jQuery, Turbolinks, `jsbundling`/Webpack
-- [ ] `app/controllers` (22 Dateien) nach Bereichen gliedern (z. B. `site_settings/`)
+- [ ] E2E-Tests (Playwright oder Capybara) für jede neue Seite
+- [ ] Altes Frontend entfernen: `react-rails`, `react_ujs`, Redux, Bootstrap, jQuery, Turbolinks, `jsbundling`/Webpack, `i18n-js` 3; danach Sidekiq 8.1 und `connection_pool`-Pin entfernen
+- [ ] `app/controllers` (22 Dateien) nach Bereichen gliedern (z. B. `api/app/v1/site_settings/`)
 - [ ] RuboCop einführen und in der CI ausführen
+
+## P3 – v3: komplett TypeScript (nach 2.0)
+- [ ] Stack festlegen: TanStack Start (empfohlen) oder SvelteKit, Drizzle, Tailwind, Better Auth o. ä. für Login/OAuth
+- [ ] Datenmodell aus `db/schema.rb` nach Drizzle übertragen, automatische Migration v2 → v3
+- [ ] Backend Endpunkt für Endpunkt ersetzen (gleiche API-Verträge wie `/api/app/v1` und `/api/v1`)
+- [ ] Webhooks (Liquid → z. B. LiquidJS), Mails, Hintergrundjobs (z. B. pg-boss), MCP-Server in TypeScript
+- [ ] SSR für öffentliche Seiten
 
 ## P1 – KI und MCP
 
