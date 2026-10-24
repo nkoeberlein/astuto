@@ -1,11 +1,13 @@
 services:
   db:
-    image: postgres:14.5
+    # TODO: switch to postgres:19-trixie once 19 is GA
+    image: postgres:19rc1-trixie
     environment: &db-env
       POSTGRES_USER: astuto
       POSTGRES_PASSWORD: dbpass
     volumes:
-      - dbdata:/var/lib/postgresql/data
+      # Postgres >= 18 stores data in /var/lib/postgresql/<major>/docker
+      - pgdata:/var/lib/postgresql
   web:
     build:
       context: .
@@ -16,9 +18,9 @@ services:
       BASE_URL: http://localhost:3000
       SECRET_KEY_BASE: secretkeybasehere
     ports:
-      - "3000:3000"
+      - "${ASTUTO_PORT:-3000}:3000"
     depends_on:
       - db
 
 volumes:
-  dbdata:
+  pgdata:
