@@ -112,12 +112,14 @@ Enterprise-Produktmanagement mit Feedback-Portal als einem Baustein: Insights-Ve
 
 **Mögliche Nische für den Fork:** „Schlankes, datensparsames Self-Hosted-Feedback-Portal ohne Nutzerlimits, mit anonymem Feedback und Moderation, das hinter jedem Proxy sofort läuft.“ Für den DACH-Raum könnte DSGVO-Konformität ein Argument sein: Datenhaltung im eigenen Haus, keine Telemetrie.
 
-**Ehrliche Einordnung:**
+**Entscheidung (24.10.2026):** Das Projekt wird als **Astuto Evolution** für genau diese Nische weitergeführt, mit UI-Neubau und KI/MCP (siehe [roadmap.md](roadmap.md)). Die folgende Einordnung galt für die Frage nach dem Eigenbedarf:
+
+**Einordnung für den Eigenbedarf:**
 - Wenn du **für dich selbst ein Feedback-Portal brauchst** und keine eigenen Anpassungen planst, ist **Quackback** (breit, aktiv) oder **Fider** (schlicht, stabil) heute weniger Aufwand als die Modernisierung von Astuto.
 - Wenn du **eigene Anpassungen**, volle Kontrolle über Code und Daten oder ein Rails-Projekt zum Weiterentwickeln willst, lohnt sich der Astuto-Fork weiter. Die Basis ist solide, und die wichtigsten Lücken sind überschaubar.
 - **Neu schreiben lohnt sich noch weniger als vorher:** Quackback ist im Grunde schon der moderne Neubau eines Canny-Klons, als Open Source und mit großem Vorsprung.
 
-**Lücken mit dem besten Verhältnis von Nutzen zu Aufwand** (in `roadmap.md` Phase 4 und `todo.md` übernommen):
+**Lücken mit dem besten Verhältnis von Nutzen zu Aufwand** (in `roadmap.md` Phase 4 und 5 sowie `todo.md` übernommen):
 1. Changelog (verknüpft mit erledigten Posts, RSS und E-Mail an Follower)
 2. Duplikatsuche beim Erstellen (#455), mit Postgres-Volltextsuche günstig umsetzbar
 3. Tags (#171) und private Boards (#414)

@@ -1,4 +1,4 @@
-# TODO – Astuto-Fork
+# TODO – Astuto Evolution
 
 Prioritäten: **P0** = blockierend bzw. Sicherheit · **P1** = wichtige Bugs und Betrieb · **P2** = Verbesserungen und Quick Wins · **P3** = später / nice to have
 Issue-Nummern beziehen sich auf `astuto/astuto`. Phasen siehe [roadmap.md](roadmap.md).
@@ -11,7 +11,7 @@ Issue-Nummern beziehen sich auf `astuto/astuto`. Phasen siehe [roadmap.md](roadm
 - [ ] Lokaler Port 3000 ist hier durch einen SSH-Tunnel belegt: `ASTUTO_PORT=3456 docker compose up`
 - [x] `.github/workflows/push-to-registry.yml` auf GHCR umstellen (`ghcr.io/nkoeberlein/astuto`), `riggraz/astuto` entfernen
 - [x] `run-tests.yml`: Runner `ubuntu-24.04`
-- [ ] README: EOL-Hinweis durch Fork-Hinweis ersetzen, Image-Name und Doku-Link anpassen
+- [x] README und CONTRIBUTING als Astuto Evolution neu, Links auf `nkoeberlein/astuto`
 - [ ] Remote `upstream` nur noch als Archiv betrachten; Upstream-Branch `add-image-upload` sichern
 
 ### Upstream-PRs übernehmen
@@ -76,23 +76,39 @@ Issue-Nummern beziehen sich auf `astuto/astuto`. Phasen siehe [roadmap.md](roadm
 - [ ] Fehlende Übersetzungstexte (#466)
 - [ ] System-Spec „Post bearbeiten/löschen“ reparieren (#210)
 
-### Grundsatzentscheidung
-- [ ] Multi-Tenancy, Stripe-Billing, Custom-Domain-API und Tenant-Signup behalten oder entfernen? Bei reinem Self-Hosting entfernen (ca. 20 Dateien, weniger Wartung und Angriffsfläche)
+### SaaS-Ballast (entschieden: Self-Hosting ist die Nische)
+- [ ] Stripe-Billing, Tenant-Signup, Custom-Domain-API (`ASTUTO_CNAME_API_*`), Promo-Banner und Tenant-Mails entfernen
+- [ ] Mailer-Standardabsender `noreply@astuto.io` / `notifications@astuto.io` durch Adresse aus `BASE_URL` bzw. Pflicht-ENV ersetzen
+- [ ] Multi-Tenancy vorerst behalten, nach UI-Neubau neu bewerten (#76)
 
-## P2 – Frontend und Quick Wins
+## P1 – UI-Neubau (Kern von 2.0)
 
-### Frontend-Modernisierung
-- [ ] React 16 → 19 (`ReactDOM.render` entfällt: `react_ujs`/`react-rails` ersetzen oder eigenen Mount mit `createRoot`; `react-redux` 9, `defaultProps`/String-Refs prüfen)
-- [ ] `react-beautiful-dnd` → `@hello-pangea/dnd`
-- [ ] Bootstrap 4 → 5.3, jQuery und popper.js 1 entfernen (#407 ersetzen)
-- [ ] TypeScript 4.3 → 7.x, `tsconfig` anpassen, Typprüfung (`tsc --noEmit`) in der CI
-- [ ] 59 `any` in `app/javascript` durch echte Typen ersetzen
-- [ ] Aufteilen: `GeneralSiteSettingsP.tsx` (461), `WebhookForm.tsx` (414), `PostP.tsx` (320), `common/_index.scss` (352)
-- [ ] `authenticityToken`-Prop-Drilling durch zentralen Helper ersetzen (#165)
-- [ ] Turbolinks → Turbo
-- [ ] ESLint + Prettier und RuboCop einführen, beide in der CI
+Empfehlung: Inertia.js + React 19 + TypeScript 7 + Tailwind 4 + shadcn/ui, Build mit Vite (Begründung in roadmap.md, Abschnitt 3). Altes Frontend nicht mehr migrieren, nur lauffähig halten.
+
+- [ ] Architektur bestätigen (Inertia vs. Hotwire)
+- [ ] Grundgerüst: `vite_rails`, `inertia_rails`, React 19, TS 7, Tailwind 4, shadcn/ui; ESLint + Prettier; `tsc --noEmit` in der CI
+- [ ] Designsystem: Branding über CSS-Variablen (bestehende Site-Settings-Farben), Dark Mode, WCAG 2.2 AA, mobile first
+- [ ] i18n: YAML-Übersetzungen weiter nutzen (Inertia-Shared-Props oder i18n-js 4)
+- [ ] Öffentliche Seiten mit SSR: Board-Liste, Board, Post-Detail und Kommentare, Roadmap
+- [ ] Auth-Seiten: Login, Registrierung, Passwort, OAuth-Buttons (Devise-Views)
+- [ ] Moderation (Feedback-Queue, Nutzer) und Site Settings (General, Boards, Status, Roadmap, Auth, Appearance, Webhooks, API)
+- [ ] System-Tests (Capybara) für jede neue Seite übernehmen bzw. anpassen
+- [ ] Altes Frontend entfernen: `react-rails`, `react_ujs`, Redux, Bootstrap, jQuery, Turbolinks, `jsbundling`/Webpack
 - [ ] `app/controllers` (22 Dateien) nach Bereichen gliedern (z. B. `site_settings/`)
+- [ ] RuboCop einführen und in der CI ausführen
 
+## P1 – KI und MCP
+
+- [ ] MCP-Server unter `/mcp` (Streamable HTTP), Auth per API-Key; offizielles `mcp`-Ruby-SDK prüfen
+- [ ] MCP-Tools: `search_posts`, `get_post`, `create_post`, `update_post_status`, `add_comment`, `list_boards`, `get_roadmap`, `top_requests` (Votes/Trend)
+- [ ] MCP-Doku mit Beispielkonfiguration für Claude Desktop/Code und Cursor
+- [ ] Duplikaterkennung beim Erstellen mit Postgres-Volltextsuche (#455)
+- [ ] KI-Anbieter-Abstraktion: OpenAI-kompatibel (inkl. Ollama), Anthropic; alles opt-in per Site Settings, ohne KI voll funktionsfähig
+- [ ] Optional semantische Duplikate mit pgvector und Embeddings
+- [ ] Zusammenfassung langer Diskussionen, Vorschläge für Tags und Board, Changelog-Entwürfe, Übersetzung von Feedback
+- [ ] Datenschutzhinweis: welche Daten an den KI-Anbieter gehen
+
+## P2 – Quick Wins
 ### Quick-Win-Features
 - [ ] Vorhandene Übersetzungen freischalten: `tr`, `cs`, `el`, `hi`, `ja`, `ko`, `nl`, `pl`, `sr`, `sv` fehlen in `I18n.available_locales` (`config/initializers/locale.rb`) und im Sprachmenü (`GeneralSiteSettingsP.tsx`); vorher Vollständigkeit prüfen
 - [ ] Roadmap abschaltbar (#361)
@@ -109,9 +125,15 @@ Issue-Nummern beziehen sich auf `astuto/astuto`. Phasen siehe [roadmap.md](roadm
 
 ### Lücken zur Konkurrenz (siehe konkurrenz.md)
 - [ ] Changelog: Einträge mit erledigten Posts verknüpfen, RSS-Feed, E-Mail an Follower
-- [ ] Duplikatsuche beim Erstellen mit Postgres-Volltextsuche (#455) (aus „Mittel“ vorgezogen)
 - [ ] Webhook-Vorlagen für Slack, Discord und Teams (#419)
-- [ ] MCP-Server auf Basis der bestehenden REST-API
+
+## P2 – Projekt und Community
+- [ ] `SECURITY.md` mit Meldeweg für Sicherheitslücken
+- [ ] `CHANGELOG.md` und Release-Prozess (SemVer, Release Notes, Image-Tags)
+- [ ] Doku aus `astuto/astuto-docs` übernehmen (Lizenz prüfen), Links in `config/initializers/project.rb` und `app/javascript/constants/project.ts` umstellen
+- [ ] Übersetzungsplattform festlegen (z. B. Weblate)
+- [ ] Demo-Instanz, Einträge bei awesome-selfhosted und AlternativeTo
+- [ ] Entscheidung: GitHub-Repo in `astuto-evolution` umbenennen
 
 ## P3 – Größere Features (nach Bedarf)
 
