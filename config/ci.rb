@@ -7,5 +7,6 @@ CI.run do
   step "Security: Yarn audit (legacy UI, critical only)", "bin/yarn-audit-critical"
   step "Security: Brakeman code analysis", "bin/brakeman --quiet --no-pager --exit-on-warn --exit-on-error"
   step "Tests: RSpec", "bundle exec rspec"
-  step "Tests: Seeds", "env RAILS_ENV=test bin/rails db:seed:replant"
+  # Seeds must load cleanly; truncate afterwards so the next RSpec run starts from an empty test DB
+  step "Tests: Seeds", "env RAILS_ENV=test bin/rails db:seed:replant && env RAILS_ENV=test bin/rails db:truncate_all"
 end
