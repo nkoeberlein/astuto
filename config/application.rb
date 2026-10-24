@@ -10,6 +10,11 @@ module App
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.1
+    config.active_support.cache_format_version = 7.1
+
+    # Always read SECRET_KEY_BASE from the environment, also in development and test.
+    # Webhook encryption and API key digests are derived from it, so it must not change.
+    config.secret_key_base = ENV['SECRET_KEY_BASE'] if ENV['SECRET_KEY_BASE'].present?
 
     # Set default locale
     config.i18n.default_locale = :en

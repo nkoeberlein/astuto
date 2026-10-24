@@ -8,7 +8,7 @@ RSpec.describe OAuth, type: :model do
   end
 
   it 'has a non-nil unique name' do
-    o_auth2 = FactoryBot.build_stubbed(:o_auth, name: o_auth.name)
+    o_auth2 = FactoryBot.build(:o_auth, name: o_auth.name)
 
     expect(o_auth2).to be_invalid
   end
