@@ -36,7 +36,7 @@ class ReorderWorkflow
     highest_index = src_index < dst_index ? dst_index : src_index
     column_name_sanitized = ActiveRecord::Base.connection.quote_column_name(column_name)
 
-    entity_records = entity_classname.where("#{column_name_sanitized} BETWEEN #{lowest_index} AND #{highest_index}")
+    entity_records = entity_classname.where("#{column_name_sanitized} BETWEEN ? AND ?", lowest_index, highest_index)
 
     # reorder records
     entity_records.each do |entity_record|

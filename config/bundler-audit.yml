@@ -1,0 +1,4 @@
+# Audit all gems listed in Gemfile.lock for known security problems: bin/bundler-audit
+# Advisories that do not apply to Astuto can be listed below, each with a reason.
+
+ignore: []

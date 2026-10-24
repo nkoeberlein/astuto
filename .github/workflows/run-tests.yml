@@ -43,3 +43,9 @@ jobs:
         
       - name: Run tests
         run: docker compose exec web bundle exec rspec
+
+      - name: Security checks (gems, legacy npm packages, Brakeman)
+        run: |
+          docker compose exec web bin/bundler-audit check --update
+          docker compose exec web bin/yarn-audit-critical
+          docker compose exec web bin/brakeman --quiet --no-pager --exit-on-warn --exit-on-error
