@@ -46,9 +46,14 @@ module Api::App::V1
         user: anonymous ? nil : current_user,
         approval_status: approval_status_for(anonymous: anonymous)
       )
-      return render_error(:unprocessable_content, post.errors.full_messages.join(', ')) unless post.save
 
-      Follow.create(post: post, user: current_user) unless anonymous
+      # The post creation and the author's follow must both happen or neither (#169)
+      saved = ActiveRecord::Base.transaction do
+        result = post.save
+        Follow.create(post: post, user: current_user) if result && !anonymous
+        result
+      end
+      return render_error(:unprocessable_content, post.errors.full_messages.join(', ')) unless saved
       render status: :created, json: PostSerializer.detail(post, current_user: current_user)
     end
 

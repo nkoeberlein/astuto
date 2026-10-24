@@ -57,9 +57,14 @@ class PostsController < ApplicationController
     @post = Post.new(approval_status: approval_status)
     @post.assign_attributes(post_create_params(is_anonymous: is_anonymous))
 
-    if @post.save
-      Follow.create(post_id: @post.id, user_id: current_user.id) unless is_anonymous
-      
+    # The post creation and the author's follow must both happen or neither (#169)
+    saved = ActiveRecord::Base.transaction do
+      result = @post.save
+      Follow.create(post_id: @post.id, user_id: current_user.id) if result && !is_anonymous
+      result
+    end
+
+    if saved
       render json: @post, status: :created
     else
       render json: {
@@ -105,16 +110,25 @@ class PostsController < ApplicationController
     authorize @post
     
     @post.assign_attributes(post_update_params)
+    status_changed = @post.post_status_id_changed?
 
-    if @post.save
-      if @post.post_status_id_previously_changed?
-        ExecutePostStatusChangeLogicWorkflow.new(
-          user_id: current_user.id,
-          post: @post,
-          post_status_id: @post.post_status_id
-        ).run
-      end
+    status_change_workflow = ExecutePostStatusChangeLogicWorkflow.new(
+      user_id: current_user.id,
+      post: @post,
+      post_status_id: @post.post_status_id
+    )
 
+    # The post update and its status change record must both happen or neither (#169)
+    saved = ActiveRecord::Base.transaction do
+      result = @post.save
+      status_change_workflow.create_status_change! if result && status_changed
+      result
+    end
+
+    # Mails are enqueued after the transaction has committed
+    status_change_workflow.notify_followers if saved && status_changed
+
+    if saved
       render json: @post
     else
       render json: {
