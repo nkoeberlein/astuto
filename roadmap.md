@@ -93,11 +93,11 @@ Astuto Evolution führt das archivierte [astuto/astuto](https://github.com/astut
 ### Phase 2 – Betrieb und Bugfixes · P1
 Die häufigsten Probleme aus den Upstream-Issues: HTTPS hinter Reverse Proxy (#478, #201), OAuth-Cookie (#472), SMTP (#330 u. a.), Webhook-Fehler sichtbar machen (#458), konfigurierbare DB (#326, #207), Standard-Admin-Passwort, unsicherer SMTP-Standard. Details in todo.md.
 
-### Phase 3 – Altes Frontend ersetzen · P1 (Kern von v2)
-1. Entscheidung TanStack vs. SvelteKit für v3 (siehe 3.)
-2. Bei TanStack: `frontend/`-Verzeichnis mit Vite, React 19, TS 7, TanStack Router/Query, Tailwind 4, shadcn/ui; ESLint/Prettier, Typprüfung und Vitest in der CI
-3. App-API `/api/app/v1` aus den bestehenden JSON-Endpunkten, OpenAPI per rswag, generierter TS-Client
-4. Öffentliche Seiten: Board-Liste, Board, Post-Detail und Kommentare, Roadmap; Auth-Seiten
+### Phase 3 – Altes Frontend ersetzen · P1 (Kern von v2, begonnen)
+1. ✅ Entscheidung: v3 wird **TanStack Start + Drizzle + Tailwind** → v2 bekommt ein getrenntes React-Frontend
+2. ✅ `frontend/` mit Vite 8, React 19, **TypeScript 7**, TanStack Router/Query, Tailwind 4, shadcn/ui, **Biome** (statt ESLint/Prettier), Vitest; eigener CI-Workflow; Build ins Image, ausgeliefert unter `/next`
+3. ✅ App-API `/api/app/v1` (lesend: Session, Übersetzungen, Boards, Status, Posts, Kommentare), OpenAPI per rswag, generierte TS-Typen
+4. ✅ Board-Seite (Suche, Sortierung, Statusfilter, Mehr laden) und Post-Detail mit Kommentaren · offen: Roadmap, Auth-Seiten, schreibende Aktionen (Post anlegen, Vote, Kommentar, Follow)
 5. Moderation und Site Settings
 6. Altes Frontend und dessen Gems/Pakete entfernen; Sidekiq 8.1
 (Bei SvelteKit stattdessen: Hotwire-Views mit ViewComponent und Tailwind, Seite für Seite.)
@@ -133,3 +133,34 @@ Die häufigsten Probleme aus den Upstream-Issues: HTTPS hinter Reverse Proxy (#4
 | `2.1` | Phase 4 | Duplikaterkennung, KI-Funktionen, Changelog |
 | `2.2+` | Phase 5 | Widget, Import, private Boards, LDAP |
 | `3.0.0` | Komplett TypeScript | TanStack Start (oder SvelteKit) + Drizzle + Tailwind, Rails entfernt, Daten-Migration aus v2 automatisch |
+
+## 6. v3 vorbereiten – Datenmodell, Migration, Lizenz
+
+**Neues Datenmodell in v3, nahtloses Upgrade aus v2.** v3 bekommt ein eigenes, sauberes Schema (Drizzle). Bestehende v2-Installationen werden beim ersten Start von v3 automatisch migriert. Für Admins bleibt das Upgrade ein Tausch des Image-Tags.
+
+| Bereich | v2 (Rails) | v3 (Drizzle) |
+|---|---|---|
+| IDs | sequenzielles `bigint` | UUIDv7 (oder internes `bigint` + öffentliche ID/Slug), keine Aufzählbarkeit |
+| Mandanten | `tenant_id` in jeder Tabelle (vorhanden) | als `workspace` übernehmen |
+| Auth | Devise-Spalten in `users`, eigene OAuth-Tabellen | getrennt: `user`, `session`, `account` (mehrere OAuth-Anbieter, Passkeys), z. B. Better Auth |
+| Reihenfolge (Boards, Status, Roadmap) | Integer `order` | Fractional Indexing: ein `UPDATE` pro Drag-and-drop |
+| Aktivität | `comments`, `post_status_changes` getrennt | eine Timeline (Kommentare, Statuswechsel, Merges) |
+| Duplikate | – | `merged_into_post_id`, Votes werden zusammengeführt |
+| Votes | `likes` (user, post) | `votes` mit Gewicht/„im Namen von“, gecachte Zähler |
+| Suche | `ILIKE` | `tsvector`, optional `pgvector` für ähnliche Posts |
+
+**Automatische Migration v2 → v3** beim Containerstart: Erkennen (`schema_migrations` vorhanden), dann eine Transaktion: Daten in das neue Schema überführen, alte Tabellen nach `v2_archive` verschieben. Übertragbarkeit geprüft:
+- Passwörter: Devise nutzt bcrypt (Cost 11, kein Pepper). Die Hashes sind in Node/Bun direkt prüfbar, niemand muss sein Passwort neu setzen.
+- API-Keys: HMAC mit `SECRET_KEY_BASE`, in TypeScript nachbaubar.
+- **Webhook-URL und -Header:** mit `ActiveSupport::MessageEncryptor` (AES-256-GCM) verschlüsselt, Inhalt aber im **Ruby-Marshal-Format**. Vor v3 in v2 auf JSON umverschlüsseln (siehe todo.md).
+
+**Der Vertrag zwischen v2 und v3 ist die App-API** (`/api/app/v1`, OpenAPI). Das v2-Frontend hängt nicht am Datenbankschema. v3 implementiert dieselben Endpunkte auf dem neuen Schema, und das Frontend läuft weiter.
+
+**Regeln für v2, damit die Migration einfach bleibt** (stehen auch in AGENTS.md): keine `serialize`/`store`-Spalten (natives `jsonb`), keine polymorphen Assoziationen, kein Active Storage für Dateien, keine Ruby-spezifischen Formate in der Datenbank. Der aktuelle Stand erfüllt das bis auf die Webhook-Verschlüsselung.
+
+**Lizenz (Entscheidung offen):**
+- v2 ist ein abgeleitetes Werk und bleibt **AGPL-3.0** mit den ursprünglichen Copyright-Hinweisen.
+- v3 als Neuentwicklung könnte eine andere Lizenz bekommen, aber nur ohne übernommenen Code, ohne Logo und Grafiken und ohne die Übersetzungsdateien der Community. Das v2-Frontend ist neu geschrieben, nutzt aber die Astuto-Übersetzungen.
+- **Empfehlung: v3 bleibt AGPL-3.0.** Übersetzungen, Logo, Schema-Wissen und Community-Beiträge dürfen dann weiterverwendet werden, und die AGPL schützt die Nische (Self-Hosting) vor geschlossenen SaaS-Ablegern.
+
+**GitHub (Entscheidung offen):** Den Fork vom archivierten Upstream lösen lassen (GitHub-Support), damit Codesuche und Sichtbarkeit normal funktionieren. v3 im selben Repository entwickeln (Orphan-Branch, beim Release zu `main`, v2 als `v2`-Branch) oder in einer Organisation `astuto-evolution`.

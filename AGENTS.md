@@ -4,24 +4,28 @@
 Astuto Evolution: community continuation of Astuto, a self-hosted customer feedback tool (boards, roadmap, votes, comments, moderation, OAuth2, webhooks, REST API). Upstream `astuto/astuto` is archived (EOL 01/2026). Project name and links live in `config/initializers/project.rb` and `app/javascript/constants/project.ts`. Plan: `roadmap.md`, tasks: `todo.md`, competitor analysis: `konkurrenz.md`.
 
 ## Structure
-- `app/controllers` – Rails controllers; `app/controllers/api` – REST API v1 (API keys)
+- `app/controllers` – Rails controllers; `app/controllers/api/v1` – public REST API (API keys); `app/controllers/api/app/v1` – JSON API for the v2 frontend (session + CSRF)
+- `app/serializers/api/app/v1` – camelCase JSON for the app API (never expose author emails); `app/queries` – query objects (e.g. `BoardPostsQuery`)
+- `frontend/` – v2 frontend (React 19, TS 7, TanStack Router/Query, Tailwind 4, shadcn/ui, Biome), served under `/next`; see `frontend/README.md`
 - `app/policies` – Pundit authorization (one policy per model)
 - `app/workflows` – service objects for multi-step logic (OAuth exchange, sign-in, custom domain)
 - `app/jobs` – ActiveJob (`RunWebhook`, recap emails); backend is async or Sidekiq via `ACTIVE_JOB_BACKEND`
-- `app/javascript` – React 16 + Redux + TypeScript (`actions/`, `reducers/`, `components/`, `containers/`), mounted via react-rails
+- `app/javascript` – legacy React 16 + Redux frontend (being replaced by `frontend/`), mounted via react-rails
 - `config/locales` – backend i18n; `app/javascript/translations` – frontend i18n (i18n-js, Crowdin)
 - `spec/` – RSpec: models, policies, requests, API (rswag), system tests (Capybara + Chrome); 374 examples
 
 ## Commands
 - Dev: `docker compose up` (app on :3000, override with `ASTUTO_PORT`; default admin `admin@example.com` / `password`)
 - Tests: `docker compose exec web bundle exec rspec` (system specs on arm64: install `chromium chromium-driver`, set `CHROME_BIN`/`CHROMEDRIVER_PATH`)
-- API docs: `RSWAG_SWAGGERIZE=true RAILS_ENV=test bundle exec rake rswag:specs:swaggerize`
+- API docs: `RSWAG_SWAGGERIZE=true RAILS_ENV=test bundle exec rake rswag:specs:swaggerize` (writes `swagger/v1/swagger.yaml` and `swagger/app/v1/openapi.yaml`)
+- Frontend: `docker compose up` → http://localhost:5173/next/; in `frontend/`: `npm run lint|typecheck|test|build`, `npm run api:types` after API changes
 - Prod image: `docker build --build-arg ENVIRONMENT=production --target prod .`
 
 ## Patterns
 - Multi-tenancy via `Current.tenant` (subdomain-based when `MULTI_TENANCY=true`); every model is tenant-scoped.
 - All configuration via ENV (SMTP `EMAIL_*`, `POSTGRES_*`, `BASE_URL`, `TRUSTED_PROXY`).
 - The DB is migrated automatically by `docker-entrypoint.sh` on container start.
+- Keep the schema portable for the v3 TypeScript rewrite: no `serialize`/`store` columns (use `jsonb`), no polymorphic associations, no Active Storage, no Ruby-specific formats (Marshal) in the database.
 
 ## Gotchas
 - Backend is on Ruby 4.0 / Rails 8.1 / Devise 5 (`load_defaults` still 6.1). The React 16/Redux/Bootstrap 4 frontend will be replaced in v2, not migrated: do not invest in it beyond fixes. v3 plans a full TypeScript rewrite (see `roadmap.md`).

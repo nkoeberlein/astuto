@@ -40,6 +40,8 @@ Issue-Nummern beziehen sich auf `astuto/astuto`. Phasen siehe [roadmap.md](roadm
 - [ ] Dependabot oder Renovate für Bundler, npm, Docker und Actions einrichten
 
 ### Sicherheit
+- [ ] **v3-Voraussetzung:** Webhook-URL/-Header mit `MessageEncryptor` und JSON-Serializer statt Marshal verschlüsseln; Daten-Migration, die alte Werte liest und neu schreibt (Lesen beider Formate während der Umstellung)
+- [ ] **Datenschutz:** Die alten JSON-Endpunkte (`posts#index/show`, `comments#index` u. a.) liefern `user_email` aller Autoren öffentlich aus. Behoben in der neuen App-API (`AuthorSerializer`); im alten Frontend bis zur Ablösung entfernen oder nur für Moderatoren ausgeben
 - [ ] Standard-Admin `admin@example.com` / `password` (`db/seeds.rb`): Zugangsdaten per ENV setzen oder Passwortwechsel beim ersten Login erzwingen
 - [ ] SMTP-Standard `openssl_verify_mode: "none"` → `"peer"` (`config/environments/production.rb`)
 - [ ] Kurzer Security-Check: `rack-attack`-Regeln, CSP-Header, API-Key-Handling
@@ -89,23 +91,31 @@ Issue-Nummern beziehen sich auf `astuto/astuto`. Phasen siehe [roadmap.md](roadm
 
 Empfehlung (roadmap.md, Abschnitt 3): getrenntes Frontend mit React 19 + TS 7 + TanStack Router/Query + Tailwind 4 + shadcn/ui gegen eine Rails-JSON-API, damit es in v3 (TanStack Start + Drizzle) weiterlebt. Altes Frontend nur noch lauffähig halten.
 
-- [ ] **Entscheidung v3-Stack: TanStack Start oder SvelteKit** (bestimmt das v2-Frontend: TanStack → getrenntes React-Frontend, SvelteKit → Rails 8 Hotwire)
-- [ ] App-API `/api/app/v1` (Session + CSRF) aus den bestehenden JSON-Endpunkten ableiten, mit rswag dokumentieren, TS-Client generieren
-- [ ] `frontend/`: Vite, React 19, TS 7, TanStack Router + Query, Tailwind 4, shadcn/ui, ESLint + Prettier, Vitest, `tsc --noEmit` in der CI
-- [ ] Auslieferung im selben Image: SPA-Build nach `public/`, Rails liefert `index.html` für App-Routen, Meta-Tags serverseitig für öffentliche Seiten
+- [x] Entscheidung v3-Stack: **TanStack Start + Drizzle + Tailwind** → getrenntes React-Frontend in v2
+- [x] App-API `/api/app/v1` lesend: `session`, `translations/:locale`, `boards`, `boards/:id/posts`, `post_statuses`, `posts/:id`, `posts/:id/comments` (rswag-Specs, OpenAPI `app/v1/openapi.yaml`, TS-Typen generiert)
+- [x] `frontend/`: Vite 8, React 19, TS 7, TanStack Router + Query, Tailwind 4, shadcn/ui, Biome, Vitest; CI-Workflow `frontend.yml`
+- [x] Auslieferung im selben Image unter `/next` (`SpaController`), Compose-Dienst `frontend` für Vite
+- [ ] Schreibende Endpunkte + UI: Post anlegen (auch anonym, Moderation), Vote, Kommentar/Antwort, Follow; CSRF-Fluss testen
+- [ ] Roadmap-Seite, Login/Registrierung/Passwort als SPA-Seiten (Devise-JSON), OAuth-Buttons
+- [ ] CI: OpenAPI neu erzeugen und gegen `frontend/src/api/schema.d.ts` vergleichen (Drift-Check)
+- [ ] Meta-Tags (Titel, Beschreibung, Open Graph) für öffentliche Seiten serverseitig in `SpaController`
+- [ ] `hide_unused_statuses_in_filter_by_status` und `custom_css` im neuen Frontend berücksichtigen
+- [ ] Umstieg: `/next` → `/`, sobald alle Seiten ersetzt sind
 - [ ] Designsystem: Branding über CSS-Variablen (bestehende Site-Settings-Farben), Dark Mode, WCAG 2.2 AA, mobile first
-- [ ] i18n: YAML-Übersetzungen als JSON exportieren und im Frontend nutzen
-- [ ] Öffentliche Seiten: Board-Liste, Board, Post-Detail und Kommentare, Roadmap
+- [x] i18n: YAML-Übersetzungen über `GET /api/app/v1/translations/:locale`
+- [x] Öffentliche Seiten: Board, Post-Detail und Kommentare · [ ] Roadmap
 - [ ] Auth-Seiten: Login, Registrierung, Passwort, OAuth-Buttons (Devise mit JSON-Endpunkten)
 - [ ] Moderation (Feedback-Queue, Nutzer) und Site Settings (General, Boards, Status, Roadmap, Auth, Appearance, Webhooks, API)
 - [ ] E2E-Tests (Playwright oder Capybara) für jede neue Seite
 - [ ] Altes Frontend entfernen: `react-rails`, `react_ujs`, Redux, Bootstrap, jQuery, Turbolinks, `jsbundling`/Webpack, `i18n-js` 3; danach Sidekiq 8.1 und `connection_pool`-Pin entfernen
 - [ ] `app/controllers` (22 Dateien) nach Bereichen gliedern (z. B. `api/app/v1/site_settings/`)
 - [ ] RuboCop einführen und in der CI ausführen
+- [ ] TypeScript 7 auch für `openapi-typescript`, sobald unterstützt (läuft bis dahin per `npx` mit TS 5.9)
 
 ## P3 – v3: komplett TypeScript (nach 2.0)
-- [ ] Stack festlegen: TanStack Start (empfohlen) oder SvelteKit, Drizzle, Tailwind, Better Auth o. ä. für Login/OAuth
-- [ ] Datenmodell aus `db/schema.rb` nach Drizzle übertragen, automatische Migration v2 → v3
+- [x] Stack: TanStack Start + Drizzle + Tailwind (Auth z. B. Better Auth)
+- [ ] Entscheidung Lizenz v3 (Empfehlung AGPL-3.0) und GitHub-Struktur (Fork lösen, Orphan-Branch oder Organisation), siehe roadmap.md Abschnitt 6
+- [ ] Neues Drizzle-Schema (UUIDv7, Auth-Tabellen, Fractional Indexing, Timeline, Merge, Votes mit Gewicht, `tsvector`) und automatischer Migrator v2 → v3 beim Start (Transaktion, alte Tabellen nach `v2_archive`)
 - [ ] Backend Endpunkt für Endpunkt ersetzen (gleiche API-Verträge wie `/api/app/v1` und `/api/v1`)
 - [ ] Webhooks (Liquid → z. B. LiquidJS), Mails, Hintergrundjobs (z. B. pg-boss), MCP-Server in TypeScript
 - [ ] SSR für öffentliche Seiten
