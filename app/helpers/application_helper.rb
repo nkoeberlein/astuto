@@ -107,6 +107,15 @@ module ApplicationHelper
     tenant
   end
 
+  # Tenant custom CSS goes unescaped into a <style> block. Writing every "<"
+  # as the CSS escape "\3c " means the browser can never see "</style", no
+  # matter how the input is nested (e.g. "</sty</stylele>"). Inside CSS strings
+  # the escape still stands for "<". The block form keeps Ruby from reading
+  # "\3" as a backreference.
+  def custom_css_for_style_tag(css)
+    css.to_s.gsub('<') { '\3c ' }.html_safe
+  end
+
   # Redirect to previous page if present; otherwise redirect to root
   def safe_return_to_redirect(url)
     uri = URI.parse(url)

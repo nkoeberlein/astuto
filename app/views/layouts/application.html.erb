@@ -38,7 +38,7 @@
 
     <% if @tenant and not @tenant.tenant_setting.custom_css.blank? %>
       <style type="text/css">
-        <%= raw @tenant.tenant_setting.custom_css.to_s.gsub(%r{</style}i, '') %>
+        <%= custom_css_for_style_tag(@tenant.tenant_setting.custom_css) %>
       </style>
     <% end %>
 
