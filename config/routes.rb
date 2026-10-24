@@ -123,6 +123,11 @@ Rails.application.routes.draw do
     # v2 frontend, served under /next until it replaces the legacy UI
     get '/next(/*path)', to: 'spa#show', as: :spa, format: false
 
+    # Model Context Protocol (MCP) Streamable HTTP endpoint (authenticated via API key)
+    post '/mcp', to: 'mcp#handle'
+    get '/mcp', to: 'mcp#show'
+    delete '/mcp', to: 'mcp#destroy'
+
     namespace :api do
       namespace :v1 do
         resources :boards, only: [:index, :show, :create]
