@@ -11,7 +11,7 @@ class Webhook < ApplicationRecord
   validates :trigger, presence: true
   validates :http_method, presence: true
 
-  enum trigger: [
+  enum :trigger, [
     :new_post,
     :new_post_pending_approval,
     :delete_post,
@@ -21,7 +21,7 @@ class Webhook < ApplicationRecord
     :new_user
   ]
 
-  enum http_method: [
+  enum :http_method, [
     :http_post,
     :http_put,
     :http_patch,

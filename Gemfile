@@ -5,7 +5,7 @@ ruby '3.3.13'
 
 gem 'rake', '13.2.1'
 
-gem 'rails', '7.1.6'
+gem 'rails', '7.2.4'
 
 # Asset pipeline (no longer bundled with Rails 7)
 gem 'sprockets-rails', '3.5.2'
@@ -24,7 +24,7 @@ gem 'puma', '5.6.9'
 
 gem 'turbolinks', '5.2.1'
 
-gem 'jbuilder', '2.11.5'
+gem 'jbuilder', '2.15.1'
 
 gem 'bootsnap', '1.12.0', require: false
 

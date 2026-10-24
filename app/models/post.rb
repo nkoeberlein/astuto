@@ -17,7 +17,7 @@ class Post < ApplicationRecord
   after_create :run_new_post_webhooks
   after_destroy :run_delete_post_webhooks
 
-  enum approval_status: [
+  enum :approval_status, [
     :approved,
     :pending,
     :rejected
