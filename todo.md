@@ -27,20 +27,21 @@ Issue-Nummern beziehen sich auf `astuto/astuto`. Phasen siehe [roadmap.md](roadm
 - [x] Devise 5.0.4 (Rails-8-Lazy-Routes, CVE-Fixes), Spring entfernt, Puma 8, factory_bot 6, debug statt byebug
 - [x] `Rails.application.secrets` ersetzt; `SECRET_KEY_BASE` bleibt in allen Umgebungen die Quelle (Webhook-Verschlüsselung, API-Keys, Devise-Tokens unverändert)
 - [x] Ruby 3.3 → 4.0.9 (Bundler 4.0.20), 374/0 Tests
-- [ ] `load_defaults` von 6.1 schrittweise auf 8.1 heben (jeweils `new_framework_defaults_*.rb` durchgehen)
-- [ ] Sidekiq 8.0 → 8.1 und `connection_pool`-Pin entfernen, sobald `react-rails` weg ist
-- [ ] Stripe-Gem 11 → 20 (falls Billing bleibt), `react-rails`/`i18n-js` 3 (entfallen mit UI-Neubau)
-- [ ] `bundler-audit` und `brakeman` einführen; lokales `bin/ci` (Rails 8.1) für RSpec statt Minitest einrichten
+- [x] `load_defaults` 6.1 → 7.0 → 7.1 → 7.2 → 8.0 → 8.1, jeder Schritt mit voller Suite grün. Cookie-Rotation (SHA1 → SHA256) hält Sessions und Remember-me-Cookies gültig (geprüft mit echten alten Cookies), `allow_other_host` für Tenant-, OAuth- und Billing-Redirects, Active Storage abgeschaltet. Nebenbei: Testumgebung lud Code neu, sobald der Dev-Server Dateien schrieb (sporadisch `AssociationTypeMismatch`), jetzt `enable_reloading = false`
+- [x] Sidekiq 8.1.7 und `connection_pool` 3 ohne Pin: `react-rails` 3.3 hängt nicht mehr an connection_pool (npm `react_ujs` bleibt 2.6, weil 3.x React 18 mitbringt). `config/sidekiq.yml` mit allen Queues, vorher liefen Webhook-Jobs ohne `-q webhooks` nie. Mit Redis 8 geprüft
+- [x] Stripe-Gem 11 → 20 mit fixierter API-Version `2024-04-10` (der Webhook liest `price` an Rechnungspositionen, das ab 2025-03-31 fehlt). Höhere Version nur mit Test gegen ein Stripe-Testkonto
+- [ ] `i18n-js` 3 bleibt bis zur Ablösung des alten Frontends (4.x ist ein Umbau ohne Nutzen für v2)
+- [x] `bundler-audit`, `brakeman` und `bin/ci` (Gem-Audit, Yarn-Audit, Brakeman, RSpec, Seeds), dieselben Checks im Test-Workflow. 6 indirekte Gems mit Sicherheitslücken aktualisiert (nokogiri, rails-html-sanitizer, loofah, crass, addressable, concurrent-ruby)
 - [x] Upgrade-Hinweis: Sidekiq 8 braucht Redis ≥ 7 (in `UPGRADING.md`)
 - [x] Node 20 → 24 LTS im Dockerfile (Builder)
-- [ ] Node 24 → 26 LTS ab 28.10.2026
-- [ ] `yarn audit` ohne kritische Treffer
-- [ ] **Dringend (PG 14 EOL 12.11.2026):** PostgreSQL 14.5 → 19 (#247): Dev-Compose läuft auf 19rc1, Anleitung in `UPGRADING.md` (Dump/Restore getestet). Offen: bei GA auf `postgres:19-trixie` umstellen, README-Compose anpassen
+- [x] Node 26 (Builder, Compose-Service, Frontend-CI); Laufzeit-Image ganz ohne Node (Debians Node 20 war EOL und wurde nicht gebraucht)
+- [x] `yarn audit` ohne kritische Treffer (altes UI: 15 hoch, 17 mittel, 4 niedrig; entfallen mit dessen Entfernung), geprüft durch `bin/yarn-audit-critical`
+- [ ] **Dringend (PG 14 EOL 12.11.2026):** PostgreSQL 14.5 → 19 (#247): Dev-Compose läuft auf 19rc1, Anleitung in `UPGRADING.md` (Dump/Restore getestet). Offen: GA ist für den **19.11.2026** angekündigt, eine Woche nach dem EOL von PG 14. Dann auf `postgres:19-trixie` umstellen. Wer nicht warten will, nimmt PG 18 (gleiche Schritte, siehe `UPGRADING.md`)
 - [x] Docker-Multi-Arch-Build amd64 + arm64 mit `docker/build-push-action` + QEMU (#399, #254, #475), in der CI noch nicht gelaufen
-- [ ] Dependabot oder Renovate für Bundler, npm, Docker und Actions einrichten
+- [x] Dependabot: Bundler, npm (Frontend; altes UI nur Sicherheitsupdates), Docker, Compose, Actions; Minor/Patch gruppiert. In den Repo-Einstellungen „Dependabot security updates“ aktivieren
 
 ### Sicherheit
-- [ ] **v3-Voraussetzung:** Webhook-URL/-Header mit `MessageEncryptor` und JSON-Serializer statt Marshal verschlüsseln; Daten-Migration, die alte Werte liest und neu schreibt (Lesen beider Formate während der Umstellung)
+- [x] **v3-Voraussetzung:** Webhook-URL/-Header mit JSON statt Marshal verschlüsselt (`Webhook.encryptor`, liest beide Formate), Migration `ReencryptWebhooksAsJson` schreibt bestehende Werte neu
 - [ ] **Datenschutz:** Die alten JSON-Endpunkte (`posts#index/show`, `comments#index` u. a.) liefern `user_email` aller Autoren öffentlich aus. Behoben in der neuen App-API (`AuthorSerializer`); im alten Frontend bis zur Ablösung entfernen oder nur für Moderatoren ausgeben
 - [ ] Standard-Admin `admin@example.com` / `password` (`db/seeds.rb`): Zugangsdaten per ENV setzen oder Passwortwechsel beim ersten Login erzwingen
 - [x] SMTP-Standard `openssl_verify_mode: "none"` → `"peer"` (`config/environments/production.rb`)

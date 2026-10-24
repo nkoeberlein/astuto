@@ -19,6 +19,7 @@ Astuto Evolution: community continuation of Astuto, a self-hosted customer feedb
 - Tests: `docker compose exec web bundle exec rspec` (system specs on arm64: install `chromium chromium-driver`, set `CHROME_BIN`/`CHROMEDRIVER_PATH`)
 - API docs: `RSWAG_SWAGGERIZE=true RAILS_ENV=test bundle exec rake rswag:specs:swaggerize` (writes `swagger/v1/swagger.yaml` and `swagger/app/v1/openapi.yaml`)
 - Frontend: `docker compose up` → http://localhost:5173/next/; in `frontend/`: `npm run lint|typecheck|test|build`, `npm run api:types` after API changes
+- Local CI: `docker compose exec web bin/ci` (bundler-audit, yarn audit for critical advisories, Brakeman, RSpec, seeds)
 - Prod image: `docker build --build-arg ENVIRONMENT=production --target prod .`
 
 ## Patterns
@@ -28,8 +29,11 @@ Astuto Evolution: community continuation of Astuto, a self-hosted customer feedb
 - Keep the schema portable for the v3 TypeScript rewrite: no `serialize`/`store` columns (use `jsonb`), no polymorphic associations, no Active Storage, no Ruby-specific formats (Marshal) in the database.
 
 ## Gotchas
-- Backend is on Ruby 4.0 / Rails 8.1 / Devise 5 (`load_defaults` still 6.1). The React 16/Redux/Bootstrap 4 frontend will be replaced in v2, not migrated: do not invest in it beyond fixes. v3 plans a full TypeScript rewrite (see `roadmap.md`).
-- `connection_pool` is pinned to 2.x because `react-rails` 2.6 breaks with 3.x; remove both together.
+- Backend is on Ruby 4.0 / Rails 8.1 / Devise 5 / Sidekiq 8.1 (`load_defaults` 8.1). The React 16/Redux/Bootstrap 4 frontend will be replaced in v2, not migrated: do not invest in it beyond fixes. v3 plans a full TypeScript rewrite (see `roadmap.md`).
+- The test env never reloads code (`enable_reloading = false`): a dev server in the same container writes files on boot, which used to reload classes mid-run.
+- `config/initializers/cookie_rotator.rb` keeps cookies signed with pre-7.0 SHA1 keys valid; it can go in 2027.
+- Stripe's API version is pinned in `config/initializers/stripe.rb`; raise it only after testing billing against a Stripe test account.
+- New ActiveJob queues (`queue_as`) must be added to `config/sidekiq.yml`, or Sidekiq never runs them.
 - The production image build generates API docs with `RAILS_ENV=test` without test gems installed: gems in the test group must not be auto-required (`require: false`).
 - Postgres ≥ 18 images store data under `/var/lib/postgresql/<major>/docker`; see `UPGRADING.md`.
 - Behind a reverse proxy, `X-Forwarded-Proto` must be set or OAuth callbacks use `http` (upstream #478).

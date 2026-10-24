@@ -1,9 +1,31 @@
 # Upgrading
 
+## From Astuto 1.x to Astuto Evolution 2.0
+
+The database is migrated automatically when the container starts. Keep
+`SECRET_KEY_BASE` unchanged: sessions, API keys and the encrypted webhook
+settings depend on it.
+
+- **Logins stay valid.** Session and "remember me" cookies from 1.x keep
+  working and are re-written with the new key derivation on the next visit.
+- **Password reset links** sent before the update stop working. Request a new one.
+- **Webhooks:** URLs and headers are re-encrypted in a portable JSON format on
+  first start (migration `ReencryptWebhooksAsJson`). Nothing to do.
+- **Sidekiq** (only with `ACTIVE_JOB_BACKEND=sidekiq`): needs Redis 7 or newer
+  (see below). Queues come from `config/sidekiq.yml`; if you start Sidekiq with
+  your own `-q` flags, include `webhooks`, otherwise webhooks never run.
+- **Billing** (multi-tenant hosting only): requests use Stripe API version
+  `2024-04-10`. Set the same version on your webhook endpoint in the Stripe dashboard.
+- The image no longer contains Node.js; Astuto does not need it at runtime.
+
 ## PostgreSQL 14 → 19
 
 PostgreSQL 14 reaches end of life on 2026-11-12. Major versions cannot read each
 other's data directories, so the data has to be dumped and restored once.
+
+PostgreSQL 19 is planned for 2026-11-19. If you do not want to wait, use
+`postgres:18-trixie` (supported until 2030) with the same steps; moving from 18
+to 19 later works the same way.
 
 Two things change in the `docker-compose.yml`:
 

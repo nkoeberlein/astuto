@@ -44,8 +44,8 @@ Astuto Evolution führt das archivierte [astuto/astuto](https://github.com/astut
 | Ruby | 3.0.6 (EOL) | **4.0.9** | 4.0 ✓ |
 | Rails | 6.1 (EOL) | **8.1.4** | 8.1 ✓ |
 | Devise | 4.7.3 | **5.0.4** | 5.x ✓ |
-| PostgreSQL | 14.5 (EOL 12.11.2026) | 19rc1 (Dev) | 19 |
-| Node (Build) | 20 (EOL) | 24 LTS | 26 LTS |
+| PostgreSQL | 14.5 (EOL 12.11.2026) | 19rc1 (Dev) | 19 (GA 19.11.2026) |
+| Node (Build) | 20 (EOL) | **26** (Laufzeit-Image ohne Node) | 26 LTS ✓ |
 | Debian-Basis | 11 (EOL, Image baute nicht mehr) | 13 trixie | 13 trixie |
 | Docker-Image | `riggraz/astuto`, amd64 | CI: `ghcr.io/nkoeberlein/astuto`, amd64 + arm64 | ✓ |
 | Frontend | React 16, Redux, Bootstrap 4 | unverändert | ersetzt (siehe 3.); v3: komplett TypeScript |
@@ -85,10 +85,10 @@ Astuto Evolution führt das archivierte [astuto/astuto](https://github.com/astut
 - Ausgangszustand: 374 Tests
 
 ### Phase 1 – Plattform (Backend fertig) · P0
-- [x] Ruby 4.0.9, Rails 8.1.4, Devise 5, Puma 8, Sidekiq 8.0, Debian trixie, Node 24 – 374/0 Tests, keine Deprecations, Produktions-Image läuft
-- [ ] `load_defaults` 6.1 → 8.1 schrittweise
+- [x] Ruby 4.0.9, Rails 8.1.4 mit `load_defaults` 8.1, Devise 5, Puma 8, Sidekiq 8.1, Stripe 20, Debian trixie, Node 26 – Tests grün, keine Deprecations, Produktions-Image läuft
+- [x] Dependabot, `bundler-audit`, Brakeman, lokales `bin/ci`
 - [ ] PostgreSQL 19 bei GA (Anleitung in [UPGRADING.md](UPGRADING.md) ist fertig und getestet)
-- [ ] Node 26 LTS (ab 28.10.2026), Dependabot, `bundler-audit`, Security-Policy (`SECURITY.md`)
+- [ ] Security-Policy (`SECURITY.md`)
 - [ ] Multi-Tenancy-Modus testen und dokumentieren (Subdomains, Custom Domains, Tenant-Verwaltung); Billing je nach Geschäftsmodell (siehe 7.)
 
 ### Phase 2 – Betrieb und Bugfixes · P1
@@ -101,7 +101,7 @@ Die häufigsten Probleme aus den Upstream-Issues: HTTPS hinter Reverse Proxy (#4
 4. ✅ Board-Seite (Suche, Sortierung, Statusfilter, Mehr laden) und Post-Detail mit Kommentaren
 5. ✅ Schreibende Aktionen: Post anlegen (auch anonym, mit Freigabe-Regeln und Spam-Schutz), Vote (optimistisch), Kommentar und Antwort, Moderator-Updates, Follow; CSRF-Fluss getestet · offen: Roadmap-Seite, Auth-Seiten, Moderation, Site Settings
 5. Moderation und Site Settings
-6. Altes Frontend und dessen Gems/Pakete entfernen; Sidekiq 8.1
+6. Altes Frontend und dessen Gems/Pakete entfernen (`react-rails`, `i18n-js`, Webpack, Bootstrap)
 
 ### Phase 4 – KI und MCP · P1 (MCP in 2.0, Rest 2.x)
 - **MCP-Server** (Streamable HTTP unter `/mcp`, Auth per API-Key, später OAuth). Tools: Posts suchen, lesen, anlegen, Status ändern, kommentieren, Votes und Trends abfragen, Roadmap lesen. Damit triagieren Claude, Cursor und andere Assistenten Feedback direkt. Unter den Self-Hosted-Tools hat das sonst nur Quackback.
@@ -153,11 +153,11 @@ Die häufigsten Probleme aus den Upstream-Issues: HTTPS hinter Reverse Proxy (#4
 **Automatische Migration v2 → v3** beim Containerstart: Erkennen (`schema_migrations` vorhanden), dann eine Transaktion: Daten in das neue Schema überführen, alte Tabellen nach `v2_archive` verschieben. Übertragbarkeit geprüft:
 - Passwörter: Devise nutzt bcrypt (Cost 11, kein Pepper). Die Hashes sind in Node/Bun direkt prüfbar, niemand muss sein Passwort neu setzen.
 - API-Keys: HMAC mit `SECRET_KEY_BASE`, in TypeScript nachbaubar.
-- **Webhook-URL und -Header:** mit `ActiveSupport::MessageEncryptor` (AES-256-GCM) verschlüsselt, Inhalt aber im **Ruby-Marshal-Format**. Vor v3 in v2 auf JSON umverschlüsseln (siehe todo.md).
+- **Webhook-URL und -Header:** mit `ActiveSupport::MessageEncryptor` (AES-256-GCM) verschlüsselt, Inhalt seit 2.0 als **JSON** (Migration `ReencryptWebhooksAsJson` hat die alten Marshal-Werte umgeschrieben). In TypeScript mit `node:crypto` entschlüsselbar: Schlüssel = SHA-256 von `SECRET_KEY_BASE`, Format `base64(daten)--base64(iv)--base64(tag)`.
 
 **Der Vertrag zwischen v2 und v3 ist die App-API** (`/api/app/v1`, OpenAPI). Das v2-Frontend hängt nicht am Datenbankschema. v3 implementiert dieselben Endpunkte auf dem neuen Schema, und das Frontend läuft weiter.
 
-**Regeln für v2, damit die Migration einfach bleibt** (stehen auch in AGENTS.md): keine `serialize`/`store`-Spalten (natives `jsonb`), keine polymorphen Assoziationen, kein Active Storage für Dateien, keine Ruby-spezifischen Formate in der Datenbank. Der aktuelle Stand erfüllt das bis auf die Webhook-Verschlüsselung.
+**Regeln für v2, damit die Migration einfach bleibt** (stehen auch in AGENTS.md): keine `serialize`/`store`-Spalten (natives `jsonb`), keine polymorphen Assoziationen, kein Active Storage für Dateien, keine Ruby-spezifischen Formate in der Datenbank. Der aktuelle Stand erfüllt das.
 
 **Lizenz (entschieden: AGPL-3.0):**
 - v2 ist ein abgeleitetes Werk und bleibt **AGPL-3.0** mit den ursprünglichen Copyright-Hinweisen.
