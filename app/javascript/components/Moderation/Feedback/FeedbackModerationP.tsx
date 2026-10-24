@@ -47,6 +47,19 @@ class FeedbackModerationP extends React.Component<Props, State> {
     this.props.requestPostsForModeration();
   }
 
+  componentDidUpdate() {
+    if (this.props.areLoading) return;
+    const pendingCount = this.props.posts.filter(post => post.approvalStatus === 'pending').length;
+    document.querySelectorAll<HTMLElement>('.notificationDot').forEach(badge => {
+      if (pendingCount > 0) {
+        badge.textContent = String(pendingCount);
+        badge.style.display = '';
+      } else {
+        badge.style.display = 'none';
+      }
+    });
+  }
+
   getFeedbackPolicyString(tenantSettingFeedbackApprovalPolicy: TenantSettingFeedbackApprovalPolicy): string {
     switch (tenantSettingFeedbackApprovalPolicy) {
       case 'anonymous_require_approval':
