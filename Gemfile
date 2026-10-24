@@ -5,7 +5,18 @@ ruby '3.3.13'
 
 gem 'rake', '13.2.1'
 
-gem 'rails', '6.1.7.9'
+gem 'rails', '7.0.10'
+
+# Asset pipeline (no longer bundled with Rails 7)
+gem 'sprockets-rails', '3.5.2'
+
+# Default gems that are no longer part of Ruby's standard library (Ruby >= 3.4)
+gem 'base64'
+gem 'bigdecimal'
+gem 'csv'
+gem 'drb'
+gem 'mutex_m'
+gem 'observer'
 
 gem 'pg', '1.3.5'
 
@@ -27,7 +38,7 @@ gem 'jsbundling-rails', '1.1.1'
 gem 'httparty', '0.21.0'
 
 # Authentication
-gem 'devise', '4.7.3'
+gem 'devise', '4.9.4'
 
 # Authorization
 gem 'pundit', '2.2.0'
@@ -55,7 +66,7 @@ gem 'rswag-api', '2.15.0'
 
 # We need those gems here, so we can Swaggerize in production
 gem 'rswag-specs', '2.15.0'
-gem 'rspec-rails', '4.0.2'
+gem 'rspec-rails', '7.1.1'
 gem 'capybara', '3.40.0'
 
 # CORS policy
@@ -78,8 +89,6 @@ end
 
 group :development do
   gem 'web-console', '>= 3.3.0'
-  gem 'spring', '2.1.1'
-  gem 'spring-watcher-listen', '2.0.1'
 end
 
 group :test do
