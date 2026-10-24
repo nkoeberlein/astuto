@@ -43,42 +43,42 @@ Issue-Nummern beziehen sich auf `astuto/astuto`. Phasen siehe [roadmap.md](roadm
 - [ ] **v3-Voraussetzung:** Webhook-URL/-Header mit `MessageEncryptor` und JSON-Serializer statt Marshal verschlüsseln; Daten-Migration, die alte Werte liest und neu schreibt (Lesen beider Formate während der Umstellung)
 - [ ] **Datenschutz:** Die alten JSON-Endpunkte (`posts#index/show`, `comments#index` u. a.) liefern `user_email` aller Autoren öffentlich aus. Behoben in der neuen App-API (`AuthorSerializer`); im alten Frontend bis zur Ablösung entfernen oder nur für Moderatoren ausgeben
 - [ ] Standard-Admin `admin@example.com` / `password` (`db/seeds.rb`): Zugangsdaten per ENV setzen oder Passwortwechsel beim ersten Login erzwingen
-- [ ] SMTP-Standard `openssl_verify_mode: "none"` → `"peer"` (`config/environments/production.rb`)
+- [x] SMTP-Standard `openssl_verify_mode: "none"` → `"peer"` (`config/environments/production.rb`)
 - [ ] Kurzer Security-Check: `rack-attack`-Regeln, CSP-Header, API-Key-Handling
 
 ## P1 – Betrieb und Bugs
 
 ### Reverse Proxy / HTTPS
-- [ ] `config.assume_ssl` und `config.force_ssl` per ENV schaltbar machen (ab Rails 7.1)
-- [ ] OAuth-`callback_url` muss hinter dem Proxy `https` liefern (#478)
-- [ ] „The change you wanted was rejected“ hinter dem Proxy (CSRF/Origin) reproduzieren und beheben (#201)
-- [ ] Doku: Beispielkonfigurationen für nginx, Caddy und Traefik (inkl. `X-Forwarded-Proto`)
+- [x] `config.assume_ssl` und `config.force_ssl` per ENV schaltbar machen (ab Rails 7.1) (`ASSUME_SSL`, `FORCE_SSL`)
+- [x] OAuth-`callback_url` muss hinter dem Proxy `https` liefern (#478)
+- [x] „The change you wanted was rejected“ hinter dem Proxy (CSRF/Origin) reproduzieren und beheben (#201) (`ASSUME_SSL=true` + Proxy-Header)
+- [x] Doku: Beispielkonfigurationen für nginx, Caddy und Traefik (inkl. `X-Forwarded-Proto`) in [docs/reverse-proxy-and-smtp.md](docs/reverse-proxy-and-smtp.md)
 
 ### OAuth
-- [ ] `token_state`-Cookie (#472) in `app/controllers/o_auths_controller.rb`: `domain: ".#{request.domain}"` nur bei Subdomain-Tenancy setzen, sonst weglassen; `secure: request.ssl?` und `same_site: :lax` ergänzen; Spec dazu
-- [ ] Eigene CA-Zertifikate / Self-Signed per Volume + `update-ca-certificates` im Entrypoint (#203)
+- [x] `token_state`-Cookie (#472) in `app/controllers/o_auths_controller.rb`: `domain: ".#{request.domain}"` nur bei Subdomain-Tenancy setzen, sonst weglassen; `secure: request.ssl?` und `same_site: :lax` ergänzen; Spec dazu (`spec/requests/o_auths_cookie_spec.rb`)
+- [x] Eigene CA-Zertifikate / Self-Signed per Volume + `update-ca-certificates` im Entrypoint (#203)
 - [ ] Konfigurierbare Header für den Profil-API-Aufruf (#485)
 
 ### E-Mail
 - [ ] „Testmail senden“ in den Site Settings
-- [ ] Zustellfehler immer loggen, auch wenn `EMAIL_RAISE_DELIVERY_ERRORS=false`
-- [ ] SMTP-Doku mit funktionierenden Beispielen (SES, Brevo, SMTP2GO, Exchange; Hinweis auf `EMAIL_SMTP_AUTH=login`) (#330, #446, #294, #385)
-- [ ] E-Mail-Änderung bei fehlerhaftem SMTP darf den Nutzer nicht aussperren (#476)
-- [ ] Devise-Mails über ActiveJob/Sidekiq verschicken (#444)
+- [x] Zustellfehler immer loggen, auch wenn `EMAIL_RAISE_DELIVERY_ERRORS=false` (`config/initializers/mailer_logging.rb`)
+- [x] SMTP-Doku mit funktionierenden Beispielen (SES, Brevo, SMTP2GO, Exchange; Hinweis auf `EMAIL_SMTP_AUTH=login`) (#330, #446, #294, #385) in [docs/reverse-proxy-and-smtp.md](docs/reverse-proxy-and-smtp.md)
+- [x] E-Mail-Änderung bei fehlerhaftem SMTP darf den Nutzer nicht aussperren (#476) (`skip_reconfirmation!` ohne konfiguriertes SMTP in Production)
+- [x] Devise-Mails über ActiveJob/Sidekiq verschicken (#444) (`User#send_devise_notification`)
 
 ### Webhooks
 - [ ] Liquid- und JSON-Fehler beim Ausführen speichern und im UI anzeigen (Delivery-Log pro Webhook) (#458)
-- [ ] Template beim Speichern bzw. Testen validieren, Hinweis auf `escape_json`
-- [ ] Kommentar-Benachrichtigungen reparieren (#431)
+- [x] Template beim Speichern bzw. Testen validieren, Hinweis auf `escape_json` (`WebhooksController#preview/test`, `RunWebhook`)
+- [x] Kommentar-Benachrichtigungen reparieren (#431) (`config/initializers/global_id.rb`, `SendNotificationForCommentWorkflow`)
 
 ### Konfiguration
-- [ ] `POSTGRES_DB` getrennt von `POSTGRES_USER` (`config/database.yml`) (#326)
-- [ ] `DATABASE_URL` bzw. externe Postgres-Instanz dokumentieren und testen (#207)
+- [x] `POSTGRES_DB` getrennt von `POSTGRES_USER` (`config/database.yml`) (#326)
+- [x] `DATABASE_URL` bzw. externe Postgres-Instanz dokumentieren und testen (#207)
 
 ### Kleinere Bugs
-- [ ] Zähler für ausstehende Posts aktualisiert sich nicht beim Freigeben oder Ablehnen (#445)
-- [ ] Kommentarzähler falsch nach dem Löschen eines Kommentars mit Antworten (#220)
-- [ ] Custom CSS: Sonderzeichen werden HTML-escaped (#468)
+- [x] Zähler für ausstehende Posts aktualisiert sich nicht beim Freigeben oder Ablehnen (#445) (`FeedbackModerationP.tsx`)
+- [x] Kommentarzähler falsch nach dem Löschen eines Kommentars mit Antworten (#220) (`commentsReducer.ts`)
+- [x] Custom CSS: Sonderzeichen werden HTML-escaped (#468) (`app/views/layouts/application.html.erb`)
 - [ ] Fehlende Übersetzungstexte (#466)
 - [ ] System-Spec „Post bearbeiten/löschen“ reparieren (#210)
 
@@ -133,14 +133,14 @@ Empfehlung (roadmap.md, Abschnitt 3): getrenntes Frontend mit React 19 + TS 7 + 
 
 ## P1 – KI und MCP
 
-- [ ] MCP-Server unter `/mcp` (Streamable HTTP), Auth per API-Key; offizielles `mcp`-Ruby-SDK prüfen
-- [ ] MCP-Tools: `search_posts`, `get_post`, `create_post`, `update_post_status`, `add_comment`, `list_boards`, `get_roadmap`, `top_requests` (Votes/Trend)
-- [ ] MCP-Doku mit Beispielkonfiguration für Claude Desktop/Code und Cursor
-- [ ] Duplikaterkennung beim Erstellen mit Postgres-Volltextsuche (#455)
-- [ ] KI-Anbieter-Abstraktion: OpenAI-kompatibel (inkl. Ollama), Anthropic; alles opt-in per Site Settings, ohne KI voll funktionsfähig
+- [x] MCP-Server unter `/mcp` (Streamable HTTP), Auth per API-Key (`McpController`, `Mcp::Server`, `spec/requests/mcp_spec.rb`)
+- [x] MCP-Tools: `search_posts`, `get_post`, `create_post`, `update_post_status`, `add_comment`, `list_boards`, `get_roadmap`, `top_requests` (Votes/Trend)
+- [x] MCP-Doku mit Beispielkonfiguration für Claude Desktop/Code und Cursor in [docs/mcp-and-ai.md](docs/mcp-and-ai.md)
+- [x] Duplikaterkennung beim Erstellen mit Postgres-Volltextsuche (#455) (`Post.search_by_name_or_description`, `Post.similar_to`, Live-Vorschläge in `NewPostForm.tsx`)
+- [x] KI-Anbieter-Abstraktion: OpenAI-kompatibel (inkl. Ollama), Anthropic; alles opt-in per ENV, ohne KI voll funktionsfähig (`Ai::Client`)
 - [ ] Optional semantische Duplikate mit pgvector und Embeddings
-- [ ] Zusammenfassung langer Diskussionen, Vorschläge für Tags und Board, Changelog-Entwürfe, Übersetzung von Feedback
-- [ ] Datenschutzhinweis: welche Daten an den KI-Anbieter gehen
+- [x] Zusammenfassung langer Diskussionen, Vorschläge für Tags und Board, Changelog-Entwürfe, Übersetzung von Feedback (`Ai::Client`)
+- [x] Datenschutzhinweis: welche Daten an den KI-Anbieter gehen (`Ai::Client.privacy_disclosure`, [docs/mcp-and-ai.md](docs/mcp-and-ai.md))
 
 ## P2 – Quick Wins
 ### Quick-Win-Features
