@@ -23,7 +23,7 @@ services:
       - db
   # v2 frontend dev server (Vite), open http://localhost:5173/next/
   frontend:
-    image: node:24-trixie-slim
+    image: node:26-trixie-slim
     working_dir: /astuto/frontend
     command: sh -c "npm ci --no-audit --no-fund && npm run dev"
     environment:

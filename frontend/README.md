@@ -54,7 +54,7 @@ docker compose up
 
 Open http://localhost:5173/next/. Vite proxies API and Devise requests to Rails.
 
-On the host instead (Node ≥ 24), against a Rails server on another port:
+On the host instead (Node ≥ 26), against a Rails server on another port:
 
 ```
 cd frontend
