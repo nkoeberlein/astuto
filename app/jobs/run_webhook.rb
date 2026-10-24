@@ -67,6 +67,12 @@ class RunWebhook < ActiveJob::Base
         headers: http_headers,
       }
     )
+  rescue Liquid::Error, JSON::ParserError => e
+    logger.error do
+      "[#{Current.tenant&.subdomain}] Webhook ##{webhook_id} template/JSON error " \
+      "(tip: use '| escape_json' on string variables): #{e.class}: #{e.message}"
+    end
+    raise
   end
 
   private

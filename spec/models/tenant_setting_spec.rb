@@ -90,4 +90,51 @@ RSpec.describe TenantSetting, type: :model do
     tenant_setting.logo_links_to = 'nothing'
     expect(tenant_setting).to be_valid
   end
+
+  it 'has a setting that can disable the roadmap completely' do
+    expect(tenant_setting.roadmap_enabled).to be_truthy
+
+    tenant_setting.roadmap_enabled = false
+    expect(tenant_setting).to be_valid
+  end
+
+  it 'has a setting for the default post sorting' do
+    expect(tenant_setting.default_post_sorting).to eq('trending')
+
+    tenant_setting.default_post_sorting = 'newest'
+    expect(tenant_setting).to be_valid
+
+    tenant_setting.default_post_sorting = 'hotness'
+    expect(tenant_setting).not_to be_valid
+  end
+
+  it 'stores custom header links as list of label and url' do
+    expect(tenant_setting.custom_links).to eq([])
+
+    tenant_setting.custom_links = [{ 'label' => 'Docs', 'url' => 'https://example.com/docs' }]
+    expect(tenant_setting).to be_valid
+    expect(tenant_setting.custom_links).to eq([{ 'label' => 'Docs', 'url' => 'https://example.com/docs' }])
+
+    # entries without url or label are dropped
+    tenant_setting.custom_links = [{ 'label' => 'Docs', 'url' => '' }, { 'label' => 'Help', 'url' => 'https://d.io' }, 'junk']
+    expect(tenant_setting).to be_valid
+    expect(tenant_setting.custom_links).to eq([{ 'label' => 'Help', 'url' => 'https://d.io' }])
+  end
+
+  it 'can hide the email/password login' do
+    expect(tenant_setting.login_only_with_oauth).to be(false)
+
+    tenant_setting.login_only_with_oauth = true
+    expect(tenant_setting).to be_valid
+  end
+
+  it 'validates the logo size in emails' do
+    expect(tenant_setting.mail_logo_size).to eq(64)
+
+    tenant_setting.mail_logo_size = 100
+    expect(tenant_setting).to be_valid
+
+    tenant_setting.mail_logo_size = 0
+    expect(tenant_setting).not_to be_valid
+  end
 end

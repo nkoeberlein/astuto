@@ -5,8 +5,13 @@
   </head>
   <body>
     <div style="margin: 16px auto; text-align: center;">
-      <a href="<%= get_url_for(method(:root_url)) %>">
-        <%= image_tag('https://raw.githubusercontent.com/astuto/astuto-assets/main/logo-64.png', alt: 'Astuto Logo', size: 64) %>
+      <% logo_size = (Current.tenant&.tenant_setting&.mail_logo_size || 64) %>
+      <a href="<%= get_url_for(method(:root_url)) %>" style="text-decoration: none;">
+        <% if Current.tenant&.site_logo %>
+          <%= image_tag(Current.tenant.site_logo, alt: Current.tenant.site_name, width: logo_size, height: logo_size, style: "object-fit: contain;") %>
+        <% else %>
+          <%= image_tag(ENV.fetch('EMAIL_LOGO_URL', 'https://raw.githubusercontent.com/astuto/astuto-assets/main/logo-64.png'), alt: 'Astuto Logo', width: logo_size, height: logo_size) %>
+        <% end %>
       </a>
     </div>
     <div style="max-width: 580px; margin: 0 auto; border: 1px solid rgba(0, 0, 0, 0.125); border-radius: 0.25rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.04),0 2px 4px -1px rgba(0, 0, 0, 0.03); padding: 24px; font-family: system-ui, sans-serif; font-size: 18px;">

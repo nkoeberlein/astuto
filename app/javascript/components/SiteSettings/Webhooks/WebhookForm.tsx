@@ -7,6 +7,7 @@ import { WebhookPages } from './WebhooksSiteSettingsP';
 import ActionLink from '../../common/ActionLink';
 import { AddIcon, BackIcon, DeleteIcon, LiquidIcon, PreviewIcon } from '../../common/Icons';
 import { getLabel, getValidationMessage } from '../../../helpers/formUtils';
+import { useUnsavedChangesWarning } from '../../../hooks/useUnsavedChangesWarning';
 import { DangerText } from '../../common/CustomTexts';
 import Button from '../../common/Button';
 import { URL_REGEX_WHITESPACE_ALLOWED } from '../../../constants/regex';
@@ -93,6 +94,8 @@ const WebhookFormPage = ({
       httpHeaders: parseHttpHeaders(selectedWebhook.httpHeaders),
     }
   });
+
+  useUnsavedChangesWarning(isDirty);
 
   const { fields, append, remove } = useFieldArray({
     control,

@@ -29,13 +29,19 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="boardsNav">
-        <% if @tenant_setting.show_roadmap_in_header %>
+        <% if @tenant_setting.roadmap_enabled? && @tenant_setting.show_roadmap_in_header %>
           <li class="nav-item<%= (current_page?(roadmap_path) or (@tenant_setting.root_board_id == 0 and current_page?(root_path))) ? ' active' : '' %>">
             <%= link_to t('roadmap.title'), @header_full_urls ? get_url_for(method(:roadmap_url)) : roadmap_path, class: 'nav-link' %>
           </li>
         <% end %>
         
         <%= render 'layouts/boards_nav_section', boards: @boards unless @boards.nil? %>
+
+        <% @tenant_setting.custom_links.each do |link| %>
+          <li class="nav-item">
+            <%= link_to link["label"], link["url"], class: 'nav-link' %>
+          </li>
+        <% end %>
       </ul>
 
       <ul class="profileNav">

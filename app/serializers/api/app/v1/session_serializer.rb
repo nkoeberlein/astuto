@@ -8,6 +8,7 @@ module Api::App::V1
         tenant: {
           siteName: tenant.site_name,
           siteLogo: tenant.site_logo,
+          siteFavicon: tenant.site_favicon,
           locale: I18n.locale.to_s,
           settings: settings(tenant_setting)
         }
@@ -25,6 +26,10 @@ module Api::App::V1
         logoCustomUrl: s.logo_custom_url,
         rootBoardId: s.root_board_id.to_i.positive? ? s.root_board_id : nil,
         showRoadmapInHeader: s.show_roadmap_in_header,
+        roadmapEnabled: s.roadmap_enabled,
+        defaultPostSorting: s.default_post_sorting,
+        customLinks: s.custom_links,
+        loginOnlyWithOauth: s.login_only_with_oauth,
         showVoteCount: s.show_vote_count,
         showVoteButtonInBoard: s.show_vote_button_in_board,
         showPoweredBy: s.show_powered_by,

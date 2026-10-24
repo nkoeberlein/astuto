@@ -1,13 +1,20 @@
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useSuspenseQuery } from '@tanstack/react-query'
 import { Link, useNavigate } from '@tanstack/react-router'
 import { type FormEvent, useId, useState } from 'react'
 import type { Board, Session } from '@/api/client'
 import { useCreatePost } from '@/api/mutations'
-import { similarPostsQuery } from '@/api/queries'
+import { postStatusesQuery, similarPostsQuery } from '@/api/queries'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { useI18n } from '@/lib/i18n'
 
@@ -70,10 +77,22 @@ function PostForm(props: Props & { onClose: (pending: boolean) => void }) {
   const { user } = session
   const allowAnonymous = session.tenant.settings.allowAnonymousFeedback
 
+  // Moderators can directly assign an initial status to the new post (#119)
+  const isModerator = user !== null && ['moderator', 'admin', 'owner'].includes(user.role)
+  const { data: statuses } = useSuspenseQuery(postStatusesQuery)
+  const [statusId, setStatusId] = useState('')
+
   const submit = (isAnonymous: boolean) => {
     if (!title.trim()) return setTitleMissing(true)
     create.mutate(
-      { title, description, isAnonymous, honeypot, formRenderedAt: renderedAt },
+      {
+        title,
+        description,
+        isAnonymous,
+        postStatusId: isModerator && statusId ? Number(statusId) : undefined,
+        honeypot,
+        formRenderedAt: renderedAt,
+      },
       {
         onSuccess: (post) => {
           if (post.approvalStatus === 'approved') {
@@ -148,6 +167,29 @@ function PostForm(props: Props & { onClose: (pending: boolean) => void }) {
             />
           </div>
 
+          {isModerator && statuses.length > 0 && (
+            <div className="space-y-1.5">
+              <Label>{t('board.new_post.status')}</Label>
+              <Select value={statusId} onValueChange={setStatusId}>
+                <SelectTrigger className="w-48">
+                  <SelectValue placeholder={t('common.select_placeholder')} />
+                </SelectTrigger>
+                <SelectContent>
+                  {statuses.map((status) => (
+                    <SelectItem key={status.id} value={String(status.id)}>
+                      <span className="flex items-center gap-2">
+                        <span
+                          className="size-2.5 rounded-full"
+                          style={{ backgroundColor: status.color }}
+                        />
+                        {status.name}
+                      </span>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
 
           {/* Honeypot: hidden from people, bots tend to fill it */}
           <input

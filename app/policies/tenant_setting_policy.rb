@@ -18,6 +18,11 @@ class TenantSettingPolicy < ApplicationPolicy
         :logo_custom_url,
         :show_roadmap_in_header,
         :collapse_boards_in_header,
+        :roadmap_enabled,
+        :default_post_sorting,
+        :login_only_with_oauth,
+        :mail_logo_size,
+        { custom_links: [:label, :url] },
         :custom_css,
       ]
     else

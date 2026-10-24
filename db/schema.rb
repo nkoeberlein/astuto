@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2024_11_30_112415) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_25_140100) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -199,6 +199,11 @@ ActiveRecord::Schema[8.1].define(version: 2024_11_30_112415) do
     t.integer "logo_links_to", default: 0, null: false
     t.string "logo_custom_url"
     t.boolean "hide_unused_statuses_in_filter_by_status", default: false, null: false
+    t.boolean "roadmap_enabled", default: true, null: false
+    t.string "default_post_sorting", default: "trending", null: false
+    t.jsonb "custom_links", default: [], null: false
+    t.boolean "login_only_with_oauth", default: false, null: false
+    t.integer "mail_logo_size", default: 64, null: false
     t.index ["tenant_id"], name: "index_tenant_settings_on_tenant_id"
   end
 
@@ -211,6 +216,7 @@ ActiveRecord::Schema[8.1].define(version: 2024_11_30_112415) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "status"
+    t.string "site_favicon"
     t.index ["custom_domain"], name: "index_tenants_on_custom_domain", unique: true
   end
 

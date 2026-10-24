@@ -51,6 +51,27 @@ RSpec.describe 'api/app/v1 create post', type: :request, openapi_spec: 'app/v1/o
         run_test! { |response| expect(JSON.parse(response.body)['approvalStatus']).to eq('pending') }
       end
 
+      # #119: moderators may set an initial status, recorded in the timeline
+      response(201, 'moderator sets an initial status') do
+        schema '$ref' => '#/components/schemas/Post'
+        let(:new_post) { form.merge(postStatusId: FactoryBot.create(:post_status).id) }
+        before { sign_in FactoryBot.create(:moderator).tap(&:confirm) }
+
+        run_test! do |response|
+          body = JSON.parse(response.body)
+          expect(body['postStatusId']).to be_present
+          expect(PostStatusChange.count).to eq(1)
+        end
+      end
+
+      response(201, 'postStatusId from a non-moderator is ignored') do
+        schema '$ref' => '#/components/schemas/Post'
+        let(:new_post) { form.merge(postStatusId: FactoryBot.create(:post_status).id) }
+        before { sign_in user }
+
+        run_test! { |response| expect(JSON.parse(response.body)['postStatusId']).to be_nil }
+      end
+
       response(401, 'not anonymous and not signed in') do
         schema '$ref' => '#/components/schemas/Error'
         let(:new_post) { form }

@@ -1,4 +1,8 @@
 <div class="new_user">
+  <% if login_only_with_oauth? %>
+    <h2><%= t('common.forms.auth.log_in') %></h2>
+    <p class="oauthOnlyInfo"><%= t('common.forms.auth.oauth_only_info') %></p>
+  <% else %>
   <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "new_user_form" }) do |f| %>
     <h2><%= t('common.forms.auth.log_in') %></h2>
 
@@ -30,6 +34,7 @@
     <div class="actions">
       <%= f.submit t('common.forms.auth.log_in'), class: "btnPrimary btn-block" %>
     </div>
+  <% end %>
   <% end %>
 
   <%= render "devise/shared/o_auths" %>

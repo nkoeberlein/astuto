@@ -23,7 +23,7 @@ export function SiteHeader({ session, boards }: { session: Session; boards: Boar
           className="order-last -mx-1 flex w-full gap-1 overflow-x-auto text-sm sm:order-none sm:w-auto sm:flex-1"
           aria-label="Boards"
         >
-          {tenant.settings.showRoadmapInHeader && (
+          {tenant.settings.roadmapEnabled && tenant.settings.showRoadmapInHeader && (
             // Legacy page until the roadmap moves to the new frontend
             <a
               href="/roadmap"
@@ -42,6 +42,15 @@ export function SiteHeader({ session, boards }: { session: Session; boards: Boar
             >
               {board.name}
             </Link>
+          ))}
+          {tenant.settings.customLinks.map((link) => (
+            <a
+              key={link.url}
+              href={link.url}
+              className="whitespace-nowrap rounded-md px-3 py-1.5 text-muted-foreground hover:bg-accent"
+            >
+              {link.label}
+            </a>
           ))}
         </nav>
 

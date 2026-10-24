@@ -49,6 +49,7 @@ en:
         change_password: 'Change password'
         password_help: '%{count} characters minimum'
         email_registration_not_allowed: 'Email registration not allowed'
+        oauth_only_info: 'Log in and sign up with one of the OAuth providers below. Email login is disabled on this site.'
       api_key:
         title: 'API key'
         current_api_key_help: 'You have already generated an API key and, for security reasons, it cannot be shown again. If you lost it, you can generate a new one below.'
@@ -138,6 +139,7 @@ en:
       non_anonymous_submission_help: 'You are posting as %{name}'
       submit_success: 'Feedback published! You will be redirected soon...'
       submit_pending: 'Your feedback has been submitted and is now pending moderator approval!'
+      status: 'Initial status (moderators only)'
       similar_posts_title: 'Similar posts already exist — vote on one instead?'
     search_box:
       title: 'Search'
@@ -210,6 +212,8 @@ en:
       subtitle_privacy: 'Privacy'
       is_private_help: 'If you enable this setting, only logged in users will be able to see the content of the feedback space.'
       subtitle_moderation: 'Moderation'
+      subtitle_authentication: 'Authentication'
+      subtitle_mail: 'Emails'
       allow_anonymous_feedback_help: 'If you enable this setting, unregistered users will be able to submit feedback.'
       feedback_approval_policy_anonymous_require_approval: 'Require approval for anonymous feedback only'
       feedback_approval_policy_never_require_approval: 'Never require approval'
@@ -227,6 +231,11 @@ en:
       show_vote_count_help: 'If you enable this setting, users will be able to see the vote count of posts. This may incentivize users to vote on already popular posts, leading to a snowball effect.'
       show_vote_button_in_board_help: 'If you enable this setting, users will be able to vote posts from the board page. This may incentivize users to vote on more posts, leading to a higher number of votes but of lower significance.'
       hide_unused_statuses_in_filter_by_status_help: 'If you enable this setting, only statuses that are assigned to at least one post in that board will be shown in the filter by status sidebar filter.'
+      roadmap_enabled_help: 'If you disable this setting, the roadmap page becomes unavailable and the link is removed from the header.'
+      default_post_sorting_help: 'Posts are sorted this way when a board is opened without an explicit sorting.'
+      custom_links_help: 'Additional links in the site header, one per line: Label|URL. Example: Docs|https://example.com/docs'
+      login_only_with_oauth_help: 'If you enable this setting, email and password login as well as email registration are hidden. Users can only log in and sign up with OAuth providers. Password reset links remain available.'
+      mail_logo_size_help: 'Size in pixels of the logo shown in outgoing emails.'
     boards:
       title: 'Boards'
       empty: 'There are no boards. Create one below!'

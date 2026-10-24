@@ -456,7 +456,7 @@ export interface paths {
                 };
             };
             responses: {
-                /** @description policy always_require_approval keeps even signed-in posts pending */
+                /** @description postStatusId from a non-moderator is ignored */
                 201: {
                     headers: {
                         [name: string]: unknown;
@@ -670,6 +670,15 @@ export interface components {
             logoCustomUrl: string | null;
             rootBoardId: number | null;
             showRoadmapInHeader: boolean;
+            roadmapEnabled: boolean;
+            /** @enum {string} */
+            defaultPostSorting: "trending" | "newest" | "most_voted" | "oldest";
+            /** @description Extra header links */
+            customLinks: {
+                label?: string;
+                url?: string;
+            }[];
+            loginOnlyWithOauth: boolean;
             showVoteCount: boolean;
             showVoteButtonInBoard: boolean;
             showPoweredBy: boolean;
@@ -681,6 +690,7 @@ export interface components {
         Tenant: {
             siteName: string;
             siteLogo: string | null;
+            siteFavicon: string | null;
             locale: string;
             settings: components["schemas"]["TenantSettings"];
         };
@@ -749,6 +759,7 @@ export interface components {
             title: string;
             description?: string | null;
             isAnonymous?: boolean;
+            postStatusId?: number | null;
             /** @description Hidden form field, must stay empty */
             honeypot?: string;
             /** @description Unix time when the form was shown (anti-spam) */

@@ -1,9 +1,14 @@
 class TenantSetting < ApplicationRecord
   include TenantOwnable
-  
+
+  POST_SORT_OPTIONS = %w[trending newest most_voted oldest].freeze
+
   belongs_to :tenant
 
   validates :custom_css, length: { maximum: 32000 }
+  validates :default_post_sorting, inclusion: { in: POST_SORT_OPTIONS }
+  validates :mail_logo_size, numericality: { only_integer: true, greater_than: 0, less_than_or_equal_to: 1024 }
+  validate :custom_links_format
 
   enum :brand_display, [
     :name_and_logo,
@@ -34,4 +39,29 @@ class TenantSetting < ApplicationRecord
     :never_require_approval,
     :always_require_approval,
   ]
+
+  # custom_links is stored as [{ "label" => ..., "url" => ... }]; tolerate
+  # missing entries from the free-text settings form and reject malformed ones.
+  def custom_links=(value)
+    links = Array(value).filter_map do |link|
+      next unless link.is_a?(Hash) || link.is_a?(ActionController::Parameters)
+
+      label = (link[:label] || link["label"]).to_s.strip
+      url = (link[:url] || link["url"]).to_s.strip
+      next if label.blank? || url.blank?
+
+      { "label" => label, "url" => url }
+    end
+    super(links.uniq)
+  end
+
+  private
+
+    def custom_links_format
+      return if custom_links.all? do |link|
+        link.fetch("label").is_a?(String) && link.fetch("url").is_a?(String)
+      end
+
+      errors.add(:custom_links, :invalid)
+    end
 end

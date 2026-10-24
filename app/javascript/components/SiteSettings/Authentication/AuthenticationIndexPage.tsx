@@ -9,6 +9,7 @@ import { OAuthsState } from '../../../reducers/oAuthsReducer';
 import SiteSettingsInfoBox from '../../common/SiteSettingsInfoBox';
 import { TENANT_SETTING_EMAIL_REGISTRATION_POLICY_ALL_ALLOWED, TENANT_SETTING_EMAIL_REGISTRATION_POLICY_CUSTOM_DOMAINS_ALLOWED, TENANT_SETTING_EMAIL_REGISTRATION_POLICY_NONE_ALLOWED, TenantSettingEmailRegistrationPolicy } from '../../../interfaces/ITenantSetting';
 import { getLabel } from '../../../helpers/formUtils';
+import { useUnsavedChangesWarning } from '../../../hooks/useUnsavedChangesWarning';
 import HttpStatus from '../../../constants/http_status';
 import { SmallMutedText } from '../../common/CustomTexts';
 import Button from '../../common/Button';
@@ -72,6 +73,7 @@ const AuthenticationIndexPage = ({
   };
 
   const [isDirtyAllowedEmails, setIsDirtyAllowedEmails] = React.useState(false);
+  useUnsavedChangesWarning((isDirty || isDirtyAllowedEmails) && !isSubmitSuccessful);
 
   return (
     <>

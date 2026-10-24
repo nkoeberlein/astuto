@@ -10,6 +10,7 @@ import SiteSettingsInfoBox from '../../common/SiteSettingsInfoBox';
 import Button from '../../common/Button';
 import HttpStatus from '../../../constants/http_status';
 import { getLabel } from '../../../helpers/formUtils';
+import { useUnsavedChangesWarning } from '../../../hooks/useUnsavedChangesWarning';
 import ActionLink from '../../common/ActionLink';
 import { LearnMoreIcon } from '../../common/Icons';
 
@@ -51,6 +52,7 @@ const AppearanceSiteSettingsP = ({
   });
 
   const customCss = watch('customCss');
+  useUnsavedChangesWarning(isDirty && !isSubmitSuccessful);
   
   const onSubmit: SubmitHandler<ISiteSettingsAppearanceForm> = data => {
     updateTenant(

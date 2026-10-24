@@ -33,5 +33,7 @@ describe('board search params', () => {
       sortBy: 'trending',
       statusIds: [0, 3],
     })
+    expect(filtersFromSearch({}, 'most_voted').sortBy).toBe('most_voted')
+    expect(filtersFromSearch({ sort: 'newest' }, 'most_voted').sortBy).toBe('newest')
   })
 })

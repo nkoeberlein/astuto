@@ -15,6 +15,12 @@ RSpec.describe 'api/app/v1/session', type: :request, openapi_spec: 'app/v1/opena
           expect(body['user']).to be_nil
           expect(body['csrfToken']).to be_present
           expect(body['tenant']['siteName']).to eq(Tenant.first.site_name)
+          expect(body['tenant']['settings']).to include(
+            'roadmapEnabled' => true,
+            'defaultPostSorting' => 'trending',
+            'customLinks' => [],
+            'loginOnlyWithOauth' => false
+          )
         end
       end
 

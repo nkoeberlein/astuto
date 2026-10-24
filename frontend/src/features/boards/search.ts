@@ -14,11 +14,15 @@ export function validateBoardSearch(search: Record<string, unknown>): BoardSearc
   return { q: asText(search.q), sort, status: asText(search.status) }
 }
 
-export function filtersFromSearch(search: BoardSearch): PostFilters {
+// Without an explicit sort param the tenant's default sorting applies
+export function filtersFromSearch(
+  search: BoardSearch,
+  defaultSort: SortBy = 'trending',
+): PostFilters {
   const statusIds = (search.status ?? '')
     .split(',')
     .filter((part) => part.trim() !== '')
     .map(Number)
     .filter((id) => Number.isInteger(id) && id >= 0)
-  return { search: search.q ?? '', sortBy: search.sort ?? 'trending', statusIds }
+  return { search: search.q ?? '', sortBy: search.sort ?? defaultSort, statusIds }
 }

@@ -14,7 +14,7 @@
     <%= javascript_include_tag "application", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
 
-    <%= favicon_link_tag asset_path('favicon.png') %>
+    <%= favicon_link_tag(@tenant.site_favicon || asset_path('favicon.png')) %>
   </head>
 
   <body>
@@ -38,7 +38,7 @@
 
     <% if @tenant and not @tenant.tenant_setting.custom_css.blank? %>
       <style type="text/css">
-        <%= @tenant.tenant_setting.custom_css %>
+        <%= raw @tenant.tenant_setting.custom_css.to_s.gsub(%r{</style}i, '') %>
       </style>
     <% end %>
 
