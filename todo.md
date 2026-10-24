@@ -23,11 +23,15 @@ Issue-Nummern beziehen sich auf `astuto/astuto`. Phasen siehe [roadmap.md](roadm
 
 ### Plattform-Upgrade
 - [x] Ruby 3.0.6 → 3.3.13, Debian 11 → 13 trixie (`.ruby-version`, `Gemfile`, `Dockerfile` ×2) (#456)
-- [ ] Rails 6.1 → 7.0 (`rails app:update`, Zeitwerk und Deprecations prüfen, Tests grün)
-- [ ] Rails 7.0 → 7.1 → 7.2 → 8.0 → 8.1 (jeweils eigener Commit, Tests grün; nur 8.1 bekommt noch Updates)
-- [ ] Danach Ruby 3.3 → 4.0
-- [ ] Devise 4.7.3 → 5.x (ab Rails 7.0), Puma 5 → 7, `spring` entfernen
-- [ ] Übrige Gems aktualisieren (`bundle outdated`), `bundler-audit` ohne Treffer
+- [x] Rails 6.1 → 7.0 → 7.1 → 7.2 → 8.0 → 8.1.4, jeder Schritt mit 374/0 Tests und ohne Deprecations
+- [x] Devise 5.0.4 (Rails-8-Lazy-Routes, CVE-Fixes), Spring entfernt, Puma 8, factory_bot 6, debug statt byebug
+- [x] `Rails.application.secrets` ersetzt; `SECRET_KEY_BASE` bleibt in allen Umgebungen die Quelle (Webhook-Verschlüsselung, API-Keys, Devise-Tokens unverändert)
+- [x] Ruby 3.3 → 4.0.9 (Bundler 4.0.20), 374/0 Tests
+- [ ] `load_defaults` von 6.1 schrittweise auf 8.1 heben (jeweils `new_framework_defaults_*.rb` durchgehen)
+- [ ] Sidekiq 8.0 → 8.1 und `connection_pool`-Pin entfernen, sobald `react-rails` weg ist
+- [ ] Stripe-Gem 11 (entfällt mit SaaS-Billing), `react-rails`/`i18n-js` 3 (entfallen mit UI-Neubau)
+- [ ] `bundler-audit` und `brakeman` einführen; lokales `bin/ci` (Rails 8.1) für RSpec statt Minitest einrichten
+- [x] Upgrade-Hinweis: Sidekiq 8 braucht Redis ≥ 7 (in `UPGRADING.md`)
 - [x] Node 20 → 24 LTS im Dockerfile (Builder)
 - [ ] Node 24 → 26 LTS ab 28.10.2026
 - [ ] `yarn audit` ohne kritische Treffer

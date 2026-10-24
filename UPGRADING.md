@@ -54,3 +54,15 @@ Replace `astuto` with your `POSTGRES_USER`.
 
 Restore the old `image` and volume lines in `docker-compose.yml` and run
 `docker compose up -d`. The old volume was not modified.
+
+## Sidekiq (optional background jobs)
+
+If you run Astuto with `ACTIVE_JOB_BACKEND=sidekiq`, Astuto Evolution uses
+Sidekiq 8, which requires **Redis 7 or newer**. Check with
+`redis-cli INFO server | grep redis_version` and upgrade Redis first if needed.
+
+## Docker image
+
+The image moved from `riggraz/astuto` (Docker Hub) to
+`ghcr.io/nkoeberlein/astuto` and is available for amd64 and arm64.
+Update the `image:` line of the `web` service accordingly.
