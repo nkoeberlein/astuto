@@ -63,6 +63,8 @@ Astuto Evolution führt das archivierte [astuto/astuto](https://github.com/astut
 | B: Hotwire (Turbo + Stimulus) + ViewComponent | Sehr Rails-nah, wenig JS; aber reichhaltige Interaktionen (Drag-and-drop-Roadmap, Widget) sind mühsamer, React-Know-how geht verloren |
 | C: Separates SPA (z. B. Next.js) gegen die REST-API | Zwei Deployments, widerspricht „ein Image“ |
 
+**TanStack:** nicht als Fundament. TanStack Start/Router würden Rails ersetzen bzw. das Routing doppeln, das Inertia übernimmt. Gezielt ja: **TanStack Table** (Basis der shadcn-Datentabellen für Admin-Listen), **TanStack Query** nur für clientseitige Live-Daten (Duplikatsuche beim Tippen, Widget, Endlos-Listen). Formulare weiter mit react-hook-form.
+
 Anforderungen an die neue UI: Mobile first, Dark Mode, WCAG 2.2 AA, ein Komponentensatz auch für das einbettbare Widget, Theme über CSS-Variablen (Branding), i18n weiter über die YAML-Dateien.
 
 **SaaS-Code:** Stripe-Billing, Tenant-Signup und Custom-Domain-API entfernen, weil die Nische Self-Hosting ist. Multi-Tenancy vorerst behalten: Agenturen könnten mehrere Portale in einer Instanz betreiben (#76). Nach dem UI-Neubau neu bewerten.
