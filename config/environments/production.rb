@@ -43,8 +43,11 @@ Rails.application.configure do
   # config.action_cable.url = 'wss://example.com/cable'
   # config.action_cable.allowed_request_origins = [ 'http://example.com', /http:\/\/example.*/ ]
 
+  # Assume all access to the app is happening through a SSL-terminating reverse proxy (#478, #201).
+  config.assume_ssl = ActiveModel::Type::Boolean.new.cast(ENV.fetch("ASSUME_SSL", "false"))
+
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  # config.force_ssl = true
+  config.force_ssl = ActiveModel::Type::Boolean.new.cast(ENV.fetch("FORCE_SSL", "false"))
 
   # Use the lowest log level to ensure availability of diagnostic information
   # when problems arise.
@@ -73,7 +76,7 @@ Rails.application.configure do
       port:                 ENV.fetch("EMAIL_SMTP_PORT") { 25 },
       domain:               ENV.fetch("EMAIL_SMTP_HELO_DOMAIN") { nil },
       enable_starttls_auto: ActiveModel::Type::Boolean.new.cast(ENV.fetch("EMAIL_SMTP_STARTTLS_AUTO") { "true" }),
-      openssl_verify_mode:  ENV.fetch("EMAIL_SMTP_OPENSSL_VERIFY_MODE") { "none" },
+      openssl_verify_mode:  ENV.fetch("EMAIL_SMTP_OPENSSL_VERIFY_MODE") { "peer" },
       tls:                  ActiveModel::Type::Boolean.new.cast(ENV.fetch("EMAIL_SMTP_TLS") { "false" }),
     }.tap do |c|
       c[:authentication] = ENV.fetch("EMAIL_SMTP_AUTH") if ENV["EMAIL_SMTP_AUTH"] != nil
