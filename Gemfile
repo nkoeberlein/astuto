@@ -86,7 +86,7 @@ gem 'sidekiq-cron', '2.4.0'
 gem 'liquid', '5.14.0'
 
 group :development, :test do
-  gem 'debug', '1.11.1', platforms: [:mri, :windows], require: 'debug/prelude'
+  gem 'debug', '1.11.1', platforms: [:mri, :windows], require: false
   
   gem 'factory_bot_rails', '6.5.1'
 end
