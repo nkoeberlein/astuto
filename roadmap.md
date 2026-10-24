@@ -55,16 +55,16 @@ Astuto Evolution führt das archivierte [astuto/astuto](https://github.com/astut
 | Version | Ziel |
 |---|---|
 | **v2** | Pakete modernisieren (✅ Backend fertig), den kompletten React-16/Redux/Bootstrap-4-Teil entsorgen und ersetzen: entweder durch sauberes **Rails 8 (Hotwire)** oder durch ein **strikt getrenntes, modernes Frontend** gegen eine Rails-JSON-API. Dazu MCP und Betriebsfixes. |
-| **v3** | Umstellung auf **komplett TypeScript**: TanStack Start *oder* SvelteKit, mit Drizzle (PostgreSQL) und Tailwind. Rails entfällt. |
+| **v3** | Umstellung auf **komplett TypeScript**: TanStack Start mit Drizzle (PostgreSQL) und Tailwind. Rails entfällt. (Entscheidung getroffen, siehe todo.md) |
 
-### Die Wahl für v3 bestimmt das v2-Frontend (Entscheidung offen)
+### Die Wahl für v3 bestimmt das v2-Frontend (entschieden: TanStack)
 
 | v3-Stack | Passendes v2-Frontend | Warum |
 |---|---|---|
-| **TanStack Start (React)** ✅ empfohlen | **Getrenntes Frontend:** React 19 + TypeScript 7 + TanStack Router/Query + Tailwind 4 + shadcn/ui, gebaut mit Vite, als SPA gegen eine versionierte Rails-JSON-API (OpenAPI aus rswag → generierter TS-Client) | Die v2-Oberfläche lebt in v3 weiter. In v3 wird nur das Backend ersetzt (Rails → TanStack-Start-Serverfunktionen + Drizzle). Der Übergang erfolgt schrittweise, Endpunkt für Endpunkt („Strangler“). |
-| **SvelteKit** | **Rails 8 mit Hotwire** (Turbo + Stimulus, ViewComponent, Tailwind) | Ein React-Frontend wäre bei SvelteKit Wegwerfarbeit. Hotwire ist für v2 der günstigste saubere Weg. Mitnehmen lassen sich nur Design und Tailwind-Klassen. |
+| **TanStack Start (React)** ✅ entschieden | **Getrenntes Frontend:** React 19 + TypeScript 7 + TanStack Router/Query + Tailwind 4 + shadcn/ui, gebaut mit Vite, als SPA gegen eine versionierte Rails-JSON-API (OpenAPI aus rswag → generierter TS-Client) | Die v2-Oberfläche lebt in v3 weiter. In v3 wird nur das Backend ersetzt (Rails → TanStack-Start-Serverfunktionen + Drizzle). Der Übergang erfolgt schrittweise, Endpunkt für Endpunkt („Strangler“). |
+| **SvelteKit** | *(verworfen)* **Rails 8 mit Hotwire** (Turbo + Stimulus, ViewComponent, Tailwind) | Ein React-Frontend wäre bei SvelteKit Wegwerfarbeit. Hotwire wäre für v2 der günstigste saubere Weg gewesen. Mitnehmen ließen sich nur Design und Tailwind-Klassen. |
 
-**Empfehlung: TanStack.** Das Team bleibt bei React, die Arbeit am v2-Frontend ist nicht verloren, und v3 wird zu einem Backend-Tausch statt zu einem zweiten Komplett-Neubau. Das Ökosystem (shadcn/ui, TanStack Table/Query/Form) deckt Admin-Tabellen, Formulare und das Widget ab.
+**Entscheidung: TanStack.** Das Team bleibt bei React, die Arbeit am v2-Frontend ist nicht verloren, und v3 wird zu einem Backend-Tausch statt zu einem zweiten Komplett-Neubau. Das Ökosystem (shadcn/ui, TanStack Table/Query/Form) deckt Admin-Tabellen, Formulare und das Widget ab.
 
 **Folgen der Empfehlung für v2:**
 - Rails wird zur reinen API- und Auth-Schicht. Die heutigen JSON-Endpunkte des alten Frontends werden zu einer dokumentierten `/api/app/v1`-Schnittstelle (Session-Cookie + CSRF); die öffentliche `/api/v1` für Integrationen (API-Key) bleibt.
@@ -102,7 +102,6 @@ Die häufigsten Probleme aus den Upstream-Issues: HTTPS hinter Reverse Proxy (#4
 5. ✅ Schreibende Aktionen: Post anlegen (auch anonym, mit Freigabe-Regeln und Spam-Schutz), Vote (optimistisch), Kommentar und Antwort, Moderator-Updates, Follow; CSRF-Fluss getestet · offen: Roadmap-Seite, Auth-Seiten, Moderation, Site Settings
 5. Moderation und Site Settings
 6. Altes Frontend und dessen Gems/Pakete entfernen; Sidekiq 8.1
-(Bei SvelteKit stattdessen: Hotwire-Views mit ViewComponent und Tailwind, Seite für Seite.)
 
 ### Phase 4 – KI und MCP · P1 (MCP in 2.0, Rest 2.x)
 - **MCP-Server** (Streamable HTTP unter `/mcp`, Auth per API-Key, später OAuth). Tools: Posts suchen, lesen, anlegen, Status ändern, kommentieren, Votes und Trends abfragen, Roadmap lesen. Damit triagieren Claude, Cursor und andere Assistenten Feedback direkt. Unter den Self-Hosted-Tools hat das sonst nur Quackback.
@@ -134,7 +133,7 @@ Die häufigsten Probleme aus den Upstream-Issues: HTTPS hinter Reverse Proxy (#4
 | `2.0.0` | + Phase 3 komplett | React 16/Redux/Bootstrap 4 vollständig entfernt, Doku übernommen |
 | `2.1` | Phase 4 | Duplikaterkennung, KI-Funktionen, Changelog |
 | `2.2+` | Phase 5 | Widget, Import, private Boards, LDAP |
-| `3.0.0` | Komplett TypeScript | TanStack Start (oder SvelteKit) + Drizzle + Tailwind, Rails entfernt, Daten-Migration aus v2 automatisch |
+| `3.0.0` | Komplett TypeScript | TanStack Start + Drizzle + Tailwind, Rails entfernt, Daten-Migration aus v2 automatisch |
 
 ## 6. v3 vorbereiten – Datenmodell, Migration, Lizenz
 
@@ -160,11 +159,10 @@ Die häufigsten Probleme aus den Upstream-Issues: HTTPS hinter Reverse Proxy (#4
 
 **Regeln für v2, damit die Migration einfach bleibt** (stehen auch in AGENTS.md): keine `serialize`/`store`-Spalten (natives `jsonb`), keine polymorphen Assoziationen, kein Active Storage für Dateien, keine Ruby-spezifischen Formate in der Datenbank. Der aktuelle Stand erfüllt das bis auf die Webhook-Verschlüsselung.
 
-**Lizenz (Entscheidung offen):**
+**Lizenz (entschieden: AGPL-3.0):**
 - v2 ist ein abgeleitetes Werk und bleibt **AGPL-3.0** mit den ursprünglichen Copyright-Hinweisen.
-- v3 als Neuentwicklung könnte eine andere Lizenz bekommen, aber nur ohne übernommenen Code, ohne Logo und Grafiken und ohne die Übersetzungsdateien der Community. Das v2-Frontend ist neu geschrieben, nutzt aber die Astuto-Übersetzungen.
+- **v3 bleibt AGPL-3.0**, bei Bedarf dual lizenziert. Die übersetzten Texte (YAML/JSON), Logo, Schema-Wissen und Community-Beiträge dürfen direkt weiterverwendet werden, und die AGPL schützt die Nische (Self-Hosting) vor geschlossenen SaaS-Ablegern.
 - Soll es in v3 zusätzlich eine kommerzielle Lizenz für den Mittelstand geben (Abschnitt 7), ist ab dem ersten v3-Commit eine CLA nötig.
-- **Empfehlung: v3 bleibt AGPL-3.0**, bei Bedarf dual lizenziert. Übersetzungen, Logo, Schema-Wissen und Community-Beiträge dürfen dann weiterverwendet werden, und die AGPL schützt die Nische (Self-Hosting) vor geschlossenen SaaS-Ablegern.
 
 **GitHub (Entscheidung offen):** Den Fork vom archivierten Upstream lösen lassen (GitHub-Support), damit Codesuche und Sichtbarkeit normal funktionieren. v3 im selben Repository entwickeln (Orphan-Branch, beim Release zu `main`, v2 als `v2`-Branch) oder in einer Organisation `astuto-evolution`.
 
@@ -182,7 +180,7 @@ Die häufigsten Probleme aus den Upstream-Issues: HTTPS hinter Reverse Proxy (#4
 
 **Lizenz und Mittelstand:** Die AGPL-3.0 erlaubt kommerzielle Nutzung ohne Einschränkung. Pflichten entstehen erst, wenn jemand den Code *ändert* und Nutzern über das Netz anbietet: Dann muss er die Änderungen veröffentlichen. Manche Rechtsabteilungen lehnen AGPL trotzdem grundsätzlich ab. Optionen:
 - **v2:** Eine zusätzliche kommerzielle Lizenz ist nicht möglich, weil der Upstream-Code von Dritten unter AGPL steht. Abhilfe: eine kurze FAQ „AGPL im Unternehmen“ (unveränderter Betrieb verpflichtet zu nichts).
-- **v3 (Neuentwicklung):** Duale Lizenzierung (AGPL + kommerzielle Lizenz) wird möglich, aber nur mit einer **CLA** für alle Beiträge ab Beginn von v3 und ohne übernommene Upstream-Inhalte (Übersetzungen, Logo). Das hängt eng mit der Lizenzfrage in Abschnitt 6 zusammen.
+- **v3 (Neuentwicklung):** Duale Lizenzierung (AGPL + kommerzielle Lizenz) wird möglich, aber nur mit einer **CLA** für alle Beiträge ab Beginn von v3 und ohne übernommene Upstream-Inhalte (Übersetzungen, Logo). Die Lizenz ist entschieden: **v3 bleibt AGPL-3.0** (Abschnitt 6).
 
 **Mögliche Einnahmen ohne Paywall** (Entscheidung offen):
 

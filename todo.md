@@ -124,7 +124,8 @@ Empfehlung (roadmap.md, Abschnitt 3): getrenntes Frontend mit React 19 + TS 7 + 
 
 ## P3 – v3: komplett TypeScript (nach 2.0)
 - [x] Stack: TanStack Start + Drizzle + Tailwind (Auth z. B. Better Auth)
-- [ ] Entscheidung Lizenz v3 (Empfehlung AGPL-3.0) und GitHub-Struktur (Fork lösen, Orphan-Branch oder Organisation), siehe roadmap.md Abschnitt 6
+- [x] Entscheidung Lizenz v3: **AGPL-3.0 (bleibt)**, bei Bedarf dual lizenziert; ab dem ersten v3-Commit CLA nötig, wenn eine kommerzielle Lizenz dazukommt, siehe roadmap.md Abschnitt 6
+- [ ] GitHub-Struktur (Fork lösen, Orphan-Branch oder Organisation), siehe roadmap.md Abschnitt 6
 - [ ] Neues Drizzle-Schema (UUIDv7, Auth-Tabellen, Fractional Indexing, Timeline, Merge, Votes mit Gewicht, `tsvector`) und automatischer Migrator v2 → v3 beim Start (Transaktion, alte Tabellen nach `v2_archive`)
 - [ ] Backend Endpunkt für Endpunkt ersetzen (gleiche API-Verträge wie `/api/app/v1` und `/api/v1`)
 - [ ] Webhooks (Liquid → z. B. LiquidJS), Mails, Hintergrundjobs (z. B. pg-boss), MCP-Server in TypeScript
