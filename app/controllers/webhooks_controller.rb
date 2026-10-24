@@ -55,16 +55,24 @@ class WebhooksController < ApplicationController
       is_test: true,
     ).run
 
-    url_template = Liquid::Template.parse(params[:webhook][:url])
-    url_preview = url_template.render(context)
+    url_template = Liquid::Template.parse(params[:webhook][:url], error_mode: :strict)
+    url_preview = url_template.render!(context)
 
-    http_body_template = Liquid::Template.parse(params[:webhook][:http_body])
-    http_body_preview = http_body_template.render(context)
+    http_body_template = Liquid::Template.parse(params[:webhook][:http_body], error_mode: :strict)
+    http_body_preview = http_body_template.render!(context)
+
+    if http_body_preview.present?
+      JSON.parse(http_body_preview)
+    end
 
     render json: {
       url_preview: url_preview,
       http_body_preview: http_body_preview,
     }, status: :ok
+  rescue JSON::ParserError => e
+    render json: {
+      error: "Webhook body must render valid JSON (tip: use the '| escape_json' filter on string variables): #{e.message}"
+    }, status: :unprocessable_entity
   rescue => e
     render json: {
       error: e.message
@@ -81,6 +89,10 @@ class WebhooksController < ApplicationController
     render json: {
       response: response,
     }, status: :ok
+  rescue JSON::ParserError => e
+    render json: {
+      error: "Webhook body must render valid JSON (tip: use the '| escape_json' filter on string variables): #{e.message}"
+    }, status: :unprocessable_entity
   rescue => e
     render json: {
       error: e.message
