@@ -39,8 +39,16 @@ module Swagger
         Post: object({
           id: INTEGER, slug: STRING, title: STRING, description: NULLABLE_STRING, boardId: INTEGER, postStatusId: NULLABLE_INTEGER,
           approvalStatus: { type: :string, enum: %w[approved pending rejected] }, author: ref(:Author).merge(nullable: true),
-          likesCount: INTEGER, commentsCount: INTEGER, liked: BOOLEAN, createdAt: DATETIME, updatedAt: DATETIME
+          likesCount: INTEGER, commentsCount: INTEGER, liked: BOOLEAN, followed: BOOLEAN, createdAt: DATETIME, updatedAt: DATETIME
         }),
+        VoteState: object({ liked: BOOLEAN, likesCount: INTEGER }),
+        FollowState: object({ followed: BOOLEAN }),
+        NewPost: object({
+          title: STRING, description: NULLABLE_STRING, isAnonymous: BOOLEAN,
+          honeypot: { type: :string, description: 'Hidden form field, must stay empty' },
+          formRenderedAt: { type: :integer, description: 'Unix time when the form was shown (anti-spam)' }
+        }, required: %i[title formRenderedAt]),
+        NewComment: object({ body: STRING, parentId: NULLABLE_INTEGER, isPostUpdate: BOOLEAN }, required: %i[body]),
         Comment: object({
           id: INTEGER, body: STRING, parentId: NULLABLE_INTEGER, isPostUpdate: BOOLEAN,
           author: ref(:Author).merge(nullable: true), createdAt: DATETIME, updatedAt: DATETIME

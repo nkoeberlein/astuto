@@ -28,6 +28,7 @@ module Api::App::V1
         likesCount: post.likes.count,
         commentsCount: post.comments.count,
         liked: current_user.present? && post.likes.exists?(user_id: current_user.id),
+        followed: current_user.present? && post.follows.exists?(user_id: current_user.id),
         createdAt: post.created_at.iso8601,
         updatedAt: post.updated_at.iso8601
       }

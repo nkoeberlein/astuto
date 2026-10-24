@@ -10,6 +10,7 @@ module Api
       prepend_before_action :set_tenant
 
       rescue_from ActiveRecord::RecordNotFound, with: :render_not_found
+      rescue_from ActionController::InvalidAuthenticityToken, with: :render_invalid_csrf_token
 
       protected
 
@@ -32,6 +33,22 @@ module Api
           return if user_signed_in?
 
           render_error(:unauthorized, I18n.t('errors.not_logged_in'))
+        end
+
+        def require_user
+          render_error(:unauthorized, I18n.t('errors.not_logged_in')) unless user_signed_in?
+        end
+
+        # Posts that are not approved are only visible to moderators
+        def find_visible_post(id)
+          post = Post.friendly.find(id)
+          raise ActiveRecord::RecordNotFound unless post.approved? || current_user&.moderator?
+
+          post
+        end
+
+        def render_invalid_csrf_token
+          render_error(:unprocessable_content, 'Invalid or missing CSRF token. Reload the page and try again.')
         end
 
         def render_error(status, message)

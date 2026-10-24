@@ -108,11 +108,13 @@ Rails.application.routes.draw do
           resource :session, only: [:show]
           resources :translations, only: [:show], param: :locale, constraints: { locale: /[A-Za-z-]+/ }
           resources :boards, only: [:index, :show] do
-            resources :posts, only: [:index]
+            resources :posts, only: [:index, :create]
           end
           resources :post_statuses, only: [:index]
           resources :posts, only: [:show] do
-            resources :comments, only: [:index]
+            resources :comments, only: [:index, :create]
+            resource :vote, only: [:create, :destroy]
+            resource :follow, only: [:create, :destroy]
           end
         end
       end
