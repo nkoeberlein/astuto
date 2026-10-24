@@ -1,7 +1,7 @@
 ###
 ### Build stage ###
 ###
-FROM ruby:3.3.13-trixie AS builder
+FROM ruby:4.0.9-trixie AS builder
 
 RUN apt-get update && apt-get install -y ca-certificates curl gnupg
 RUN mkdir -p /etc/apt/keyrings && \
@@ -55,7 +55,7 @@ EXPOSE 3000
 ###
 ### Prod stage ###
 ###
-FROM ruby:3.3.13-slim-trixie AS prod
+FROM ruby:4.0.9-slim-trixie AS prod
 
 RUN apt-get update -qq && \
   apt-get install -yq  \
