@@ -5,7 +5,7 @@ ruby '3.3.13'
 
 gem 'rake', '13.2.1'
 
-gem 'rails', '7.2.4'
+gem 'rails', '8.0.5.1'
 
 # Asset pipeline (no longer bundled with Rails 7)
 gem 'sprockets-rails', '3.5.2'
@@ -38,7 +38,7 @@ gem 'jsbundling-rails', '1.1.1'
 gem 'httparty', '0.21.0'
 
 # Authentication
-gem 'devise', '4.9.4'
+gem 'devise', '5.0.4'
 
 # Authorization
 gem 'pundit', '2.2.0'
@@ -62,11 +62,11 @@ gem 'friendly_id', '5.5.1'
 gem 'stripe', '11.2.0'
 
 # Serve swagger docs
-gem 'rswag-api', '2.15.0'
+gem 'rswag-api', '2.17.0'
 
 # We need those gems here, so we can Swaggerize in production
-gem 'rswag-specs', '2.15.0'
-gem 'rspec-rails', '7.1.1'
+gem 'rswag-specs', '2.17.0'
+gem 'rspec-rails', '8.0.4'
 gem 'capybara', '3.40.0'
 
 # CORS policy

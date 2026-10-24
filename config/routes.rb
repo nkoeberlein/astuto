@@ -107,12 +107,16 @@ Rails.application.routes.draw do
         resources :post_statuses, only: [:index]
         resources :posts, only: [:index, :show, :create, :update, :destroy] do
           member do
-            put :update_board, :update_status, :approve, :reject
+            put :update_board
+            put :update_status
+            put :approve
+            put :reject
           end
         end
         resources :comments, only: [:index, :show, :create, :update, :destroy] do
           member do
-            put :mark_as_post_update, :unmark_as_post_update
+            put :mark_as_post_update
+            put :unmark_as_post_update
           end
         end
         resources :votes, only: [:index, :show, :create, :destroy], controller: 'likes'
