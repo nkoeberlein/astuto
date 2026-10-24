@@ -27,7 +27,7 @@ jobs:
         run: |
           docker compose exec web apt-get update
           docker compose exec web apt-get install -y --no-install-recommends apt-utils
-          docker compose exec web apt-get install -y build-essential wget libpq-dev
+          docker compose exec web apt-get install -y build-essential wget libpq-dev git
 
       - name: Install RSpec and required gems
         run: |
@@ -47,5 +47,6 @@ jobs:
       - name: Security checks (gems, legacy npm packages, Brakeman)
         run: |
           docker compose exec web bin/bundler-audit check --update
-          docker compose exec web bin/yarn-audit-critical
           docker compose exec web bin/brakeman --quiet --no-pager --exit-on-warn --exit-on-error
+          # yarn is not in the production image; the runner has Ruby and yarn
+          bin/yarn-audit-critical

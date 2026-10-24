@@ -65,10 +65,10 @@ EXPOSE 3000
 ###
 FROM ruby:4.0.9-slim-trixie AS prod
 
+# No Node.js at runtime: assets are prebuilt and nothing renders React on the server.
 RUN apt-get update -qq && \
   apt-get install -yq  \
-  postgresql-client \
-  nodejs && \
+  postgresql-client && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
   truncate -s 0 /var/log/*log
