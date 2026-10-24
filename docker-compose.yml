@@ -1,7 +1,8 @@
 services:
   db:
-    # TODO: switch to postgres:19-trixie once 19 is GA
-    image: postgres:19rc1-trixie
+    # PostgreSQL 19 GA is planned for 2026-11-19; until then 18 (supported until 2030).
+    # Switch to postgres:19-trixie then — see UPGRADING.md (same dump/restore steps).
+    image: postgres:18-trixie
     environment: &db-env
       POSTGRES_USER: astuto
       POSTGRES_PASSWORD: dbpass
