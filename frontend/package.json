@@ -15,7 +15,8 @@
     "format": "biome check --write .",
     "test": "vitest run",
     "test:watch": "vitest",
-    "api:types": "npx --yes -p typescript@5.9.3 -p openapi-typescript@7.13.0 openapi-typescript ../swagger/app/v1/openapi.yaml -o src/api/schema.d.ts"
+    "api:types": "npx --yes -p typescript@5.9.3 -p openapi-typescript@7.13.0 openapi-typescript ../swagger/app/v1/openapi.yaml -o src/api/schema.d.ts",
+    "ui:add": "node scripts/ui-add.mjs"
   },
   "dependencies": {
     "@tanstack/react-query": "5.104.5",

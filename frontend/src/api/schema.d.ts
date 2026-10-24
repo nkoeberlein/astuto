@@ -136,6 +136,250 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/app/v1/posts/{post_id}/vote": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Post id or slug */
+                post_id: string;
+            };
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Vote for a post */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description Post id or slug */
+                    post_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description voted (idempotent) */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["VoteState"];
+                    };
+                };
+                /** @description not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description post pending approval */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        /** Remove vote */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description Post id or slug */
+                    post_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description vote removed */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["VoteState"];
+                    };
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/posts/{post_id}/follow": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Post id or slug */
+                post_id: string;
+            };
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Follow a post */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description Post id or slug */
+                    post_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description following */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["FollowState"];
+                    };
+                };
+            };
+        };
+        /** Unfollow a post */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description Post id or slug */
+                    post_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description not following */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["FollowState"];
+                    };
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/posts/{post_id}/comments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Post id or slug */
+                post_id: string;
+            };
+            cookie?: never;
+        };
+        /** List comments of a post */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description Post id or slug */
+                    post_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description successful */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Comment"][];
+                    };
+                };
+            };
+        };
+        put?: never;
+        /** Comment on a post */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description Post id or slug */
+                    post_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["NewComment"];
+                };
+            };
+            responses: {
+                /** @description post update by a moderator */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Comment"];
+                    };
+                };
+                /** @description not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description parent comment belongs to another post */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description empty body */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/app/v1/boards/{board_id}/posts": {
         parameters: {
             query?: {
@@ -185,7 +429,71 @@ export interface paths {
             };
         };
         put?: never;
-        post?: never;
+        /**
+         * Create post
+         * @description Signed-in users post under their name. Anonymous posts need allowAnonymousFeedback. Depending on the approval policy the post starts as pending.
+         */
+        post: {
+            parameters: {
+                query?: {
+                    /** @enum {unknown} */
+                    sort_by?: string;
+                    search?: string;
+                    page?: number;
+                    /** @description Filter by status; 0 means posts without status */
+                    "post_status_ids[]"?: unknown[];
+                };
+                header?: never;
+                path: {
+                    /** @description Board id or slug */
+                    board_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["NewPost"];
+                };
+            };
+            responses: {
+                /** @description policy always_require_approval keeps even signed-in posts pending */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Post"];
+                    };
+                };
+                /** @description not anonymous and not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description anonymous feedback disabled */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description invalid title */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
         delete?: never;
         options?: never;
         head?: never;
@@ -231,48 +539,6 @@ export interface paths {
                     };
                     content: {
                         "application/json": components["schemas"]["Error"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/app/v1/posts/{post_id}/comments": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Post id or slug */
-                post_id: string;
-            };
-            cookie?: never;
-        };
-        /** List comments of a post */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    /** @description Post id or slug */
-                    post_id: string;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description successful */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["Comment"][];
                     };
                 };
             };
@@ -466,10 +732,32 @@ export interface components {
             likesCount: number;
             commentsCount: number;
             liked: boolean;
+            followed: boolean;
             /** Format: date-time */
             createdAt: string;
             /** Format: date-time */
             updatedAt: string;
+        };
+        VoteState: {
+            liked: boolean;
+            likesCount: number;
+        };
+        FollowState: {
+            followed: boolean;
+        };
+        NewPost: {
+            title: string;
+            description?: string | null;
+            isAnonymous?: boolean;
+            /** @description Hidden form field, must stay empty */
+            honeypot?: string;
+            /** @description Unix time when the form was shown (anti-spam) */
+            formRenderedAt: number;
+        };
+        NewComment: {
+            body: string;
+            parentId?: number | null;
+            isPostUpdate?: boolean;
         };
         Comment: {
             id: number;

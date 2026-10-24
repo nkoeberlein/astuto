@@ -27,7 +27,11 @@ Browser ──/next/*──▶ SPA (this folder, built to public/next)
   components read with `useSuspenseQuery` (`src/api/queries.ts`).
 - **Translations:** reused from `config/locales/*.yml`, served by
   `GET /api/app/v1/translations/:locale` (`src/lib/i18n.tsx`, Rails-style `%{var}` and one/other).
-- **Auth:** the Rails session cookie. Login and sign-up still link to the legacy Devise pages.
+- **Auth:** the Rails session cookie. Login and sign-up still link to the legacy Devise pages, which
+  return to the referring page afterwards.
+- **Writes:** `src/api/mutations.ts` (create post, vote, follow, comment). The CSRF token from
+  `GET /session` is sent as `X-CSRF-Token`. Votes update the cache optimistically and roll back on errors.
+  New posts carry a hidden honeypot field and the time the form was opened (server-side anti-spam).
 - **Production:** the Docker build runs `npm run build`; Rails serves `public/next/index.html`
   for all `/next/*` routes (`SpaController`).
 
@@ -60,19 +64,20 @@ BACKEND_URL=http://localhost:3000 npm run dev
 
 ## Commands
 
-| Command | |
-|---|---|
-| `npm run dev` | Vite dev server on port 5173 |
-| `npm run build` | production build into `../public/next` |
-| `npm run lint` / `npm run format` | Biome check / fix |
-| `npm run typecheck` | TypeScript 7 (`tsc --noEmit`) |
-| `npm test` | Vitest |
-| `npm run api:types` | regenerate `src/api/schema.d.ts` from the OpenAPI file (run `bundle exec rake rswag:specs:swaggerize` in Rails first) |
+| Command                           |                                                                                                                       |
+| --------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `npm run dev`                     | Vite dev server on port 5173                                                                                          |
+| `npm run build`                   | production build into `../public/next`                                                                                |
+| `npm run lint` / `npm run format` | Biome check / fix                                                                                                     |
+| `npm run typecheck`               | TypeScript 7 (`tsc --noEmit`)                                                                                         |
+| `npm test`                        | Vitest                                                                                                                |
+| `npm run api:types`               | regenerate `src/api/schema.d.ts` from the OpenAPI file (run `bundle exec rake rswag:specs:swaggerize` in Rails first) |
 
 ## Notes
 
 - `openapi-typescript` does not support TypeScript 7 yet, so `api:types` runs it through
   `npx` with TypeScript 5.9 instead of adding it to the project.
-- shadcn/ui: add components with `npx shadcn@latest add <name>`. Check the generated imports:
-  the CLI once resolved `@/lib/utils` to an unrelated npm package called `cn`.
+- shadcn/ui: add components with `npm run ui:add -- <name>`, not with the shadcn CLI directly. The CLI
+  cannot read tsconfig `paths` without `baseUrl` (gone in TypeScript 7) and would import `cn` from an
+  unrelated npm package; `scripts/ui-add.mjs` repairs that.
 - Install scripts are blocked by npm; `allowScripts` in `package.json` lists the decisions.

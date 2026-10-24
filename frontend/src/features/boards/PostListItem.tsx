@@ -2,6 +2,7 @@ import { Link } from '@tanstack/react-router'
 import { MessageSquare } from 'lucide-react'
 import type { PostListItem as PostListItemData, PostStatus } from '@/api/client'
 import { StatusBadge } from '@/features/posts/StatusBadge'
+import { VoteButton } from '@/features/posts/VoteButton'
 import { VoteCount } from '@/features/posts/VoteCount'
 import { useI18n } from '@/lib/i18n'
 
@@ -18,15 +19,20 @@ export function PostListItem(props: {
   post: PostListItemData
   status: PostStatus | undefined
   showVoteCount: boolean
+  voteButton: boolean
+  signedIn: boolean
 }) {
   const { t } = useI18n()
   const { post } = props
 
   return (
     <li className="flex gap-4 rounded-lg border bg-card p-4 transition-colors hover:border-primary/40">
-      {props.showVoteCount && (
-        <VoteCount count={post.likesCount} liked={post.liked} label={t('post.likes_box.title')} />
-      )}
+      {props.showVoteCount &&
+        (props.voteButton ? (
+          <VoteButton post={post} signedIn={props.signedIn} />
+        ) : (
+          <VoteCount count={post.likesCount} liked={post.liked} label={t('post.likes_box.title')} />
+        ))}
       <div className="min-w-0 flex-1 space-y-1">
         <Link
           to="/posts/$postSlug"

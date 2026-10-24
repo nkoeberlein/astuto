@@ -5,6 +5,7 @@ import { Markdown } from '@/components/Markdown'
 import { Button } from '@/components/ui/button'
 import { useI18n } from '@/lib/i18n'
 import { BoardFilters } from './BoardFilters'
+import { NewPostForm } from './NewPostForm'
 import { PostListItem } from './PostListItem'
 
 type Props = {
@@ -33,6 +34,8 @@ export function BoardPage({ board, filters, onFiltersChange }: Props) {
         )}
       </div>
 
+      <NewPostForm board={board} session={session} />
+
       <BoardFilters filters={filters} statuses={statuses} onChange={onFiltersChange} />
 
       {items.length === 0 ? (
@@ -47,6 +50,8 @@ export function BoardPage({ board, filters, onFiltersChange }: Props) {
               post={post}
               status={post.postStatusId ? statusById.get(post.postStatusId) : undefined}
               showVoteCount={session.tenant.settings.showVoteCount}
+              voteButton={session.tenant.settings.showVoteButtonInBoard}
+              signedIn={session.user !== null}
             />
           ))}
         </ul>

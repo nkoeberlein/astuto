@@ -1,0 +1,169 @@
+import { useNavigate } from '@tanstack/react-router'
+import { type FormEvent, useId, useState } from 'react'
+import type { Board, Session } from '@/api/client'
+import { useCreatePost } from '@/api/mutations'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Textarea } from '@/components/ui/textarea'
+import { useI18n } from '@/lib/i18n'
+
+type Props = { board: Board; session: Session }
+
+export function NewPostForm({ board, session }: Props) {
+  const { t } = useI18n()
+  const [open, setOpen] = useState(false)
+  const [submittedPending, setSubmittedPending] = useState(false)
+  const canPost = session.user !== null || session.tenant.settings.allowAnonymousFeedback
+
+  if (!canPost) {
+    return (
+      <Button asChild>
+        <a href="/users/sign_in">{t('board.new_post.login_button')}</a>
+      </Button>
+    )
+  }
+
+  if (!open) {
+    return (
+      <div className="space-y-2">
+        <Button onClick={() => setOpen(true)}>{t('board.new_post.submit_button')}</Button>
+        {submittedPending && (
+          <p role="status" className="text-sm text-muted-foreground">
+            {t('board.new_post.submit_pending')}
+          </p>
+        )}
+      </div>
+    )
+  }
+
+  return (
+    <PostForm
+      board={board}
+      session={session}
+      onClose={(pending) => {
+        setSubmittedPending(pending)
+        setOpen(false)
+      }}
+    />
+  )
+}
+
+function PostForm(props: Props & { onClose: (pending: boolean) => void }) {
+  const { board, session, onClose } = props
+  const { t } = useI18n()
+  const navigate = useNavigate()
+  const ids = { title: useId(), description: useId() }
+  const create = useCreatePost(board.slug)
+  // Anti-spam: the server rejects forms sent within two seconds or with the honeypot filled
+  const [renderedAt] = useState(() => Math.floor(Date.now() / 1000))
+  const [honeypot, setHoneypot] = useState('')
+  const [title, setTitle] = useState('')
+  const [description, setDescription] = useState('')
+  const [titleMissing, setTitleMissing] = useState(false)
+
+  const { user } = session
+  const allowAnonymous = session.tenant.settings.allowAnonymousFeedback
+
+  const submit = (isAnonymous: boolean) => {
+    if (!title.trim()) return setTitleMissing(true)
+    create.mutate(
+      { title, description, isAnonymous, honeypot, formRenderedAt: renderedAt },
+      {
+        onSuccess: (post) => {
+          if (post.approvalStatus === 'approved') {
+            void navigate({ to: '/posts/$postSlug', params: { postSlug: post.slug } })
+          } else {
+            onClose(true)
+          }
+        },
+      },
+    )
+  }
+
+  const onSubmit = (event: FormEvent) => {
+    event.preventDefault()
+    submit(user === null)
+  }
+
+  return (
+    <Card>
+      <CardContent>
+        <form onSubmit={onSubmit} className="space-y-4">
+          <div className="space-y-1.5">
+            <Label htmlFor={ids.title}>{t('board.new_post.title')}</Label>
+            <Input
+              id={ids.title}
+              value={title}
+              maxLength={128}
+              aria-invalid={titleMissing}
+              onChange={(event) => {
+                setTitle(event.target.value)
+                setTitleMissing(false)
+              }}
+              autoFocus
+            />
+            {titleMissing && (
+              <p className="text-sm text-destructive">{t('board.new_post.no_title')}</p>
+            )}
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor={ids.description}>{t('board.new_post.description')}</Label>
+            <Textarea
+              id={ids.description}
+              value={description}
+              rows={5}
+              onChange={(event) => setDescription(event.target.value)}
+            />
+          </div>
+
+          {/* Honeypot: hidden from people, bots tend to fill it */}
+          <input
+            type="text"
+            name="website"
+            value={honeypot}
+            onChange={(event) => setHoneypot(event.target.value)}
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden
+            className="absolute -left-[9999px] h-px w-px opacity-0"
+          />
+
+          <p className="text-sm text-muted-foreground">
+            {user
+              ? t('board.new_post.non_anonymous_submission_help', { name: user.fullName })
+              : t('board.new_post.anonymous_submission_help')}
+          </p>
+          {create.error && <p className="text-sm text-destructive">{create.error.message}</p>}
+
+          <div className="flex flex-wrap gap-2">
+            {user && (
+              <Button type="submit" disabled={create.isPending}>
+                {t('board.new_post.submit_button')}
+              </Button>
+            )}
+            {allowAnonymous && (
+              <Button
+                type={user ? 'button' : 'submit'}
+                variant={user ? 'outline' : 'default'}
+                disabled={create.isPending}
+                onClick={user ? () => submit(true) : undefined}
+              >
+                {t('board.new_post.submit_anonymous_button')}
+              </Button>
+            )}
+            {!user && (
+              <Button asChild variant="outline">
+                <a href="/users/sign_in">{t('board.new_post.login_button')}</a>
+              </Button>
+            )}
+            <Button type="button" variant="ghost" onClick={() => onClose(false)}>
+              {t('board.new_post.cancel_button')}
+            </Button>
+          </div>
+        </form>
+      </CardContent>
+    </Card>
+  )
+}
