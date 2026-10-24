@@ -22,10 +22,19 @@ class OAuthsController < ApplicationController
     # Generate random state + other query params
     tenant_domain = Current.tenant ? Current.tenant_or_raise!.subdomain : "null"
     token_state = "#{params[:reason]}#{TOKEN_STATE_SEPARATOR}#{tenant_domain}#{TOKEN_STATE_SEPARATOR}#{Devise.friendly_token(30)}"
-    cookies[:token_state] = { value: token_state, domain: ".#{request.domain}", httponly: true } unless params[:reason] == 'test'
+    unless params[:reason] == 'test'
+      cookie_options = {
+        value: token_state,
+        httponly: true,
+        secure: request.ssl?,
+        same_site: :lax
+      }
+      cookie_options[:domain] = ".#{request.domain}" if Rails.application.multi_tenancy? && request.domain.present?
+      cookies[:token_state] = cookie_options
+    end
     @o_auth.state = token_state
 
-    redirect_to @o_auth.authorize_url_with_query_params
+    redirect_to @o_auth.authorize_url_with_query_params, allow_other_host: true
   end
 
   # [subdomain.]base_url/o_auths/:id/callback
@@ -63,17 +72,17 @@ class OAuthsController < ApplicationController
 
       if user
         oauth_token = user.generate_oauth_token
-        redirect_to get_url_for(method(:o_auth_sign_in_from_oauth_token_url), options: { user_id: user.id, token: oauth_token })
+        redirect_to get_url_for(method(:o_auth_sign_in_from_oauth_token_url), options: { user_id: user.id, token: oauth_token }), allow_other_host: true
       else
         flash[:alert] = I18n.t('errors.o_auth_login_error', name: @o_auth.name)
-        redirect_to get_url_for(method(:new_user_session_url))
+        redirect_to get_url_for(method(:new_user_session_url)), allow_other_host: true
       end
 
     elsif reason == 'test'
 
       unless user_signed_in? and current_user.admin?
         flash[:alert] = I18n.t('errors.unauthorized')
-        redirect_to get_url_for(method(:root_url))
+        redirect_to get_url_for(method(:root_url)), allow_other_host: true
         return
       end
 
