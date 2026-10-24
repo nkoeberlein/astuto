@@ -2,22 +2,22 @@
 
 Thanks for taking the time to contribute 😁
 
-We would like the Astuto community to be a welcoming environment for both seasoned programmers and absolute beginners. The following guidelines should help you get started regardless of your skill level.
+We would like the Astuto Evolution community to be a welcoming environment for both seasoned programmers and absolute beginners. The following guidelines should help you get started regardless of your skill level.
 
 ## How to contribute
 
 There are many ways to contribute to Astuto, not just coding. In this section we list the most common ones:
 
-- **Getting involved in the community**: we love to hear opinions about our product. Dropping a comment on an open issue or pull request or joining the discussion on the [Discord server](https://discord.com/invite/SrtUMRp) is an easy yet impactful way to contribute.
-- **Reporting bugs or proposing features**:  [open a new issue](https://github.com/riggraz/astuto/issues/new) on GitHub. Before posting, check if a similar issue has already been reported. Try to be concise but also unambiguous.
-- **Translating Astuto into a new language**: we want Astuto to speak all languages and we need contributors to achieve this goal! If you're interested, join [our Crowdin project](https://crwd.in/astuto), the platform we use to manage translations.
-- **Coding**: [open a pull request](https://github.com/riggraz/astuto/pulls) with your bug fix or feature implementation. Before diving into coding, you may find [the coding and testing section](#coding-and-testing) useful.
+- **Getting involved in the community**: we love to hear opinions about our product. Dropping a comment on an open issue or pull request is an easy yet impactful way to contribute.
+- **Reporting bugs or proposing features**:  [open a new issue](https://github.com/nkoeberlein/astuto/issues/new) on GitHub. Before posting, check if a similar issue has already been reported. Try to be concise but also unambiguous.
+- **Translating Astuto into a new language**: we want Astuto to speak all languages and we need contributors to achieve this goal! See [Translations](#translations) below.
+- **Coding**: [open a pull request](https://github.com/nkoeberlein/astuto/pulls) with your bug fix or feature implementation. Before diving into coding, you may find [the coding and testing section](#coding-and-testing) useful.
 
-If you still have any doubt, feel free to [join our Discord](https://discord.com/invite/SrtUMRp) and drop a message! And remember: there are no stupid questions 😉
+If you still have any doubt, feel free to open an issue and ask! And remember: there are no stupid questions 😉
 
 ## Translations
 
-If you're interested in translating, we suggest to visit and register to [our Crowdin project](https://crwd.in/astuto), the place where we manage translations. If the language you want to contribute is not present in Crowdin, just open an issue on GitHub and let us know!
+Translations were managed on Crowdin by the original project. Until Astuto Evolution has its own translation platform, please open a pull request that changes the YAML files described below.
 
 ### Translations structure
 
