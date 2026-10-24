@@ -10,10 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_11_30_112415) do
-
+ActiveRecord::Schema[8.1].define(version: 2024_11_30_112415) do
   # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
+  enable_extension "pg_catalog.plpgsql"
 
   create_table "api_keys", force: :cascade do |t|
     t.bigint "tenant_id", null: false
@@ -21,8 +20,8 @@ ActiveRecord::Schema.define(version: 2024_11_30_112415) do
     t.string "common_token_prefix", null: false
     t.string "random_token_prefix", null: false
     t.string "token_digest", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["tenant_id"], name: "index_api_keys_on_tenant_id"
     t.index ["token_digest"], name: "index_api_keys_on_token_digest", unique: true
     t.index ["user_id", "tenant_id"], name: "index_api_keys_on_user_id_and_tenant_id", unique: true
@@ -32,8 +31,8 @@ ActiveRecord::Schema.define(version: 2024_11_30_112415) do
   create_table "boards", force: :cascade do |t|
     t.string "name", null: false
     t.text "description"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "order", null: false
     t.bigint "tenant_id", null: false
     t.string "slug"
@@ -47,8 +46,8 @@ ActiveRecord::Schema.define(version: 2024_11_30_112415) do
     t.bigint "user_id", null: false
     t.bigint "post_id", null: false
     t.bigint "parent_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.boolean "is_post_update", default: false, null: false
     t.bigint "tenant_id", null: false
     t.index ["parent_id"], name: "index_comments_on_parent_id"
@@ -60,8 +59,8 @@ ActiveRecord::Schema.define(version: 2024_11_30_112415) do
   create_table "follows", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "post_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.bigint "tenant_id", null: false
     t.index ["post_id"], name: "index_follows_on_post_id"
     t.index ["tenant_id"], name: "index_follows_on_tenant_id"
@@ -72,10 +71,10 @@ ActiveRecord::Schema.define(version: 2024_11_30_112415) do
   create_table "invitations", force: :cascade do |t|
     t.string "email", null: false
     t.string "token_digest", null: false
-    t.datetime "accepted_at"
+    t.datetime "accepted_at", precision: nil
     t.bigint "tenant_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["email", "tenant_id"], name: "index_invitations_on_email_and_tenant_id", unique: true
     t.index ["tenant_id"], name: "index_invitations_on_tenant_id"
   end
@@ -83,8 +82,8 @@ ActiveRecord::Schema.define(version: 2024_11_30_112415) do
   create_table "likes", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "post_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.bigint "tenant_id", null: false
     t.index ["post_id"], name: "index_likes_on_post_id"
     t.index ["tenant_id"], name: "index_likes_on_tenant_id"
@@ -105,8 +104,8 @@ ActiveRecord::Schema.define(version: 2024_11_30_112415) do
     t.string "json_user_name_path"
     t.string "json_user_email_path", null: false
     t.bigint "tenant_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "slug"
     t.index ["name", "tenant_id"], name: "index_o_auths_on_name_and_tenant_id", unique: true
     t.index ["slug", "tenant_id"], name: "index_o_auths_on_slug_and_tenant_id", unique: true
@@ -117,8 +116,8 @@ ActiveRecord::Schema.define(version: 2024_11_30_112415) do
     t.bigint "user_id", null: false
     t.bigint "post_id", null: false
     t.bigint "post_status_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.bigint "tenant_id", null: false
     t.index ["post_id"], name: "index_post_status_changes_on_post_id"
     t.index ["post_status_id"], name: "index_post_status_changes_on_post_status_id"
@@ -129,8 +128,8 @@ ActiveRecord::Schema.define(version: 2024_11_30_112415) do
   create_table "post_statuses", force: :cascade do |t|
     t.string "name", null: false
     t.string "color", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "order", null: false
     t.boolean "show_in_roadmap", default: false, null: false
     t.bigint "tenant_id", null: false
@@ -144,8 +143,8 @@ ActiveRecord::Schema.define(version: 2024_11_30_112415) do
     t.bigint "board_id", null: false
     t.bigint "user_id"
     t.bigint "post_status_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.bigint "tenant_id", null: false
     t.string "slug"
     t.integer "approval_status", default: 0, null: false
@@ -159,11 +158,11 @@ ActiveRecord::Schema.define(version: 2024_11_30_112415) do
   create_table "tenant_billings", force: :cascade do |t|
     t.bigint "tenant_id", null: false
     t.integer "status", default: 0, null: false
-    t.datetime "trial_ends_at"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "trial_ends_at", precision: nil
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "customer_id"
-    t.datetime "subscription_ends_at"
+    t.datetime "subscription_ends_at", precision: nil
     t.string "slug"
     t.string "auth_token"
     t.index ["slug"], name: "index_tenant_billings_on_slug", unique: true
@@ -173,8 +172,8 @@ ActiveRecord::Schema.define(version: 2024_11_30_112415) do
   create_table "tenant_default_o_auths", force: :cascade do |t|
     t.bigint "tenant_id", null: false
     t.bigint "o_auth_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["o_auth_id"], name: "index_tenant_default_o_auths_on_o_auth_id"
     t.index ["tenant_id"], name: "index_tenant_default_o_auths_on_tenant_id"
   end
@@ -182,8 +181,8 @@ ActiveRecord::Schema.define(version: 2024_11_30_112415) do
   create_table "tenant_settings", force: :cascade do |t|
     t.integer "brand_display", default: 0, null: false
     t.bigint "tenant_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.boolean "show_vote_count", default: true, null: false
     t.boolean "show_vote_button_in_board", default: true, null: false
     t.integer "root_board_id", default: 0, null: false
@@ -209,8 +208,8 @@ ActiveRecord::Schema.define(version: 2024_11_30_112415) do
     t.string "subdomain", null: false
     t.string "locale", default: "en"
     t.string "custom_domain"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "status"
     t.index ["custom_domain"], name: "index_tenants_on_custom_domain", unique: true
   end
@@ -219,14 +218,14 @@ ActiveRecord::Schema.define(version: 2024_11_30_112415) do
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
+    t.datetime "reset_password_sent_at", precision: nil
+    t.datetime "remember_created_at", precision: nil
     t.string "confirmation_token"
-    t.datetime "confirmed_at"
-    t.datetime "confirmation_sent_at"
+    t.datetime "confirmed_at", precision: nil
+    t.datetime "confirmation_sent_at", precision: nil
     t.string "unconfirmed_email"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "role"
     t.string "full_name"
     t.boolean "notifications_enabled", default: true, null: false
@@ -235,8 +234,8 @@ ActiveRecord::Schema.define(version: 2024_11_30_112415) do
     t.string "oauth_token"
     t.boolean "has_set_password", default: true, null: false
     t.integer "sign_in_count", default: 0, null: false
-    t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
+    t.datetime "current_sign_in_at", precision: nil
+    t.datetime "last_sign_in_at", precision: nil
     t.string "current_sign_in_ip"
     t.string "last_sign_in_ip"
     t.integer "recap_notification_frequency", default: 0, null: false
@@ -256,8 +255,8 @@ ActiveRecord::Schema.define(version: 2024_11_30_112415) do
     t.integer "http_method", default: 0, null: false
     t.json "http_headers"
     t.bigint "tenant_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["name", "tenant_id"], name: "index_webhooks_on_name_and_tenant_id", unique: true
     t.index ["tenant_id"], name: "index_webhooks_on_tenant_id"
   end
