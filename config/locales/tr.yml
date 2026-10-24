@@ -225,7 +225,7 @@ tr:
         title2: 'Yol Haritasında yok'
         title_embed: 'Yol Haritasını Ekle'
         empty: 'Yol Haritası boş.'
-        help: 'Aşağıdaki bölümden yol haritasına durumları sürükleyebilirsiniz. Yeni bir durum oluşturmak veya sıralamayı değiştirmek isterseniz, Site ayarları > Durumlar'a gidin.'
+        help: 'Aşağıdaki bölümden yol haritasına durumları sürükleyebilirsiniz. Yeni bir durum oluşturmak veya sıralamayı değiştirmek isterseniz, Site ayarları > Durumlar''a gidin.'
         show_board_filter: 'Pano filtresini göster'
         show_post_status_filter: 'Durum filtresini göster'
         embed_help: 'Yol haritasını web sitenizde gömmek için yukarıdaki kodu kopyalayın.'
