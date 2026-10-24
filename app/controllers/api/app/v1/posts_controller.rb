@@ -39,18 +39,29 @@ module Api::App::V1
       return render_error(:unauthorized, I18n.t('errors.not_logged_in')) if !anonymous && !user_signed_in?
       return render_error(:forbidden, I18n.t('errors.unauthorized')) if anonymous && !tenant_setting.allow_anonymous_feedback
 
+      # Moderators may pick an initial status for the post (#119)
+      post_status_id = nil
+      if current_user&.moderator? && params[:postStatusId].present?
+        status = Current.tenant.post_statuses.find_by(id: params[:postStatusId].to_i)
+        return render_error(:unprocessable_content, I18n.t('errors.unknown')) if status.nil?
+        post_status_id = status.id
+      end
+
       post = Post.new(
         board: board,
         title: params[:title],
         description: params[:description],
         user: anonymous ? nil : current_user,
-        approval_status: approval_status_for(anonymous: anonymous)
+        approval_status: approval_status_for(anonymous: anonymous),
+        post_status_id: post_status_id
       )
 
       # The post creation and the author's follow must both happen or neither (#169)
       saved = ActiveRecord::Base.transaction do
         result = post.save
         Follow.create(post: post, user: current_user) if result && !anonymous
+        # A moderator-chosen initial status belongs to the timeline
+        PostStatusChange.create(user_id: current_user.id, post_id: post.id, post_status_id: post_status_id) if result && post_status_id.present?
         result
       end
       return render_error(:unprocessable_content, post.errors.full_messages.join(', ')) unless saved

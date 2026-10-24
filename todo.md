@@ -144,18 +144,18 @@ Empfehlung (roadmap.md, Abschnitt 3): getrenntes Frontend mit React 19 + TS 7 + 
 
 ## P2 – Quick Wins
 ### Quick-Win-Features
-- [ ] Vorhandene Übersetzungen freischalten: `tr`, `cs`, `el`, `hi`, `ja`, `ko`, `nl`, `pl`, `sr`, `sv` fehlen in `I18n.available_locales` (`config/initializers/locale.rb`) und im Sprachmenü (`GeneralSiteSettingsP.tsx`); vorher Vollständigkeit prüfen
-- [ ] Roadmap abschaltbar (#361)
-- [ ] Standard-Sortierung pro Board/Instanz (#193, #363, #483)
-- [ ] Login nur per OAuth, E-Mail/Passwort-Formular ausblendbar (#471)
-- [ ] Favicon einstellbar (#452)
-- [ ] Logo-Größe im Mail-Template (#474)
-- [ ] Rückfrage beim Verwerfen ungespeicherter Site-Settings (#106)
-- [ ] Combobox für den Status im Post-Formular (#119)
-- [ ] Roadmap zeigt Votes und Kommentare, Sortierung nach „zuletzt aktualisiert“ (#484)
+- [x] Vorhandene Übersetzungen freischalten: `tr`, `cs`, `el`, `hi`, `nl`, `pl`, `sr`, `sv` freigeschaltet (gleiches Vollständigkeitsniveau wie `es`/`fr`: ca. 45 fehlende Keys fallen auf Englisch zurück). `ja` und `ko` bleiben aus (52 fehlende Keys), Freischaltung sobald ergänzt. Fehlende Keys (v. a. Webhooks-UI) sind Ticket für Übersetzungsauflauf.
+- [x] Roadmap abschaltbar (#361): `roadmap_enabled`-Tenant-Setting; `/roadmap` und `/embedded_roadmap` leiten zur Startseite um, Header-Link entfällt, Checkbox in Site Settings › General
+- [x] Standard-Sortierung instanz-weit (#193, #363): `default_post_sorting`-Tenant-Setting; `BoardPostsQuery` nutzt es, wenn kein `?sort=` übergeben wird; neues Frontend übernimmt es als Default und in die URL. Pro Board bleibt für später.
+- [x] Login nur per OAuth (#471): `login_only_with_oauth`-Setting verbindet E-Mail/Passwort-Formular und Registrierung, wenn OAuth-Anbieter existieren; Passwort-Reset bleibt als Notfall-Einstieg, Devise-Endpunkte sind nicht blockiert
+- [x] Favicon einstellbar (#452): `site_favicon` am Tenant (URL), Fallback auf das Standard-Favicon in beiden Layouts
+- [x] Logo-Größe im Mail-Template (#474): `mail_logo_size`-Setting (Pixel, Default 64); Mails nutzen künftig das eigene Tenant-Logo statt des hartkodierten astuto-assets-Links (per `EMAIL_LOGO_URL` überschreibbar)
+- [x] Rückfrage beim Verwerfen ungespeicherter Site-Settings (#106): `useUnsavedChangesWarning` (beforeunload) in General, Authentication, Appearance und Webhook-/OAuth-Formularen
+- [x] Combobox für den Status im Post-Formular (#119): Moderatoren wählen beim Erstellen einen Status; App-API nimmt `postStatusId` (nur Moderatoren), Timeline-Eintrag wird mitgedeckt
+- [ ] Roadmap zeigt Votes und Kommentare, Sortierung nach „zuletzt aktualisiert“ (#484) – gehört in den Roadmap-Seiten-Neubau des neuen Frontends
 - [ ] Übersicht „Mein Feedback“ (#429)
-- [ ] Eigene Links bzw. URL im Header (#479, #351)
-- [ ] Datenbank-Transaktionen in Workflows (#169)
+- [x] Eigene Links bzw. URL im Header (#479, #351): `custom_links` (jsonb: `{label, url}`), Textarea im General-Tab, gerendert in Legacy-Header und neuem Frontend
+- [x] Datenbank-Transaktionen in Workflows (#169): Post-Update/-Create jeweils atomar mit Follow bzw. Statuswechsel-Eintrag; Mails werden nach dem Commit versendet; gleiche Sicherung im öffentlichen API v1
 
 ### Lücken zur Konkurrenz (siehe konkurrenz.md)
 - [ ] Changelog: Einträge mit erledigten Posts verknüpfen, RSS-Feed, E-Mail an Follower

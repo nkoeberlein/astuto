@@ -10,7 +10,8 @@ class BoardPostsQuery
     @board = board
     @user = user
     @search = search
-    @sort_by = SORT_OPTIONS.include?(sort_by) ? sort_by : 'trending'
+    @sort_by = sort_by.presence || Current.tenant&.tenant_setting&.default_post_sorting || 'trending'
+    @sort_by = SORT_OPTIONS.include?(@sort_by) ? @sort_by : 'trending'
     @post_status_ids = post_status_ids
     @page = [page.to_i, 1].max
     @per_page = per_page
