@@ -36,7 +36,7 @@ Issue-Nummern beziehen sich auf `astuto/astuto`. Phasen siehe [roadmap.md](roadm
 - [x] Node 20 → 24 LTS im Dockerfile (Builder)
 - [x] Node 26 (Builder, Compose-Service, Frontend-CI); Laufzeit-Image ganz ohne Node (Debians Node 20 war EOL und wurde nicht gebraucht)
 - [x] `yarn audit` ohne kritische Treffer (altes UI: 15 hoch, 17 mittel, 4 niedrig; entfallen mit dessen Entfernung), geprüft durch `bin/yarn-audit-critical`
-- [ ] **Dringend (PG 14 EOL 12.11.2026):** PostgreSQL 14.5 → 19 (#247): Dev-Compose läuft auf 19rc1, Anleitung in `UPGRADING.md` (Dump/Restore getestet). Offen: GA ist für den **19.11.2026** angekündigt, eine Woche nach dem EOL von PG 14. Dann auf `postgres:19-trixie` umstellen. Wer nicht warten will, nimmt PG 18 (gleiche Schritte, siehe `UPGRADING.md`)
+- [ ] **Dringend (PG 14 EOL 12.11.2026):** PostgreSQL 14.5 → 18 (#247): Dev-Compose läuft auf `postgres:18-trixie` (frisches Volume; das 19rc1-Dev-Volume wurde verworfen, Dev-Daten waren Scratch), Anleitung in `UPGRADING.md` (Dump/Restore getestet). Offen: GA von PG 19 ist für den **19.11.2026** angekündigt, eine Woche nach dem EOL von PG 14. Dann auf `postgres:19-trixie` umstellen (gleiche Schritte, siehe `UPGRADING.md`)
 - [x] Docker-Multi-Arch-Build amd64 + arm64 mit `docker/build-push-action` + QEMU (#399, #254, #475), in der CI noch nicht gelaufen
 - [x] Dependabot: Bundler, npm (Frontend; altes UI nur Sicherheitsupdates), Docker, Compose, Actions; Minor/Patch gruppiert. In den Repo-Einstellungen „Dependabot security updates“ aktivieren
 
@@ -106,15 +106,17 @@ Empfehlung (roadmap.md, Abschnitt 3): getrenntes Frontend mit React 19 + TS 7 + 
 - [x] `frontend/`: Vite 8, React 19, TS 7, TanStack Router + Query, Tailwind 4, shadcn/ui, Biome, Vitest; CI-Workflow `frontend.yml`
 - [x] Auslieferung im selben Image unter `/next` (`SpaController`), Compose-Dienst `frontend` für Vite
 - [x] Schreibende Endpunkte + UI: Post anlegen (anonym, Freigabe-Policy, Honeypot + Mindestzeit), Vote (idempotent, optimistisch), Kommentar/Antwort (Antworten nur im selben Post), Moderator-Update, Follow; CSRF-Fluss mit aktiviertem Schutz getestet
-- [ ] Posts und Kommentare bearbeiten/löschen, Status ändern (Moderation) im neuen Frontend
-- [ ] Roadmap-Seite, Login/Registrierung/Passwort als SPA-Seiten (Devise-JSON), OAuth-Buttons
-- [ ] CI: OpenAPI neu erzeugen und gegen `frontend/src/api/schema.d.ts` vergleichen (Drift-Check)
-- [ ] Meta-Tags (Titel, Beschreibung, Open Graph) für öffentliche Seiten serverseitig in `SpaController`
-- [ ] `hide_unused_statuses_in_filter_by_status` und `custom_css` im neuen Frontend berücksichtigen
+- [x] Posts und Kommentare bearbeiten/löschen, Status ändern (Moderation) im neuen Frontend (`PATCH/DELETE /api/app/v1/posts/:id`, `PATCH/DELETE /api/app/v1/posts/:post_id/comments/:id`, `PostPage.tsx`, `CommentList.tsx`)
+- [x] Roadmap-Seite (`/next/roadmap`, `GET /api/app/v1/roadmap`): Spalten je Status, Board- und Status-Filter in der URL, Startseite ohne Root-Board zeigt die Roadmap wie im alten UI
+- [ ] Einbettbare Roadmap (`/embedded_roadmap`) im neuen Frontend
+- [ ] Login/Registrierung/Passwort als SPA-Seiten (Devise-JSON), OAuth-Buttons
+- [x] CI: OpenAPI neu erzeugen und gegen `frontend/src/api/schema.d.ts` vergleichen (Drift-Check in `run-tests.yml`, nutzt die beim Image-Build erzeugte OpenAPI-Datei; in der CI noch nicht gelaufen)
+- [x] Meta-Tags (Titel, Beschreibung, Open Graph) für öffentliche Seiten serverseitig in `SpaController` (`spec/requests/spa_meta_tags_spec.rb`)
+- [x] `hide_unused_statuses_in_filter_by_status` und `custom_css` im neuen Frontend berücksichtigen (`GET /api/app/v1/post_statuses?board_id=`, `__root.tsx`)
 - [ ] Umstieg: `/next` → `/`, sobald alle Seiten ersetzt sind
-- [ ] Designsystem: Branding über CSS-Variablen (bestehende Site-Settings-Farben), Dark Mode, WCAG 2.2 AA, mobile first
+- [x] Designsystem: Branding über CSS-Variablen (bestehende Site-Settings-Farben), Dark Mode, WCAG 2.2 AA, mobile first, volle Bildschirmfläche (2-Spalten-Layout auf Desktop)
 - [x] i18n: YAML-Übersetzungen über `GET /api/app/v1/translations/:locale`
-- [x] Öffentliche Seiten: Board, Post-Detail und Kommentare · [ ] Roadmap
+- [x] Öffentliche Seiten: Board, Post-Detail und Kommentare, Roadmap
 - [ ] Auth-Seiten: Login, Registrierung, Passwort, OAuth-Buttons (Devise mit JSON-Endpunkten)
 - [ ] Moderation (Feedback-Queue, Nutzer) und Site Settings (General, Boards, Status, Roadmap, Auth, Appearance, Webhooks, API)
 - [ ] E2E-Tests (Playwright oder Capybara) für jede neue Seite
@@ -153,7 +155,7 @@ Empfehlung (roadmap.md, Abschnitt 3): getrenntes Frontend mit React 19 + TS 7 + 
 - [x] Logo-Größe im Mail-Template (#474): `mail_logo_size`-Setting (Pixel, Default 64); Mails nutzen künftig das eigene Tenant-Logo statt des hartkodierten astuto-assets-Links (per `EMAIL_LOGO_URL` überschreibbar)
 - [x] Rückfrage beim Verwerfen ungespeicherter Site-Settings (#106): `useUnsavedChangesWarning` (beforeunload) in General, Authentication, Appearance und Webhook-/OAuth-Formularen
 - [x] Combobox für den Status im Post-Formular (#119): Moderatoren wählen beim Erstellen einen Status; App-API nimmt `postStatusId` (nur Moderatoren), Timeline-Eintrag wird mitgedeckt
-- [ ] Roadmap zeigt Votes und Kommentare, Sortierung nach „zuletzt aktualisiert“ (#484) – gehört in den Roadmap-Seiten-Neubau des neuen Frontends
+- [x] Roadmap zeigt Votes und Kommentare, Sortierung nach „zuletzt aktualisiert“ (#484), im neuen Frontend; nur freigegebene Posts (das alte UI zeigt auch ausstehende)
 - [ ] Übersicht „Mein Feedback“ (#429)
 - [x] Eigene Links bzw. URL im Header (#479, #351): `custom_links` (jsonb: `{label, url}`), Textarea im General-Tab, gerendert in Legacy-Header und neuem Frontend
 - [x] Datenbank-Transaktionen in Workflows (#169): Post-Update/-Create jeweils atomar mit Follow bzw. Statuswechsel-Eintrag; Mails werden nach dem Commit versendet; gleiche Sicherung im öffentlichen API v1
