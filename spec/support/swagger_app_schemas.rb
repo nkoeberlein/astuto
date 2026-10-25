@@ -73,8 +73,8 @@ module Swagger
         NewPost: object({
           title: STRING, description: NULLABLE_STRING, isAnonymous: BOOLEAN, postStatusId: NULLABLE_INTEGER,
           honeypot: { type: :string, description: 'Hidden form field, must stay empty' },
-          formRenderedAt: { type: :integer, description: 'Unix time when the form was shown (anti-spam)' }
-        }, required: %i[title formRenderedAt]),
+          formFillMs: { type: :integer, description: 'Milliseconds the form was open before it was sent (anti-spam)' }
+        }, required: %i[title formFillMs]),
         UpdatePost: object({
           title: STRING, description: NULLABLE_STRING, boardId: INTEGER,
           postStatusId: NULLABLE_INTEGER, approvalStatus: { type: :string, enum: %w[approved pending rejected] }

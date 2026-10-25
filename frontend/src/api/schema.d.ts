@@ -1336,8 +1336,8 @@ export interface components {
             postStatusId?: number | null;
             /** @description Hidden form field, must stay empty */
             honeypot?: string;
-            /** @description Unix time when the form was shown (anti-spam) */
-            formRenderedAt: number;
+            /** @description Milliseconds the form was open before it was sent (anti-spam) */
+            formFillMs: number;
         };
         UpdatePost: {
             title?: string;

@@ -71,8 +71,9 @@ function PostForm(props: Props & { onClose: (pending: boolean) => void }) {
   const navigate = useNavigate()
   const ids = { title: useId(), description: useId() }
   const create = useCreatePost(board.slug)
-  // Anti-spam: the server rejects forms sent within two seconds or with the honeypot filled
-  const [renderedAt] = useState(() => Math.floor(Date.now() / 1000))
+  // Anti-spam: the server rejects forms sent within two seconds or with the honeypot filled.
+  // A duration (not a timestamp) keeps a wrong client clock from mattering.
+  const [renderedAt] = useState(() => performance.now())
   const [honeypot, setHoneypot] = useState('')
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
@@ -97,7 +98,7 @@ function PostForm(props: Props & { onClose: (pending: boolean) => void }) {
         isAnonymous,
         postStatusId: isModerator && statusId ? Number(statusId) : undefined,
         honeypot,
-        formRenderedAt: renderedAt,
+        formFillMs: Math.round(performance.now() - renderedAt),
       },
       {
         onSuccess: (post) => {
