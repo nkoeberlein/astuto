@@ -42,13 +42,13 @@ Issue-Nummern beziehen sich auf `astuto/astuto`. Phasen siehe [roadmap.md](roadm
 
 ### Sicherheit
 - [x] **v3-Voraussetzung:** Webhook-URL/-Header mit JSON statt Marshal verschlüsselt (`Webhook.encryptor`, liest beide Formate), Migration `ReencryptWebhooksAsJson` schreibt bestehende Werte neu
-- [ ] **Datenschutz:** Die alten JSON-Endpunkte (`posts#index/show`, `comments#index` u. a.) liefern `user_email` aller Autoren öffentlich aus. Behoben in der neuen App-API (`AuthorSerializer`); im alten Frontend bis zur Ablösung entfernen oder nur für Moderatoren ausgeben
-- [ ] Standard-Admin `admin@example.com` / `password` (`db/seeds.rb`): Zugangsdaten per ENV setzen oder Passwortwechsel beim ersten Login erzwingen
+- [x] **Datenschutz:** Die alten JSON-Endpunkte (Kommentare, Likes, Statusverlauf, Post-Seite) lieferten `user_email` aller Autoren öffentlich aus. Jetzt nur noch für Moderatoren und die Person selbst, sonst Gravatar-Hash (`Legacy::AuthorFields`); neue App-API über `AuthorSerializer`
+- [x] Standard-Admin: `ADMIN_EMAIL` / `ADMIN_PASSWORD`, ohne Passwort außerhalb von Development ein zufälliges, einmal im Log ausgegeben (`DefaultAdminCredentials`)
 - [x] SMTP-Standard `openssl_verify_mode: "none"` → `"peer"` (`config/environments/production.rb`)
 - [x] Header-Links und Logo-Link: nur `http(s)`, `mailto` und Pfade erlaubt (`SafeUrl`, Validierung in `TenantSetting`); vorher ließ sich ein `javascript:`-Link speichern, den der alte Header ausgab
 - [x] `rack-attack`-Anti-Spam für `/posts` stürzte bei fehlenden Feldern mit `TypeError` ab (500); fehlender Zeitstempel zählt jetzt als Spam
 - [ ] Spamschutz der App-API (`POST /api/app/v1/boards/:id/posts`) an das alte UI angleichen: auffällige IPs eine Stunde sperren (bisher nur Honeypot + Zeitstempel pro Anfrage)
-- [ ] Content Security Policy aktivieren (`config/initializers/content_security_policy.rb` ist komplett auskommentiert)
+- [x] Content Security Policy aktiv: Skripte nur von der Instanz, von Stripe oder mit Nonce; `CSP_REPORT_ONLY` als Notbremse; System-Spec prüft die Browser-Konsole. Nebenbei behoben: `/next` lief als statische Datei an `SpaController` vorbei (keine Meta-Tags), Gravatar-Bilder luden per `http`
 - [ ] Kurzer Security-Check: `rack-attack`-Regeln, API-Key-Handling
 
 ## P1 – Betrieb und Bugs
@@ -173,7 +173,7 @@ Empfehlung (roadmap.md, Abschnitt 3): getrenntes Frontend mit React 19 + TS 7 + 
 - [ ] Webhook-Vorlagen für Slack, Discord und Teams (#419)
 
 ## P2 – Projekt und Community
-- [ ] `SECURITY.md` mit Meldeweg für Sicherheitslücken
+- [x] `SECURITY.md` mit Meldeweg (GitHub Private Vulnerability Reporting), Fristen und Scope
 - [ ] `CHANGELOG.md` und Release-Prozess (SemVer, Release Notes, Image-Tags): CHANGELOG und erstes Tag `v2.0.0-alpha.1` vorhanden; Version steht in `AstutoProject::VERSION` und `frontend/package.json`. Offen: Release-Checkliste, signierte Images
 - [ ] Doku aus `astuto/astuto-docs` übernehmen (Lizenz prüfen), Links in `config/initializers/project.rb` und `app/javascript/constants/project.ts` umstellen
 - [ ] Übersetzungsplattform festlegen (z. B. Weblate)

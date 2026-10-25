@@ -3,6 +3,18 @@
 All notable changes to Astuto Evolution. Versions follow [Semantic Versioning](https://semver.org).
 Issue numbers refer to the archived [astuto/astuto](https://github.com/astuto/astuto) repository.
 
+## [Unreleased]
+
+### Security
+- The legacy UI no longer hands visitors the email addresses of authors, voters and moderators; they get a Gravatar hash instead. Moderators and the person themselves still see the email.
+- Fresh installs no longer start with the password `password`: outside development the admin gets a random password, printed once in the log, or the one from `ADMIN_PASSWORD` (`ADMIN_EMAIL` sets the email).
+- Content Security Policy: scripts only from the instance itself, Stripe (hosted billing) or with a nonce. `CSP_REPORT_ONLY=true` switches to report-only. See UPGRADING.md.
+- `SECURITY.md`: report vulnerabilities privately via GitHub.
+
+### Fixes
+- `/next` and `/next/` were served as a static file, without the server-side meta tags.
+- Gravatar images in the legacy UI loaded over plain `http` on `http` pages.
+
 ## [2.0.0-alpha.2] – 2026-10-25
 
 Fixes fresh installs. Use this instead of 2.0.0-alpha.1.

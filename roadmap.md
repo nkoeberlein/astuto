@@ -88,7 +88,7 @@ Astuto Evolution führt das archivierte [astuto/astuto](https://github.com/astut
 - [x] Ruby 4.0.9, Rails 8.1.4 mit `load_defaults` 8.1, Devise 5, Puma 8, Sidekiq 8.1, Stripe 20, Debian trixie, Node 26 – Tests grün, keine Deprecations, Produktions-Image läuft
 - [x] Dependabot, `bundler-audit`, Brakeman, lokales `bin/ci`
 - [ ] PostgreSQL 19 bei GA (Anleitung in [UPGRADING.md](UPGRADING.md) ist fertig und getestet)
-- [ ] Security-Policy (`SECURITY.md`)
+- [x] Security-Policy (`SECURITY.md`)
 - [ ] Multi-Tenancy-Modus testen und dokumentieren (Subdomains, Custom Domains, Tenant-Verwaltung); Billing je nach Geschäftsmodell (siehe 7.)
 
 ### Phase 2 – Betrieb und Bugfixes · P1
