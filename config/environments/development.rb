@@ -4,7 +4,6 @@ Rails.application.configure do
   config.hosts << ".localhost:3000"
   config.hosts << ".lvh.me:3000" # used to test oauth strategies in development
   config.hosts << ".ngrok-free.app"
-  config.hosts << ".riggraz.dev"
 
   # 0 if using localhost, 1 if using lvh.me
   config.action_dispatch.tld_length = 0
@@ -13,12 +12,12 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { host: Rails.application.base_url }
 
   # For ActionMailer previews
-  config.action_mailer.preview_path = "#{Rails.root}/spec/mailers/previews"
+  config.action_mailer.preview_paths << "#{Rails.root}/spec/mailers/previews"
 
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development
   # since you don't have to restart the web server when you make code changes.
-  config.cache_classes = false
+  config.enable_reloading = true
 
   # Do not eager load code on boot.
   config.eager_load = false

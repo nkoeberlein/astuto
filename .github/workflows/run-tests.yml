@@ -11,23 +11,25 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Build Docker production image
         run: docker compose -f docker-compose.yml -f docker-compose-prod.yml build --build-arg ENVIRONMENT=production
 
+      # Only web and db: the Vite "frontend" service would create a root-owned
+      # frontend/node_modules in the checkout and break npm ci below
       - name: Run Docker containers
-        run: docker compose -f docker-compose.yml -f docker-compose-prod.yml up --detach
+        run: docker compose -f docker-compose.yml -f docker-compose-prod.yml up --detach web
 
       - name: Install required packages
         run: |
           docker compose exec web apt-get update
           docker compose exec web apt-get install -y --no-install-recommends apt-utils
-          docker compose exec web apt-get install -y build-essential wget libpq-dev
+          docker compose exec web apt-get install -y build-essential wget libpq-dev git
 
       - name: Install RSpec and required gems
         run: |
@@ -41,5 +43,32 @@ jobs:
           docker compose exec web dpkg -i google-chrome-stable_current_amd64.deb || true
           docker compose exec web apt-get -fy install
         
+      # The container's entrypoint only prepares its own database
+      - name: Prepare test database
+        run: docker compose exec -e RAILS_ENV=test web bundle exec rails db:create db:schema:load
+
       - name: Run tests
         run: docker compose exec web bundle exec rspec
+
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 26
+
+      # swagger/ is not in git: the image build generates the OpenAPI file from
+      # the rswag specs, and the TS types in frontend/ must match it
+      - name: Check generated API types are up to date (drift check)
+        run: |
+          mkdir -p swagger/app/v1
+          docker compose cp web:/astuto/swagger/app/v1/openapi.yaml swagger/app/v1/openapi.yaml
+          cd frontend
+          npm ci --no-audit --no-fund
+          npm run api:types
+          git diff --exit-code src/api/schema.d.ts
+
+      - name: Security checks (gems, legacy npm packages, Brakeman)
+        run: |
+          docker compose exec web bin/bundler-audit check --update
+          docker compose exec web bin/brakeman --quiet --no-pager --exit-on-warn --exit-on-error
+          # yarn is not in the production image; the runner has Ruby and yarn
+          bin/yarn-audit-critical

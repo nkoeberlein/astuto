@@ -48,6 +48,7 @@ const tenantUpdateFailure = (error: string): TenantUpdateFailureAction => ({
 interface UpdateTenantParams {
   siteName?: string;
   siteLogo?: string;
+  siteFavicon?: string;
   tenantSetting?: ITenantSetting;
   locale?: string;
   customDomain?: string;
@@ -57,6 +58,7 @@ interface UpdateTenantParams {
 export const updateTenant = ({
   siteName = null,
   siteLogo = null,
+  siteFavicon = null,
   tenantSetting = null,
   locale = null,
   customDomain = null,
@@ -67,6 +69,7 @@ export const updateTenant = ({
   const tenant = Object.assign({},
     siteName !== null ? { site_name: siteName } : null,
     siteLogo !== null ? { site_logo: siteLogo } : null,
+    siteFavicon !== null ? { site_favicon: siteFavicon } : null,
     locale !== null ? { locale } : null,
     customDomain !== null ? { custom_domain: customDomain } : null,
   );

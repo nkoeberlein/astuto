@@ -1,6 +1,8 @@
 import * as React from 'react';
 import I18n from 'i18n-js';
 
+import { projectDocsUrl } from '../../../constants/project';
+
 import Box from '../../common/Box';
 import { WebhooksState } from '../../../reducers/webhooksReducer';
 import { WebhookPages } from './WebhooksSiteSettingsP';
@@ -48,7 +50,7 @@ const WebhooksIndexPage = ({
 
       <p style={{textAlign: 'left'}}>
         <ActionLink
-          onClick={() => window.open('https://github.com/astuto/astuto-docs/blob/main/docs/webhooks/webhooks-introduction.md', '_blank')}
+          onClick={() => window.open(projectDocsUrl('webhooks/webhooks-introduction.md'), '_blank')}
           icon={<LearnMoreIcon />}
         >
           {I18n.t('site_settings.webhooks.learn_more')}

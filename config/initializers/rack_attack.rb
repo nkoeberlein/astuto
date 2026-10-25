@@ -77,13 +77,16 @@ class Rack::Attack
     if req.path == '/posts' && req.post?
       ip = req.get_header("action_dispatch.remote_ip")
       real_req = ActionDispatch::Request.new(req.env) # Needed to parse JSON body
-  
-      # Check for honeypot field submission
-      honeypot_filled = real_req.params['post']['dnf1'] != "" || real_req.params['post']['dnf2'] != ""
+      post_params = real_req.params['post']
+      post_params = {} unless post_params.is_a?(Hash)
 
-      # Check for time of form render
-      too_fast_submit = Time.now.to_i - real_req.params[:post][:form_rendered_at] < 2
-  
+      # Check for honeypot field submission (missing fields count as filled)
+      honeypot_filled = post_params['dnf1'] != "" || post_params['dnf2'] != ""
+
+      # Check for time of form render (a missing timestamp counts as too fast)
+      rendered_at = post_params['form_rendered_at'].to_i
+      too_fast_submit = rendered_at.zero? || Time.now.to_i - rendered_at < 2
+
       if honeypot_filled || too_fast_submit
         Rack::Attack.cache.store.write("post-submit-antispam-#{ip}", true, expires_in: 1.hour)
       end

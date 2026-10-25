@@ -24,7 +24,8 @@ feature 'oauth sign up / log in', type: :system, js: true do
     expect(page).not_to have_content(/#{disabled_o_auth.name}/i)
     expect(page).not_to have_content(/#{disabled_default_o_auth.name}/i)
 
-    OAuth.tenant_default_o_auths.create
+    # The tenant enables the default OAuth (like TenantDefaultOAuthsController#create)
+    TenantDefaultOAuth.create!(o_auth_id: default_o_auth.id)
 
     visit new_user_registration_path
     expect(page).to have_css(o_auth_button_selector, count: 2)
@@ -40,7 +41,8 @@ feature 'oauth sign up / log in', type: :system, js: true do
     expect(page).not_to have_content(/#{disabled_o_auth.name}/i)
     expect(page).not_to have_content(/#{disabled_default_o_auth.name}/i)
 
-    OAuth.tenant_default_o_auths.create
+    # The tenant enables the default OAuth (like TenantDefaultOAuthsController#create)
+    TenantDefaultOAuth.create!(o_auth_id: default_o_auth.id)
 
     visit new_user_session_path
     expect(page).to have_css(o_auth_button_selector, count: 2)

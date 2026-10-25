@@ -18,4 +18,9 @@ class PostPolicy < ApplicationPolicy
   def destroy?
     user == record.user or user.moderator?
   end
+
+  # AI summary of the discussion (moderators only)
+  def summarize?
+    user.moderator?
+  end
 end

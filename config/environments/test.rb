@@ -8,12 +8,13 @@ Rails.application.configure do
   # For Devise
   config.action_mailer.default_url_options = { host: 'localhost:3000' }
 
-  config.cache_classes = false
+  # Never reload code while tests run. With reloading on, files written by a
+  # dev server in the same container (e.g. db/schema.rb on boot) made classes
+  # reload mid-run (AssociationTypeMismatch: User expected, got User).
+  config.enable_reloading = false
 
-  # Do not eager load code on boot. This avoids loading your whole application
-  # just for the purpose of running a single test. If you are using a tool that
-  # preloads Rails for running tests, you may have to set it to true.
-  config.eager_load = false
+  # Eager load on CI to catch autoloading errors; skip locally for faster single runs.
+  config.eager_load = ENV['CI'].present?
 
   # Configure public file server for tests with Cache-Control for performance.
   config.public_file_server.enabled = true
@@ -27,7 +28,7 @@ Rails.application.configure do
   config.cache_store = :null_store
 
   # Raise exceptions instead of rendering exception templates.
-  config.action_dispatch.show_exceptions = false
+  config.action_dispatch.show_exceptions = :none
 
   # Disable request forgery protection in test environment.
   config.action_controller.allow_forgery_protection = false

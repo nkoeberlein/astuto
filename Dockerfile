@@ -1,16 +1,15 @@
 ###
 ### Build stage ###
 ###
-FROM ruby:3.0.6 AS builder
+FROM ruby:4.0.9-trixie AS builder
 
 RUN apt-get update && apt-get install -y ca-certificates curl gnupg
 RUN mkdir -p /etc/apt/keyrings && \
   curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg && \
-  echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_20.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list
+  echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_26.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list
 
 RUN apt-get update -qq && apt-get install -y nodejs postgresql-client
 RUN npm install -g yarn
-RUN gem install bundler -v 2.3
 
 ENV APP_ROOT /astuto
 WORKDIR ${APP_ROOT}
@@ -34,6 +33,11 @@ RUN bundle install
 COPY package.json yarn.lock ${APP_ROOT}/
 RUN yarn install --check-files
 
+# Install v2 frontend packages (frontend/)
+COPY frontend/package.json frontend/package-lock.json ${APP_ROOT}/frontend/
+# --include=dev: Vite and friends are build tools; only the build output ships
+RUN cd frontend && npm ci --include=dev --no-audit --no-fund
+
 # Copy all files
 COPY . ${APP_ROOT}/
 
@@ -43,6 +47,9 @@ RUN RSWAG_SWAGGERIZE=true RAILS_ENV=test bundle exec rake rswag:specs:swaggerize
 # Compile assets if production
 # SECRET_KEY_BASE=1 is a workaround (see https://github.com/rails/rails/issues/32947)
 RUN if [ "$ENVIRONMENT" = "production" ]; then SECRET_KEY_BASE=1 ./bin/rails assets:precompile; fi
+
+# Build v2 frontend into public/next if production
+RUN if [ "$ENVIRONMENT" = "production" ]; then cd frontend && npm run build; fi
 
 ###
 ### Dev stage ###
@@ -56,17 +63,16 @@ EXPOSE 3000
 ###
 ### Prod stage ###
 ###
-FROM ruby:3.0.6-slim AS prod
+FROM ruby:4.0.9-slim-trixie AS prod
 
+# No Node.js at runtime: assets are prebuilt and nothing renders React on the server.
 RUN apt-get update -qq && \
   apt-get install -yq  \
-  postgresql-client \
-  nodejs && \
+  postgresql-client && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
   truncate -s 0 /var/log/*log
 
-RUN gem install bundler -v 2.3
 
 ENV APP_ROOT /astuto
 WORKDIR ${APP_ROOT}

@@ -117,15 +117,21 @@ module Api
 
         user_id = impersonate_user_if_requested(params[:impersonated_user_id], current_api_key.user_id)
 
-        post.update!(post_update_status_params)
+        status_change_workflow = nil
+        ActiveRecord::Base.transaction do
+          post.update!(post_update_status_params)
 
-        if post.post_status_id_previously_changed?
-          ExecutePostStatusChangeLogicWorkflow.new(
-            user_id: user_id,
-            post: post,
-            post_status_id: post.post_status_id
-          ).run
+          if post.post_status_id_previously_changed?
+            status_change_workflow = ExecutePostStatusChangeLogicWorkflow.new(
+              user_id: user_id,
+              post: post,
+              post_status_id: post.post_status_id
+            )
+            status_change_workflow.create_status_change!
+          end
         end
+
+        status_change_workflow.notify_followers if status_change_workflow
 
         render json: { id: post.id }, status: :ok
       end

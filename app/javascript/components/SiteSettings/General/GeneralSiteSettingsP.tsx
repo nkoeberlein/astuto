@@ -2,6 +2,8 @@ import * as React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import I18n from 'i18n-js';
 
+import { projectDocsUrl } from '../../../constants/project';
+
 import Box from '../../common/Box';
 import SiteSettingsInfoBox from '../../common/SiteSettingsInfoBox';
 import Button from '../../common/Button';
@@ -19,6 +21,7 @@ import {
 } from '../../../interfaces/ITenantSetting';
 import { DangerText, SmallMutedText } from '../../common/CustomTexts';
 import { getLabel, getValidationMessage } from '../../../helpers/formUtils';
+import { useUnsavedChangesWarning } from '../../../hooks/useUnsavedChangesWarning';
 import IBoardJSON from '../../../interfaces/json/IBoard';
 import ActionLink from '../../common/ActionLink';
 import { LearnMoreIcon } from '../../common/Icons';
@@ -26,18 +29,24 @@ import { LearnMoreIcon } from '../../common/Icons';
 export interface ISiteSettingsGeneralForm {
   siteName: string;
   siteLogo: string;
+  siteFavicon?: string;
   brandDisplaySetting: string;
   locale: string;
   useBrowserLocale: boolean;
   rootBoardId?: string;
+  defaultPostSorting: string;
+  customLinksText?: string;
   customDomain?: string;
   isPrivate: boolean;
   allowAnonymousFeedback: boolean;
   feedbackApprovalPolicy: string;
   logoLinksTo: string;
   logoCustomUrl?: string;
+  roadmapEnabled: boolean;
   showRoadmapInHeader: boolean;
   collapseBoardsInHeader: string;
+  loginOnlyWithOauth: boolean;
+  mailLogoSize?: string;
   showVoteCount: boolean;
   showVoteButtonInBoard: boolean;
   hideUnusedStatusesInFilterByStatus: boolean;
@@ -56,18 +65,24 @@ interface Props {
   updateTenant(
     siteName: string,
     siteLogo: string,
+    siteFavicon: string,
     brandDisplaySetting: string,
     locale: string,
     useBrowserLocale: boolean,
     rootBoardId: number,
+    defaultPostSorting: string,
+    customLinks: { label: string; url: string }[],
     customDomain: string,
     isPrivate: boolean,
     allowAnonymousFeedback: boolean,
     feedbackApprovalPolicy: string,
     logoLinksTo: string,
     logoCustomUrl: string,
+    roadmapEnabled: boolean,
     showRoadmapInHeader: boolean,
     collapseBoardsInHeader: string,
+    loginOnlyWithOauth: boolean,
+    mailLogoSize: number,
     showVoteCount: boolean,
     showVoteButtonInBoard: boolean,
     hideUnusedStatusesInFilterByStatus: boolean,
@@ -95,18 +110,24 @@ const GeneralSiteSettingsP = ({
     defaultValues: {
       siteName: originForm.siteName,
       siteLogo: originForm.siteLogo,
+      siteFavicon: originForm.siteFavicon,
       brandDisplaySetting: originForm.brandDisplaySetting,
       locale: originForm.locale,
       useBrowserLocale: originForm.useBrowserLocale,
       rootBoardId: originForm.rootBoardId,
+      defaultPostSorting: originForm.defaultPostSorting,
+      customLinksText: originForm.customLinksText,
       customDomain: originForm.customDomain,
       isPrivate: originForm.isPrivate,
       allowAnonymousFeedback: originForm.allowAnonymousFeedback,
       feedbackApprovalPolicy: originForm.feedbackApprovalPolicy,
       logoLinksTo: originForm.logoLinksTo,
       logoCustomUrl: originForm.logoCustomUrl,
+      roadmapEnabled: originForm.roadmapEnabled,
       showRoadmapInHeader: originForm.showRoadmapInHeader,
       collapseBoardsInHeader: originForm.collapseBoardsInHeader,
+      loginOnlyWithOauth: originForm.loginOnlyWithOauth,
+      mailLogoSize: originForm.mailLogoSize,
       showVoteCount: originForm.showVoteCount,
       showVoteButtonInBoard: originForm.showVoteButtonInBoard,
       hideUnusedStatusesInFilterByStatus: originForm.hideUnusedStatusesInFilterByStatus,
@@ -115,21 +136,41 @@ const GeneralSiteSettingsP = ({
   });
   
   const onSubmit: SubmitHandler<ISiteSettingsGeneralForm> = data => {
+    // Custom links: one "Label|URL" per line (see site_settings.general.custom_links_help)
+    const customLinks = (data.customLinksText ?? '')
+      .split(/\r?\n/)
+      .map((line) => line.trim())
+      .filter((line) => line !== '')
+      .map((line) => {
+        const separator = line.indexOf('|');
+        return {
+          label: (separator === -1 ? '' : line.slice(0, separator)).trim(),
+          url: (separator === -1 ? line : line.slice(separator + 1)).trim(),
+        };
+      })
+      .filter((link) => link.url !== '');
+
     updateTenant(
       data.siteName,
       data.siteLogo,
+      data.siteFavicon,
       data.brandDisplaySetting,
       data.locale,
       data.useBrowserLocale,
       Number(data.rootBoardId),
+      data.defaultPostSorting,
+      customLinks,
       data.customDomain,
       data.isPrivate,
       data.allowAnonymousFeedback,
       data.feedbackApprovalPolicy,
       data.logoLinksTo,
       data.logoCustomUrl,
+      data.roadmapEnabled,
       data.showRoadmapInHeader,
       data.collapseBoardsInHeader,
+      data.loginOnlyWithOauth,
+      Number(data.mailLogoSize),
       data.showVoteCount,
       data.showVoteButtonInBoard,
       data.hideUnusedStatusesInFilterByStatus,
@@ -145,6 +186,7 @@ const GeneralSiteSettingsP = ({
   };
 
   const customDomain = watch('customDomain');
+  useUnsavedChangesWarning(isDirty && !isSubmitSuccessful);
 
   React.useEffect(() => {
     if (window.location.hash) {
@@ -191,6 +233,16 @@ const GeneralSiteSettingsP = ({
             </div>
 
             <div className="formGroup col-4">
+              <label htmlFor="siteFavicon">{ getLabel('tenant', 'site_favicon') }</label>
+              <input
+                {...register('siteFavicon')}
+                placeholder='https://example.com/favicon.png'
+                id="siteFavicon"
+                className="formControl"
+              />
+            </div>
+
+            <div className="formGroup col-4">
               <label htmlFor="brandSetting">{ getLabel('tenant_setting', 'brand_display') }</label>
               <select
                 {...register('brandDisplaySetting')}
@@ -229,6 +281,14 @@ const GeneralSiteSettingsP = ({
               <option value="zh-CN">🇨🇳 中文</option>
               <option value="ru">🇷🇺 Русский</option>
               <option value="vi">🇻🇳 Tiếng Việt</option>
+              <option value="tr">🇹🇷 Türkçe</option>
+              <option value="cs">🇨🇿 Čeština</option>
+              <option value="pl">🇵🇱 Polski</option>
+              <option value="el">🇬🇷 Ελληνικά</option>
+              <option value="hi">🇮🇳 हिन्दी</option>
+              <option value="nl">🇳🇱 Nederlands</option>
+              <option value="sr">🇷🇸 Српски</option>
+              <option value="sv">🇸🇪 Svenska</option>
             </select>
           </div>
 
@@ -260,6 +320,23 @@ const GeneralSiteSettingsP = ({
             </select>
           </div>
 
+          <div className="formGroup">
+            <label htmlFor="defaultPostSorting">{ getLabel('tenant_setting', 'default_post_sorting') }</label>
+            <select
+              {...register('defaultPostSorting')}
+              id="defaultPostSorting"
+              className="selectPicker"
+            >
+              <option value="trending">{ I18n.t('board.sort_by_box.trending') }</option>
+              <option value="newest">{ I18n.t('board.sort_by_box.newest') }</option>
+              <option value="most_voted">{ I18n.t('board.sort_by_box.most_voted') }</option>
+              <option value="oldest">{ I18n.t('board.sort_by_box.oldest') }</option>
+            </select>
+            <SmallMutedText>
+              { I18n.t('site_settings.general.default_post_sorting_help') }
+            </SmallMutedText>
+          </div>
+
           { isMultiTenant &&
             <div className="formGroup">
               <label htmlFor="customDomain">{ getLabel('tenant', 'custom_domain') }</label>
@@ -278,7 +355,7 @@ const GeneralSiteSettingsP = ({
               }
               <div style={{marginTop: 8}}>
                 <ActionLink
-                  onClick={() => window.open('https://github.com/astuto/astuto-docs/blob/main/docs/custom-domain.md', '_blank')}
+                  onClick={() => window.open(projectDocsUrl('custom-domain.md'), '_blank')}
                   icon={<LearnMoreIcon />}
                 >
                   {I18n.t('site_settings.general.custom_domain_learn_more')}
@@ -337,6 +414,20 @@ const GeneralSiteSettingsP = ({
             </div>
           </div>
 
+          <div id="authentication" className="settingsGroup">
+            <h4>{ I18n.t('site_settings.general.subtitle_authentication') }</h4>
+
+            <div className="formGroup">
+              <div className="checkboxSwitch">
+                <input {...register('loginOnlyWithOauth')} type="checkbox" id="login_only_with_oauth_checkbox" />
+                <label htmlFor="login_only_with_oauth_checkbox">{ getLabel('tenant_setting', 'login_only_with_oauth') }</label>
+                <SmallMutedText>
+                  { I18n.t('site_settings.general.login_only_with_oauth_help') }
+                </SmallMutedText>
+              </div>
+            </div>
+          </div>
+
           <div id="header" className="settingsGroup">
             <h4>{ I18n.t('site_settings.general.subtitle_header') }</h4>
 
@@ -372,6 +463,16 @@ const GeneralSiteSettingsP = ({
             
             <div className="formGroup">
               <div className="checkboxSwitch">
+                <input {...register('roadmapEnabled')} type="checkbox" id="roadmap_enabled_checkbox" />
+                <label htmlFor="roadmap_enabled_checkbox">{ getLabel('tenant_setting', 'roadmap_enabled') }</label>
+                <SmallMutedText>
+                  { I18n.t('site_settings.general.roadmap_enabled_help') }
+                </SmallMutedText>
+              </div>
+            </div>
+
+            <div className="formGroup">
+              <div className="checkboxSwitch">
                 <input {...register('showRoadmapInHeader')} type="checkbox" id="show_roadmap_in_header" />
                 <label htmlFor="show_roadmap_in_header">{ getLabel('tenant_setting', 'show_roadmap_in_header') }</label>
               </div>
@@ -391,6 +492,38 @@ const GeneralSiteSettingsP = ({
                   { I18n.t('site_settings.general.collapse_boards_in_header_always_collapse') }
                 </option>
               </select>
+            </div>
+            <div className="formGroup">
+              <label htmlFor="customLinksText">{ getLabel('tenant_setting', 'custom_links') }</label>
+              <textarea
+                {...register('customLinksText')}
+                id="customLinksText"
+                className="formControl"
+                placeholder={'Docs|https://example.com/docs\nHelp|https://example.com/help'}
+                rows={2}
+              />
+              <SmallMutedText>
+                { I18n.t('site_settings.general.custom_links_help') }
+              </SmallMutedText>
+            </div>
+          </div>
+
+          <div id="mail" className="settingsGroup">
+            <h4>{ I18n.t('site_settings.general.subtitle_mail') }</h4>
+
+            <div className="formGroup">
+              <label htmlFor="mailLogoSize">{ getLabel('tenant_setting', 'mail_logo_size') }</label>
+              <input
+                {...register('mailLogoSize')}
+                type="number"
+                min={8}
+                max={1024}
+                id="mailLogoSize"
+                className="formControl"
+              />
+              <SmallMutedText>
+                { I18n.t('site_settings.general.mail_logo_size_help') }
+              </SmallMutedText>
             </div>
           </div>
 

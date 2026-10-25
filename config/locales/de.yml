@@ -4,6 +4,7 @@ de:
       or: 'oder'
     errors:
       unknown: 'Ein unbekannter Fehler ist aufgetreten, bitte versuchen Sie es erneut'
+      not_found: 'Seite nicht gefunden'
     validations:
       required: '%{attribute} ist erforderlich'
       email: 'Ungültige E-Mail-Adresse'
@@ -105,6 +106,14 @@ de:
     log_in: 'Einloggen / Registrieren'
   roadmap:
     title: 'Roadmap'
+    empty: 'Die Roadmap ist leer.'
+    filter_by_board: 'Nach Board filtern'
+    more_posts:
+      one: '+ %{count} weiterer Beitrag'
+      other: '+ %{count} weitere Beiträge'
+    sort_by:
+      most_voted: 'Beliebteste'
+      recently_updated: 'Zuletzt aktualisiert'
   billing:
     title: 'Abrechnung'
   blocked_tenant:
@@ -122,6 +131,7 @@ de:
       non_anonymous_submission_help: 'Sie posten als %{name}'
       submit_success: 'Feedback veröffentlicht! Du wirst gleich weitergeleitet...'
       submit_pending: 'Ihr Feedback wurde übermittelt und wartet nun auf die Freigabe eines Moderators!'
+      similar_posts_title: 'Ähnliche Beiträge existieren bereits – lieber dort abstimmen?'
     search_box:
       title: 'Suchen'
     filter_box:
@@ -138,6 +148,7 @@ de:
       to_label: 'Bis'
     posts_list:
       empty: 'Es existieren keine Beiträge'
+      load_more: 'Mehr laden'
   post:
     edit_button: 'Bearbeiten'
     published_by: 'Herausgegeben von'
@@ -151,6 +162,11 @@ de:
     likes_box:
       title: 'Likes'
       empty: 'Es existieren noch keine Likes'
+    ai_summary:
+      title: 'KI-Zusammenfassung'
+      button: 'Diskussion zusammenfassen'
+      loading: 'Fasse zusammen…'
+      hint: 'Titel, Beschreibung und Kommentare werden an den eingestellten KI-Anbieter gesendet.'
     action_box:
       title: 'Aktionen'
       follow_button: 'Beitrag folgen'
@@ -314,3 +330,6 @@ de:
       status_active: 'Aktiv'
       status_blocked: 'Gesperrt'
       status_deleted: 'Gelöscht'
+      search_placeholder: 'Nach Name oder E-Mail suchen'
+      filter_all_statuses: 'Alle Status'
+      filter_all_roles: 'Alle Rollen'

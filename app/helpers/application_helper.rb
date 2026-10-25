@@ -1,4 +1,15 @@
 module ApplicationHelper
+  # The email/password login form is hidden when the tenant allows OAuth login
+  # only and at least one provider is enabled (#471). Recovery stays possible
+  # through password reset links and the Devise endpoints are never blocked.
+  def login_only_with_oauth?
+    setting = @tenant_setting || (Current.tenant && Current.tenant.tenant_setting)
+    return false if setting.nil?
+
+    oauths = defined?(@o_auths) ? @o_auths : nil
+    oauths.present? && setting.login_only_with_oauth
+  end
+
   def check_user_signed_in
     unless user_signed_in?
       flash[:alert] = t('errors.not_logged_in')
@@ -62,7 +73,10 @@ module ApplicationHelper
 
     options[:host] = host
 
-    if Rails.application.base_url.include?('https')
+    if Rails.application.base_url.to_s.include?('https') ||
+       ActiveModel::Type::Boolean.new.cast(ENV.fetch('ASSUME_SSL', 'false')) ||
+       ActiveModel::Type::Boolean.new.cast(ENV.fetch('FORCE_SSL', 'false')) ||
+       (defined?(request) && request&.ssl?)
       options[:protocol] = 'https'
     else
       options[:protocol] = 'http'
@@ -91,6 +105,15 @@ module ApplicationHelper
     end
     
     tenant
+  end
+
+  # Tenant custom CSS goes unescaped into a <style> block. Writing every "<"
+  # as the CSS escape "\3c " means the browser can never see "</style", no
+  # matter how the input is nested (e.g. "</sty</stylele>"). Inside CSS strings
+  # the escape still stands for "<". The block form keeps Ruby from reading
+  # "\3" as a backreference.
+  def custom_css_for_style_tag(css)
+    css.to_s.gsub('<') { '\3c ' }.html_safe
   end
 
   # Redirect to previous page if present; otherwise redirect to root

@@ -1,96 +1,112 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.0.6'
+ruby '4.0.9'
 
-gem 'rake', '13.2.1'
+gem 'rake', '13.4.2'
 
-gem 'rails', '6.1.7.9'
+gem 'rails', '8.1.4'
 
-gem 'pg', '1.3.5'
+# Asset pipeline (no longer bundled with Rails 7)
+gem 'sprockets-rails', '3.5.2'
 
-gem 'puma', '5.6.9'
+# Default gems that are no longer part of Ruby's standard library (Ruby >= 3.4)
+gem 'base64'
+gem 'bigdecimal'
+gem 'csv'
+gem 'drb'
+gem 'mutex_m'
+gem 'observer'
+
+gem 'pg', '1.7.0'
+
+gem 'puma', '8.0.2'
 
 gem 'turbolinks', '5.2.1'
 
-gem 'jbuilder', '2.11.5'
+gem 'jbuilder', '2.15.1'
 
-gem 'bootsnap', '1.12.0', require: false
+gem 'bootsnap', '1.26.0', require: false
 
 # CSS
 gem "cssbundling-rails", '1.1.2'
 
 # JavaScript
-gem 'jsbundling-rails', '1.1.1'
+gem 'jsbundling-rails', '1.3.1'
 
 # HTTP requests
-gem 'httparty', '0.21.0'
+gem 'httparty', '0.24.3'
+
+# Model Context Protocol server (official SDK)
+gem 'mcp', '1.8.1'
 
 # Authentication
-gem 'devise', '4.7.3'
+gem 'devise', '5.0.4'
 
 # Authorization
-gem 'pundit', '2.2.0'
+gem 'pundit', '2.5.2'
 
 # I18n (forward locales to JS)
 gem 'i18n-js', '3.9.2'
 
-# React
-gem 'react-rails', '2.6.2'
+# React (legacy UI; the npm package react_ujs stays on 2.6 because 3.x requires React 18)
+gem 'react-rails', '3.3.1'
 
 # Pagination
-gem 'kaminari', '1.2.2'
+gem 'kaminari', '1.3.0'
 
 # DDoS protection
-gem 'rack-attack', '6.7.0'
+gem 'rack-attack', '6.8.0'
 
 # Slugs
-gem 'friendly_id', '5.5.1'
+gem 'friendly_id', '5.7.0'
 
 # Billing
-gem 'stripe', '11.2.0'
+gem 'stripe', '20.0.0'
 
 # Serve swagger docs
-gem 'rswag-api', '2.15.0'
+gem 'rswag-api', '2.17.0'
 
 # We need those gems here, so we can Swaggerize in production
-gem 'rswag-specs', '2.15.0'
-gem 'rspec-rails', '4.0.2'
+gem 'rswag-specs', '2.17.0'
+gem 'rspec-rails', '8.0.4'
 gem 'capybara', '3.40.0'
 
 # CORS policy
-gem 'rack-cors', '2.0.2'
+gem 'rack-cors', '3.0.0'
 
 # ActiveJob backend
-gem 'sidekiq', '7.3.5'
+gem 'sidekiq', '8.1.7'
 
 # Cron jobs with sidekiq
-gem 'sidekiq-cron', '2.0.1'
+gem 'sidekiq-cron', '2.4.0'
 
 # Template language
-gem 'liquid', '5.5.1'
+gem 'liquid', '5.14.0'
 
 group :development, :test do
-  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'debug', '1.11.1', platforms: [:mri, :windows], require: false
   
-  gem 'factory_bot_rails', '5.0.2'
+  gem 'factory_bot_rails', '6.5.1'
+
+  # Security checks (bin/ci): known gem vulnerabilities and static analysis
+  gem 'bundler-audit', '0.9.3', require: false
+  gem 'brakeman', '8.1.0', require: false
 end
 
 group :development do
   gem 'web-console', '>= 3.3.0'
-  gem 'spring', '2.1.1'
-  gem 'spring-watcher-listen', '2.0.1'
 end
 
 group :test do
-  gem 'selenium-webdriver', '4.17.0'
+  gem 'selenium-webdriver', '4.51.0'
 
   # Retry flaky Capybara tests
   gem 'rspec-retry', '0.6.2'
 end
 
 # If not bundled, webpack compilation in production fails
-gem 'listen', '3.5.1'
+gem 'listen', '3.10.1'
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+gem 'tzinfo-data', platforms: [:windows, :jruby]

@@ -1,0 +1,46 @@
+# Dependency updates. Minor and patch updates are grouped into one PR per
+# ecosystem; major updates get their own PRs. Security updates additionally
+# need "Dependabot security updates" enabled in the repository settings.
+version: 2
+updates:
+  - package-ecosystem: bundler
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      gems:
+        update-types: [minor, patch]
+
+  # v2 frontend (React 19, Vite, TanStack)
+  - package-ecosystem: npm
+    directory: /frontend
+    schedule:
+      interval: weekly
+    groups:
+      frontend:
+        update-types: [minor, patch]
+
+  # Legacy UI (React 16, removed in 2.0): security updates only
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 0
+
+  - package-ecosystem: docker
+    directory: /
+    schedule:
+      interval: weekly
+
+  - package-ecosystem: docker-compose
+    directory: /
+    schedule:
+      interval: weekly
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      actions:
+        patterns: ["*"]

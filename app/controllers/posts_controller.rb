@@ -44,22 +44,18 @@ class PostsController < ApplicationController
       return
     end
 
-    # handle anonymous feedback
-    approval_status = "pending"
-    is_anonymous = params[:post][:is_anonymous]
-
-    if Current.tenant.tenant_setting.feedback_approval_policy == "never_require_approval" ||
-      (Current.tenant.tenant_setting.feedback_approval_policy == "anonymous_require_approval" && !is_anonymous) ||
-      (user_signed_in? && current_user.moderator?)
-      approval_status = "approved"
-    end
+    is_anonymous = anonymous_submission?
+    approval_status = Current.tenant.tenant_setting.approval_status_for_new_post(
+      user: current_user,
+      anonymous: is_anonymous
+    )
 
     @post = Post.new(approval_status: approval_status)
     @post.assign_attributes(post_create_params(is_anonymous: is_anonymous))
 
-    if @post.save
-      Follow.create(post_id: @post.id, user_id: current_user.id) unless is_anonymous
-      
+    saved = CreatePostWorkflow.new(post: @post, follower: is_anonymous ? nil : current_user).run
+
+    if saved
       render json: @post, status: :created
     else
       render json: {
@@ -105,16 +101,25 @@ class PostsController < ApplicationController
     authorize @post
     
     @post.assign_attributes(post_update_params)
+    status_changed = @post.post_status_id_changed?
 
-    if @post.save
-      if @post.post_status_id_previously_changed?
-        ExecutePostStatusChangeLogicWorkflow.new(
-          user_id: current_user.id,
-          post: @post,
-          post_status_id: @post.post_status_id
-        ).run
-      end
+    status_change_workflow = ExecutePostStatusChangeLogicWorkflow.new(
+      user_id: current_user.id,
+      post: @post,
+      post_status_id: @post.post_status_id
+    )
 
+    # The post update and its status change record must both happen or neither (#169)
+    saved = ActiveRecord::Base.transaction do
+      result = @post.save
+      status_change_workflow.create_status_change! if result && status_changed
+      result
+    end
+
+    # Mails are enqueued after the transaction has committed
+    status_change_workflow.notify_followers if saved && status_changed
+
+    if saved
       render json: @post
     else
       render json: {
@@ -169,11 +174,17 @@ class PostsController < ApplicationController
     end
 
     def anti_spam_checks
-      params[:post][:dnf1] != "" || params[:post][:dnf2] != "" || Time.now.to_i - params[:post][:form_rendered_at] < 2
+      rendered_at = params[:post][:form_rendered_at].to_i
+      params[:post][:dnf1] != "" || params[:post][:dnf2] != "" || rendered_at.zero? || Time.now.to_i - rendered_at < 2
+    end
+
+    def anonymous_submission?
+      ActiveModel::Type::Boolean.new.cast(params[:post][:is_anonymous]) || false
     end
 
     def invalid_anonymous_submission
-      (params[:post][:is_anonymous] == false && !user_signed_in?) || (params[:post][:is_anonymous] == true && Current.tenant.tenant_setting.allow_anonymous_feedback == false)
+      (!anonymous_submission? && !user_signed_in?) ||
+        (anonymous_submission? && !Current.tenant.tenant_setting.allow_anonymous_feedback)
     end
     
     def post_create_params(is_anonymous: false)

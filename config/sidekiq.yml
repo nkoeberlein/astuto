@@ -1,0 +1,6 @@
+# Loaded automatically by `bundle exec sidekiq`. Without it Sidekiq only works
+# on the "default" queue and webhook jobs (queue "webhooks") would never run.
+:queues:
+  - default
+  - webhooks
+  - mailers

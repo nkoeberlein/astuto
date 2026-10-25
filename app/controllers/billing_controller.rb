@@ -15,7 +15,7 @@ class BillingController < ApplicationController
       method(:billing_url),
       disallow_custom_domain: true,
       options: { subdomain: 'billing', tenant_id: tenant_id, auth_token: auth_token }
-    )
+    ), allow_other_host: true
   end
 
   def index
@@ -43,7 +43,7 @@ class BillingController < ApplicationController
       }).data
       @prices = @prices.sort_by { |price| price.unit_amount }
     else
-      redirect_to get_url_for(method(:root_url))
+      redirect_to get_url_for(method(:root_url)), allow_other_host: true
     end
   end
 
@@ -57,7 +57,7 @@ class BillingController < ApplicationController
       @page_title = t('billing.title')
       load_tenant_data_for_billing
     else
-      redirect_to get_url_for(method(:root_url))
+      redirect_to get_url_for(method(:root_url)), allow_other_host: true
     end
   end
 

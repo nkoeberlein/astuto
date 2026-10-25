@@ -11,7 +11,7 @@ class Webhook < ApplicationRecord
   validates :trigger, presence: true
   validates :http_method, presence: true
 
-  enum trigger: [
+  enum :trigger, [
     :new_post,
     :new_post_pending_approval,
     :delete_post,
@@ -21,33 +21,33 @@ class Webhook < ApplicationRecord
     :new_user
   ]
 
-  enum http_method: [
+  enum :http_method, [
     :http_post,
     :http_put,
     :http_patch,
     :http_delete
   ]
 
+  # URL and headers can contain secrets, so they are stored encrypted (AES-256-GCM,
+  # key = SHA-256 of SECRET_KEY_BASE). Values are serialized as JSON so the v3 backend
+  # can read them; values written by older versions with Marshal can still be read.
+  def self.encryptor
+    key = Digest::SHA256.digest(Rails.application.secret_key_base)
+    ActiveSupport::MessageEncryptor.new(key, cipher: 'aes-256-gcm', serializer: :json_allow_marshal)
+  end
+
   private
 
     def encrypt_url
       return if url.nil?
 
-      # Derive a 32-byte key from the secret_key_base
-      key = Digest::SHA256.digest(Rails.application.secrets.secret_key_base)
-      encryptor = ActiveSupport::MessageEncryptor.new(key)
-
-      self.url = encryptor.encrypt_and_sign(url)
+      self.url = self.class.encryptor.encrypt_and_sign(url)
     end
 
     def decrypt_url
       return if url.nil?
 
-      # Derive a 32-byte key from the secret_key_base
-      key = Digest::SHA256.digest(Rails.application.secrets.secret_key_base)
-      encryptor = ActiveSupport::MessageEncryptor.new(key)
-
-      self.url = encryptor.decrypt_and_verify(url)
+      self.url = self.class.encryptor.decrypt_and_verify(url)
     rescue ActiveSupport::MessageVerifier::InvalidSignature
       errors.add(:url, 'could not be decrypted')
     end
@@ -55,21 +55,13 @@ class Webhook < ApplicationRecord
     def encrypt_http_headers
       return if http_headers.nil?
 
-      # Derive a 32-byte key from the secret_key_base
-      key = Digest::SHA256.digest(Rails.application.secrets.secret_key_base)
-      encryptor = ActiveSupport::MessageEncryptor.new(key)
-
-      self.http_headers = encryptor.encrypt_and_sign(http_headers.to_json)
+      self.http_headers = self.class.encryptor.encrypt_and_sign(http_headers.to_json)
     end
 
     def decrypt_http_headers
       return if http_headers.nil?
 
-      # Derive a 32-byte key from the secret_key_base
-      key = Digest::SHA256.digest(Rails.application.secrets.secret_key_base)
-      encryptor = ActiveSupport::MessageEncryptor.new(key)
-
-      self.http_headers = JSON.parse(encryptor.decrypt_and_verify(http_headers)) if http_headers.present?
+      self.http_headers = JSON.parse(self.class.encryptor.decrypt_and_verify(http_headers)) if http_headers.present?
     rescue ActiveSupport::MessageVerifier::InvalidSignature
       errors.add(:http_headers, 'could not be decrypted')
     end

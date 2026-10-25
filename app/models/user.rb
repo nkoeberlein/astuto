@@ -12,10 +12,10 @@ class User < ApplicationRecord
   has_many :comments, dependent: :destroy
   has_one :api_key, dependent: :destroy
 
-  enum role: [:user, :moderator, :admin, :owner]
-  enum status: [:active, :blocked, :deleted]
+  enum :role, [:user, :moderator, :admin, :owner]
+  enum :status, [:active, :blocked, :deleted]
 
-  enum recap_notification_frequency: [:never, :daily, :weekly, :monthly]
+  enum :recap_notification_frequency, [:never, :daily, :weekly, :monthly]
 
   after_initialize :set_default_role, if: :new_record?
   after_initialize :set_default_status, if: :new_record?
@@ -65,9 +65,14 @@ class User < ApplicationRecord
     skip_reconfirmation!
   end
 
+  # Deliver Devise emails (confirmation, password reset, email changed) via ActiveJob (#444)
+  def send_devise_notification(notification, *args)
+    devise_mailer.send(notification, self, *args).deliver_later
+  end
+
   def gravatar_url
     gravatar_id = Digest::MD5::hexdigest(email.downcase)
-    "https://secure.gravatar.com/avatar/#{gravatar_id}"
+    "https://secure.gravatar.com/avatar/#{gravatar_id}?d=retro"
   end
 
   def full_name_or_email

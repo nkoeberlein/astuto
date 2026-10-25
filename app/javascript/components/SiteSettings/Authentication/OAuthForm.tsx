@@ -4,6 +4,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { DangerText } from '../../common/CustomTexts';
 import { getLabel, getValidationMessage } from '../../../helpers/formUtils';
+import { useUnsavedChangesWarning } from '../../../hooks/useUnsavedChangesWarning';
 import Button from '../../common/Button';
 import { URL_REGEX } from '../../../constants/regex';
 import { IOAuth } from '../../../interfaces/IOAuth';
@@ -74,6 +75,7 @@ const OAuthForm = ({
       jsonUserNamePath: selectedOAuth.jsonUserNamePath,
     },
   });
+  useUnsavedChangesWarning(isDirty);
 
   const onSubmit: SubmitHandler<ISiteSettingsOAuthForm> = data => {
     const oAuth = { ...data, isEnabled: false };

@@ -109,11 +109,23 @@ const commentsReducer = (
         replyForms: replyFormsReducer(state.replyForms, action),
       };
 
-    case COMMENT_DELETE_SUCCESS:
+    case COMMENT_DELETE_SUCCESS: {
+      const deletedIds = new Set<number>([action.commentId]);
+      let foundChild = true;
+      while (foundChild) {
+        foundChild = false;
+        state.items.forEach(comment => {
+          if (comment.parentId && deletedIds.has(comment.parentId) && !deletedIds.has(comment.id)) {
+            deletedIds.add(comment.id);
+            foundChild = true;
+          }
+        });
+      }
       return {
         ...state,
-        items: state.items.filter(comment => comment.id !== action.commentId),
+        items: state.items.filter(comment => !deletedIds.has(comment.id)),
       };
+    }
 
     case COMMENT_UPDATE_SUCCESS:
         return {

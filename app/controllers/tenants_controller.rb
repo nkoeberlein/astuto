@@ -95,6 +95,9 @@ class TenantsController < ApplicationController
     # to avoid unique constraint violation
     params[:tenant][:custom_domain] = nil if params[:tenant][:custom_domain].blank?
 
+    # Blank favicon means "use the default one"
+    params[:tenant][:site_favicon] = nil if params[:tenant][:site_favicon].blank?
+
     if @tenant.update(tenant_update_params)
       render json: @tenant
     else

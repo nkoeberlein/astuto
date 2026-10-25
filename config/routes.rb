@@ -101,18 +101,51 @@ Rails.application.routes.draw do
     end
 
     # API routes
+    # JSON API for the v2 frontend (frontend/), session cookie + CSRF header
+    namespace :api do
+      namespace :app do
+        namespace :v1 do
+          resource :session, only: [:show]
+          resources :translations, only: [:show], param: :locale, constraints: { locale: /[A-Za-z-]+/ }
+          resources :boards, only: [:index, :show] do
+            resources :posts, only: [:index, :create]
+          end
+          resources :post_statuses, only: [:index]
+          resource :roadmap, only: [:show]
+          resources :posts, only: [:show, :update, :destroy] do
+            resources :comments, only: [:index, :create, :update, :destroy]
+            resource :vote, only: [:create, :destroy]
+            resource :follow, only: [:create, :destroy]
+            resource :summary, only: [:create]
+          end
+        end
+      end
+    end
+
+    # v2 frontend, served under /next until it replaces the legacy UI
+    get '/next(/*path)', to: 'spa#show', as: :spa, format: false
+
+    # Model Context Protocol (MCP) Streamable HTTP endpoint (authenticated via API key)
+    post '/mcp', to: 'mcp#handle'
+    get '/mcp', to: 'mcp#handle'
+    delete '/mcp', to: 'mcp#handle'
+
     namespace :api do
       namespace :v1 do
         resources :boards, only: [:index, :show, :create]
         resources :post_statuses, only: [:index]
         resources :posts, only: [:index, :show, :create, :update, :destroy] do
           member do
-            put :update_board, :update_status, :approve, :reject
+            put :update_board
+            put :update_status
+            put :approve
+            put :reject
           end
         end
         resources :comments, only: [:index, :show, :create, :update, :destroy] do
           member do
-            put :mark_as_post_update, :unmark_as_post_update
+            put :mark_as_post_update
+            put :unmark_as_post_update
           end
         end
         resources :votes, only: [:index, :show, :create, :destroy], controller: 'likes'

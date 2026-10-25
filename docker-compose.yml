@@ -1,11 +1,14 @@
 services:
   db:
-    image: postgres:14.5
+    # PostgreSQL 19 GA is planned for 2026-11-19; until then 18 (supported until 2030).
+    # Switch to postgres:19-trixie then — see UPGRADING.md (same dump/restore steps).
+    image: postgres:18-trixie
     environment: &db-env
       POSTGRES_USER: astuto
       POSTGRES_PASSWORD: dbpass
     volumes:
-      - dbdata:/var/lib/postgresql/data
+      # Postgres >= 18 stores data in /var/lib/postgresql/<major>/docker
+      - pgdata:/var/lib/postgresql
   web:
     build:
       context: .
@@ -16,9 +19,25 @@ services:
       BASE_URL: http://localhost:3000
       SECRET_KEY_BASE: secretkeybasehere
     ports:
-      - "3000:3000"
+      - "${ASTUTO_PORT:-3000}:3000"
     depends_on:
       - db
+  # v2 frontend dev server (Vite), open http://localhost:5173/next/
+  frontend:
+    image: node:26-trixie-slim
+    working_dir: /astuto/frontend
+    command: sh -c "npm ci --no-audit --no-fund && npm run dev"
+    environment:
+      BACKEND_URL: http://web:3000
+    volumes:
+      - .:/astuto
+      # Linux packages, kept apart from a node_modules installed on the host
+      - frontend_node_modules:/astuto/frontend/node_modules
+    ports:
+      - "${FRONTEND_PORT:-5173}:5173"
+    depends_on:
+      - web
 
 volumes:
-  dbdata:
+  pgdata:
+  frontend_node_modules:

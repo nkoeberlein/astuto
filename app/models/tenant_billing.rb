@@ -9,7 +9,7 @@ class TenantBilling < ApplicationRecord
   before_create :set_trial_ends_at
   before_create :set_subscription_ends_at
 
-  enum status: [
+  enum :status, [
     :trial,
     :active,
     :canceled,

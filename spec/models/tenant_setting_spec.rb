@@ -90,4 +90,91 @@ RSpec.describe TenantSetting, type: :model do
     tenant_setting.logo_links_to = 'nothing'
     expect(tenant_setting).to be_valid
   end
+
+  it 'has a setting that can disable the roadmap completely' do
+    expect(tenant_setting.roadmap_enabled).to be_truthy
+
+    tenant_setting.roadmap_enabled = false
+    expect(tenant_setting).to be_valid
+  end
+
+  it 'has a setting for the default post sorting' do
+    expect(tenant_setting.default_post_sorting).to eq('trending')
+
+    tenant_setting.default_post_sorting = 'newest'
+    expect(tenant_setting).to be_valid
+
+    tenant_setting.default_post_sorting = 'hotness'
+    expect(tenant_setting).not_to be_valid
+  end
+
+  it 'stores custom header links as list of label and url' do
+    expect(tenant_setting.custom_links).to eq([])
+
+    tenant_setting.custom_links = [{ 'label' => 'Docs', 'url' => 'https://example.com/docs' }]
+    expect(tenant_setting).to be_valid
+    expect(tenant_setting.custom_links).to eq([{ 'label' => 'Docs', 'url' => 'https://example.com/docs' }])
+
+    # entries without url or label are dropped
+    tenant_setting.custom_links = [{ 'label' => 'Docs', 'url' => '' }, { 'label' => 'Help', 'url' => 'https://d.io' }, 'junk']
+    expect(tenant_setting).to be_valid
+    expect(tenant_setting.custom_links).to eq([{ 'label' => 'Help', 'url' => 'https://d.io' }])
+  end
+
+  it 'rejects header links and logo links with unsafe URLs' do
+    tenant_setting.custom_links = [{ 'label' => 'XSS', 'url' => 'javascript:alert(1)' }]
+    expect(tenant_setting).to be_invalid
+
+    tenant_setting.custom_links = []
+    tenant_setting.logo_custom_url = 'javascript:alert(1)'
+    expect(tenant_setting).to be_invalid
+
+    tenant_setting.logo_custom_url = 'https://example.com'
+    expect(tenant_setting).to be_valid
+  end
+
+  it 'hides unsafe URLs that were saved before validation existed' do
+    tenant_setting.save!
+    tenant_setting.update_columns(
+      custom_links: [{ 'label' => 'Ok', 'url' => 'https://ok.io' }, { 'label' => 'XSS', 'url' => 'javascript:alert(1)' }],
+      logo_custom_url: 'javascript:alert(1)'
+    )
+    tenant_setting.reload
+
+    expect(tenant_setting.safe_custom_links).to eq([{ 'label' => 'Ok', 'url' => 'https://ok.io' }])
+    expect(tenant_setting.safe_logo_custom_url).to be_nil
+  end
+
+  it 'decides the approval status of new posts' do
+    user = FactoryBot.build(:user)
+    moderator = FactoryBot.build(:moderator)
+
+    tenant_setting.feedback_approval_policy = 'anonymous_require_approval'
+    expect(tenant_setting.approval_status_for_new_post(user: user, anonymous: false)).to eq('approved')
+    expect(tenant_setting.approval_status_for_new_post(user: nil, anonymous: true)).to eq('pending')
+
+    tenant_setting.feedback_approval_policy = 'always_require_approval'
+    expect(tenant_setting.approval_status_for_new_post(user: user, anonymous: false)).to eq('pending')
+    expect(tenant_setting.approval_status_for_new_post(user: moderator, anonymous: true)).to eq('approved')
+
+    tenant_setting.feedback_approval_policy = 'never_require_approval'
+    expect(tenant_setting.approval_status_for_new_post(user: nil, anonymous: true)).to eq('approved')
+  end
+
+  it 'can hide the email/password login' do
+    expect(tenant_setting.login_only_with_oauth).to be(false)
+
+    tenant_setting.login_only_with_oauth = true
+    expect(tenant_setting).to be_valid
+  end
+
+  it 'validates the logo size in emails' do
+    expect(tenant_setting.mail_logo_size).to eq(64)
+
+    tenant_setting.mail_logo_size = 100
+    expect(tenant_setting).to be_valid
+
+    tenant_setting.mail_logo_size = 0
+    expect(tenant_setting).not_to be_valid
+  end
 end

@@ -66,6 +66,11 @@ interface ITenantSetting {
   collapse_boards_in_header?: TenantSettingCollapseBoardsInHeader;
   logo_links_to?: TenantSettingLogoLinksTo;
   logo_custom_url?: string;
+  roadmap_enabled?: boolean;
+  default_post_sorting?: string;
+  custom_links?: { label: string; url: string }[];
+  login_only_with_oauth?: boolean;
+  mail_logo_size?: number;
   custom_css?: string;
 }
 

@@ -6,6 +6,8 @@ class StaticPagesController < ApplicationController
 
   def root
     @board = Board.find_by(id: Current.tenant.tenant_setting.root_board_id)
+    # Without a root board, the roadmap page is shown (unless the roadmap is disabled)
+    @board ||= Board.order(order: :asc).first unless Current.tenant.tenant_setting.roadmap_enabled?
 
     if @board
       @page_title = @board.name
@@ -13,18 +15,25 @@ class StaticPagesController < ApplicationController
       render 'boards/show'
     else
       @page_title = t('roadmap.title')
+      @post_statuses_to_show_in_filter = get_post_statuses_to_show_in_filter
       get_roadmap_data
       render 'static_pages/roadmap'
     end
   end
 
   def roadmap
+    return redirect_to root_path unless Current.tenant.tenant_setting.roadmap_enabled?
+
     @page_title = t('roadmap.title')
+    @post_statuses_to_show_in_filter = get_post_statuses_to_show_in_filter
     get_roadmap_data
   end
 
   def embedded_roadmap
+    return redirect_to root_url unless Current.tenant.tenant_setting.roadmap_enabled?
+
     @page_title = t('roadmap.title')
+    @post_statuses_to_show_in_filter = get_post_statuses_to_show_in_filter
     get_roadmap_data
     @is_embedded = true
     

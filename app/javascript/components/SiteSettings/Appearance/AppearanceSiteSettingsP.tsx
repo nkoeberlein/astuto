@@ -3,11 +3,14 @@ import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import I18n from 'i18n-js';
 
+import { projectDocsUrl } from '../../../constants/project';
+
 import Box from '../../common/Box';
 import SiteSettingsInfoBox from '../../common/SiteSettingsInfoBox';
 import Button from '../../common/Button';
 import HttpStatus from '../../../constants/http_status';
 import { getLabel } from '../../../helpers/formUtils';
+import { useUnsavedChangesWarning } from '../../../hooks/useUnsavedChangesWarning';
 import ActionLink from '../../common/ActionLink';
 import { LearnMoreIcon } from '../../common/Icons';
 
@@ -49,6 +52,7 @@ const AppearanceSiteSettingsP = ({
   });
 
   const customCss = watch('customCss');
+  useUnsavedChangesWarning(isDirty && !isSubmitSuccessful);
   
   const onSubmit: SubmitHandler<ISiteSettingsAppearanceForm> = data => {
     updateTenant(
@@ -78,7 +82,7 @@ const AppearanceSiteSettingsP = ({
 
         <p style={{textAlign: 'left'}}>
           <ActionLink
-            onClick={() => window.open('https://github.com/astuto/astuto-docs/blob/main/docs/appearance.md', '_blank')}
+            onClick={() => window.open(projectDocsUrl('appearance.md'), '_blank')}
             icon={<LearnMoreIcon />}
           >
             {I18n.t('site_settings.appearance.learn_more')}
