@@ -3,16 +3,15 @@
     <%=
       link_to get_url_for_logo, class: "brand#{@tenant_setting.logo_links_to == 'nothing' ? ' brandDisabled' : ''}", tabindex: @tenant_setting.logo_links_to == 'nothing' ? -1 : 0 do
         app_name = content_tag :span, @tenant.site_name
-        evo_badge = content_tag :span, AstutoProject::SHORT_NAME, class: 'evoBadge'
         logo_src = @tenant.site_logo.presence || asset_path('logo.png')
         logo = image_tag(logo_src, class: 'logo', skip_pipeline: true)
 
         if @tenant_setting.brand_display == "name_and_logo"
-          logo + app_name + evo_badge
+          logo + app_name
         elsif @tenant_setting.brand_display == "name_only"
-          app_name + evo_badge
+          app_name
         elsif @tenant_setting.brand_display == "logo_only"
-          logo + evo_badge
+          logo
         end
       end
     %>

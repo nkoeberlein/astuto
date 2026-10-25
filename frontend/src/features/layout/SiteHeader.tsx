@@ -1,6 +1,6 @@
 import { Link } from '@tanstack/react-router'
 import type { Board, Session } from '@/api/client'
-import { EvoBadge, EvoLogo } from '@/components/EvoLogo'
+import { EvoLogo } from '@/components/EvoLogo'
 import { UserAvatar } from '@/components/UserAvatar'
 import { Button } from '@/components/ui/button'
 import { useI18n } from '@/lib/i18n'
@@ -19,7 +19,6 @@ export function SiteHeader({ session, boards }: { session: Session; boards: Boar
           <EvoLogo className="size-8" />
         ))}
       {showName && <span>{tenant.siteName}</span>}
-      <EvoBadge />
     </>
   )
 
