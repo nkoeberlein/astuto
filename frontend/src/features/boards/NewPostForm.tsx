@@ -4,6 +4,7 @@ import { type FormEvent, useId, useState } from 'react'
 import type { Board, Session } from '@/api/client'
 import { useCreatePost } from '@/api/mutations'
 import { postStatusesQuery, similarPostsQuery } from '@/api/queries'
+import { FormError } from '@/components/FormError'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -208,7 +209,7 @@ function PostForm(props: Props & { onClose: (pending: boolean) => void }) {
               ? t('board.new_post.non_anonymous_submission_help', { name: user.fullName })
               : t('board.new_post.anonymous_submission_help')}
           </p>
-          {create.error && <p className="text-sm text-destructive">{create.error.message}</p>}
+          <FormError error={create.error} />
 
           <div className="flex flex-wrap gap-2">
             {user && (

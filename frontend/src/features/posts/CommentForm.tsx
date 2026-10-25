@@ -1,5 +1,6 @@
 import { type FormEvent, useId, useState } from 'react'
 import { useCreateComment } from '@/api/mutations'
+import { FormError } from '@/components/FormError'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Label } from '@/components/ui/label'
@@ -46,7 +47,7 @@ export function CommentForm({ postSlug, parentId, canMarkAsUpdate = false, onDon
         rows={parentId ? 2 : 3}
         autoFocus={parentId !== undefined}
       />
-      {create.error && <p className="text-sm text-destructive">{create.error.message}</p>}
+      <FormError error={create.error} />
       <div className="flex flex-wrap items-center gap-4">
         <Button type="submit" size="sm" disabled={create.isPending || !body.trim()}>
           {t('post.new_comment.submit_button')}

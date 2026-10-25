@@ -10,6 +10,7 @@ import {
   postStatusesQuery,
   sessionQuery,
 } from '@/api/queries'
+import { FormError } from '@/components/FormError'
 import { Markdown } from '@/components/Markdown'
 import { UserAvatar } from '@/components/UserAvatar'
 import { Button } from '@/components/ui/button'
@@ -117,12 +118,14 @@ export function PostPage({ postSlug }: { postSlug: string }) {
                     onClick={() => {
                       setTitleDraft(post.title)
                       setDescriptionDraft(post.description ?? '')
+                      updatePost.reset()
                       setEditing(false)
                     }}
                   >
                     {t('common.buttons.cancel')}
                   </Button>
                 </div>
+                <FormError error={updatePost.error} />
               </form>
             ) : (
               <>
@@ -195,6 +198,7 @@ export function PostPage({ postSlug }: { postSlug: string }) {
                 onClick={() => {
                   setTitleDraft(post.title)
                   setDescriptionDraft(post.description ?? '')
+                  updatePost.reset()
                   setEditing(true)
                 }}
               >
@@ -222,6 +226,7 @@ export function PostPage({ postSlug }: { postSlug: string }) {
               </Button>
             </div>
           )}
+          <FormError error={deletePost.error} />
         </div>
 
         {isModerator && (
@@ -282,6 +287,7 @@ export function PostPage({ postSlug }: { postSlug: string }) {
                 </Select>
               </div>
             )}
+            {!editing && <FormError error={updatePost.error} />}
           </section>
         )}
       </aside>

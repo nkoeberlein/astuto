@@ -2,6 +2,7 @@ import { Pencil, Trash2 } from 'lucide-react'
 import { useState } from 'react'
 import type { Comment, Session } from '@/api/client'
 import { useDeleteComment, useUpdateComment } from '@/api/mutations'
+import { FormError } from '@/components/FormError'
 import { Markdown } from '@/components/Markdown'
 import { UserAvatar } from '@/components/UserAvatar'
 import { Badge } from '@/components/ui/badge'
@@ -107,12 +108,14 @@ function CommentItem({ comment, postSlug, currentUser }: { comment: Comment } & 
                 onClick={() => {
                   setDraftBody(comment.body)
                   setDraftUpdate(comment.isPostUpdate)
+                  updateComment.reset()
                   setEditing(false)
                 }}
               >
                 {t('common.buttons.cancel')}
               </Button>
             </div>
+            <FormError error={updateComment.error} />
           </form>
         ) : (
           <Markdown>{comment.body}</Markdown>
@@ -138,6 +141,7 @@ function CommentItem({ comment, postSlug, currentUser }: { comment: Comment } & 
                 onClick={() => {
                   setDraftBody(comment.body)
                   setDraftUpdate(comment.isPostUpdate)
+                  updateComment.reset()
                   setEditing(true)
                 }}
               >
@@ -159,6 +163,7 @@ function CommentItem({ comment, postSlug, currentUser }: { comment: Comment } & 
             </>
           )}
         </div>
+        <FormError error={deleteComment.error} />
 
         {postSlug && replying && (
           <CommentForm
