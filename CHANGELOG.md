@@ -3,6 +3,16 @@
 All notable changes to Astuto Evolution. Versions follow [Semantic Versioning](https://semver.org).
 Issue numbers refer to the archived [astuto/astuto](https://github.com/astuto/astuto) repository.
 
+## [2.0.0-alpha.2] – 2026-10-25
+
+Fixes fresh installs. Use this instead of 2.0.0-alpha.1.
+Image: `ghcr.io/nkoeberlein/astuto:2.0.0-alpha.2` (amd64 + arm64).
+
+### Fixes
+- A fresh install was migrated but not seeded (no tenant, no admin), so every page returned an error. The entrypoint compared the whole `db:version` output, which since Rails 7.1 also contains the database name. Upgrades of existing installations were not affected.
+- The production image now sets `RAILS_ENV=production`, so migrations and seeds in the entrypoint use the production configuration like the server
+- CI checks that a fresh install comes up seeded
+
 ## [2.0.0-alpha.1] – 2026-10-25
 
 First alpha of Astuto Evolution, the community continuation of Astuto 1.x.

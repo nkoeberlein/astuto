@@ -75,6 +75,8 @@ RUN apt-get update -qq && \
 
 
 ENV APP_ROOT /astuto
+# Migrations and seeds in the entrypoint must run with the production config too
+ENV RAILS_ENV=production
 WORKDIR ${APP_ROOT}
 
 # Copy gems, packages and compiled assets

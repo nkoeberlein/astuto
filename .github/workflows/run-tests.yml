@@ -47,8 +47,15 @@ jobs:
       - name: Prepare test database
         run: docker compose exec -e RAILS_ENV=test web bundle exec rails db:create db:schema:load
 
+      # A fresh install must come up seeded (tenant and admin), not just migrated
+      - name: Check fresh install
+        run: |
+          timeout 180 sh -c 'until docker compose logs web | grep -q "Listening on"; do sleep 3; done'
+          docker compose exec web bin/rails runner 'abort("Fresh install was not seeded") unless Tenant.exists? && User.unscoped.exists?; puts "Fresh install seeded"'
+
+      # The image runs with RAILS_ENV=production
       - name: Run tests
-        run: docker compose exec web bundle exec rspec
+        run: docker compose exec -e RAILS_ENV=test web bundle exec rspec
 
       - name: Set up Node
         uses: actions/setup-node@v7
