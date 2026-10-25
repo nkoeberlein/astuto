@@ -45,7 +45,7 @@ function RootLayout() {
       )}
       <div className="flex min-h-dvh flex-col">
         <HeaderWithBoards />
-        <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-8">
+        <main className="w-full flex-1 px-4 py-6 sm:px-6 lg:px-10">
           <Outlet />
         </main>
         <SiteFooter showPoweredBy={tenant.settings.showPoweredBy} />

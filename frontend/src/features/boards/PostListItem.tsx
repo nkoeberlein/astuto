@@ -26,7 +26,7 @@ export function PostListItem(props: {
   const { post } = props
 
   return (
-    <li className="flex gap-4 rounded-lg border bg-card p-4 transition-colors hover:border-primary/40">
+    <li className="flex gap-4 rounded-xl border bg-card p-4 shadow-2xs transition-all hover:border-primary/40 hover:shadow-md">
       {props.showVoteCount &&
         (props.voteButton ? (
           <VoteButton post={post} signedIn={props.signedIn} />

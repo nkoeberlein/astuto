@@ -6,8 +6,10 @@ export function VoteCount(props: { count: number; liked: boolean; label: string 
   return (
     <div
       className={cn(
-        'flex w-12 shrink-0 flex-col items-center rounded-md border py-1 text-sm font-semibold',
-        props.liked && 'border-primary text-primary',
+        'flex w-12 shrink-0 flex-col items-center rounded-lg border py-1.5 text-sm font-semibold transition-colors',
+        props.liked
+          ? 'border-primary bg-primary/10 text-primary shadow-2xs'
+          : 'bg-muted/40 text-foreground',
       )}
       title={props.label}
     >

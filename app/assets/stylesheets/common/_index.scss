@@ -6,14 +6,38 @@ body {
   background-color: var(--background-color);
 }
 
+.evoBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0.45rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 9999px;
+  background: var(--evo-gradient, linear-gradient(135deg, #FB923C 0%, #EA580C 100%));
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  vertical-align: middle;
+  box-shadow: 0 1px 2px rgba(234, 88, 12, 0.25);
+}
+
 .btnPrimary {
   @extend .btn;
 
   color: white;
   background-color: var(--primary-color);
   border-color: var(--primary-color-dark);
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.2s ease;
 
-  &:hover { color: white; }
+  &:hover {
+    color: white;
+    background-color: var(--primary-color-dark);
+  }
   &:focus { box-shadow: 0 0 0 0.25rem var(--primary-color-light); }
 }
 
@@ -23,6 +47,9 @@ body {
   background-color: transparent;
   color: var(--primary-color);
   border-color: var(--primary-color);
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.2s ease;
 
   &:hover {
     color: white;
@@ -35,21 +62,24 @@ body {
 .card {
   @extend .card;
 
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.04),0 2px 4px -1px rgba(0, 0, 0, 0.03);
-  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+  border-radius: 12px;
+  border-color: rgba(15, 23, 42, 0.08);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04), 0 1px 2px rgba(15, 23, 42, 0.02);
+  transition: all 0.25s cubic-bezier(.25,.8,.25,1);
 
   color: var(--astuto-black);
 
-  padding: 8px;
+  padding: 10px;
 }
 
 .card3D {
   @extend .card;
 
-  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+  transition: all 0.25s cubic-bezier(.25,.8,.25,1);
 
   &:hover {
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08),0 4px 6px -2px rgba(0, 0, 0, 0.04);
+    border-color: color-mix(in srgb, var(--primary-color), transparent 65%);
+    box-shadow: 0 10px 20px -5px rgba(15, 23, 42, 0.08), 0 4px 6px -2px rgba(15, 23, 42, 0.04);
   }
 }
 
@@ -176,7 +206,10 @@ body {
 .badgeSuccess { @extend .badge-success; }
 
 .container {
-  max-width: 960px;
+  max-width: 100%;
+  width: 100%;
+  padding-left: 2rem;
+  padding-right: 2rem;
 }
 
 .smallContainer {

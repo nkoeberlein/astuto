@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 965 282" width="965" height="282">
+  <defs>
+    <linearGradient id="evoGradW" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fb923c"/>
+      <stop offset="50%" stop-color="#f97316"/>
+      <stop offset="100%" stop-color="#ea580c"/>
+    </linearGradient>
+    <linearGradient id="slateGradW" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <filter id="badgeShadow" x="-10%" y="-10%" width="120%" height="125%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#ea580c" flood-opacity="0.28"/>
+    </filter>
+  </defs>
+
+  <!-- Fox Mark Group (scaled cleanly on the left) -->
+  <g transform="translate(14, 13)">
+    <rect x="10" y="10" width="236" height="236" rx="56" fill="#fff7ed" stroke="url(#evoGradW)" stroke-width="6"/>
+    <polygon points="44,34 104,68 62,102" fill="url(#evoGradW)" opacity="0.9"/>
+    <polygon points="212,34 152,68 194,102" fill="url(#evoGradW)" opacity="0.9"/>
+    <g fill="none" stroke="url(#slateGradW)" stroke-width="14" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M 38,94 C 32,62 36,36 40,24 L 102,60 C 118,55 138,55 154,60 L 216,24 C 220,36 224,62 218,94"/>
+      <path d="M 52,88 C 36,112 30,138 30,156 C 68,160 88,176 98,206 C 104,224 114,230 128,230 C 142,230 152,224 158,206 C 168,176 188,160 226,156 C 226,138 220,112 204,88"/>
+      <path d="M 34,136 C 78,142 104,166 112,202 L 112,226"/>
+      <path d="M 222,136 C 178,142 152,166 144,202 L 144,226"/>
+    </g>
+    <rect x="112" y="196" width="32" height="14" rx="4" fill="url(#slateGradW)"/>
+    <polygon points="94,116 110,132 98,144 82,128" fill="url(#slateGradW)"/>
+    <polygon points="162,116 174,128 162,144 146,132" fill="url(#evoGradW)"/>
+  </g>
+
+  <!-- Main Wordmark: "astuto" + "EVO" Pill Badge -->
+  <text x="292" y="156" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="136" font-weight="900" letter-spacing="-3" fill="#0f172a">astuto</text>
+
+  <!-- "EVO" Gradient Pill Badge next to "astuto" -->
+  <g filter="url(#badgeShadow)" transform="translate(722, 68)">
+    <rect x="0" y="0" width="218" height="86" rx="43" fill="url(#evoGradW)"/>
+    <text x="109" y="59" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="48" font-weight="900" letter-spacing="4" fill="#ffffff">EVO</text>
+  </g>
+
+  <!-- Subtitle: ASTUTO EVOLUTION + tagline -->
+  <text x="298" y="210" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="23" font-weight="800" letter-spacing="3.5" fill="#ea580c">ASTUTO EVOLUTION</text>
+  <text x="298" y="244" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="24" font-weight="500" fill="#64748b">open source · self-hosted · AI-native customer feedback</text>
+</svg>

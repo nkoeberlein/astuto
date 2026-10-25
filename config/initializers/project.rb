@@ -2,6 +2,7 @@
 # Astuto Evolution is the community continuation of astuto/astuto (archived in 2026).
 module AstutoProject
   NAME = 'Astuto Evolution'
+  SHORT_NAME = 'Evo'
   REPOSITORY_URL = 'https://github.com/nkoeberlein/astuto'
   ISSUES_URL = "#{REPOSITORY_URL}/issues"
   UPSTREAM_URL = 'https://github.com/astuto/astuto'

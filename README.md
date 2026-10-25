@@ -1,8 +1,8 @@
 <p align="center">
-  <img width="400" src="./images/logo-and-name.png" />
+  <img width="460" alt="Astuto Evolution (Evo)" src="./images/logo-and-name.png" />
 </p>
 
-<h1 align="center">Astuto Evolution 🦊</h1>
+<h1 align="center">Astuto Evolution (Evo) 🦊</h1>
 
 <p align="center">
   The community continuation of Astuto – a free, open source, self-hosted customer feedback tool.<br/>
@@ -41,7 +41,7 @@ Astuto Evolution helps you collect, manage and prioritize feedback from your cus
 | | Astuto 1.x (archived) | Astuto Evolution 2.0 |
 |---|---|---|
 | Ruby / Rails | 3.0 / 6.1 (end of life) | 4.0 / 8.1 |
-| PostgreSQL | 14 (EOL 11/2026) | 19 |
+| PostgreSQL | 14 (EOL 11/2026) | 18 (19, sobald GA) |
 | Docker image | `riggraz/astuto` (amd64) | `ghcr.io/nkoeberlein/astuto` (amd64 + arm64) |
 | User interface | React 16, Bootstrap 4 | rebuilt |
 | AI / MCP | – | planned |
