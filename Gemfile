@@ -37,6 +37,9 @@ gem 'jsbundling-rails', '1.3.1'
 # HTTP requests
 gem 'httparty', '0.24.3'
 
+# Model Context Protocol server (official SDK)
+gem 'mcp', '1.8.1'
+
 # Authentication
 gem 'devise', '5.0.4'
 

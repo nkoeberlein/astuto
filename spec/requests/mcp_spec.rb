@@ -78,12 +78,31 @@ RSpec.describe 'MCP Streamable HTTP (/mcp)', type: :request do
       expect(response.body).to be_empty
     end
 
-    it 'returns 405 on GET /mcp and 204 on DELETE /mcp' do
+    it 'negotiates the current protocol version (2025-11-25)' do
+      post '/mcp',
+           params: {
+             jsonrpc: '2.0', id: 1, method: 'initialize',
+             params: { protocolVersion: '2025-11-25', capabilities: {}, clientInfo: { name: 'test', version: '1' } }
+           }.to_json,
+           headers: auth_headers
+
+      expect(JSON.parse(response.body).dig('result', 'protocolVersion')).to eq('2025-11-25')
+    end
+
+    it 'offers no server-initiated stream (GET 405) and accepts DELETE without a session' do
       get '/mcp', headers: auth_headers
       expect(response).to have_http_status(:method_not_allowed)
 
       delete '/mcp', headers: auth_headers
-      expect(response).to have_http_status(:no_content)
+      expect(response).to be_successful
+    end
+
+    it 'rejects cross-origin browser requests' do
+      post '/mcp',
+           params: { jsonrpc: '2.0', id: 1, method: 'ping' }.to_json,
+           headers: auth_headers.merge('Origin' => 'https://evil.example.com')
+
+      expect(response).to have_http_status(:forbidden)
     end
 
     it 'lists all 8 feedback tools via tools/list' do
@@ -169,6 +188,24 @@ RSpec.describe 'MCP Streamable HTTP (/mcp)', type: :request do
       planned_col = columns.find { |c| c['id'] == roadmap_status.id }
       expect(planned_col['name']).to eq('Planned')
       expect(planned_col['posts'].map { |p| p['id'] }).to include(existing_post.id)
+    end
+
+    it 'returns tool errors for unknown records and invalid arguments' do
+      missing = call_tool('get_post', { id: 999_999 })
+      expect(missing['isError']).to eq(true)
+
+      invalid = call_tool('create_post', { board_id: board.id })
+      expect(invalid['isError']).to eq(true)
+      expect(invalid.dig('content', 0, 'text')).to include('title')
+    end
+
+    it 'records an initial status of a new post in the timeline' do
+      created = call_tool('create_post', { board_id: board.id, title: 'Audit log', post_status_id: roadmap_status.id })
+      post_id = created.dig('structuredContent', 'post', 'id')
+
+      Current.tenant = tenant
+      expect(PostStatusChange.where(post_id: post_id, post_status_id: roadmap_status.id, user_id: moderator.id).count).to eq(1)
+      expect(Follow.where(post_id: post_id, user_id: moderator.id)).to exist
     end
 
     it 'creates a post, updates its status, adds a comment, and retrieves full post details' do

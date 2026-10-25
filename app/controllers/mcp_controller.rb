@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 # Streamable HTTP endpoint (/mcp) for the Model Context Protocol (MCP).
-# Authenticates using the tenant's API keys (Authorization: Bearer <token> or X-Api-Key).
+# Authenticates using the tenant's API keys (Authorization: Bearer <token> or X-Api-Key);
+# only active moderators and admins get access. Tools: app/services/mcp/tools.
 class McpController < ApplicationController
   skip_before_action :verify_authenticity_token
   skip_before_action :check_tenant_is_private
@@ -10,34 +11,28 @@ class McpController < ApplicationController
   prepend_before_action :set_current_tenant
   before_action :authenticate_mcp_api_key
 
-  # POST /mcp — JSON-RPC 2.0 request/notification/batch over Streamable HTTP
+  # POST, GET and DELETE /mcp. The official SDK transport handles the protocol
+  # (version negotiation, JSON-RPC, notifications). Stateless: every POST stands
+  # alone, so the app needs no session store and runs behind any load balancer.
   def handle
-    raw_body = request.raw_post
-    payload = JSON.parse(raw_body)
-    response_payload = Mcp::Server.new(user: @current_user).handle(payload)
+    transport = MCP::Server::Transports::StreamableHTTPTransport.new(
+      Mcp::Server.build(user: @current_user),
+      stateless: true,
+      enable_json_response: true,
+      serve_subscriptions_listen: false,
+      # Rails host authorization (config.hosts) and tenant lookup already vetted the
+      # host; the SDK still rejects cross-origin browser requests via Origin.
+      allowed_hosts: [request.host.downcase]
+    )
+    status, headers, body = transport.handle_request(request)
 
-    if response_payload.nil?
-      head :accepted
+    headers.each { |name, value| response.set_header(name, value) }
+    content = body.respond_to?(:join) ? body.join : ''
+    if content.empty?
+      head status
     else
-      render json: response_payload, status: :ok
+      render body: content, status: status, content_type: headers['Content-Type'] || 'application/json'
     end
-  rescue JSON::ParserError
-    render json: {
-      jsonrpc: '2.0',
-      id: nil,
-      error: { code: Mcp::Server::PARSE_ERROR, message: 'Parse error: invalid JSON' }
-    }, status: :bad_request
-  end
-
-  # GET /mcp — Streamable HTTP spec allows returning 405 when server-initiated SSE stream is not offered
-  def show
-    response.set_header('Allow', 'POST, DELETE')
-    head :method_not_allowed
-  end
-
-  # DELETE /mcp — Streamable HTTP session termination (stateless server acknowledges with 204)
-  def destroy
-    head :no_content
   end
 
   private

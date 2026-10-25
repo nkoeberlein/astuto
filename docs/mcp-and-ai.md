@@ -6,7 +6,7 @@ Astuto Evolution includes a built-in **Model Context Protocol (MCP)** server ove
 
 ## 1. MCP Server (`/mcp`)
 
-The MCP endpoint speaks **JSON-RPC 2.0 over Streamable HTTP** (protocol versions `2025-03-26` and `2024-11-05`) and authenticates with standard Astuto API keys (`Site Settings › API`). Only active moderators, admins, and owners can generate and use API keys.
+The MCP endpoint is built on the official [MCP Ruby SDK](https://github.com/modelcontextprotocol/ruby-sdk) (`mcp` gem), speaks **Streamable HTTP** in stateless JSON mode (all protocol versions the SDK supports, currently up to `2025-11-25`; batched requests are not supported, as in the current spec), rejects cross-origin browser requests and authenticates with standard Astuto API keys (`Site Settings › API`). Only active moderators, admins, and owners can generate and use API keys.
 
 - **Endpoint:** `POST https://<your-astuto-domain>/mcp`
 - **Authentication:** `Authorization: Bearer <API_KEY>` (or `X-Api-Key: <API_KEY>`)

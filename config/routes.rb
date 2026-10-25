@@ -127,8 +127,8 @@ Rails.application.routes.draw do
 
     # Model Context Protocol (MCP) Streamable HTTP endpoint (authenticated via API key)
     post '/mcp', to: 'mcp#handle'
-    get '/mcp', to: 'mcp#show'
-    delete '/mcp', to: 'mcp#destroy'
+    get '/mcp', to: 'mcp#handle'
+    delete '/mcp', to: 'mcp#handle'
 
     namespace :api do
       namespace :v1 do
