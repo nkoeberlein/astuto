@@ -7,7 +7,7 @@ Issue-Nummern beziehen sich auf `astuto/astuto`. Phasen siehe [roadmap.md](roadm
 
 ### Setup
 - [x] Lokales Setup prüfen: Original-Image baute nicht mehr (Debian 11 EOL). Nach Ruby-3.3-Upgrade: 374 Tests, 2 Fehler (UserMailer, Keyword-Argumente unter Rails 6.1 + Ruby ≥ 3.2, wird mit Rails 7.0 behoben)
-- [ ] `spec/system/user_o_auth_sign_up_and_log_in.rb` in `…_spec.rb` umbenennen (läuft bisher nie)
+- [x] `spec/system/user_o_auth_sign_up_and_log_in.rb` in `…_spec.rb` umbenennen (läuft bisher nie); ebenso `spec/requests/posts_controller_test.rb` und `post_statuses_controller_test.rb`, an aktuelles Verhalten angepasst. Der OAuth-System-Spec ist lokal nicht geprüft (kein Chromium im Dev-Container) und läuft erst in der CI
 - [ ] Lokaler Port 3000 ist hier durch einen SSH-Tunnel belegt: `ASTUTO_PORT=3456 docker compose up`
 - [x] `.github/workflows/push-to-registry.yml` auf GHCR umstellen (`ghcr.io/nkoeberlein/astuto`), `riggraz/astuto` entfernen
 - [x] `run-tests.yml`: Runner `ubuntu-24.04`
@@ -45,7 +45,11 @@ Issue-Nummern beziehen sich auf `astuto/astuto`. Phasen siehe [roadmap.md](roadm
 - [ ] **Datenschutz:** Die alten JSON-Endpunkte (`posts#index/show`, `comments#index` u. a.) liefern `user_email` aller Autoren öffentlich aus. Behoben in der neuen App-API (`AuthorSerializer`); im alten Frontend bis zur Ablösung entfernen oder nur für Moderatoren ausgeben
 - [ ] Standard-Admin `admin@example.com` / `password` (`db/seeds.rb`): Zugangsdaten per ENV setzen oder Passwortwechsel beim ersten Login erzwingen
 - [x] SMTP-Standard `openssl_verify_mode: "none"` → `"peer"` (`config/environments/production.rb`)
-- [ ] Kurzer Security-Check: `rack-attack`-Regeln, CSP-Header, API-Key-Handling
+- [x] Header-Links und Logo-Link: nur `http(s)`, `mailto` und Pfade erlaubt (`SafeUrl`, Validierung in `TenantSetting`); vorher ließ sich ein `javascript:`-Link speichern, den der alte Header ausgab
+- [x] `rack-attack`-Anti-Spam für `/posts` stürzte bei fehlenden Feldern mit `TypeError` ab (500); fehlender Zeitstempel zählt jetzt als Spam
+- [ ] Spamschutz der App-API (`POST /api/app/v1/boards/:id/posts`) an das alte UI angleichen: auffällige IPs eine Stunde sperren (bisher nur Honeypot + Zeitstempel pro Anfrage)
+- [ ] Content Security Policy aktivieren (`config/initializers/content_security_policy.rb` ist komplett auskommentiert)
+- [ ] Kurzer Security-Check: `rack-attack`-Regeln, API-Key-Handling
 
 ## P1 – Betrieb und Bugs
 
@@ -123,6 +127,7 @@ Empfehlung (roadmap.md, Abschnitt 3): getrenntes Frontend mit React 19 + TS 7 + 
 - [ ] Altes Frontend entfernen: `react-rails`, `react_ujs`, Redux, Bootstrap, jQuery, Turbolinks, `jsbundling`/Webpack, `i18n-js` 3; danach Sidekiq 8.1 und `connection_pool`-Pin entfernen
 - [ ] `app/controllers` (22 Dateien) nach Bereichen gliedern (z. B. `api/app/v1/site_settings/`)
 - [ ] RuboCop einführen und in der CI ausführen
+- [ ] CI für `develop`: `run-tests.yml` (RSpec inkl. System-Specs, Brakeman, Drift-Check) läuft nur bei Pull Requests; Push-Trigger für `develop` ergänzen oder mit PRs gegen `main` arbeiten
 - [ ] TypeScript 7 auch für `openapi-typescript`, sobald unterstützt (läuft bis dahin per `npx` mit TS 5.9)
 
 ## P3 – v3: komplett TypeScript (nach 2.0)
@@ -136,13 +141,16 @@ Empfehlung (roadmap.md, Abschnitt 3): getrenntes Frontend mit React 19 + TS 7 + 
 
 ## P1 – KI und MCP
 
-- [x] MCP-Server unter `/mcp` (Streamable HTTP), Auth per API-Key (`McpController`, `Mcp::Server`, `spec/requests/mcp_spec.rb`)
+- [x] MCP-Server unter `/mcp` (Streamable HTTP), Auth per API-Key (`McpController`, `Mcp::Server`, `spec/requests/mcp_spec.rb`); seit 25.10.2026 auf dem offiziellen `mcp`-Gem (Protokoll bis 2025-11-25), ein Tool pro Klasse in `app/services/mcp/tools`
 - [x] MCP-Tools: `search_posts`, `get_post`, `create_post`, `update_post_status`, `add_comment`, `list_boards`, `get_roadmap`, `top_requests` (Votes/Trend)
 - [x] MCP-Doku mit Beispielkonfiguration für Claude Desktop/Code und Cursor in [docs/mcp-and-ai.md](docs/mcp-and-ai.md)
 - [x] Duplikaterkennung beim Erstellen mit Postgres-Volltextsuche (#455) (`Post.search_by_name_or_description`, `Post.similar_to`, Live-Vorschläge in `NewPostForm.tsx`)
-- [x] KI-Anbieter-Abstraktion: OpenAI-kompatibel (inkl. Ollama), Anthropic; alles opt-in per ENV, ohne KI voll funktionsfähig (`Ai::Client`)
+- [x] KI-Anbieter-Abstraktion: OpenAI-kompatibel (inkl. Ollama), Anthropic; alles opt-in per ENV (`AI_PROVIDER` und `AI_MODEL`, kein fest eingebautes Modell), ohne KI voll funktionsfähig (`Ai::Client`)
 - [ ] Optional semantische Duplikate mit pgvector und Embeddings
-- [x] Zusammenfassung langer Diskussionen, Vorschläge für Tags und Board, Changelog-Entwürfe, Übersetzung von Feedback (`Ai::Client`)
+- [x] Zusammenfassung langer Diskussionen: Button im Moderationsbereich der Post-Seite (`/next`), `POST /api/app/v1/posts/:id/summary`, einen Tag gecacht
+- [ ] Vorschläge für Board und Tags (Methode in `Ai::Client` vorhanden; braucht Tags #171)
+- [ ] Changelog-Entwürfe aus erledigten Posts (Methode vorhanden; braucht die Changelog-Funktion)
+- [ ] Übersetzung von Feedback (Methode vorhanden, nicht angebunden)
 - [x] Datenschutzhinweis: welche Daten an den KI-Anbieter gehen (`Ai::Client.privacy_disclosure`, [docs/mcp-and-ai.md](docs/mcp-and-ai.md))
 
 ## P2 – Quick Wins
@@ -158,7 +166,7 @@ Empfehlung (roadmap.md, Abschnitt 3): getrenntes Frontend mit React 19 + TS 7 + 
 - [x] Roadmap zeigt Votes und Kommentare, Sortierung nach „zuletzt aktualisiert“ (#484), im neuen Frontend; nur freigegebene Posts (das alte UI zeigt auch ausstehende)
 - [ ] Übersicht „Mein Feedback“ (#429)
 - [x] Eigene Links bzw. URL im Header (#479, #351): `custom_links` (jsonb: `{label, url}`), Textarea im General-Tab, gerendert in Legacy-Header und neuem Frontend
-- [x] Datenbank-Transaktionen in Workflows (#169): Post-Update/-Create jeweils atomar mit Follow bzw. Statuswechsel-Eintrag; Mails werden nach dem Commit versendet; gleiche Sicherung im öffentlichen API v1
+- [x] Datenbank-Transaktionen in Workflows (#169): Post-Update/-Create jeweils atomar mit Follow bzw. Statuswechsel-Eintrag; Mails werden nach dem Commit versendet; gleiche Sicherung im öffentlichen API v1. Anlegen läuft für altes UI, App-API und MCP über `CreatePostWorkflow` (`create!` in der Transaktion, vorher rollten fehlgeschlagene Follows nicht zurück)
 
 ### Lücken zur Konkurrenz (siehe konkurrenz.md)
 - [ ] Changelog: Einträge mit erledigten Posts verknüpfen, RSS-Feed, E-Mail an Follower

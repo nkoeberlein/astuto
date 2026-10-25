@@ -1,6 +1,6 @@
 # Roadmap – Astuto Evolution
 
-Stand: 24.10.2026 · Repository: [nkoeberlein/astuto](https://github.com/nkoeberlein/astuto) · Branch `develop`
+Stand: 25.10.2026 · Repository: [nkoeberlein/astuto](https://github.com/nkoeberlein/astuto) · Branch `develop`
 
 Astuto Evolution führt das archivierte [astuto/astuto](https://github.com/astuto/astuto) als Community-Projekt weiter. Name und Herkunft bleiben erkennbar, der Neuanfang ebenfalls: aktueller Stack, neue Oberfläche, KI-Funktionen. Ziel ist **kein Eigenbedarf**, sondern ein eigenständiges Open-Source-Projekt für die Nische aus der [Konkurrenzanalyse](konkurrenz.md). Konkrete Aufgaben: [todo.md](todo.md).
 
@@ -44,7 +44,7 @@ Astuto Evolution führt das archivierte [astuto/astuto](https://github.com/astut
 | Ruby | 3.0.6 (EOL) | **4.0.9** | 4.0 ✓ |
 | Rails | 6.1 (EOL) | **8.1.4** | 8.1 ✓ |
 | Devise | 4.7.3 | **5.0.4** | 5.x ✓ |
-| PostgreSQL | 14.5 (EOL 12.11.2026) | 19rc1 (Dev) | 19 (GA 19.11.2026) |
+| PostgreSQL | 14.5 (EOL 12.11.2026) | 18 (Dev; 19rc1-Volume verworfen) | 19 (GA 19.11.2026) |
 | Node (Build) | 20 (EOL) | **26** (Laufzeit-Image ohne Node) | 26 LTS ✓ |
 | Debian-Basis | 11 (EOL, Image baute nicht mehr) | 13 trixie | 13 trixie |
 | Docker-Image | `riggraz/astuto`, amd64 | CI: `ghcr.io/nkoeberlein/astuto`, amd64 + arm64 | ✓ |
@@ -99,14 +99,16 @@ Die häufigsten Probleme aus den Upstream-Issues: HTTPS hinter Reverse Proxy (#4
 2. ✅ `frontend/` mit Vite 8, React 19, **TypeScript 7**, TanStack Router/Query, Tailwind 4, shadcn/ui, **Biome** (statt ESLint/Prettier), Vitest; eigener CI-Workflow; Build ins Image, ausgeliefert unter `/next`
 3. ✅ App-API `/api/app/v1` (lesend: Session, Übersetzungen, Boards, Status, Posts, Kommentare), OpenAPI per rswag, generierte TS-Typen
 4. ✅ Board-Seite (Suche, Sortierung, Statusfilter, Mehr laden) und Post-Detail mit Kommentaren
-5. ✅ Schreibende Aktionen: Post anlegen (auch anonym, mit Freigabe-Regeln und Spam-Schutz), Vote (optimistisch), Kommentar und Antwort, Moderator-Updates, Follow; CSRF-Fluss getestet · offen: Roadmap-Seite, Auth-Seiten, Moderation, Site Settings
-5. Moderation und Site Settings
-6. Altes Frontend und dessen Gems/Pakete entfernen (`react-rails`, `i18n-js`, Webpack, Bootstrap)
+5. ✅ Schreibende Aktionen: Post anlegen (auch anonym, mit Freigabe-Regeln und Spam-Schutz), Vote (optimistisch), Kommentar und Antwort, Moderator-Updates, Follow, Bearbeiten/Löschen, Statuswechsel; CSRF-Fluss getestet
+6. ✅ Roadmap-Seite, serverseitige Meta-Tags
+7. Auth-Seiten (Login, Registrierung, Passwort, OAuth) und eingebettete Roadmap
+8. Moderation und Site Settings
+9. Altes Frontend und dessen Gems/Pakete entfernen (`react-rails`, `i18n-js`, Webpack, Bootstrap)
 
 ### Phase 4 – KI und MCP · P1 (MCP in 2.0, Rest 2.x)
-- **MCP-Server** (Streamable HTTP unter `/mcp`, Auth per API-Key, später OAuth). Tools: Posts suchen, lesen, anlegen, Status ändern, kommentieren, Votes und Trends abfragen, Roadmap lesen. Damit triagieren Claude, Cursor und andere Assistenten Feedback direkt. Unter den Self-Hosted-Tools hat das sonst nur Quackback.
-- **Duplikaterkennung** beim Erstellen (#455): zuerst Postgres-Volltextsuche, optional semantisch mit pgvector und Embeddings
-- **KI-Funktionen (opt-in, eigenes Modell):** Zusammenfassung langer Diskussionen, Vorschläge für Tags und Board, Changelog-Entwürfe aus erledigten Posts, Übersetzung von Feedback
+- ✅ **MCP-Server** (Streamable HTTP unter `/mcp` auf dem offiziellen `mcp`-Gem, Auth per API-Key, später OAuth). Tools: Posts suchen, lesen, anlegen, Status ändern, kommentieren, Votes und Trends abfragen, Roadmap lesen. Damit triagieren Claude, Cursor und andere Assistenten Feedback direkt. Unter den Self-Hosted-Tools hat das sonst nur Quackback.
+- **Duplikaterkennung** beim Erstellen (#455): ✅ Postgres-Volltextsuche · offen: optional semantisch mit pgvector und Embeddings
+- **KI-Funktionen (opt-in, eigenes Modell):** ✅ Zusammenfassung langer Diskussionen (Moderatoren, neues Frontend) · offen: Vorschläge für Tags und Board (braucht Tags), Changelog-Entwürfe (braucht Changelog), Übersetzung von Feedback
 - Datenschutz: Was an den KI-Anbieter geht, ist dokumentiert und abschaltbar; lokales Modell per Ollama wird unterstützt
 
 ### Phase 5 – Nischen-Features · P2
