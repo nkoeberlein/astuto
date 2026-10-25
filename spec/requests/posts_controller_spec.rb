@@ -39,7 +39,7 @@ RSpec.describe 'posts controller', type: :request do
     end
 
     it 'returns posts filtered by post status id as JSON' do
-      get posts_path(board_id: post1.board_id, post_status_id: post1.post_status_id)
+      get posts_path(board_id: post1.board_id, post_status_ids: [post1.post_status_id])
 
       json = JSON.parse(response.body)
 
@@ -65,16 +65,20 @@ RSpec.describe 'posts controller', type: :request do
           post: {
             title: new_post.title,
             description: new_post.description,
-            board_id: new_post.board_id
+            board_id: new_post.board_id,
+            dnf1: '',
+            dnf2: '',
+            form_rendered_at: 1.minute.ago.to_i
           }
         }
       )
 
       expect(response).to have_http_status(:success)
       expect(Post.count).to eq(post_count + 1)
+      expect(Post.last.followers).to eq([user])
     end
 
-    it 'redirects if not logged in' do
+    it 'rejects a non-anonymous post if not logged in' do
       sign_out user
 
       post_count = Post.count
@@ -87,14 +91,36 @@ RSpec.describe 'posts controller', type: :request do
           post: {
             title: new_post.title,
             description: new_post.description,
-            board_id: new_post.board_id
+            board_id: new_post.board_id,
+            dnf1: '',
+            dnf2: '',
+            form_rendered_at: 1.minute.ago.to_i
           }
         }
       )
 
-      expect(response).to have_http_status(:redirect)
-      expect(response).to redirect_to(new_user_session_path)
+      expect(response).to have_http_status(:unprocessable_content)
       expect(Post.count).to eq(post_count)
+    end
+
+    it 'rejects a post whose honeypot field is filled' do
+      new_post = FactoryBot.build(:post, board: board1)
+
+      expect do
+        post(
+          posts_path,
+          params: {
+            post: {
+              title: new_post.title,
+              board_id: new_post.board_id,
+              dnf1: 'bot',
+              dnf2: '',
+              form_rendered_at: 1.minute.ago.to_i
+            }
+          }
+        )
+      end.not_to change(Post, :count)
+      expect(response).not_to have_http_status(:success)
     end
   end
 end
