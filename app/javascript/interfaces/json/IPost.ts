@@ -14,6 +14,7 @@ interface IPostJSON {
   hotness: number;
   user_id: number;
   user_email: string;
+  user_gravatar_hash: string;
   user_full_name: string;
   created_at: string;
 }

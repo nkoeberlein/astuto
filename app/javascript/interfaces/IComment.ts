@@ -5,6 +5,7 @@ interface IComment {
   isPostUpdate: boolean;
   userFullName: string;
   userEmail: string;
+  userGravatarHash: string;
   userRole: number;
   createdAt: string;
   updatedAt: string;

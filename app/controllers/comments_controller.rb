@@ -12,6 +12,7 @@ class CommentsController < ApplicationController
         :created_at,
         :updated_at,
         'users.full_name as user_full_name',
+        :user_id,
         'users.email as user_email',
         'users.role as user_role',
       )
@@ -19,7 +20,7 @@ class CommentsController < ApplicationController
       .left_outer_joins(:user)
       .order(created_at: :desc)
 
-    render json: comments
+    render json: comments.map { |comment| Legacy::AuthorFields.merge(comment, viewer: current_user) }
   end
 
   def create
@@ -30,7 +31,8 @@ class CommentsController < ApplicationController
       SendNotificationForCommentWorkflow.new(comment: @comment).run
 
       render json: @comment.attributes.merge(
-        { user_full_name: current_user.full_name, user_email: current_user.email, user_role: current_user.role_before_type_cast }
+        { user_full_name: current_user.full_name, user_role: current_user.role_before_type_cast }
+          .merge(Legacy::AuthorFields.call(viewer: current_user, user_id: current_user.id, email: current_user.email))
       ), status: :created
     else
       render json: {
@@ -45,7 +47,8 @@ class CommentsController < ApplicationController
 
     if @comment.update(comment_update_params)
       render json: @comment.attributes.merge(
-        { user_full_name: @comment.user.full_name, user_email: @comment.user.email, user_role: @comment.user.role_before_type_cast }
+        { user_full_name: @comment.user.full_name, user_role: @comment.user.role_before_type_cast }
+          .merge(Legacy::AuthorFields.call(viewer: current_user, user_id: @comment.user_id, email: @comment.user.email))
       )
     else
       render json: {

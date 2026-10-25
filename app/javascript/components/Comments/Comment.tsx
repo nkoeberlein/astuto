@@ -17,6 +17,7 @@ interface Props {
   isPostUpdate: boolean;
   userFullName: string;
   userEmail: string;
+  userGravatarHash: string;
   userRole: number;
   createdAt: string;
   updatedAt: string;
@@ -70,6 +71,7 @@ class Comment extends React.Component<Props, State> {
       isPostUpdate,
       userFullName,
       userEmail,
+      userGravatarHash,
       userRole,
       createdAt,
       updatedAt,
@@ -89,7 +91,7 @@ class Comment extends React.Component<Props, State> {
     return (
       <div className="comment">
         <div className="commentHeader">
-          <Gravatar email={userEmail} size={28} className="gravatar" />
+          <Gravatar email={userEmail || undefined} md5={userGravatarHash || undefined} size={28} className="gravatar" />
           <span className="commentAuthor">{userFullName}</span>
           
           { userRole > 0 && <StaffIcon /> }

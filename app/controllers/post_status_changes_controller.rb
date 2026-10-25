@@ -4,6 +4,7 @@ class PostStatusChangesController < ApplicationController
       .select(
         :post_status_id,
         :created_at,
+        :user_id,
         'users.full_name as user_full_name',
         'users.email as user_email',
       )
@@ -11,6 +12,6 @@ class PostStatusChangesController < ApplicationController
       .left_outer_joins(:user)
       .order(created_at: :asc)
 
-    render json: post_status_changes
+    render json: post_status_changes.map { |change| Legacy::AuthorFields.merge(change, viewer: current_user) }
   end
 end
