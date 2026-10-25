@@ -51,6 +51,7 @@ Issue-Nummern beziehen sich auf `astuto/astuto`. Phasen siehe [roadmap.md](roadm
 - [ ] Spamschutz der App-API (`POST /api/app/v1/boards/:id/posts`) an das alte UI angleichen: auffällige IPs eine Stunde sperren (bisher nur Honeypot + Zeitstempel pro Anfrage)
 - [x] Content Security Policy aktiv: Skripte nur von der Instanz, von Stripe oder mit Nonce; `CSP_REPORT_ONLY` als Notbremse; System-Spec prüft die Browser-Konsole. Nebenbei behoben: `/next` lief als statische Datei an `SpaController` vorbei (keine Meta-Tags), Gravatar-Bilder luden per `http`
 - [ ] Kurzer Security-Check: `rack-attack`-Regeln, API-Key-Handling
+- [x] Account-Lockout: Devise `:lockable` ergänzt (bricht Brute-Force-Versuche pro Konto ab, unabhängig von rack-attack), Schwellwerte per ENV konfigurierbar (`LOCKABLE_LOCK_STRATEGY`/`LOCKABLE_UNLOCK_STRATEGY`/`LOCKABLE_MAXIMUM_ATTEMPTS`/`LOCKABLE_UNLOCK_IN_HOURS`, Standard: 10 Versuche, 2 h, „both" = Unlock-Mail + Zeitablauf); App-API-Login zählt Fehlversuche jetzt mit (`valid_for_authentication?`), `UnlocksController` lädt Tenant-Daten, Doku in [docs/account-lockout.md](docs/account-lockout.md)
 
 ## P1 – Betrieb und Bugs
 

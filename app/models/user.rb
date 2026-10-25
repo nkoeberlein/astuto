@@ -3,7 +3,7 @@ class User < ApplicationRecord
   
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :confirmable,
-         :trackable
+         :trackable, :lockable
     
   validates_confirmation_of :password
   
@@ -42,6 +42,8 @@ class User < ApplicationRecord
   end
 
   def inactive_message
+    return I18n.t('devise.failure.locked') if access_locked?
+
     active? ? super : I18n.t('errors.user_blocked_or_deleted')
   end
 

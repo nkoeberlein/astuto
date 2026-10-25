@@ -180,30 +180,22 @@ Devise.setup do |config|
   config.timeout_in = 8.hours
 
   # ==> Configuration for :lockable
-  # Defines which strategy will be used to lock an account.
-  # :failed_attempts = Locks an account after a number of failed attempts to sign in.
-  # :none            = No lock strategy. You should handle locking by yourself.
-  # config.lock_strategy = :failed_attempts
-
-  # Defines which key will be used when locking and unlocking an account
-  # config.unlock_keys = [:email]
-
-  # Defines which strategy will be used to unlock an account.
-  # :email = Sends an unlock link to the user email
-  # :time  = Re-enables login after a certain amount of time (see :unlock_in below)
-  # :both  = Enables both strategies
-  # :none  = No unlock strategy. You should handle unlocking by yourself.
-  # config.unlock_strategy = :both
-
-  # Number of authentication tries before locking an account if lock_strategy
-  # is failed attempts.
-  # config.maximum_attempts = 20
-
-  # Time interval to unlock the account if :time is enabled as unlock_strategy.
-  # config.unlock_in = 1.hour
+  # Locks an account after too many failed sign-in attempts. This protects
+  # individual accounts against distributed brute-force attacks and is
+  # independent of rack-attack's IP-based rules. Thresholds are configurable
+  # via environment variables (see docs/account-lockout.md):
+  #
+  #   LOCKABLE_LOCK_STRATEGY    failed_attempts | none        (default: failed_attempts)
+  #   LOCKABLE_UNLOCK_STRATEGY  both | email | time | none    (default: both)
+  #   LOCKABLE_MAXIMUM_ATTEMPTS tries before the account locks (default: 10)
+  #   LOCKABLE_UNLOCK_IN_HOURS  hours until automatic unlock  (default: 2, time and both only)
+  config.lock_strategy    = ENV.fetch('LOCKABLE_LOCK_STRATEGY', 'failed_attempts').to_sym
+  config.unlock_strategy  = ENV.fetch('LOCKABLE_UNLOCK_STRATEGY', 'both').to_sym
+  config.maximum_attempts = ENV.fetch('LOCKABLE_MAXIMUM_ATTEMPTS', '10').to_i
+  config.unlock_in        = ENV.fetch('LOCKABLE_UNLOCK_IN_HOURS', '2').to_i.hours
 
   # Warn on the last attempt before the account is locked.
-  # config.last_attempt_warning = true
+  config.last_attempt_warning = true
 
   # ==> Configuration for :recoverable
   #

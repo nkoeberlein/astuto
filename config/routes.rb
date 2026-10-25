@@ -41,7 +41,8 @@ Rails.application.routes.draw do
     devise_for :users, :controllers => {
       :registrations => 'registrations',
       :sessions => 'sessions',
-      :passwords => 'passwords'
+      :passwords => 'passwords',
+      :unlocks => 'unlocks'
     }
 
     devise_scope :user do
