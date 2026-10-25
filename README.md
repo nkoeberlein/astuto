@@ -51,6 +51,26 @@ Astuto Evolution helps you collect, manage and prioritize feedback from your cus
 
 Upgrading an existing Astuto installation: see [UPGRADING.md](UPGRADING.md).
 
+## Planned features
+
+> Nothing below is released yet. Status and priorities: [roadmap.md](roadmap.md), tasks: [todo.md](todo.md).
+
+### In v2 (towards 2.0)
+
+- **Complete the new UI** (React 19 + TanStack, served under `/next` and then moved to `/`): roadmap page, login / sign-up / password as SPA pages with OAuth buttons, moderation queue and site settings, editing and deleting posts and comments, status changes
+- **Design system:** branding over CSS variables (reusing your current site colors), dark mode, WCAG 2.2 AA, mobile first
+- **AI-native features:** MCP server under `/mcp` with API-key auth (already part of the alpha) so assistants like Claude, Cursor and others can search, read, create and triage feedback; duplicate detection while posting (Postgres full-text search, optionally semantic with pgvector); discussion summaries and tag/board suggestions, all strictly opt-in per site settings
+- **Operations:** webhook error visibility (delivery log per webhook), "send test mail" for site settings, configurable favicon and header links, roadmap can be disabled, instance-wide default sort order, OAuth-only login option
+- **Cleanup:** the legacy React 16 / Redux / Bootstrap 4 frontend and its gems and packages are removed once every page is rebuilt
+
+### In v3 (major upgrade, fully TypeScript)
+
+- **Full TypeScript rewrite:** [TanStack Start](https://tanstack.com/start) + Drizzle (PostgreSQL) + Tailwind; Rails is dropped. The decision has been made (see roadmap, section 3); the v2 React frontend carries over unchanged, so v3 becomes a backend swap (endpoint by endpoint)
+- **New data model** with upgrade-path guarantees: UUIDv7 ids, unified activity timeline, votes with weight, full-text search (optional pgvector). Existing 2.x installations migrate automatically on first start of v3, old tables are archived — for admins the upgrade stays a Docker image tag change
+- **Modern auth:** e.g. Better Auth with multiple OAuth providers and passkeys
+- **Everything ported:** webhooks (Liquid templates), mails, background jobs and the MCP server move to TypeScript; SSR for public boards for SEO
+- **Licensing stays AGPL-3.0** in v3; a commercial dual-license is possible only via CLA from the first v3 commit (see roadmap, section 6/7)
+
 ## Get started
 
 **2.0.0-alpha.2** is available as `ghcr.io/nkoeberlein/astuto:2.0.0-alpha.2` (amd64 + arm64) for testing. It is an alpha: back up your database before trying it on existing data, and see [CHANGELOG.md](CHANGELOG.md) for what is done and what is missing.
