@@ -36,7 +36,7 @@ const PostFooter = ({
         authorGravatarHash ?
           <>
           <span>{I18n.t('post.published_by').toLowerCase()} &nbsp;</span>
-          <Gravatar md5={authorGravatarHash} size={24} className="postAuthorAvatar" /> &nbsp;
+          <Gravatar protocol="https://" md5={authorGravatarHash} size={24} className="postAuthorAvatar" /> &nbsp;
           <span>{authorFullName}</span>
           </>
         :

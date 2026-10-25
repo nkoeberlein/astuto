@@ -91,7 +91,7 @@ class Comment extends React.Component<Props, State> {
     return (
       <div className="comment">
         <div className="commentHeader">
-          <Gravatar email={userEmail || undefined} md5={userGravatarHash || undefined} size={28} className="gravatar" />
+          <Gravatar protocol="https://" email={userEmail || undefined} md5={userGravatarHash || undefined} size={28} className="gravatar" />
           <span className="commentAuthor">{userFullName}</span>
           
           { userRole > 0 && <StaffIcon /> }

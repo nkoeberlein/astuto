@@ -5,6 +5,9 @@ const mode = process.env.NODE_ENV === 'development' ? 'development' : 'productio
 
 module.exports = {
   mode: mode,
+  // The default development devtool wraps modules in eval(), which the Content
+  // Security Policy blocks; source maps keep debugging without it
+  devtool: mode === 'development' ? 'cheap-module-source-map' : false,
 
   optimization: {
     moduleIds: 'deterministic',

@@ -42,6 +42,9 @@ Astuto Evolution: community continuation of Astuto, a self-hosted customer feedb
 - Behind a reverse proxy, `X-Forwarded-Proto` must be set or OAuth callbacks use `http` (upstream #478).
 - OAuth `token_state` cookie uses `domain: ".#{request.domain}"`, which breaks on multi-part TLDs and IPs (upstream #472).
 - Webhook bodies are Liquid templates that must render valid JSON; use the `escape_json` filter.
+- Content Security Policy (`config/initializers/content_security_policy.rb`): no inline `<script>` without `javascript_tag nonce: true`, no inline event handlers (`onclick=` etc.), no `eval`. `spec/system/content_security_policy_spec.rb` fails on browser console violations.
+- Legacy JSON must not expose other users' emails: build author fields with `Legacy::AuthorFields` (email only for moderators and the person themselves, Gravatar hash for everyone).
+- `public/**/index.html` is never served for bare directories (`public_file_server.index_name`), so `/next` goes through `SpaController`.
 - Admin-entered URLs that end up in an `href` (header links, logo link) must pass `SafeUrl.safe?`; render via `TenantSetting#safe_custom_links` / `#safe_logo_custom_url`.
 - System specs need Chromium in the container; the dev image has none, so run them in CI (`run-tests.yml`, triggered by pull requests).
 - `gh` defaults to the archived upstream repo: pass `-R nkoeberlein/astuto`.

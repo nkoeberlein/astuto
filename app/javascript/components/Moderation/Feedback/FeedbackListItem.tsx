@@ -25,7 +25,7 @@ const FeedbackListItem = ({ post, onUpdatePostApprovalStatus, hideRejectButton }
         <div className="feedbackListItemIcon">
           {
             post.userId ?
-              <Gravatar email={post.userEmail} size={42} title={post.userEmail} className="gravatar userGravatar" />
+              <Gravatar protocol="https://" email={post.userEmail} size={42} title={post.userEmail} className="gravatar userGravatar" />
             :
               <AnonymousIcon size={42} />
           }

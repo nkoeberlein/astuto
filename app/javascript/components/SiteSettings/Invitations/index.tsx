@@ -218,7 +218,7 @@ const Invitations = ({ siteName, invitations, currentUserEmail, authenticityToke
           invitationsToDisplay.map((invitation, i) => (
             <li key={i} className="invitationListItem">
               <div className="invitationUserInfo">
-                <Gravatar email={invitation.email} size={42} className="gravatar userGravatar" />
+                <Gravatar protocol="https://" email={invitation.email} size={42} className="gravatar userGravatar" />
                 <span className="invitationEmail">{ invitation.email }</span>
               </div>
 

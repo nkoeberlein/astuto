@@ -48,7 +48,7 @@ const NewComment = ({
         isLoggedIn ?
           <>
             <div className="commentBodyForm">
-              <Gravatar email={userEmail} size={48} className="currentUserAvatar" />
+              <Gravatar protocol="https://" email={userEmail} size={48} className="currentUserAvatar" />
               
               <div style={{width: '100%', marginRight: '8px'}}>
                 <textarea
