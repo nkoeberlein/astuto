@@ -23,10 +23,11 @@ until bundle exec rake db:version; do
   sleep 1
 done
 
-# Update or create database
-db_version=$(bundle exec rake db:version)
-echo "$db_version"
-if [ "$db_version" = "Current version: 0" ]; then
+# Update or create database. Since Rails 7.1, db:version also prints a
+# "database: <name>" line, so only the number is compared.
+db_version=$(bundle exec rake db:version | sed -n 's/^Current version: //p')
+echo "Database schema version: ${db_version:-unknown}"
+if [ "$db_version" = "0" ]; then
   bundle exec rake db:create
   bundle exec rake db:schema:load
   bundle exec rake db:migrate
