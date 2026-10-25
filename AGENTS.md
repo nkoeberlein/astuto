@@ -11,7 +11,7 @@ Astuto Evolution: community continuation of Astuto, a self-hosted customer feedb
 - `app/workflows` – service objects for multi-step logic (OAuth exchange, sign-in, custom domain); `CreatePostWorkflow` is the only way to create posts with follow and initial status (legacy UI, app API, MCP)
 - `app/services/mcp` – MCP server on the official `mcp` gem: `server.rb` builds it, one class per tool in `tools/` (inherit `Mcp::Tools::Base`, implement `self.run(user:, **args)`), shared queries in `post_data.rb`; endpoint `McpController` (`/mcp`, API key of a moderator)
 - `app/services/ai/client.rb` – opt-in AI provider (OpenAI-compatible, Ollama, Anthropic; needs `AI_PROVIDER` and `AI_MODEL`); used by `Api::App::V1::SummariesController`
-- `app/lib` – small helpers (`SafeUrl` for admin-entered link URLs, Liquid filters)
+- `app/lib` – small helpers (`SafeUrl` for admin-entered link URLs, `SafeUrl.local_path?` for return targets after sign-in, `ApiToken` reads API keys for MCP and Rack::Attack, `PostSpamCheck` honeypot/fill-time checks, Liquid filters)
 - `app/jobs` – ActiveJob (`RunWebhook`, recap emails); backend is async or Sidekiq via `ACTIVE_JOB_BACKEND`
 - `app/javascript` – legacy React 16 + Redux frontend (being replaced by `frontend/`), mounted via react-rails
 - `config/locales` – backend i18n; `app/javascript/translations` – frontend i18n (i18n-js, Crowdin)

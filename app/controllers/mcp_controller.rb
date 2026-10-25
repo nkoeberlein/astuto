@@ -58,12 +58,7 @@ class McpController < ApplicationController
     end
 
     def extract_api_token
-      auth_header = request.headers['Authorization'].to_s
-      if auth_header.start_with?('Bearer ')
-        auth_header.delete_prefix('Bearer ').strip
-      else
-        request.headers['X-Api-Key'].to_s.strip.presence
-      end
+      ApiToken.extract(request)
     end
 
     def render_unauthorized(message)
