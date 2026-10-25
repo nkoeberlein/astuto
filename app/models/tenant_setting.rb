@@ -56,6 +56,18 @@ class TenantSetting < ApplicationRecord
     super(links.uniq)
   end
 
+  # Approval status for a new post, following feedback_approval_policy.
+  # Moderators' posts are always approved.
+  def approval_status_for_new_post(user:, anonymous:)
+    return 'approved' if user&.moderator?
+
+    case feedback_approval_policy
+    when 'never_require_approval' then 'approved'
+    when 'anonymous_require_approval' then anonymous ? 'pending' : 'approved'
+    else 'pending'
+    end
+  end
+
   # Links that are safe to render; filters out unsafe URLs saved before validation existed
   def safe_custom_links
     custom_links.select { |link| SafeUrl.safe?(link["url"]) }

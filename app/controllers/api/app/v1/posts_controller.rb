@@ -53,18 +53,15 @@ module Api::App::V1
         title: params[:title],
         description: params[:description],
         user: anonymous ? nil : current_user,
-        approval_status: approval_status_for(anonymous: anonymous),
+        approval_status: tenant_setting.approval_status_for_new_post(user: current_user, anonymous: anonymous),
         post_status_id: post_status_id
       )
 
-      # The post creation and the author's follow must both happen or neither (#169)
-      saved = ActiveRecord::Base.transaction do
-        result = post.save
-        Follow.create(post: post, user: current_user) if result && !anonymous
-        # A moderator-chosen initial status belongs to the timeline
-        PostStatusChange.create(user_id: current_user.id, post_id: post.id, post_status_id: post_status_id) if result && post_status_id.present?
-        result
-      end
+      saved = CreatePostWorkflow.new(
+        post: post,
+        follower: anonymous ? nil : current_user,
+        status_actor: current_user
+      ).run
       return render_error(:unprocessable_content, post.errors.full_messages.join(', ')) unless saved
       render status: :created, json: PostSerializer.detail(post, current_user: current_user)
     end
@@ -140,17 +137,6 @@ module Api::App::V1
       def spam?
         rendered_at = params[:formRenderedAt].to_i
         params[:honeypot].present? || rendered_at.zero? || Time.now.to_i - rendered_at < MIN_SECONDS_TO_FILL_FORM
-      end
-
-      # Same rules as the legacy UI (TenantSetting#feedback_approval_policy)
-      def approval_status_for(anonymous:)
-        return 'approved' if current_user&.moderator?
-
-        case tenant_setting.feedback_approval_policy
-        when 'never_require_approval' then 'approved'
-        when 'anonymous_require_approval' then anonymous ? 'pending' : 'approved'
-        else 'pending'
-        end
       end
   end
 end

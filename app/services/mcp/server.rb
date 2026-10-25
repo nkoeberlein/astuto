@@ -355,8 +355,7 @@ module Mcp
           user: @user,
           approval_status: 'approved'
         )
-        post.save!
-        Follow.find_or_create_by!(post: post, user: @user)
+        CreatePostWorkflow.new(post: post, follower: @user, status_actor: @user).run!
 
         {
           post: {
@@ -388,15 +387,20 @@ module Mcp
           updates[:approval_status] = args['approval_status']
         end
 
-        post.update!(updates)
+        post.assign_attributes(updates)
+        status_changed = post.post_status_id_changed?
+        status_change_workflow = ExecutePostStatusChangeLogicWorkflow.new(
+          user_id: @user.id,
+          post: post,
+          post_status_id: post.post_status_id
+        )
 
-        if post.post_status_id_previously_changed?
-          ExecutePostStatusChangeLogicWorkflow.new(
-            user_id: @user.id,
-            post: post,
-            post_status_id: post.post_status_id
-          ).run
+        # Post update and timeline entry together or not at all (#169); mails after commit
+        ActiveRecord::Base.transaction do
+          post.save!
+          status_change_workflow.create_status_change! if status_changed
         end
+        status_change_workflow.notify_followers if status_changed
 
         {
           post: {

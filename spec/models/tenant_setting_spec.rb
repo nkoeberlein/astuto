@@ -145,6 +145,22 @@ RSpec.describe TenantSetting, type: :model do
     expect(tenant_setting.safe_logo_custom_url).to be_nil
   end
 
+  it 'decides the approval status of new posts' do
+    user = FactoryBot.build(:user)
+    moderator = FactoryBot.build(:moderator)
+
+    tenant_setting.feedback_approval_policy = 'anonymous_require_approval'
+    expect(tenant_setting.approval_status_for_new_post(user: user, anonymous: false)).to eq('approved')
+    expect(tenant_setting.approval_status_for_new_post(user: nil, anonymous: true)).to eq('pending')
+
+    tenant_setting.feedback_approval_policy = 'always_require_approval'
+    expect(tenant_setting.approval_status_for_new_post(user: user, anonymous: false)).to eq('pending')
+    expect(tenant_setting.approval_status_for_new_post(user: moderator, anonymous: true)).to eq('approved')
+
+    tenant_setting.feedback_approval_policy = 'never_require_approval'
+    expect(tenant_setting.approval_status_for_new_post(user: nil, anonymous: true)).to eq('approved')
+  end
+
   it 'can hide the email/password login' do
     expect(tenant_setting.login_only_with_oauth).to be(false)
 
