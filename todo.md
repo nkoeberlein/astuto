@@ -73,6 +73,7 @@ Issue-Nummern beziehen sich auf `astuto/astuto`. Phasen siehe [roadmap.md](roadm
 - [x] Devise-Mails über ActiveJob/Sidekiq verschicken (#444) (`User#send_devise_notification`)
 
 ### Webhooks
+- [ ] Webhooks mit HMAC signieren (Signature-Header), damit Empfänger den Absender verifizieren können (Quackback signiert; Voraussetzung für die Vorlagen-Integrationen)
 - [ ] Liquid- und JSON-Fehler beim Ausführen speichern und im UI anzeigen (Delivery-Log pro Webhook) (#458)
 - [x] Template beim Speichern bzw. Testen validieren, Hinweis auf `escape_json` (`WebhooksController#preview/test`, `RunWebhook`)
 - [x] Kommentar-Benachrichtigungen reparieren (#431) (`config/initializers/global_id.rb`, `SendNotificationForCommentWorkflow`)
@@ -97,6 +98,7 @@ Issue-Nummern beziehen sich auf `astuto/astuto`. Phasen siehe [roadmap.md](roadm
 
 ### Mittelstand (roadmap.md, Abschnitt 7)
 - [ ] SAML-Login und LDAP/AD (#8), Login nur per SSO (#471)
+- [ ] 2FA/MFA für Admins und Moderatoren (v2: Devise-TOTP, v3: Better Auth); bei kommerziellem Einsatz bzw. Audits erwartet
 - [ ] Audit-Log für Moderation und Einstellungen
 - [ ] DSGVO: Datenexport und Löschung pro Person, Aufbewahrungsfristen
 - [ ] Health-Check-Endpunkt, Prometheus-Metriken, Backup/Restore-Anleitung, Helm-Chart
@@ -150,6 +152,7 @@ Empfehlung (roadmap.md, Abschnitt 3): getrenntes Frontend mit React 19 + TS 7 + 
 - [x] KI-Anbieter-Abstraktion: OpenAI-kompatibel (inkl. Ollama), Anthropic; alles opt-in per ENV (`AI_PROVIDER` und `AI_MODEL`, kein fest eingebautes Modell), ohne KI voll funktionsfähig (`Ai::Client`)
 - [ ] Optional semantische Duplikate mit pgvector und Embeddings
 - [ ] Feedback aus anderen Quellen über MCP: Feld „Quelle/Link“ am Post (API, MCP, Anzeige) und `create_post` im Namen eines Nutzers (wie `impersonated_user_id` in API v1, nur Admins); Doku-Rezept „Slack-Thread → Post“ mit Claude
+- [ ] Duplikate zusammenführen (Merge): `merged_into_post_id` mit Umleitung, Votes und Kommentare konsolidieren (steht bisher nur im v3-Schema, roadmap §6; alle Wettbewerber mit Duplikaterkennung haben Merge)
 - [x] Zusammenfassung langer Diskussionen: Button im Moderationsbereich der Post-Seite (`/next`), `POST /api/app/v1/posts/:id/summary`, einen Tag gecacht
 - [ ] Vorschläge für Board und Tags (Methode in `Ai::Client` vorhanden; braucht Tags #171)
 - [ ] Changelog-Entwürfe aus erledigten Posts (Methode vorhanden; braucht die Changelog-Funktion)
@@ -171,6 +174,7 @@ Empfehlung (roadmap.md, Abschnitt 3): getrenntes Frontend mit React 19 + TS 7 + 
 - [ ] Vertrauensstufen: neue Freigaberegel „die ersten N Posts eines Kontos prüfen, danach automatisch freigeben“ (#362-Familie)
 - [ ] RSS-Feed pro Board (neueste Posts), gemeinsam mit dem Changelog-RSS bauen
 - [ ] Digest für Nutzer: `SendRecapEmailsJob` verschickt bisher nur an Moderatoren; Opt-in für alle Nutzer (Top-Requests, Statuswechsel gefolgter Posts)
+- [ ] Sitemap.xml für öffentliche Boards, Posts und Roadmap (SEO: Feedback-Portale leben von der Indexierung, Fider verkauft sie hinter Paywall; `robots.txt` ist statisch)
 - [x] Eigene Links bzw. URL im Header (#479, #351): `custom_links` (jsonb: `{label, url}`), Textarea im General-Tab, gerendert in Legacy-Header und neuem Frontend
 - [x] Datenbank-Transaktionen in Workflows (#169): Post-Update/-Create jeweils atomar mit Follow bzw. Statuswechsel-Eintrag; Mails werden nach dem Commit versendet; gleiche Sicherung im öffentlichen API v1. Anlegen läuft für altes UI, App-API und MCP über `CreatePostWorkflow` (`create!` in der Transaktion, vorher rollten fehlgeschlagene Follows nicht zurück)
 
@@ -192,7 +196,7 @@ Empfehlung (roadmap.md, Abschnitt 3): getrenntes Frontend mit React 19 + TS 7 + 
 - [ ] Native Integrationen Linear, GitHub, Jira mit Status-Sync
 - [ ] Import aus Canny (neben CSV, #368)
 
-- [ ] Bild-Upload und Anhänge, auf Upstream-PR #454 aufbauen (#253, #482)
+- [ ] Bild-Upload und Anhänge, auf Upstream-PR #454 aufbauen (#253, #482); **vorher entscheiden:** Speicher ohne Active Storage (Regel für v2/v3), z. B. S3-kompatibel oder Postgres-`bytea` – unnötig wäre eine Baustelle, die die v3-Migration wieder verkompliziert
 - [ ] Tags für Posts (#171)
 - [ ] Private Boards (#414)
 - [ ] Admin-Freigabe neuer Nutzer (#362), eigene Signup-Anforderungen (#30)

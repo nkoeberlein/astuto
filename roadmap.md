@@ -116,7 +116,7 @@ Die häufigsten Probleme aus den Upstream-Issues: HTTPS hinter Reverse Proxy (#4
 
 ### Phase 4 – KI und MCP · P1 (MCP in 2.0, Rest 2.x)
 - ✅ **MCP-Server** (Streamable HTTP unter `/mcp` auf dem offiziellen `mcp`-Gem, Auth per API-Key, später OAuth). Tools: Posts suchen, lesen, anlegen, Status ändern, kommentieren, Votes und Trends abfragen, Roadmap lesen. Damit triagieren Claude, Cursor und andere Assistenten Feedback direkt. Unter den Self-Hosted-Tools hat das sonst nur Quackback.
-- **Duplikaterkennung** beim Erstellen (#455): ✅ Postgres-Volltextsuche · offen: optional semantisch mit pgvector und Embeddings
+- **Duplikaterkennung** beim Erstellen (#455): ✅ Postgres-Volltextsuche · offen: optional semantisch mit pgvector und Embeddings, Zusammenführen (Merge) mit konsolidierten Votes – bisher nur im v3-Schema (6.) geplant, wäre aber auch für v2 sinnvoll
 - **KI-Funktionen (opt-in, eigenes Modell):** ✅ Zusammenfassung langer Diskussionen (Moderatoren, neues Frontend) · offen: Vorschläge für Tags und Board (braucht Tags), Changelog-Entwürfe (braucht Changelog), Übersetzung von Feedback
 - Datenschutz: Was an den KI-Anbieter geht, ist dokumentiert und abschaltbar; lokales Modell per Ollama wird unterstützt
 - **Feedback aus anderen Quellen über MCP** statt eigener Connectoren: Ein Assistent in Slack oder Teams liest einen Thread und legt den Post an. Dafür fehlen nur ein Feld „Quelle/Link“ am Post und „im Namen von“ in `create_post`
@@ -125,10 +125,10 @@ Die häufigsten Probleme aus den Upstream-Issues: HTTPS hinter Reverse Proxy (#4
 - **Changelog** mit RSS und E-Mail an Follower; **RSS pro Board** mit derselben Technik
 - **Digest für Nutzer** (Opt-in: Top-Requests, Statuswechsel gefolgter Posts), Erweiterung der bestehenden Recap-Mails für Moderatoren
 - **Vertrauensstufen:** die ersten N Posts eines Kontos prüfen, danach automatisch freigeben (#362-Familie)
-- **Private Boards** (#414), **Tags** (#171), **Anhänge** (#253, #482)
+- **Private Boards** (#414), **Tags** (#171), **Anhänge** (#253, #482; Speicherregel beachten: kein Active Storage, Entscheidung zwischen S3-kompatibel und Postgres, siehe todo.md)
 - **Import** aus Canny, Fider und CSV (#368), um Wechsler aufzunehmen
 - **Widget mit Besucher-Identifikation** (signiertes JWT pro Tenant aus der eigenen App): Voraussetzung dafür, dass Widget-Votes echten Kunden zugeordnet werden, und zugleich „Login aus der eigenen App“ ohne OAuth
-- **Einbettbares Widget**, **Webhook-Vorlagen** für Slack, Discord und Teams (#419)
+- **Einbettbares Widget**, **Webhook-Vorlagen** für Slack, Discord und Teams (#419), **signierte Webhooks** (HMAC-Header)
 - **LDAP/SAML** (#8) für Unternehmen und Behörden
 - Später: **Nutzersegmente** (Votes nach Kundengruppe filtern oder gewichten; setzt Besucher-Identifikation und Custom Fields #420 voraus, Gewichtung steht im v3-Schema) und **Verfallsregeln** (Filter „seit X Monaten ohne Aktivität“, automatisches Archivieren nur als Opt-in)
 - Quick Wins aus den Issues: Roadmap abschaltbar (#361), Standard-Sortierung (#193, #363, #483), OAuth-only-Login (#471), Favicon (#452)
@@ -187,7 +187,7 @@ Die häufigsten Probleme aus den Upstream-Issues: HTTPS hinter Reverse Proxy (#4
 **Ziel:** Kostenloses Self-Hosting bleibt der Kern. Zugleich soll Astuto Evolution für mittelständische Unternehmen (etwa 50–1.000 Mitarbeitende) im kommerziellen Einsatz taugen: intern, für Kundenportale und für mehrere Produkte.
 
 **Was diese Zielgruppe erwartet** (fließt in die Prioritäten der todo.md ein):
-- **Identität:** SSO über OIDC (vorhanden: beliebige OAuth2-Anbieter), zusätzlich **SAML** und **LDAP/AD** (#8), Login nur über SSO (#471), automatische Rollen über Gruppen
+- **Identität:** SSO über OIDC (vorhanden: beliebige OAuth2-Anbieter), zusätzlich **SAML** und **LDAP/AD** (#8), Login nur über SSO (#471), automatische Rollen über Gruppen, **2FA/MFA für Admins und Moderatoren**
 - **Mandanten:** mehrere Portale pro Instanz mit eigener Domain und eigenem Branding (vorhanden, testen und dokumentieren), Verwaltung über eine Instanz-Admin-Oberfläche
 - **Compliance:** Audit-Log (wer hat was geändert), DSGVO-Funktionen (Export und Löschung pro Person, Aufbewahrungsfristen), Datenverarbeitung ohne Drittanbieter, KI nur opt-in mit eigenem Modell
 - **Betrieb:** Backup/Restore-Anleitung, mehrere Web-Instanzen hinter Load Balancer, Health-Check-Endpunkt, Prometheus-Metriken, Helm-Chart, signierte Images mit SBOM
