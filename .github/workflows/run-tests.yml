@@ -41,6 +41,10 @@ jobs:
           docker compose exec web dpkg -i google-chrome-stable_current_amd64.deb || true
           docker compose exec web apt-get -fy install
         
+      # The container's entrypoint only prepares its own database
+      - name: Prepare test database
+        run: docker compose exec -e RAILS_ENV=test web bundle exec rails db:create db:schema:load
+
       - name: Run tests
         run: docker compose exec web bundle exec rspec
 
