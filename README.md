@@ -1,5 +1,8 @@
 <p align="center">
-  <img width="460" alt="Astuto Evolution (Evo)" src="./images/logo-and-name.png" />
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="./images/logo-and-name-dark.png" />
+    <img width="460" alt="Astuto Evolution (Evo)" src="./images/logo-and-name.png" />
+  </picture>
 </p>
 
 <h1 align="center">Astuto Evolution (Evo) 🦊</h1>
