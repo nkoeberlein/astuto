@@ -77,9 +77,13 @@ module Api
       end
  
       def authenticate_with_api_key
-        authenticate_or_request_with_http_token do |token, options|
-          @current_api_key = ApiKey.find_by_token(token)
-          @current_user = current_api_key&.user
+        authenticate_or_request_with_http_token do |token, _options|
+          api_key = ApiKey.find_by_token(token)
+          user = api_key&.user
+          if user&.active? && user.moderator?
+            @current_api_key = api_key
+            @current_user = user
+          end
         end
       end
  

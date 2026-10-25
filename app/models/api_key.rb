@@ -15,11 +15,15 @@ class ApiKey < ApplicationRecord
   attr_accessor :token
 
   def self.find_by_token!(token)
-    find_by!(token_digest: digest(token))
+    raise ActiveRecord::RecordNotFound if token.blank?
+
+    find_by!(token_digest: digest(token.to_s))
   end
 
   def self.find_by_token(token)
-    find_by(token_digest: digest(token))
+    return nil if token.blank?
+
+    find_by(token_digest: digest(token.to_s))
   end
 
   def self.digest(token)
