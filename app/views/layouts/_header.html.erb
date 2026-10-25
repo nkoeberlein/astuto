@@ -38,7 +38,7 @@
         
         <%= render 'layouts/boards_nav_section', boards: @boards unless @boards.nil? %>
 
-        <% @tenant_setting.custom_links.each do |link| %>
+        <% @tenant_setting.safe_custom_links.each do |link| %>
           <li class="nav-item">
             <%= link_to link["label"], link["url"], class: 'nav-link' %>
           </li>

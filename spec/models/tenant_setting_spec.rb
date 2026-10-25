@@ -121,6 +121,30 @@ RSpec.describe TenantSetting, type: :model do
     expect(tenant_setting.custom_links).to eq([{ 'label' => 'Help', 'url' => 'https://d.io' }])
   end
 
+  it 'rejects header links and logo links with unsafe URLs' do
+    tenant_setting.custom_links = [{ 'label' => 'XSS', 'url' => 'javascript:alert(1)' }]
+    expect(tenant_setting).to be_invalid
+
+    tenant_setting.custom_links = []
+    tenant_setting.logo_custom_url = 'javascript:alert(1)'
+    expect(tenant_setting).to be_invalid
+
+    tenant_setting.logo_custom_url = 'https://example.com'
+    expect(tenant_setting).to be_valid
+  end
+
+  it 'hides unsafe URLs that were saved before validation existed' do
+    tenant_setting.save!
+    tenant_setting.update_columns(
+      custom_links: [{ 'label' => 'Ok', 'url' => 'https://ok.io' }, { 'label' => 'XSS', 'url' => 'javascript:alert(1)' }],
+      logo_custom_url: 'javascript:alert(1)'
+    )
+    tenant_setting.reload
+
+    expect(tenant_setting.safe_custom_links).to eq([{ 'label' => 'Ok', 'url' => 'https://ok.io' }])
+    expect(tenant_setting.safe_logo_custom_url).to be_nil
+  end
+
   it 'can hide the email/password login' do
     expect(tenant_setting.login_only_with_oauth).to be(false)
 

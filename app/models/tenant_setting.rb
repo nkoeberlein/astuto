@@ -9,6 +9,7 @@ class TenantSetting < ApplicationRecord
   validates :default_post_sorting, inclusion: { in: POST_SORT_OPTIONS }
   validates :mail_logo_size, numericality: { only_integer: true, greater_than: 0, less_than_or_equal_to: 1024 }
   validate :custom_links_format
+  validate :logo_custom_url_format
 
   enum :brand_display, [
     :name_and_logo,
@@ -55,13 +56,28 @@ class TenantSetting < ApplicationRecord
     super(links.uniq)
   end
 
+  # Links that are safe to render; filters out unsafe URLs saved before validation existed
+  def safe_custom_links
+    custom_links.select { |link| SafeUrl.safe?(link["url"]) }
+  end
+
+  def safe_logo_custom_url
+    SafeUrl.sanitize(logo_custom_url)
+  end
+
   private
 
     def custom_links_format
       return if custom_links.all? do |link|
-        link.fetch("label").is_a?(String) && link.fetch("url").is_a?(String)
+        link.fetch("label").is_a?(String) && SafeUrl.safe?(link.fetch("url"))
       end
 
       errors.add(:custom_links, :invalid)
+    end
+
+    def logo_custom_url_format
+      return if logo_custom_url.blank? || SafeUrl.safe?(logo_custom_url)
+
+      errors.add(:logo_custom_url, :invalid)
     end
 end
