@@ -5,6 +5,8 @@ module Api::App::V1
       {
         csrfToken: csrf_token,
         user: user && current_user(user),
+        # Moderators see AI actions only when a provider is configured
+        aiEnabled: user&.moderator? ? Ai::Client.enabled? : false,
         tenant: {
           siteName: tenant.site_name,
           siteLogo: tenant.site_logo,

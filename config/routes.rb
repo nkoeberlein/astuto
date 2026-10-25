@@ -116,6 +116,7 @@ Rails.application.routes.draw do
             resources :comments, only: [:index, :create, :update, :destroy]
             resource :vote, only: [:create, :destroy]
             resource :follow, only: [:create, :destroy]
+            resource :summary, only: [:create]
           end
         end
       end

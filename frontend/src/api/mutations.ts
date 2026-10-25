@@ -202,3 +202,15 @@ export function useDeleteComment(postSlug: string) {
     },
   })
 }
+
+// AI summary of a post's discussion (moderators, only when the server has AI enabled)
+export function useSummarizePost(postSlug: string) {
+  return useMutation({
+    mutationFn: () =>
+      unwrap(
+        api.POST('/api/app/v1/posts/{post_id}/summary', {
+          params: { path: { post_id: postSlug } },
+        }),
+      ),
+  })
+}

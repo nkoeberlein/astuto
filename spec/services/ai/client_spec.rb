@@ -10,10 +10,15 @@ RSpec.describe Ai::Client do
     end
 
     it 'requires an API key for openai and anthropic, but not for local ollama' do
-      expect(described_class.new(provider: 'openai', api_key: nil).enabled?).to be(false)
-      expect(described_class.new(provider: 'openai', api_key: 'sk-test').enabled?).to be(true)
-      expect(described_class.new(provider: 'anthropic', api_key: 'sk-ant').enabled?).to be(true)
-      expect(described_class.new(provider: 'ollama', api_key: nil).enabled?).to be(true)
+      expect(described_class.new(provider: 'openai', api_key: nil, model: 'm').enabled?).to be(false)
+      expect(described_class.new(provider: 'openai', api_key: 'sk-test', model: 'm').enabled?).to be(true)
+      expect(described_class.new(provider: 'anthropic', api_key: 'sk-ant', model: 'm').enabled?).to be(true)
+      expect(described_class.new(provider: 'ollama', api_key: nil, model: 'm').enabled?).to be(true)
+    end
+
+    it 'requires a model, because there is no built-in default' do
+      expect(described_class.new(provider: 'ollama').enabled?).to be(false)
+      expect(described_class.new(provider: 'anthropic', api_key: 'sk-ant', model: ' ').enabled?).to be(false)
     end
   end
 
@@ -58,7 +63,7 @@ RSpec.describe Ai::Client do
       client = described_class.new(
         provider: 'anthropic',
         api_key: 'sk-ant-123',
-        model: 'claude-3-5-haiku-latest'
+        model: 'claude-test-model'
       )
 
       fake_response = instance_double(
@@ -72,6 +77,34 @@ RSpec.describe Ai::Client do
       ).and_return(fake_response)
 
       expect(client.complete(system_prompt: 'sys', user_prompt: 'hello')).to eq('Anthropic summary')
+    end
+
+    it 'raises ProviderError when the provider answers with an error' do
+      client = described_class.new(provider: 'openai', api_key: 'sk-test', model: 'm')
+      fake_response = instance_double(HTTParty::Response, success?: false, code: 429, body: 'rate limited')
+      expect(HTTParty).to receive(:post).with(
+        'https://api.openai.com/v1/chat/completions',
+        hash_including(headers: hash_including('Authorization' => 'Bearer sk-test'))
+      ).and_return(fake_response)
+
+      expect { client.complete(system_prompt: 'sys', user_prompt: 'hi') }
+        .to raise_error(Ai::Client::ProviderError, /HTTP 429/)
+    end
+  end
+
+  describe '#summarize_discussion' do
+    it 'keeps only the newest part of very long threads' do
+      client = described_class.new(provider: 'ollama', model: 'm')
+      old_comment = Struct.new(:body).new('OLDEST ' + ('x' * Ai::Client::MAX_DISCUSSION_CHARS))
+      new_comment = Struct.new(:body).new('NEWEST comment')
+      post = Struct.new(:title, :description).new('Dark mode', 'Please')
+
+      prompt = nil
+      allow(client).to receive(:complete) { |**args| prompt = args[:user_prompt] }
+      client.summarize_discussion(post: post, comments: [old_comment, new_comment], locale: :de)
+
+      expect(prompt).to include('NEWEST comment', 'locale code "de"')
+      expect(prompt).not_to include('OLDEST')
     end
   end
 end

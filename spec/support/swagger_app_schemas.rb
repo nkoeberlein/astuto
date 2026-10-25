@@ -29,7 +29,7 @@ module Swagger
           allowAnonymousFeedback: BOOLEAN, isPrivate: BOOLEAN, hideUnusedStatusesInFilterByStatus: BOOLEAN, customCss: NULLABLE_STRING
         }),
         Tenant: object({ siteName: STRING, siteLogo: NULLABLE_STRING, siteFavicon: NULLABLE_STRING, locale: STRING, settings: ref(:TenantSettings) }),
-        Session: object({ csrfToken: STRING, user: ref(:CurrentUser).merge(nullable: true), tenant: ref(:Tenant) }),
+        Session: object({ csrfToken: STRING, user: ref(:CurrentUser).merge(nullable: true), aiEnabled: BOOLEAN.merge(description: 'True for moderators when an AI provider is configured'), tenant: ref(:Tenant) }),
         Board: object({ id: INTEGER, name: STRING, slug: STRING, description: NULLABLE_STRING }),
         PostStatus: object({ id: INTEGER, name: STRING, color: STRING, order: INTEGER, showInRoadmap: BOOLEAN }),
         PostListItem: object({
@@ -53,6 +53,7 @@ module Swagger
         }),
         VoteState: object({ liked: BOOLEAN, likesCount: INTEGER }),
         FollowState: object({ followed: BOOLEAN }),
+        Summary: object({ summary: STRING }),
         NewPost: object({
           title: STRING, description: NULLABLE_STRING, isAnonymous: BOOLEAN, postStatusId: NULLABLE_INTEGER,
           honeypot: { type: :string, description: 'Hidden form field, must stay empty' },

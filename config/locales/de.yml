@@ -162,6 +162,11 @@ de:
     likes_box:
       title: 'Likes'
       empty: 'Es existieren noch keine Likes'
+    ai_summary:
+      title: 'KI-Zusammenfassung'
+      button: 'Diskussion zusammenfassen'
+      loading: 'Fasse zusammen…'
+      hint: 'Titel, Beschreibung und Kommentare werden an den eingestellten KI-Anbieter gesendet.'
     action_box:
       title: 'Aktionen'
       follow_button: 'Beitrag folgen'

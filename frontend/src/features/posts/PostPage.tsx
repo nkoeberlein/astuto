@@ -27,6 +27,7 @@ import { Separator } from '@/components/ui/separator'
 import { Textarea } from '@/components/ui/textarea'
 import { formatRelativeTime } from '@/lib/format'
 import { useI18n } from '@/lib/i18n'
+import { AiSummary } from './AiSummary'
 import { CommentForm } from './CommentForm'
 import { CommentList } from './CommentList'
 import { FollowButton } from './FollowButton'
@@ -288,6 +289,7 @@ export function PostPage({ postSlug }: { postSlug: string }) {
               </div>
             )}
             {!editing && <FormError error={updatePost.error} />}
+            {session.aiEnabled && <AiSummary postSlug={post.slug} />}
           </section>
         )}
       </aside>

@@ -179,6 +179,11 @@ en:
     likes_box:
       title: 'Likes'
       empty: 'There are no likes yet'
+    ai_summary:
+      title: 'AI summary'
+      button: 'Summarize discussion'
+      loading: 'Summarizing…'
+      hint: 'Title, description and comments are sent to the configured AI provider.'
     action_box:
       title: 'Actions'
       follow_button: 'Follow post'

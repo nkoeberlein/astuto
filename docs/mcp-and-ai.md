@@ -71,7 +71,7 @@ claude mcp add --transport http astuto https://feedback.example.com/mcp \
 
 ## 2. Optional AI Provider (`Ai::Client`)
 
-AI features in Astuto Evolution are **100% opt-in**. When `AI_PROVIDER` is not set, no external AI requests are ever made and all core feedback features operate normally.
+AI features in Astuto Evolution are **100% opt-in**. When `AI_PROVIDER` or `AI_MODEL` is not set, no external AI requests are ever made and all core feedback features operate normally.
 
 ### Environment Variables
 
@@ -80,12 +80,23 @@ AI features in Astuto Evolution are **100% opt-in**. When `AI_PROVIDER` is not s
 | `AI_PROVIDER` | `openai` (any OpenAI-compatible API), `ollama` (local), or `anthropic` | *(disabled)* |
 | `AI_API_KEY` | API key for `openai` or `anthropic` (not required for `ollama`) | — |
 | `AI_BASE_URL` | Custom API base URL (e.g., `http://ollama:11434/v1`, LiteLLM, vLLM) | Provider default |
-| `AI_MODEL` | Model identifier | `gpt-4o-mini` / `llama3.2` / `claude-3-5-haiku-latest` |
+| `AI_MODEL` | Model identifier, **required** (e.g. a current small model of your provider, or the name of a pulled Ollama model). There is no built-in default because model names change too often. | — |
+
+### What is available
+
+| Feature | Where | Status |
+|---|---|---|
+| Discussion summary | Post page in the v2 frontend (`/next`), moderator panel, button "Summarize discussion"; API `POST /api/app/v1/posts/:id/summary` | available (moderators only). Results are cached per post content for one day. |
+| Board and tag suggestions | — | planned; needs tags (#171) |
+| Changelog drafts | — | planned; needs the changelog feature |
+| Translation of feedback | — | planned |
+
+`Ai::Client` already contains the helpers for the planned features; they are not wired to the UI yet.
 
 ### Privacy & Data Protection Notice (Datenschutzhinweis)
 
-- **Opt-in only:** Without `AI_PROVIDER` configured, zero data leaves your Astuto instance.
-- **Data minimization:** When an AI helper (`summarize_discussion`, `suggest_board_and_tags`, `draft_changelog`, `translate_feedback`) is explicitly invoked, **only** the following fields are transmitted to the configured `AI_BASE_URL`:
+- **Opt-in only:** Without `AI_PROVIDER` and `AI_MODEL` configured, zero data leaves your Astuto instance.
+- **Data minimization:** Data is only sent when a moderator explicitly asks for it (today: the discussion summary). Then **only** the following fields are transmitted to the configured `AI_BASE_URL`:
   - Post title (`post_title`) and description (`post_description`)
   - Comment text bodies (`comment_bodies`) for thread summarization
   - Board names and descriptions (`board_names`) for board/tag classification

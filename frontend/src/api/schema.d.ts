@@ -879,6 +879,75 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/app/v1/posts/{post_id}/summary": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Post id or slug */
+                post_id: string;
+            };
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** AI summary of a post and its comments (moderators, needs AI_PROVIDER and AI_MODEL) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description Post id or slug */
+                    post_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description summary */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Summary"];
+                    };
+                };
+                /** @description not a moderator */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description AI is not configured */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description AI provider failed */
+                502: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -934,6 +1003,8 @@ export interface components {
         Session: {
             csrfToken: string;
             user: components["schemas"]["CurrentUser"];
+            /** @description True for moderators when an AI provider is configured */
+            aiEnabled: boolean;
             tenant: components["schemas"]["Tenant"];
         };
         Board: {
@@ -1011,6 +1082,9 @@ export interface components {
         };
         FollowState: {
             followed: boolean;
+        };
+        Summary: {
+            summary: string;
         };
         NewPost: {
             title: string;
