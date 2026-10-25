@@ -15,13 +15,15 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Build Docker production image
         run: docker compose -f docker-compose.yml -f docker-compose-prod.yml build --build-arg ENVIRONMENT=production
 
+      # Only web and db: the Vite "frontend" service would create a root-owned
+      # frontend/node_modules in the checkout and break npm ci below
       - name: Run Docker containers
-        run: docker compose -f docker-compose.yml -f docker-compose-prod.yml up --detach
+        run: docker compose -f docker-compose.yml -f docker-compose-prod.yml up --detach web
 
       - name: Install required packages
         run: |
@@ -49,7 +51,7 @@ jobs:
         run: docker compose exec web bundle exec rspec
 
       - name: Set up Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: 26
 
