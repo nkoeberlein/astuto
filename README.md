@@ -41,16 +41,18 @@ Astuto Evolution helps you collect, manage and prioritize feedback from your cus
 | | Astuto 1.x (archived) | Astuto Evolution 2.0 |
 |---|---|---|
 | Ruby / Rails | 3.0 / 6.1 (end of life) | 4.0 / 8.1 |
-| PostgreSQL | 14 (EOL 11/2026) | 18 (19, sobald GA) |
+| PostgreSQL | 14 (EOL 11/2026) | 18 (19 once it is released) |
 | Docker image | `riggraz/astuto` (amd64) | `ghcr.io/nkoeberlein/astuto` (amd64 + arm64) |
-| User interface | React 16, Bootstrap 4 | rebuilt |
-| AI / MCP | – | planned |
+| User interface | React 16, Bootstrap 4 | being rebuilt (React 19, TypeScript, Tailwind), public pages under `/next` |
+| AI / MCP | – | MCP server, opt-in AI discussion summary |
 
 Upgrading an existing Astuto installation: see [UPGRADING.md](UPGRADING.md).
 
 ## Get started
 
-Prebuilt images on `ghcr.io/nkoeberlein/astuto` will be available with the 2.0 release. Until then, run it from source:
+**2.0.0-alpha.1** is available as `ghcr.io/nkoeberlein/astuto:2.0.0-alpha.1` (amd64 + arm64) for testing. It is an alpha: back up your database before trying it on existing data, and see [CHANGELOG.md](CHANGELOG.md) for what is done and what is missing.
+
+To run it from source:
 
 1. Install Docker and Docker Compose
 2. Clone the repository:

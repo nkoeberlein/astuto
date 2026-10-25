@@ -5,7 +5,6 @@ module Mcp
   # app/services/mcp/tools and get the authenticated moderator via server_context.
   module Server
     NAME = 'astuto-evolution-mcp'
-    VERSION = '2.0.0'
     INSTRUCTIONS = 'Astuto Evolution MCP server. Use these tools to search and triage customer feedback, ' \
                    'inspect top requests and roadmaps, update post statuses, and post moderator replies.'
 
@@ -24,7 +23,7 @@ module Mcp
       MCP::Server.new(
         name: NAME,
         title: AstutoProject::NAME,
-        version: VERSION,
+        version: AstutoProject::VERSION,
         instructions: INSTRUCTIONS,
         tools: TOOLS,
         server_context: { user: user }
