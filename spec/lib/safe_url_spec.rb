@@ -28,4 +28,19 @@ RSpec.describe SafeUrl do
     expect(described_class.sanitize(' https://example.com ')).to eq('https://example.com')
     expect(described_class.sanitize('javascript:alert(1)')).to be_nil
   end
+
+  describe '.local_path?' do
+    it 'allows same-site paths' do
+      %w[/ /next /next/posts/1?sort=new].each do |path|
+        expect(described_class.local_path?(path)).to be(true), path
+      end
+    end
+
+    it 'rejects other hosts, schemes and tricks browsers read as a host' do
+      ['//evil.com', '/\\evil.com', '/\\/evil.com', 'evil.com', 'javascript:alert(1)',
+       "/next\r\nSet-Cookie: x", 'https://evil.com', '', nil, ['/next']].each do |value|
+        expect(described_class.local_path?(value)).to be(false), value.inspect
+      end
+    end
+  end
 end

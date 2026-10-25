@@ -1,7 +1,7 @@
 module Api::App::V1
   # Everything the frontend needs on startup: current user, tenant branding and settings
   module SessionSerializer
-    def self.call(user:, tenant:, tenant_setting:, csrf_token:)
+    def self.call(user:, tenant:, tenant_setting:, csrf_token:, oauth_start_url:)
       {
         csrfToken: csrf_token,
         user: user && current_user(user),
@@ -12,9 +12,22 @@ module Api::App::V1
           siteLogo: tenant.site_logo,
           siteFavicon: tenant.site_favicon,
           locale: I18n.locale.to_s,
+          oauthProviders: oauth_providers(oauth_start_url),
           settings: settings(tenant_setting)
         }
       }
+    end
+
+    # oauth_start_url: callable that returns the absolute start URL for an OAuth provider
+    def self.oauth_providers(oauth_start_url)
+      OAuth.include_defaults.where(is_enabled: true).order(created_at: :asc).map do |o_auth|
+        {
+          id: o_auth.id,
+          name: o_auth.name,
+          logo: o_auth.logo,
+          startUrl: oauth_start_url.call(o_auth)
+        }
+      end
     end
 
     def self.current_user(user)
@@ -32,6 +45,7 @@ module Api::App::V1
         defaultPostSorting: s.default_post_sorting,
         customLinks: s.safe_custom_links,
         loginOnlyWithOauth: s.login_only_with_oauth,
+        emailRegistrationPolicy: s.email_registration_policy,
         showVoteCount: s.show_vote_count,
         showVoteButtonInBoard: s.show_vote_button_in_board,
         showPoweredBy: s.show_powered_by,

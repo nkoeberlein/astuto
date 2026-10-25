@@ -30,6 +30,7 @@ import { useI18n } from '@/lib/i18n'
 import { AiSummary } from './AiSummary'
 import { CommentForm } from './CommentForm'
 import { CommentList } from './CommentList'
+import { CommentLoginHint } from './CommentLoginHint'
 import { FollowButton } from './FollowButton'
 import { StatusBadge } from './StatusBadge'
 import { VoteButton } from './VoteButton'
@@ -176,11 +177,7 @@ export function PostPage({ postSlug }: { postSlug: string }) {
           {user ? (
             <CommentForm postSlug={post.slug} canMarkAsUpdate={isModerator} />
           ) : (
-            <p className="text-sm text-muted-foreground">
-              <a href="/users/sign_in" className="text-primary underline">
-                {t('post.new_comment.not_logged_in')}
-              </a>
-            </p>
+            <CommentLoginHint />
           )}
         </section>
       </article>

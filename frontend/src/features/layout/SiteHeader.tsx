@@ -1,12 +1,17 @@
 import { Link } from '@tanstack/react-router'
+import { LogOut } from 'lucide-react'
 import type { Board, Session } from '@/api/client'
+import { useLogout } from '@/api/mutations'
 import { EvoLogo } from '@/components/EvoLogo'
 import { UserAvatar } from '@/components/UserAvatar'
 import { Button } from '@/components/ui/button'
+import { useLoginRedirect } from '@/features/auth/redirect'
 import { useI18n } from '@/lib/i18n'
 
 export function SiteHeader({ session, boards }: { session: Session; boards: Board[] }) {
   const { t } = useI18n()
+  const loginRedirect = useLoginRedirect()
+  const logout = useLogout()
   const { tenant, user } = session
   const showLogo = ['name_and_logo', 'logo_only'].includes(tenant.settings.brandDisplay)
   const showName = ['name_and_logo', 'name_only'].includes(tenant.settings.brandDisplay)
@@ -85,10 +90,25 @@ export function SiteHeader({ session, boards }: { session: Session; boards: Boar
           <div className="flex items-center gap-2 text-sm font-medium">
             <UserAvatar name={user.fullName} url={user.avatarUrl} />
             <span className="hidden sm:inline">{user.fullName}</span>
+            <Button
+              type="button"
+              size="sm"
+              variant="ghost"
+              disabled={logout.isPending}
+              onClick={() => logout.mutate()}
+              aria-label={t('header.menu.sign_out')}
+              title={t('header.menu.sign_out')}
+              className="gap-1.5 text-muted-foreground hover:text-foreground"
+            >
+              <LogOut className="size-4" aria-hidden />
+              <span className="hidden md:inline">{t('header.menu.sign_out')}</span>
+            </Button>
           </div>
         ) : (
           <Button asChild size="sm" variant="outline">
-            <a href="/users/sign_in">{t('header.log_in')}</a>
+            <Link to="/login" search={{ redirect: loginRedirect }}>
+              {t('header.log_in')}
+            </Link>
           </Button>
         )}
       </div>

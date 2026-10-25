@@ -21,15 +21,31 @@ module Swagger
         Error: object({ error: STRING }),
         Author: object({ id: INTEGER, fullName: STRING, avatarUrl: STRING }),
         CurrentUser: object({ id: INTEGER, email: STRING, fullName: STRING, role: { type: :string, enum: %w[user moderator admin owner] }, avatarUrl: STRING }),
+        OAuthProvider: object({ id: INTEGER, name: STRING, logo: NULLABLE_STRING, startUrl: STRING }),
         TenantSettings: object({
           brandDisplay: { type: :string, enum: %w[name_and_logo name_only logo_only no_name_no_logo] },
           logoLinksTo: { type: :string, enum: %w[root_page custom_url nothing] }, logoCustomUrl: NULLABLE_STRING, rootBoardId: NULLABLE_INTEGER,
           showRoadmapInHeader: BOOLEAN, roadmapEnabled: BOOLEAN, defaultPostSorting: { type: :string, enum: %w[trending newest most_voted oldest] }, customLinks: { type: :array, items: { type: :object, properties: { label: STRING, url: STRING } }, description: 'Extra header links' },
-          loginOnlyWithOauth: BOOLEAN, showVoteCount: BOOLEAN, showVoteButtonInBoard: BOOLEAN, showPoweredBy: BOOLEAN,
+          loginOnlyWithOauth: BOOLEAN,
+          emailRegistrationPolicy: { type: :string, enum: %w[all_allowed custom_domains_allowed none_allowed] },
+          showVoteCount: BOOLEAN, showVoteButtonInBoard: BOOLEAN, showPoweredBy: BOOLEAN,
           allowAnonymousFeedback: BOOLEAN, isPrivate: BOOLEAN, hideUnusedStatusesInFilterByStatus: BOOLEAN, customCss: NULLABLE_STRING
         }),
-        Tenant: object({ siteName: STRING, siteLogo: NULLABLE_STRING, siteFavicon: NULLABLE_STRING, locale: STRING, settings: ref(:TenantSettings) }),
+        Tenant: object({
+          siteName: STRING, siteLogo: NULLABLE_STRING, siteFavicon: NULLABLE_STRING, locale: STRING,
+          oauthProviders: { type: :array, items: ref(:OAuthProvider) },
+          settings: ref(:TenantSettings)
+        }),
         Session: object({ csrfToken: STRING, user: ref(:CurrentUser).merge(nullable: true), aiEnabled: BOOLEAN.merge(description: 'True for moderators when an AI provider is configured'), tenant: ref(:Tenant) }),
+        LoginInput: object({ email: STRING, password: STRING, rememberMe: BOOLEAN }, required: %i[email password]),
+        RegisterInput: object({
+          fullName: STRING, email: STRING, password: STRING, passwordConfirmation: STRING, invitationToken: NULLABLE_STRING
+        }, required: %i[fullName email password passwordConfirmation]),
+        RegistrationResult: object({ confirmationRequired: BOOLEAN, message: STRING, session: ref(:Session) }),
+        ForgotPasswordInput: object({ email: STRING }),
+        ResetPasswordInput: object({ resetPasswordToken: STRING, password: STRING, passwordConfirmation: STRING }),
+        PasswordResetResponse: object({ message: STRING, session: ref(:Session) }),
+        MessageResponse: object({ message: STRING }),
         Board: object({ id: INTEGER, name: STRING, slug: STRING, description: NULLABLE_STRING }),
         PostStatus: object({ id: INTEGER, name: STRING, color: STRING, order: INTEGER, showInRoadmap: BOOLEAN }),
         PostListItem: object({

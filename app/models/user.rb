@@ -72,6 +72,14 @@ class User < ApplicationRecord
     devise_mailer.send(notification, self, *args).deliver_later
   end
 
+  # Like Devise's send_reset_password_instructions, but the email links to the
+  # password reset page of the v2 frontend (/next/password/reset)
+  def send_next_reset_password_instructions
+    token = set_reset_password_token
+    send_devise_notification(:reset_password_instructions, token, template_name: 'reset_password_instructions_next')
+    token
+  end
+
   # Gravatar identifies avatars by the MD5 of the trimmed, lowercased email
   def self.gravatar_hash(email)
     return nil if email.blank?

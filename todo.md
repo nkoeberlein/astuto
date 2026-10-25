@@ -117,7 +117,7 @@ Empfehlung (roadmap.md, Abschnitt 3): getrenntes Frontend mit React 19 + TS 7 + 
 - [x] Posts und Kommentare bearbeiten/löschen, Status ändern (Moderation) im neuen Frontend (`PATCH/DELETE /api/app/v1/posts/:id`, `PATCH/DELETE /api/app/v1/posts/:post_id/comments/:id`, `PostPage.tsx`, `CommentList.tsx`)
 - [x] Roadmap-Seite (`/next/roadmap`, `GET /api/app/v1/roadmap`): Spalten je Status, Board- und Status-Filter in der URL, Startseite ohne Root-Board zeigt die Roadmap wie im alten UI
 - [ ] Einbettbare Roadmap (`/embedded_roadmap`) im neuen Frontend
-- [ ] Login/Registrierung/Passwort als SPA-Seiten (Devise-JSON), OAuth-Buttons
+- [x] Login/Registrierung/Passwort als SPA-Seiten (Devise-JSON: `POST/DELETE /api/app/v1/session`, `POST /api/app/v1/registration`, `POST/PATCH /api/app/v1/password`), OAuth-Buttons (`/next/login`, `/next/register`, `/next/password/forgot`, `/next/password/reset`)
 - [x] CI: OpenAPI neu erzeugen und gegen `frontend/src/api/schema.d.ts` vergleichen (Drift-Check in `run-tests.yml`, nutzt die beim Image-Build erzeugte OpenAPI-Datei; in der CI noch nicht gelaufen)
 - [x] Meta-Tags (Titel, Beschreibung, Open Graph) für öffentliche Seiten serverseitig in `SpaController` (`spec/requests/spa_meta_tags_spec.rb`)
 - [x] `hide_unused_statuses_in_filter_by_status` und `custom_css` im neuen Frontend berücksichtigen (`GET /api/app/v1/post_statuses?board_id=`, `__root.tsx`)
@@ -126,7 +126,7 @@ Empfehlung (roadmap.md, Abschnitt 3): getrenntes Frontend mit React 19 + TS 7 + 
 - [x] i18n: YAML-Übersetzungen über `GET /api/app/v1/translations/:locale`
 - [ ] RTL-fähig: im neuen Frontend nur CSS-Logical-Properties (`ms-`/`me-`, `ps-`/`pe-`, `start`/`end` statt `left`/`right`), `dir` am `<html>` aus der Locale; jetzt beachten, nachträglich wird es teuer
 - [x] Öffentliche Seiten: Board, Post-Detail und Kommentare, Roadmap
-- [ ] Auth-Seiten: Login, Registrierung, Passwort, OAuth-Buttons (Devise mit JSON-Endpunkten)
+- [x] Auth-Seiten: Login, Registrierung, Passwort, OAuth-Buttons (Devise mit JSON-Endpunkten)
 - [ ] Moderation (Feedback-Queue, Nutzer) und Site Settings (General, Boards, Status, Roadmap, Auth, Appearance, Webhooks, API)
 - [ ] E2E-Tests (Playwright oder Capybara) für jede neue Seite
 - [ ] Altes Frontend entfernen: `react-rails`, `react_ujs`, Redux, Bootstrap, jQuery, Turbolinks, `jsbundling`/Webpack, `i18n-js` 3; danach Sidekiq 8.1 und `connection_pool`-Pin entfernen

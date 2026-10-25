@@ -47,6 +47,21 @@ module Api
           post
         end
 
+        # Session payload for the frontend (user, tenant settings, CSRF token).
+        # OAuth start URLs never use the custom domain: the token_state cookie
+        # must be readable on the callback host (as in devise/shared/_o_auths).
+        def serialize_session(user)
+          Api::App::V1::SessionSerializer.call(
+            user: user,
+            tenant: Current.tenant,
+            tenant_setting: tenant_setting,
+            csrf_token: form_authenticity_token,
+            oauth_start_url: lambda { |o_auth|
+              get_url_for(method(:o_auth_start_url), resource: o_auth.id, disallow_custom_domain: true, options: { reason: 'login' })
+            }
+          )
+        end
+
         def render_invalid_csrf_token
           render_error(:unprocessable_content, 'Invalid or missing CSRF token. Reload the page and try again.')
         end

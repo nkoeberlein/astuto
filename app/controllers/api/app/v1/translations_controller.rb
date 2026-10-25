@@ -3,7 +3,7 @@ module Api::App::V1
   # Source: config/locales/<locale>.yml (frontend keys) plus ActiveRecord model names.
   class TranslationsController < Api::App::BaseController
     FRONTEND_KEYS = (
-      YAML.load_file(Rails.root.join('config/locales/en.yml'))['en'].keys.map(&:to_sym) + %i[activerecord]
+      YAML.load_file(Rails.root.join('config/locales/en.yml'))['en'].keys.map(&:to_sym) + %i[activerecord devise]
     ).freeze
 
     # GET /api/app/v1/translations/:locale

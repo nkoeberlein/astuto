@@ -16,9 +16,9 @@ class RegistrationsController < Devise::RegistrationsController
     is_invitation = sign_up_params[:invitation_token].present?
     invitation = nil
     if is_invitation
-      invitation = Invitation.find_by(email: email)
-      
-      if invitation.nil? || invitation.expired? || invitation.token_digest != Digest::SHA256.hexdigest(sign_up_params[:invitation_token]) || invitation.accepted_at.present?
+      invitation = Invitation.find_acceptable(email: email, token: sign_up_params[:invitation_token])
+
+      if invitation.nil?
         flash[:alert] = t('errors.unauthorized')
         redirect_to new_user_registration_path and return
       end
@@ -43,7 +43,7 @@ class RegistrationsController < Devise::RegistrationsController
     # ... if not an invitation, continue with normal registration ...
     
     # Check if email registration is allowed
-    if ts.email_registration_policy == "none_allowed" || (ts.email_registration_policy == "custom_domains_allowed" && !allowed_domain?(email))
+    if ts.email_registration_policy == "none_allowed" || (ts.email_registration_policy == "custom_domains_allowed" && !ts.email_domain_allowed?(email))
       flash[:alert] = t('errors.email_domain_not_allowed')
       redirect_to new_user_registration_path and return
     end
@@ -56,7 +56,7 @@ class RegistrationsController < Devise::RegistrationsController
     ts = Current.tenant.tenant_setting
     email = account_update_params[:email]
 
-    if ts.email_registration_policy == "custom_domains_allowed" && !allowed_domain?(email)
+    if email.present? && ts.email_registration_policy == "custom_domains_allowed" && !ts.email_domain_allowed?(email)
       flash[:alert] = t('errors.email_domain_not_allowed')
       redirect_to edit_user_registration_path and return
     end
@@ -106,18 +106,6 @@ class RegistrationsController < Devise::RegistrationsController
     end
     
   private
-
-    def allowed_domain?(email)
-      allowed_email_domains = Current.tenant.tenant_setting.allowed_email_domains
-
-      return false unless email.count('@') == 1
-      return true if allowed_email_domains.blank?
-      
-      registering_domain = email.split('@').last
-      allowed_domains = allowed_email_domains.split(',')
-
-      allowed_domains.include?(registering_domain)
-    end
 
     def set_page_title_new
       @page_title = t('common.forms.auth.sign_up')

@@ -4,14 +4,37 @@ import {
   useMutation,
   useQueryClient,
 } from '@tanstack/react-query'
-import { api, type Comment, type Post, type PostPage, type Schemas, unwrap } from './client'
-import { commentsQuery, postQuery } from './queries'
+import {
+  api,
+  type Comment,
+  type Post,
+  type PostPage,
+  type Schemas,
+  type Session,
+  setCsrfToken,
+  unwrap,
+} from './client'
+import { commentsQuery, postQuery, sessionQuery } from './queries'
 
 type VoteState = Schemas['VoteState']
 export type NewPost = Schemas['NewPost']
 export type UpdatePost = Schemas['UpdatePost']
 export type NewComment = Schemas['NewComment']
 export type UpdateComment = Schemas['UpdateComment']
+export type LoginInput = Schemas['LoginInput']
+export type RegisterInput = Schemas['RegisterInput']
+export type RegistrationResult = Schemas['RegistrationResult']
+export type ForgotPasswordInput = Schemas['ForgotPasswordInput']
+export type ResetPasswordInput = Schemas['ResetPasswordInput']
+
+// Syncs a new session (after login, logout, registration, or password reset) into the cache
+export function applySession(queryClient: QueryClient, session: Session) {
+  setCsrfToken(session.csrfToken)
+  queryClient.setQueryData<Session>(sessionQuery.queryKey, session)
+  void queryClient.invalidateQueries({ queryKey: ['boards'] })
+  void queryClient.invalidateQueries({ queryKey: ['posts'] })
+  void queryClient.invalidateQueries({ queryKey: ['roadmap'] })
+}
 
 // Board post lists have keys like ['boards', slug, 'posts', filters]
 const isBoardPostList = {
@@ -212,5 +235,63 @@ export function useSummarizePost(postSlug: string) {
           params: { path: { post_id: postSlug } },
         }),
       ),
+  })
+}
+
+export function useLogin() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (credentials: LoginInput) =>
+      unwrap(
+        api.POST('/api/app/v1/session', {
+          body: credentials,
+        }),
+      ),
+    onSuccess: (session) => applySession(queryClient, session),
+  })
+}
+
+export function useLogout() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: () => unwrap(api.DELETE('/api/app/v1/session')),
+    onSuccess: (session) => applySession(queryClient, session),
+  })
+}
+
+export function useRegister() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (input: RegisterInput) =>
+      unwrap(
+        api.POST('/api/app/v1/registration', {
+          body: input,
+        }),
+      ),
+    onSuccess: (result) => applySession(queryClient, result.session),
+  })
+}
+
+export function useForgotPassword() {
+  return useMutation({
+    mutationFn: (input: ForgotPasswordInput) =>
+      unwrap(
+        api.POST('/api/app/v1/password', {
+          body: input,
+        }),
+      ),
+  })
+}
+
+export function useResetPassword() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (input: ResetPasswordInput) =>
+      unwrap(
+        api.PATCH('/api/app/v1/password', {
+          body: input,
+        }),
+      ),
+    onSuccess: (result) => applySession(queryClient, result.session),
   })
 }

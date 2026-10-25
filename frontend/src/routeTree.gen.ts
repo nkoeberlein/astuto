@@ -10,13 +10,27 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as RegisterRouteImport } from './routes/register'
 import { Route as RoadmapRouteImport } from './routes/roadmap'
 import { Route as BoardsBoardSlugRouteImport } from './routes/boards.$boardSlug'
+import { Route as PasswordForgotRouteImport } from './routes/password.forgot'
+import { Route as PasswordResetRouteImport } from './routes/password.reset'
 import { Route as PostsPostSlugRouteImport } from './routes/posts.$postSlug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RoadmapRoute = RoadmapRouteImport.update({
@@ -29,6 +43,16 @@ const BoardsBoardSlugRoute = BoardsBoardSlugRouteImport.update({
   path: '/boards/$boardSlug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PasswordForgotRoute = PasswordForgotRouteImport.update({
+  id: '/password/forgot',
+  path: '/password/forgot',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PasswordResetRoute = PasswordResetRouteImport.update({
+  id: '/password/reset',
+  path: '/password/reset',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PostsPostSlugRoute = PostsPostSlugRouteImport.update({
   id: '/posts/$postSlug',
   path: '/posts/$postSlug',
@@ -37,35 +61,76 @@ const PostsPostSlugRoute = PostsPostSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
   '/roadmap': typeof RoadmapRoute
   '/boards/$boardSlug': typeof BoardsBoardSlugRoute
+  '/password/forgot': typeof PasswordForgotRoute
+  '/password/reset': typeof PasswordResetRoute
   '/posts/$postSlug': typeof PostsPostSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
   '/roadmap': typeof RoadmapRoute
   '/boards/$boardSlug': typeof BoardsBoardSlugRoute
+  '/password/forgot': typeof PasswordForgotRoute
+  '/password/reset': typeof PasswordResetRoute
   '/posts/$postSlug': typeof PostsPostSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
   '/roadmap': typeof RoadmapRoute
   '/boards/$boardSlug': typeof BoardsBoardSlugRoute
+  '/password/forgot': typeof PasswordForgotRoute
+  '/password/reset': typeof PasswordResetRoute
   '/posts/$postSlug': typeof PostsPostSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/roadmap' | '/boards/$boardSlug' | '/posts/$postSlug'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/register'
+    | '/roadmap'
+    | '/boards/$boardSlug'
+    | '/password/forgot'
+    | '/password/reset'
+    | '/posts/$postSlug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/roadmap' | '/boards/$boardSlug' | '/posts/$postSlug'
-  id: '__root__' | '/' | '/roadmap' | '/boards/$boardSlug' | '/posts/$postSlug'
+  to:
+    | '/'
+    | '/login'
+    | '/register'
+    | '/roadmap'
+    | '/boards/$boardSlug'
+    | '/password/forgot'
+    | '/password/reset'
+    | '/posts/$postSlug'
+  id:
+    | '__root__'
+    | '/'
+    | '/login'
+    | '/register'
+    | '/roadmap'
+    | '/boards/$boardSlug'
+    | '/password/forgot'
+    | '/password/reset'
+    | '/posts/$postSlug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  LoginRoute: typeof LoginRoute
+  RegisterRoute: typeof RegisterRoute
   RoadmapRoute: typeof RoadmapRoute
   BoardsBoardSlugRoute: typeof BoardsBoardSlugRoute
+  PasswordForgotRoute: typeof PasswordForgotRoute
+  PasswordResetRoute: typeof PasswordResetRoute
   PostsPostSlugRoute: typeof PostsPostSlugRoute
 }
 
@@ -76,6 +141,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/roadmap': {
@@ -92,6 +171,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BoardsBoardSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/password/forgot': {
+      id: '/password/forgot'
+      path: '/password/forgot'
+      fullPath: '/password/forgot'
+      preLoaderRoute: typeof PasswordForgotRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/password/reset': {
+      id: '/password/reset'
+      path: '/password/reset'
+      fullPath: '/password/reset'
+      preLoaderRoute: typeof PasswordResetRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/posts/$postSlug': {
       id: '/posts/$postSlug'
       path: '/posts/$postSlug'
@@ -104,8 +197,12 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  LoginRoute: LoginRoute,
+  RegisterRoute: RegisterRoute,
   RoadmapRoute: RoadmapRoute,
   BoardsBoardSlugRoute: BoardsBoardSlugRoute,
+  PasswordForgotRoute: PasswordForgotRoute,
+  PasswordResetRoute: PasswordResetRoute,
   PostsPostSlugRoute: PostsPostSlugRoute,
 }
 export const routeTree = rootRouteImport

@@ -74,6 +74,14 @@ class SpaController < ActionController::Base
         end
       when 'roadmap'
         ["#{I18n.t('roadmap.title', default: 'Roadmap')} · #{site_name}", site_name]
+      when 'login'
+        ["#{I18n.t('common.forms.auth.log_in', default: 'Log in')} · #{site_name}", site_name]
+      when 'register'
+        ["#{I18n.t('common.forms.auth.sign_up', default: 'Sign up')} · #{site_name}", site_name]
+      when 'password/forgot'
+        ["#{I18n.t('common.forms.auth.forgot_password', default: 'Forgot your password?')} · #{site_name}", site_name]
+      when 'password/reset'
+        ["#{I18n.t('common.forms.auth.change_password', default: 'Change password')} · #{site_name}", site_name]
       else
         [site_name, site_name]
       end

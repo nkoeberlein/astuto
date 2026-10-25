@@ -48,4 +48,6 @@ Astuto Evolution: community continuation of Astuto, a self-hosted customer feedb
 - `public/**/index.html` is never served for bare directories (`public_file_server.index_name`), so `/next` goes through `SpaController`.
 - Admin-entered URLs that end up in an `href` (header links, logo link) must pass `SafeUrl.safe?`; render via `TenantSetting#safe_custom_links` / `#safe_logo_custom_url`.
 - System specs need Chromium in the container; the dev image has none, so run them in CI (`run-tests.yml`, triggered by pull requests).
+- Password reset emails have two templates: `reset_password_instructions` (legacy UI) and `reset_password_instructions_next` (v2, sent by `User#send_next_reset_password_instructions` from the app API).
+- v2 login links pass `?redirect=<path>` (`useLoginRedirect`); OAuth carries it as `return_to` in the `oauth_return_to` cookie, because the callback may run on another host.
 - `gh` defaults to the archived upstream repo: pass `-R nkoeberlein/astuto-evo`.

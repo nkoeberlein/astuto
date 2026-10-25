@@ -68,6 +68,16 @@ class TenantSetting < ApplicationRecord
     end
   end
 
+  # Whether the email's domain is on allowed_email_domains (comma-separated).
+  # An empty list allows every domain. Used for the "custom_domains_allowed" policy.
+  def email_domain_allowed?(email)
+    email = email.to_s
+    return false unless email.count('@') == 1
+    return true if allowed_email_domains.blank?
+
+    allowed_email_domains.split(',').map(&:strip).include?(email.split('@').last)
+  end
+
   # Links that are safe to render; filters out unsafe URLs saved before validation existed
   def safe_custom_links
     custom_links.select { |link| SafeUrl.safe?(link["url"]) }
