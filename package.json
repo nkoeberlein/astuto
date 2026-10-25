@@ -2,6 +2,9 @@
   "name": "astuto",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=26"
+  },
   "scripts": {
     "build:css": "sass ./app/assets/stylesheets/application.sass.scss:./app/assets/builds/application.css --no-source-map --load-path=node_modules",
     "build": "webpack --config ./config/webpack/webpack.config.js"
