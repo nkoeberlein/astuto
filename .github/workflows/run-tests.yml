@@ -64,7 +64,6 @@ jobs:
           cd frontend
           npm ci --no-audit --no-fund
           npm run api:types
-          npx biome format --write src/api/schema.d.ts
           git diff --exit-code src/api/schema.d.ts
 
       - name: Security checks (gems, legacy npm packages, Brakeman)
