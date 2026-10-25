@@ -3,7 +3,8 @@ module Api::App::V1
     MIN_SECONDS_TO_FILL_FORM = 2
 
     before_action :require_access
-    before_action :check_tenant_subscription, only: [:create]
+    before_action :require_user, only: [:update, :destroy]
+    before_action :check_tenant_subscription, only: [:create, :update, :destroy]
 
     # GET /api/app/v1/boards/:board_id/posts?search=&sort_by=&post_status_ids[]=&page=
     def index
@@ -66,6 +67,71 @@ module Api::App::V1
       end
       return render_error(:unprocessable_content, post.errors.full_messages.join(', ')) unless saved
       render status: :created, json: PostSerializer.detail(post, current_user: current_user)
+    end
+
+    # PATCH /api/app/v1/posts/:id
+    # { title, description, boardId, postStatusId, approvalStatus }
+    def update
+      post = find_visible_post(params[:id])
+      authorize post, :update?
+
+      post.title = params[:title] if params.key?(:title)
+      post.description = params[:description] if params.key?(:description)
+
+      if current_user.moderator?
+        if params.key?(:boardId) && params[:boardId].present?
+          board = Board.find_by(id: params[:boardId].to_i)
+          return render_error(:unprocessable_content, I18n.t('errors.unknown')) if board.nil?
+
+          post.board = board
+        end
+
+        if params.key?(:postStatusId)
+          if params[:postStatusId].nil?
+            post.post_status_id = nil
+          else
+            status = Current.tenant.post_statuses.find_by(id: params[:postStatusId].to_i)
+            return render_error(:unprocessable_content, I18n.t('errors.unknown')) if status.nil?
+
+            post.post_status_id = status.id
+          end
+        end
+
+        if params.key?(:approvalStatus) && params[:approvalStatus].present?
+          # Assigning an unknown enum value raises ArgumentError (500)
+          unless Post.approval_statuses.key?(params[:approvalStatus].to_s)
+            return render_error(:unprocessable_content, I18n.t('errors.unknown'))
+          end
+
+          post.approval_status = params[:approvalStatus]
+        end
+      end
+
+      status_changed = post.post_status_id_changed?
+      status_change_workflow = ExecutePostStatusChangeLogicWorkflow.new(
+        user_id: current_user.id,
+        post: post,
+        post_status_id: post.post_status_id
+      )
+
+      saved = ActiveRecord::Base.transaction do
+        result = post.save
+        status_change_workflow.create_status_change! if result && status_changed
+        result
+      end
+      return render_error(:unprocessable_content, post.errors.full_messages.join(', ')) unless saved
+
+      status_change_workflow.notify_followers if status_changed
+      render json: PostSerializer.detail(post, current_user: current_user)
+    end
+
+    # DELETE /api/app/v1/posts/:id
+    def destroy
+      post = find_visible_post(params[:id])
+      authorize post, :destroy?
+
+      post.destroy!
+      head :no_content
     end
 
     private

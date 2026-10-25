@@ -24,13 +24,13 @@ export function SiteHeader({ session, boards }: { session: Session; boards: Boar
           aria-label="Boards"
         >
           {tenant.settings.roadmapEnabled && tenant.settings.showRoadmapInHeader && (
-            // Legacy page until the roadmap moves to the new frontend
-            <a
-              href="/roadmap"
+            <Link
+              to="/roadmap"
               className="whitespace-nowrap rounded-md px-3 py-1.5 text-muted-foreground hover:bg-accent"
+              activeProps={{ className: 'bg-accent text-foreground font-medium' }}
             >
               {t('roadmap.title')}
-            </a>
+            </Link>
           )}
           {boards.map((board) => (
             <Link

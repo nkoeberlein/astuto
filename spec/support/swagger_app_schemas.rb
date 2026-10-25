@@ -37,6 +37,15 @@ module Swagger
           likesCount: INTEGER, commentsCount: INTEGER, liked: BOOLEAN, createdAt: DATETIME
         }),
         PostPage: object({ posts: { type: :array, items: ref(:PostListItem) }, page: INTEGER, hasMore: BOOLEAN }),
+        RoadmapPost: object({
+          id: INTEGER, slug: STRING, title: STRING, boardId: INTEGER,
+          likesCount: INTEGER, commentsCount: INTEGER, liked: BOOLEAN, updatedAt: DATETIME
+        }),
+        RoadmapColumn: object({
+          status: ref(:PostStatus), posts: { type: :array, items: ref(:RoadmapPost) },
+          postsCount: { type: :integer, description: 'All posts in this status; posts holds at most 100' }
+        }),
+        Roadmap: object({ columns: { type: :array, items: ref(:RoadmapColumn) } }),
         Post: object({
           id: INTEGER, slug: STRING, title: STRING, description: NULLABLE_STRING, boardId: INTEGER, postStatusId: NULLABLE_INTEGER,
           approvalStatus: { type: :string, enum: %w[approved pending rejected] }, author: ref(:Author).merge(nullable: true),
@@ -49,7 +58,12 @@ module Swagger
           honeypot: { type: :string, description: 'Hidden form field, must stay empty' },
           formRenderedAt: { type: :integer, description: 'Unix time when the form was shown (anti-spam)' }
         }, required: %i[title formRenderedAt]),
+        UpdatePost: object({
+          title: STRING, description: NULLABLE_STRING, boardId: INTEGER,
+          postStatusId: NULLABLE_INTEGER, approvalStatus: { type: :string, enum: %w[approved pending rejected] }
+        }, required: []),
         NewComment: object({ body: STRING, parentId: NULLABLE_INTEGER, isPostUpdate: BOOLEAN }, required: %i[body]),
+        UpdateComment: object({ body: STRING, isPostUpdate: BOOLEAN }, required: []),
         Comment: object({
           id: INTEGER, body: STRING, parentId: NULLABLE_INTEGER, isPostUpdate: BOOLEAN,
           author: ref(:Author).merge(nullable: true), createdAt: DATETIME, updatedAt: DATETIME

@@ -1,6 +1,12 @@
 import { useSuspenseInfiniteQuery, useSuspenseQuery } from '@tanstack/react-query'
 import type { Board } from '@/api/client'
-import { boardPostsQuery, type PostFilters, postStatusesQuery, sessionQuery } from '@/api/queries'
+import {
+  boardPostsQuery,
+  boardStatusesQuery,
+  type PostFilters,
+  postStatusesQuery,
+  sessionQuery,
+} from '@/api/queries'
 import { Markdown } from '@/components/Markdown'
 import { Button } from '@/components/ui/button'
 import { useI18n } from '@/lib/i18n'
@@ -18,6 +24,9 @@ export function BoardPage({ board, filters, onFiltersChange }: Props) {
   const { t } = useI18n()
   const { data: session } = useSuspenseQuery(sessionQuery)
   const { data: statuses } = useSuspenseQuery(postStatusesQuery)
+  const { data: filterStatuses } = useSuspenseQuery(
+    boardStatusesQuery(board.slug, session.tenant.settings.hideUnusedStatusesInFilterByStatus),
+  )
   const posts = useSuspenseInfiniteQuery(boardPostsQuery(board.slug, filters))
 
   const statusById = new Map(statuses.map((status) => [status.id, status]))
@@ -36,7 +45,7 @@ export function BoardPage({ board, filters, onFiltersChange }: Props) {
 
       <NewPostForm board={board} session={session} />
 
-      <BoardFilters filters={filters} statuses={statuses} onChange={onFiltersChange} />
+      <BoardFilters filters={filters} statuses={filterStatuses} onChange={onFiltersChange} />
 
       {items.length === 0 ? (
         <p className="rounded-lg border border-dashed p-8 text-center text-muted-foreground">

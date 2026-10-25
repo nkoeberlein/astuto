@@ -15,6 +15,20 @@ module Api::App::V1
       }
     end
 
+    # Row from RoadmapQuery (includes aggregated counts)
+    def self.roadmap_item(post)
+      {
+        id: post.id,
+        slug: post.slug,
+        title: post.title,
+        boardId: post.board_id,
+        likesCount: post.likes_count.to_i,
+        commentsCount: post.comments_count.to_i,
+        liked: post.liked.to_i.positive?,
+        updatedAt: post.updated_at.iso8601
+      }
+    end
+
     def self.detail(post, current_user:)
       {
         id: post.id,

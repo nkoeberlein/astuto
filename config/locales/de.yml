@@ -106,6 +106,14 @@ de:
     log_in: 'Einloggen / Registrieren'
   roadmap:
     title: 'Roadmap'
+    empty: 'Die Roadmap ist leer.'
+    filter_by_board: 'Nach Board filtern'
+    more_posts:
+      one: '+ %{count} weiterer Beitrag'
+      other: '+ %{count} weitere Beiträge'
+    sort_by:
+      most_voted: 'Beliebteste'
+      recently_updated: 'Zuletzt aktualisiert'
   billing:
     title: 'Abrechnung'
   blocked_tenant:

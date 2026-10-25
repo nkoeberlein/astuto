@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import type { PostStatus } from '@/api/client'
 import { type PostFilters, SORT_OPTIONS, type SortBy } from '@/api/queries'
+import { FilterChip } from '@/components/FilterChip'
 import { Input } from '@/components/ui/input'
 import {
   Select,
@@ -10,7 +11,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { useI18n } from '@/lib/i18n'
-import { cn } from '@/lib/utils'
+import { toggleId } from '@/lib/search-params'
 
 type Props = {
   filters: PostFilters
@@ -28,13 +29,6 @@ export function BoardFilters({ filters, statuses, onChange }: Props) {
     const timeout = setTimeout(() => onChange({ search }), 300)
     return () => clearTimeout(timeout)
   }, [search, filters.search, onChange])
-
-  const toggleStatus = (id: number) => {
-    const statusIds = filters.statusIds.includes(id)
-      ? filters.statusIds.filter((s) => s !== id)
-      : [...filters.statusIds, id]
-    onChange({ statusIds })
-  }
 
   return (
     <div className="space-y-3">
@@ -66,24 +60,16 @@ export function BoardFilters({ filters, statuses, onChange }: Props) {
       {statuses.length > 0 && (
         <fieldset className="flex flex-wrap gap-2">
           <legend className="sr-only">{t('board.filter_box.title')}</legend>
-          {statuses.map((status) => {
-            const active = filters.statusIds.includes(status.id)
-            return (
-              <button
-                key={status.id}
-                type="button"
-                aria-pressed={active}
-                onClick={() => toggleStatus(status.id)}
-                className={cn(
-                  'flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs',
-                  active ? 'border-primary bg-primary/10' : 'text-muted-foreground hover:bg-accent',
-                )}
-              >
-                <span className="size-2 rounded-full" style={{ backgroundColor: status.color }} />
-                {status.name}
-              </button>
-            )
-          })}
+          {statuses.map((status) => (
+            <FilterChip
+              key={status.id}
+              active={filters.statusIds.includes(status.id)}
+              onClick={() => onChange({ statusIds: toggleId(filters.statusIds, status.id) })}
+              color={status.color}
+            >
+              {status.name}
+            </FilterChip>
+          ))}
         </fieldset>
       )}
     </div>

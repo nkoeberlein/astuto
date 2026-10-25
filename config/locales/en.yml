@@ -122,6 +122,14 @@ en:
     log_in: 'Log in / Sign up'
   roadmap:
     title: 'Roadmap'
+    empty: 'The roadmap is empty.'
+    filter_by_board: 'Filter by board'
+    more_posts:
+      one: '+ %{count} more post'
+      other: '+ %{count} more posts'
+    sort_by:
+      most_voted: 'Most voted'
+      recently_updated: 'Recently updated'
   billing:
     title: 'Billing'
   blocked_tenant:

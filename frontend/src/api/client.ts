@@ -10,6 +10,9 @@ export type PostPage = Schemas['PostPage']
 export type Post = Schemas['Post']
 export type Comment = Schemas['Comment']
 export type Author = Schemas['Author']
+export type Roadmap = Schemas['Roadmap']
+export type RoadmapColumn = Schemas['RoadmapColumn']
+export type RoadmapPost = Schemas['RoadmapPost']
 export type Translations = { [key: string]: string | Translations }
 
 export class ApiError extends Error {
@@ -45,12 +48,12 @@ type FetchResult<T> = { data?: T; error?: unknown; response: Response }
 // Returns the response data or throws an ApiError with the server's message
 export async function unwrap<T>(request: Promise<FetchResult<T>>): Promise<T> {
   const { data, error, response } = await request
-  if (error !== undefined || data === undefined) {
+  if (error !== undefined || (data === undefined && response.status !== 204)) {
     const message =
       typeof error === 'object' && error !== null && 'error' in error
         ? String(error.error)
         : response.statusText
     throw new ApiError(response.status, message)
   }
-  return data
+  return data as T
 }

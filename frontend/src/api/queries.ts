@@ -41,6 +41,19 @@ export const postStatusesQuery = queryOptions({
   staleTime: 5 * 60_000,
 })
 
+export const boardStatusesQuery = (boardSlug: string, hideUnused: boolean) =>
+  queryOptions({
+    queryKey: hideUnused ? ['postStatuses', 'board', boardSlug] : ['postStatuses'],
+    queryFn: () =>
+      unwrap(
+        api.GET(
+          '/api/app/v1/post_statuses',
+          hideUnused ? { params: { query: { board_id: boardSlug } } } : {},
+        ),
+      ),
+    staleTime: 60_000,
+  })
+
 export const boardPostsQuery = (boardSlug: string, filters: PostFilters) =>
   infiniteQueryOptions({
     queryKey: ['boards', boardSlug, 'posts', filters],
@@ -60,6 +73,16 @@ export const boardPostsQuery = (boardSlug: string, filters: PostFilters) =>
       ),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => (lastPage.hasMore ? lastPage.page + 1 : undefined),
+  })
+
+export const ROADMAP_SORT_OPTIONS = ['most_voted', 'recently_updated'] as const
+export type RoadmapSortBy = (typeof ROADMAP_SORT_OPTIONS)[number]
+
+export const roadmapQuery = (sortBy: RoadmapSortBy) =>
+  queryOptions({
+    queryKey: ['roadmap', sortBy],
+    queryFn: () =>
+      unwrap(api.GET('/api/app/v1/roadmap', { params: { query: { sort_by: sortBy } } })),
   })
 
 export const postQuery = (postSlug: string) =>

@@ -58,6 +58,10 @@ module Api
         def render_not_found
           render_error(:not_found, 'Not found')
         end
+
+        def user_not_authorized
+          render_error(:forbidden, I18n.t('errors.unauthorized'))
+        end
     end
   end
 end

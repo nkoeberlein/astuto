@@ -111,8 +111,9 @@ Rails.application.routes.draw do
             resources :posts, only: [:index, :create]
           end
           resources :post_statuses, only: [:index]
-          resources :posts, only: [:show] do
-            resources :comments, only: [:index, :create]
+          resource :roadmap, only: [:show]
+          resources :posts, only: [:show, :update, :destroy] do
+            resources :comments, only: [:index, :create, :update, :destroy]
             resource :vote, only: [:create, :destroy]
             resource :follow, only: [:create, :destroy]
           end

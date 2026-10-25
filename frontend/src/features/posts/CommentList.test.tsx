@@ -1,6 +1,7 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
-import type { Comment } from '@/api/client'
+import type { Comment, Session } from '@/api/client'
 import { I18nProvider } from '@/lib/i18n'
 import { CommentList, groupComments } from './CommentList'
 
@@ -19,7 +20,13 @@ const comment = (
   ...overrides,
 })
 
-const translations = { post: { comments: { empty: 'No comments', post_update_badge: 'Update' } } }
+// Same keys as config/locales/en.yml
+const translations = {
+  post: {
+    comments: { empty: 'No comments', post_update_badge: 'Update', reply_button: 'Reply' },
+  },
+  common: { buttons: { edit: 'Edit', delete: 'Delete', update: 'Save', cancel: 'Cancel' } },
+}
 
 describe('groupComments', () => {
   it('nests replies under their parent', () => {
@@ -32,18 +39,40 @@ describe('groupComments', () => {
 })
 
 describe('CommentList', () => {
-  const renderList = (comments: Comment[]) =>
-    render(
-      <I18nProvider locale="en" translations={translations}>
-        <CommentList comments={comments} />
-      </I18nProvider>,
+  const renderList = (
+    comments: Comment[],
+    options: { postSlug?: string; currentUser?: Session['user'] } = {},
+  ) => {
+    const queryClient = new QueryClient()
+    return render(
+      <QueryClientProvider client={queryClient}>
+        <I18nProvider locale="en" translations={translations}>
+          <CommentList comments={comments} {...options} />
+        </I18nProvider>
+      </QueryClientProvider>,
     )
+  }
 
   it('renders comments with author and update badge', () => {
     renderList([comment(1, null, { isPostUpdate: true })])
     expect(screen.getByText('Comment 1')).toBeInTheDocument()
     expect(screen.getByText('Ada Lovelace')).toBeInTheDocument()
     expect(screen.getByText('Update')).toBeInTheDocument()
+  })
+
+  it('shows edit and delete actions for the comment author or moderator', () => {
+    renderList([comment(1, null)], {
+      postSlug: 'my-post',
+      currentUser: {
+        id: 1,
+        email: 'ada@example.com',
+        fullName: 'Ada Lovelace',
+        role: 'user',
+        avatarUrl: 'https://example.com/a.png',
+      },
+    })
+    expect(screen.getByText('Edit')).toBeInTheDocument()
+    expect(screen.getByText('Delete')).toBeInTheDocument()
   })
 
   it('shows an empty state', () => {

@@ -39,7 +39,7 @@ Browser ──/next/*──▶ SPA (this folder, built to public/next)
 src/
   api/        client (openapi-fetch + CSRF), query definitions, generated schema
   components/ shared components; ui/ = shadcn/ui
-  features/   boards/, posts/, layout/ – page building blocks
+  features/   boards/, posts/, roadmap/, layout/ – page building blocks
   lib/        i18n, formatting, utils
   routes/     TanStack Router file routes (routeTree.gen.ts is generated)
 ```

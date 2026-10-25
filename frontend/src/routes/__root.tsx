@@ -7,6 +7,7 @@ import { boardsQuery, sessionQuery, translationsQuery } from '@/api/queries'
 import { ErrorView } from '@/features/layout/ErrorView'
 import { SiteFooter } from '@/features/layout/SiteFooter'
 import { SiteHeader } from '@/features/layout/SiteHeader'
+import { escapeCustomCss } from '@/lib/custom-css'
 import { I18nProvider } from '@/lib/i18n'
 
 export type RouterContext = { queryClient: QueryClient }
@@ -31,10 +32,17 @@ function RootLayout() {
   useEffect(() => {
     document.documentElement.lang = tenant.locale
     document.title = tenant.siteName
-  }, [tenant.locale, tenant.siteName])
+    if (tenant.siteFavicon) {
+      const icon = document.querySelector<HTMLLinkElement>('link[rel="icon"]')
+      if (icon) icon.href = tenant.siteFavicon
+    }
+  }, [tenant.locale, tenant.siteName, tenant.siteFavicon])
 
   return (
     <I18nProvider locale={tenant.locale} translations={translations}>
+      {tenant.settings.customCss && (
+        <style data-astuto-custom-css>{escapeCustomCss(tenant.settings.customCss)}</style>
+      )}
       <div className="flex min-h-dvh flex-col">
         <HeaderWithBoards />
         <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-8">

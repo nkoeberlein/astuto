@@ -49,6 +49,9 @@ RSpec.describe 'api/app/v1/boards', type: :request, openapi_spec: 'app/v1/openap
   end
 
   path '/api/app/v1/post_statuses' do
+    parameter name: :board_id, in: :query, type: :string, required: false,
+              description: 'Optional board id or slug to filter out unused statuses when hideUnusedStatusesInFilterByStatus is enabled'
+
     get('List post statuses') do
       tags 'Boards'
       produces 'application/json'
@@ -58,6 +61,23 @@ RSpec.describe 'api/app/v1/boards', type: :request, openapi_spec: 'app/v1/openap
         before { FactoryBot.create(:post_status) }
 
         run_test!
+      end
+
+      response(200, 'hides unused statuses for a board when setting is enabled') do
+        schema type: :array, items: { '$ref' => '#/components/schemas/PostStatus' }
+        let(:used_status) { FactoryBot.create(:post_status, name: 'Planned', order: 1) }
+        let!(:unused_status) { FactoryBot.create(:post_status, name: 'Archived', order: 2) }
+        let(:board_id) { board.slug }
+
+        before do
+          Current.tenant.tenant_setting.update!(hide_unused_statuses_in_filter_by_status: true)
+          FactoryBot.create(:post, board: board, post_status: used_status, approval_status: 'approved')
+        end
+
+        run_test! do |response|
+          ids = JSON.parse(response.body).map { |s| s['id'] }
+          expect(ids).to eq([used_status.id])
+        end
       end
     end
   end

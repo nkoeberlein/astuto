@@ -10,12 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as RoadmapRouteImport } from './routes/roadmap'
 import { Route as BoardsBoardSlugRouteImport } from './routes/boards.$boardSlug'
 import { Route as PostsPostSlugRouteImport } from './routes/posts.$postSlug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RoadmapRoute = RoadmapRouteImport.update({
+  id: '/roadmap',
+  path: '/roadmap',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BoardsBoardSlugRoute = BoardsBoardSlugRouteImport.update({
@@ -31,30 +37,34 @@ const PostsPostSlugRoute = PostsPostSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/roadmap': typeof RoadmapRoute
   '/boards/$boardSlug': typeof BoardsBoardSlugRoute
   '/posts/$postSlug': typeof PostsPostSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/roadmap': typeof RoadmapRoute
   '/boards/$boardSlug': typeof BoardsBoardSlugRoute
   '/posts/$postSlug': typeof PostsPostSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/roadmap': typeof RoadmapRoute
   '/boards/$boardSlug': typeof BoardsBoardSlugRoute
   '/posts/$postSlug': typeof PostsPostSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/boards/$boardSlug' | '/posts/$postSlug'
+  fullPaths: '/' | '/roadmap' | '/boards/$boardSlug' | '/posts/$postSlug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/boards/$boardSlug' | '/posts/$postSlug'
-  id: '__root__' | '/' | '/boards/$boardSlug' | '/posts/$postSlug'
+  to: '/' | '/roadmap' | '/boards/$boardSlug' | '/posts/$postSlug'
+  id: '__root__' | '/' | '/roadmap' | '/boards/$boardSlug' | '/posts/$postSlug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  RoadmapRoute: typeof RoadmapRoute
   BoardsBoardSlugRoute: typeof BoardsBoardSlugRoute
   PostsPostSlugRoute: typeof PostsPostSlugRoute
 }
@@ -66,6 +76,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/roadmap': {
+      id: '/roadmap'
+      path: '/roadmap'
+      fullPath: '/roadmap'
+      preLoaderRoute: typeof RoadmapRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/boards/$boardSlug': {
@@ -87,6 +104,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  RoadmapRoute: RoadmapRoute,
   BoardsBoardSlugRoute: BoardsBoardSlugRoute,
   PostsPostSlugRoute: PostsPostSlugRoute,
 }

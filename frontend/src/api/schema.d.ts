@@ -102,7 +102,10 @@ export interface paths {
     };
     "/api/app/v1/post_statuses": {
         parameters: {
-            query?: never;
+            query?: {
+                /** @description Optional board id or slug to filter out unused statuses when hideUnusedStatusesInFilterByStatus is enabled */
+                board_id?: string;
+            };
             header?: never;
             path?: never;
             cookie?: never;
@@ -110,14 +113,17 @@ export interface paths {
         /** List post statuses */
         get: {
             parameters: {
-                query?: never;
+                query?: {
+                    /** @description Optional board id or slug to filter out unused statuses when hideUnusedStatusesInFilterByStatus is enabled */
+                    board_id?: string;
+                };
                 header?: never;
                 path?: never;
                 cookie?: never;
             };
             requestBody?: never;
             responses: {
-                /** @description successful */
+                /** @description hides unused statuses for a board when setting is enabled */
                 200: {
                     headers: {
                         [name: string]: unknown;
@@ -545,6 +551,237 @@ export interface paths {
         };
         put?: never;
         post?: never;
+        /** Delete post (author or moderator) */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description Post id or slug */
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description deleted by author */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description forbidden for another user */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /** Update post (author or moderator) */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description Post id or slug */
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["UpdatePost"];
+                };
+            };
+            responses: {
+                /** @description moderator changes status, board, and approval status */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Post"];
+                    };
+                };
+                /** @description not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description forbidden for another non-moderator user */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description unknown approval status */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/api/app/v1/posts/{post_id}/comments/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Post id or slug */
+                post_id: string;
+                /** @description Comment id */
+                id: number;
+            };
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete comment (author or moderator) */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description Post id or slug */
+                    post_id: string;
+                    /** @description Comment id */
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description deleted by author */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description forbidden for another user */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /** Update comment (author or moderator) */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description Post id or slug */
+                    post_id: string;
+                    /** @description Comment id */
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["UpdateComment"];
+                };
+            };
+            responses: {
+                /** @description moderator marks comment as post update */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Comment"];
+                    };
+                };
+                /** @description forbidden for another user */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/api/app/v1/roadmap": {
+        parameters: {
+            query?: {
+                /** @enum {unknown} */
+                sort_by?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Roadmap columns with their approved posts */
+        get: {
+            parameters: {
+                query?: {
+                    /** @enum {unknown} */
+                    sort_by?: string;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description recently updated first */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Roadmap"];
+                    };
+                };
+                /** @description private feedback space, not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description roadmap disabled */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -729,6 +966,26 @@ export interface components {
             page: number;
             hasMore: boolean;
         };
+        RoadmapPost: {
+            id: number;
+            slug: string;
+            title: string;
+            boardId: number;
+            likesCount: number;
+            commentsCount: number;
+            liked: boolean;
+            /** Format: date-time */
+            updatedAt: string;
+        };
+        RoadmapColumn: {
+            status: components["schemas"]["PostStatus"];
+            posts: components["schemas"]["RoadmapPost"][];
+            /** @description All posts in this status; posts holds at most 100 */
+            postsCount: number;
+        };
+        Roadmap: {
+            columns: components["schemas"]["RoadmapColumn"][];
+        };
         Post: {
             id: number;
             slug: string;
@@ -765,9 +1022,21 @@ export interface components {
             /** @description Unix time when the form was shown (anti-spam) */
             formRenderedAt: number;
         };
+        UpdatePost: {
+            title?: string;
+            description?: string | null;
+            boardId?: number;
+            postStatusId?: number | null;
+            /** @enum {string} */
+            approvalStatus?: "approved" | "pending" | "rejected";
+        };
         NewComment: {
             body: string;
             parentId?: number | null;
+            isPostUpdate?: boolean;
+        };
+        UpdateComment: {
+            body?: string;
             isPostUpdate?: boolean;
         };
         Comment: {

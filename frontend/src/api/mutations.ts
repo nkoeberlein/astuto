@@ -9,7 +9,9 @@ import { commentsQuery, postQuery } from './queries'
 
 type VoteState = Schemas['VoteState']
 export type NewPost = Schemas['NewPost']
+export type UpdatePost = Schemas['UpdatePost']
 export type NewComment = Schemas['NewComment']
+export type UpdateComment = Schemas['UpdateComment']
 
 // Board post lists have keys like ['boards', slug, 'posts', filters]
 const isBoardPostList = {
@@ -118,5 +120,85 @@ export function useCreatePost(boardSlug: string) {
         }),
       ),
     onSuccess: () => queryClient.invalidateQueries(isBoardPostList),
+  })
+}
+
+export function useUpdatePost(postSlug: string) {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (changes: UpdatePost) =>
+      unwrap(
+        api.PATCH('/api/app/v1/posts/{id}', {
+          params: { path: { id: postSlug } },
+          body: changes,
+        }),
+      ),
+    onSuccess: (updated) => {
+      queryClient.setQueryData<Post>(postQuery(postSlug).queryKey, updated)
+      void queryClient.invalidateQueries(isBoardPostList)
+      void queryClient.invalidateQueries({ queryKey: ['roadmap'] })
+    },
+  })
+}
+
+export function useDeletePost(postSlug: string) {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: () =>
+      unwrap(
+        api.DELETE('/api/app/v1/posts/{id}', {
+          params: { path: { id: postSlug } },
+        }),
+      ),
+    onSuccess: () => {
+      queryClient.removeQueries({ queryKey: postQuery(postSlug).queryKey })
+      void queryClient.invalidateQueries(isBoardPostList)
+      void queryClient.invalidateQueries({ queryKey: ['roadmap'] })
+    },
+  })
+}
+
+export function useUpdateComment(postSlug: string) {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, changes }: { id: number; changes: UpdateComment }) =>
+      unwrap(
+        api.PATCH('/api/app/v1/posts/{post_id}/comments/{id}', {
+          params: { path: { post_id: postSlug, id } },
+          body: changes,
+        }),
+      ),
+    onSuccess: (updated) => {
+      queryClient.setQueryData<Comment[]>(commentsQuery(postSlug).queryKey, (comments) =>
+        comments ? comments.map((c) => (c.id === updated.id ? updated : c)) : [updated],
+      )
+    },
+  })
+}
+
+export function useDeleteComment(postSlug: string) {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (id: number) =>
+      unwrap(
+        api.DELETE('/api/app/v1/posts/{post_id}/comments/{id}', {
+          params: { path: { post_id: postSlug, id } },
+        }),
+      ),
+    onSuccess: (_data, id) => {
+      // Replies are deleted together with their parent (dependent: :destroy)
+      const isRemoved = (c: Comment) => c.id === id || c.parentId === id
+      const removed =
+        queryClient.getQueryData<Comment[]>(commentsQuery(postSlug).queryKey)?.filter(isRemoved)
+          .length ?? 1
+      queryClient.setQueryData<Comment[]>(commentsQuery(postSlug).queryKey, (comments) =>
+        comments ? comments.filter((c) => !isRemoved(c)) : [],
+      )
+      queryClient.setQueryData<Post>(
+        postQuery(postSlug).queryKey,
+        (p) => p && { ...p, commentsCount: Math.max(0, p.commentsCount - removed) },
+      )
+      void queryClient.invalidateQueries(isBoardPostList)
+    },
   })
 }
