@@ -21,6 +21,15 @@ Astuto Evolution führt das archivierte [astuto/astuto](https://github.com/astut
 - **Fider** ist schlicht, hat aber keine Roadmap und kein Changelog, und Moderation steckt in der Cloud hinter einer Paywall. Astuto Evolution hat beides bereits und bleibt komplett frei.
 - **Proprietäre Tools** konkurrieren über den Preis pro Nutzer. Astuto Evolution kennt keine Limits.
 
+**Bewusst nicht geplant** (Abgleich mit der Konkurrenz, 25.10.2026), damit das Portal schlank bleibt:
+- Help Center, Support-Inbox, Statusseite (Quackback-Richtung)
+- Umfragen (NPS/CSAT): eigenes Produkt
+- Priorisierungs-Frameworks (RICE/ICE): gehören in Jira, Linear oder Productboard; Astuto liefert die Daten über API, MCP und Integrationen
+- Umsatzverknüpfung (Canny Business): braucht CRM- oder Billing-Daten der Kunden; höchstens später über Nutzersegmente
+- Eigene Slack- oder Teams-Apps: beim Self-Hosting müsste jede Installation eine eigene App registrieren; Webhook-Vorlagen und MCP decken den Bedarf
+- Reaktionen sowie Budget- oder Credit-Voting: das einfache Vote-Modell ist ein Merkmal (Downvotes #421 vor einer Umsetzung ebenfalls hinterfragen)
+- Eigene Connectoren zum automatischen Einsammeln von Feedback (Canny Autopilot): stattdessen über MCP, siehe Phase 4
+
 **Prinzipien:**
 1. Läuft mit einem Image plus PostgreSQL, ohne weitere Pflichtdienste.
 2. KI ist optional („Bring your own model“: OpenAI-kompatible API, Anthropic, lokal per Ollama). Ohne KI funktioniert alles.
@@ -72,7 +81,7 @@ Astuto Evolution führt das archivierte [astuto/astuto](https://github.com/astut
 - Devise bleibt für Login, OAuth und Mails; die Login-Seiten werden SPA-Seiten gegen JSON-Endpunkte.
 - Das alte Frontend wird Seite für Seite ersetzt und am Ende vollständig entfernt (`react-rails`, `react_ujs`, Redux, Bootstrap, jQuery, Turbolinks, Webpack, `i18n-js` 3, `connection_pool`-Pin).
 
-**Anforderungen an die neue UI:** Mobile first, Dark Mode, WCAG 2.2 AA, Branding über CSS-Variablen, ein Komponentensatz auch für das einbettbare Widget, Übersetzungen aus den bestehenden YAML-Dateien (als JSON exportiert).
+**Anforderungen an die neue UI:** Mobile first, Dark Mode, WCAG 2.2 AA, Branding über CSS-Variablen, ein Komponentensatz auch für das einbettbare Widget, Übersetzungen aus den bestehenden YAML-Dateien (als JSON exportiert), RTL-fähig (CSS-Logical-Properties, `dir` aus der Locale; RTL-Übersetzungen, sobald jemand sie beisteuert).
 
 **Multi-Tenancy bleibt (entschieden).** Mehrere Feedback-Portale pro Instanz sind für Unternehmen mit mehreren Produkten oder Marken und für Agenturen wichtig (#76) und die Grundlage einer möglichen gehosteten Variante. Tenant-Signup, Custom Domains und Stripe-Billing bleiben vorerst erhalten. Ob Billing modernisiert oder entfernt wird, hängt vom Geschäftsmodell ab (siehe 7.).
 
@@ -110,13 +119,18 @@ Die häufigsten Probleme aus den Upstream-Issues: HTTPS hinter Reverse Proxy (#4
 - **Duplikaterkennung** beim Erstellen (#455): ✅ Postgres-Volltextsuche · offen: optional semantisch mit pgvector und Embeddings
 - **KI-Funktionen (opt-in, eigenes Modell):** ✅ Zusammenfassung langer Diskussionen (Moderatoren, neues Frontend) · offen: Vorschläge für Tags und Board (braucht Tags), Changelog-Entwürfe (braucht Changelog), Übersetzung von Feedback
 - Datenschutz: Was an den KI-Anbieter geht, ist dokumentiert und abschaltbar; lokales Modell per Ollama wird unterstützt
+- **Feedback aus anderen Quellen über MCP** statt eigener Connectoren: Ein Assistent in Slack oder Teams liest einen Thread und legt den Post an. Dafür fehlen nur ein Feld „Quelle/Link“ am Post und „im Namen von“ in `create_post`
 
 ### Phase 5 – Nischen-Features · P2
-- **Changelog** mit RSS und E-Mail an Follower
+- **Changelog** mit RSS und E-Mail an Follower; **RSS pro Board** mit derselben Technik
+- **Digest für Nutzer** (Opt-in: Top-Requests, Statuswechsel gefolgter Posts), Erweiterung der bestehenden Recap-Mails für Moderatoren
+- **Vertrauensstufen:** die ersten N Posts eines Kontos prüfen, danach automatisch freigeben (#362-Familie)
 - **Private Boards** (#414), **Tags** (#171), **Anhänge** (#253, #482)
 - **Import** aus Canny, Fider und CSV (#368), um Wechsler aufzunehmen
+- **Widget mit Besucher-Identifikation** (signiertes JWT pro Tenant aus der eigenen App): Voraussetzung dafür, dass Widget-Votes echten Kunden zugeordnet werden, und zugleich „Login aus der eigenen App“ ohne OAuth
 - **Einbettbares Widget**, **Webhook-Vorlagen** für Slack, Discord und Teams (#419)
 - **LDAP/SAML** (#8) für Unternehmen und Behörden
+- Später: **Nutzersegmente** (Votes nach Kundengruppe filtern oder gewichten; setzt Besucher-Identifikation und Custom Fields #420 voraus, Gewichtung steht im v3-Schema) und **Verfallsregeln** (Filter „seit X Monaten ohne Aktivität“, automatisches Archivieren nur als Opt-in)
 - Quick Wins aus den Issues: Roadmap abschaltbar (#361), Standard-Sortierung (#193, #363, #483), OAuth-only-Login (#471), Favicon (#452)
 
 ### Querschnitt – Projekt und Community

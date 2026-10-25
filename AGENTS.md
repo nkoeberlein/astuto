@@ -29,6 +29,7 @@ Astuto Evolution: community continuation of Astuto, a self-hosted customer feedb
 - Multi-tenancy via `Current.tenant` (subdomain-based when `MULTI_TENANCY=true`); every model is tenant-scoped.
 - All configuration via ENV (SMTP `EMAIL_*`, `POSTGRES_*`, `BASE_URL`, `TRUSTED_PROXY`).
 - The DB is migrated automatically by `docker-entrypoint.sh` on container start.
+- v2 frontend is RTL-ready: use CSS logical properties only (`ms-`/`me-`, `ps-`/`pe-`, `start`/`end`), never `left`/`right` utilities.
 - Keep the schema portable for the v3 TypeScript rewrite: no `serialize`/`store` columns (use `jsonb`), no polymorphic associations, no Active Storage, no Ruby-specific formats (Marshal) in the database.
 
 ## Gotchas

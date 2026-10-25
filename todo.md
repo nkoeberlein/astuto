@@ -13,6 +13,7 @@ Issue-Nummern beziehen sich auf `astuto/astuto`. Phasen siehe [roadmap.md](roadm
 - [x] `run-tests.yml`: Runner `ubuntu-24.04`
 - [x] README und CONTRIBUTING als Astuto Evolution neu, Links auf `nkoeberlein/astuto`
 - [ ] Remote `upstream` nur noch als Archiv betrachten; Upstream-Branch `add-image-upload` sichern
+- [x] Offene Upstream-Issues abgeglichen (25.10.2026): alle stehen in Todo oder Roadmap, außer #165 (authenticityToken-Props, hinfällig mit dem alten Frontend) sowie #451 und #465 (ohne Inhalt). Lücken zur Konkurrenz und bewusste Ausschlüsse: roadmap.md §1 und Phase 4/5
 
 ### Upstream-PRs übernehmen
 - [x] #477 Gravatar-Avatar-Fix (1 Zeile)
@@ -120,6 +121,7 @@ Empfehlung (roadmap.md, Abschnitt 3): getrenntes Frontend mit React 19 + TS 7 + 
 - [ ] Umstieg: `/next` → `/`, sobald alle Seiten ersetzt sind
 - [x] Designsystem: Branding über CSS-Variablen (bestehende Site-Settings-Farben), Dark Mode, WCAG 2.2 AA, mobile first, volle Bildschirmfläche (2-Spalten-Layout auf Desktop)
 - [x] i18n: YAML-Übersetzungen über `GET /api/app/v1/translations/:locale`
+- [ ] RTL-fähig: im neuen Frontend nur CSS-Logical-Properties (`ms-`/`me-`, `ps-`/`pe-`, `start`/`end` statt `left`/`right`), `dir` am `<html>` aus der Locale; jetzt beachten, nachträglich wird es teuer
 - [x] Öffentliche Seiten: Board, Post-Detail und Kommentare, Roadmap
 - [ ] Auth-Seiten: Login, Registrierung, Passwort, OAuth-Buttons (Devise mit JSON-Endpunkten)
 - [ ] Moderation (Feedback-Queue, Nutzer) und Site Settings (General, Boards, Status, Roadmap, Auth, Appearance, Webhooks, API)
@@ -147,6 +149,7 @@ Empfehlung (roadmap.md, Abschnitt 3): getrenntes Frontend mit React 19 + TS 7 + 
 - [x] Duplikaterkennung beim Erstellen mit Postgres-Volltextsuche (#455) (`Post.search_by_name_or_description`, `Post.similar_to`, Live-Vorschläge in `NewPostForm.tsx`)
 - [x] KI-Anbieter-Abstraktion: OpenAI-kompatibel (inkl. Ollama), Anthropic; alles opt-in per ENV (`AI_PROVIDER` und `AI_MODEL`, kein fest eingebautes Modell), ohne KI voll funktionsfähig (`Ai::Client`)
 - [ ] Optional semantische Duplikate mit pgvector und Embeddings
+- [ ] Feedback aus anderen Quellen über MCP: Feld „Quelle/Link“ am Post (API, MCP, Anzeige) und `create_post` im Namen eines Nutzers (wie `impersonated_user_id` in API v1, nur Admins); Doku-Rezept „Slack-Thread → Post“ mit Claude
 - [x] Zusammenfassung langer Diskussionen: Button im Moderationsbereich der Post-Seite (`/next`), `POST /api/app/v1/posts/:id/summary`, einen Tag gecacht
 - [ ] Vorschläge für Board und Tags (Methode in `Ai::Client` vorhanden; braucht Tags #171)
 - [ ] Changelog-Entwürfe aus erledigten Posts (Methode vorhanden; braucht die Changelog-Funktion)
@@ -165,12 +168,16 @@ Empfehlung (roadmap.md, Abschnitt 3): getrenntes Frontend mit React 19 + TS 7 + 
 - [x] Combobox für den Status im Post-Formular (#119): Moderatoren wählen beim Erstellen einen Status; App-API nimmt `postStatusId` (nur Moderatoren), Timeline-Eintrag wird mitgedeckt
 - [x] Roadmap zeigt Votes und Kommentare, Sortierung nach „zuletzt aktualisiert“ (#484), im neuen Frontend; nur freigegebene Posts (das alte UI zeigt auch ausstehende)
 - [ ] Übersicht „Mein Feedback“ (#429)
+- [ ] Vertrauensstufen: neue Freigaberegel „die ersten N Posts eines Kontos prüfen, danach automatisch freigeben“ (#362-Familie)
+- [ ] RSS-Feed pro Board (neueste Posts), gemeinsam mit dem Changelog-RSS bauen
+- [ ] Digest für Nutzer: `SendRecapEmailsJob` verschickt bisher nur an Moderatoren; Opt-in für alle Nutzer (Top-Requests, Statuswechsel gefolgter Posts)
 - [x] Eigene Links bzw. URL im Header (#479, #351): `custom_links` (jsonb: `{label, url}`), Textarea im General-Tab, gerendert in Legacy-Header und neuem Frontend
 - [x] Datenbank-Transaktionen in Workflows (#169): Post-Update/-Create jeweils atomar mit Follow bzw. Statuswechsel-Eintrag; Mails werden nach dem Commit versendet; gleiche Sicherung im öffentlichen API v1. Anlegen läuft für altes UI, App-API und MCP über `CreatePostWorkflow` (`create!` in der Transaktion, vorher rollten fehlgeschlagene Follows nicht zurück)
 
 ### Lücken zur Konkurrenz (siehe konkurrenz.md)
 - [ ] Changelog: Einträge mit erledigten Posts verknüpfen, RSS-Feed, E-Mail an Follower
 - [ ] Webhook-Vorlagen für Slack, Discord und Teams (#419)
+- [ ] Einbettbares Widget (Feedback, Roadmap, Changelog) **mit Besucher-Identifikation**: die eigene App signiert ein JWT mit einem Geheimnis pro Tenant, Astuto ordnet Votes und Posts dem echten Nutzer zu (anlegen oder per E-Mail/externer ID verknüpfen). Ohne das bleiben Widget-Votes anonym. Von P3 hochgezogen
 
 ## P2 – Projekt und Community
 - [x] `SECURITY.md` mit Meldeweg (GitHub Private Vulnerability Reporting), Fristen und Scope
@@ -182,7 +189,6 @@ Empfehlung (roadmap.md, Abschnitt 3): getrenntes Frontend mit React 19 + TS 7 + 
 
 ## P3 – Größere Features (nach Bedarf)
 
-- [ ] Einbettbares Widget (Feedback, Roadmap, Changelog)
 - [ ] Native Integrationen Linear, GitHub, Jira mit Status-Sync
 - [ ] Import aus Canny (neben CSV, #368)
 
@@ -192,11 +198,13 @@ Empfehlung (roadmap.md, Abschnitt 3): getrenntes Frontend mit React 19 + TS 7 + 
 - [ ] Admin-Freigabe neuer Nutzer (#362), eigene Signup-Anforderungen (#30)
 - [ ] Import/Export (#368)
 - [ ] Roadmap per Drag-and-drop sortieren (#473)
-- [ ] Votes auf Kommentare (#408), Downvotes (#421), Vote-Limit pro Monat (#422)
+- [ ] Votes auf Kommentare (#408), Downvotes (#421), Vote-Limit pro Monat (#422); Downvotes vor einer Umsetzung hinterfragen, Reaktionen und Budget-Voting sind bewusst ausgeschlossen (roadmap.md §1)
 - [ ] Soft-Delete für Kommentare (#162), private Kommentare (#418)
 - [ ] API: Invitations und Follows (#434), Nutzerinfos anzeigen (#322)
 - [ ] Avatar-Upload statt nur Gravatar (#469)
 - [ ] Custom Fields für Nutzer (#420), Standardkonfigurationen für OAuth und Webhooks (#419)
+- [ ] Nutzersegmente: Votes nach Kundengruppe filtern oder gewichten (setzt Besucher-Identifikation und Custom Fields voraus; Gewichtung im v3-Schema)
+- [ ] Verfallsregeln: Moderationsfilter „seit X Monaten ohne Aktivität“, automatisches Archivieren nur als Opt-in
 - [ ] LDAP/AD-Login (#8)
 - [ ] GitHub-Integration (#365)
 - [ ] Custom JavaScript (#376), nur mit CSP und Admin-Warnung
