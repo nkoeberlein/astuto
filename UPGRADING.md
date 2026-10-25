@@ -83,6 +83,19 @@ If you run Astuto with `ACTIVE_JOB_BACKEND=sidekiq`, Astuto Evolution uses
 Sidekiq 8, which requires **Redis 7 or newer**. Check with
 `redis-cli INFO server | grep redis_version` and upgrade Redis first if needed.
 
+## Fresh installs: admin account
+
+On the first start the image creates an admin account. Without configuration
+its email is `admin@example.com` and its password is random; it is printed once
+in the container log. To choose them yourself, set before the first start:
+
+```
+ADMIN_EMAIL=you@example.com
+ADMIN_PASSWORD=a-long-secret
+```
+
+Existing installations are not affected: the database is only seeded when it is empty.
+
 ## Docker image
 
 The image moved from `riggraz/astuto` (Docker Hub) to

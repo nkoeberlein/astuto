@@ -18,7 +18,7 @@ Astuto Evolution: community continuation of Astuto, a self-hosted customer feedb
 - `spec/` – RSpec: models, policies, requests, API (rswag), system tests (Capybara + Chrome); about 445 examples without system specs. Spec files must end in `_spec.rb`, or RSpec skips them
 
 ## Commands
-- Dev: `docker compose up` (app on :3000, override with `ASTUTO_PORT`; default admin `admin@example.com` / `password`)
+- Dev: `docker compose up` (app on :3000, override with `ASTUTO_PORT`; default admin `admin@example.com` / `password` in development; elsewhere a random password unless `ADMIN_PASSWORD` is set, see `DefaultAdminCredentials`)
 - Tests: `docker compose exec web bundle exec rspec` (system specs on arm64: install `chromium chromium-driver`, set `CHROME_BIN`/`CHROMEDRIVER_PATH`)
 - API docs: `RSWAG_SWAGGERIZE=true RAILS_ENV=test bundle exec rake rswag:specs:swaggerize` (writes `swagger/v1/swagger.yaml` and `swagger/app/v1/openapi.yaml`)
 - Frontend: `docker compose up` → http://localhost:5173/next/; in `frontend/`: `npm run lint|typecheck|test|build`, `npm run api:types` after API changes

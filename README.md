@@ -65,7 +65,7 @@ To run it from source:
    docker compose up
    ```
    If port 3000 is taken on your machine, use another one: `ASTUTO_PORT=3456 docker compose up`
-4. Open http://localhost:3000. A default account is created with email `admin@example.com` and password `password`. Change it right away.
+4. Open http://localhost:3000. In development, a default account is created with email `admin@example.com` and password `password`. The production image instead generates a random password and prints it once in the container log on the first start; set `ADMIN_EMAIL` and `ADMIN_PASSWORD` to choose your own.
 
 ## Documentation
 
