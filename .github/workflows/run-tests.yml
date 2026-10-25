@@ -44,6 +44,23 @@ jobs:
       - name: Run tests
         run: docker compose exec web bundle exec rspec
 
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 26
+
+      # swagger/ is not in git: the image build generates the OpenAPI file from
+      # the rswag specs, and the TS types in frontend/ must match it
+      - name: Check generated API types are up to date (drift check)
+        run: |
+          mkdir -p swagger/app/v1
+          docker compose cp web:/astuto/swagger/app/v1/openapi.yaml swagger/app/v1/openapi.yaml
+          cd frontend
+          npm ci --no-audit --no-fund
+          npm run api:types
+          npx biome format --write src/api/schema.d.ts
+          git diff --exit-code src/api/schema.d.ts
+
       - name: Security checks (gems, legacy npm packages, Brakeman)
         run: |
           docker compose exec web bin/bundler-audit check --update
