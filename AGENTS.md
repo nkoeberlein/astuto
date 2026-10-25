@@ -48,4 +48,4 @@ Astuto Evolution: community continuation of Astuto, a self-hosted customer feedb
 - `public/**/index.html` is never served for bare directories (`public_file_server.index_name`), so `/next` goes through `SpaController`.
 - Admin-entered URLs that end up in an `href` (header links, logo link) must pass `SafeUrl.safe?`; render via `TenantSetting#safe_custom_links` / `#safe_logo_custom_url`.
 - System specs need Chromium in the container; the dev image has none, so run them in CI (`run-tests.yml`, triggered by pull requests).
-- `gh` defaults to the archived upstream repo: pass `-R nkoeberlein/astuto`.
+- `gh` defaults to the archived upstream repo: pass `-R nkoeberlein/astuto-evo`.

@@ -45,7 +45,7 @@ Astuto Evolution helps you collect, manage and prioritize feedback from your cus
 |---|---|---|
 | Ruby / Rails | 3.0 / 6.1 (end of life) | 4.0 / 8.1 |
 | PostgreSQL | 14 (EOL 11/2026) | 18 (19 once it is released) |
-| Docker image | `riggraz/astuto` (amd64) | `ghcr.io/nkoeberlein/astuto` (amd64 + arm64) |
+| Docker image | `riggraz/astuto` (amd64) | `ghcr.io/nkoeberlein/astuto-evo` (amd64 + arm64) |
 | User interface | React 16, Bootstrap 4 | being rebuilt (React 19, TypeScript, Tailwind), public pages under `/next` |
 | AI / MCP | – | MCP server, opt-in AI discussion summary |
 
@@ -60,8 +60,8 @@ To run it from source:
 1. Install Docker and Docker Compose
 2. Clone the repository:
    ```
-   git clone https://github.com/nkoeberlein/astuto.git astuto-evolution
-   cd astuto-evolution
+   git clone https://github.com/nkoeberlein/astuto-evo.git astuto-evo
+   cd astuto-evo
    ```
 3. Start it:
    ```
@@ -76,7 +76,7 @@ The original documentation still applies and lives in the archived [astuto/astut
 
 ## Contributing
 
-Proposing features, reporting issues, translating and improving documentation are as welcome as code. Please read the [contributing guidelines](CONTRIBUTING.md) and use the [issue tracker](https://github.com/nkoeberlein/astuto/issues).
+Proposing features, reporting issues, translating and improving documentation are as welcome as code. Please read the [contributing guidelines](CONTRIBUTING.md) and use the [issue tracker](https://github.com/nkoeberlein/astuto-evo/issues).
 
 ## Credits
 

@@ -108,5 +108,5 @@ Existing installations are not affected: the database is only seeded when it is 
 ## Docker image
 
 The image moved from `riggraz/astuto` (Docker Hub) to
-`ghcr.io/nkoeberlein/astuto` and is available for amd64 and arm64.
+`ghcr.io/nkoeberlein/astuto-evo` and is available for amd64 and arm64.
 Update the `image:` line of the `web` service accordingly.

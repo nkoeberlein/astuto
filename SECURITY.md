@@ -13,7 +13,7 @@ Security fixes go into the next release. Until 2.0.0 is out, update to the lates
 
 Please **do not open a public issue** for security problems.
 
-Report privately through GitHub: go to the [Security tab](https://github.com/nkoeberlein/astuto/security) and choose **Report a vulnerability**. Include:
+Report privately through GitHub: go to the [Security tab](https://github.com/nkoeberlein/astuto-evo/security) and choose **Report a vulnerability**. Include:
 
 - the affected version or commit
 - steps to reproduce, or a proof of concept
@@ -31,7 +31,7 @@ We coordinate the disclosure with you: the advisory is published together with t
 
 ## Scope
 
-In scope: the Astuto Evolution application and its official Docker image (`ghcr.io/nkoeberlein/astuto`).
+In scope: the Astuto Evolution application and its official Docker image (`ghcr.io/nkoeberlein/astuto-evo`).
 
 Expected behaviour, not vulnerabilities:
 

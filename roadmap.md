@@ -1,6 +1,6 @@
 # Roadmap – Astuto Evolution
 
-Stand: 25.10.2026 · Repository: [nkoeberlein/astuto](https://github.com/nkoeberlein/astuto) · Branch `develop`
+Stand: 25.10.2026 · Repository: [nkoeberlein/astuto-evo](https://github.com/nkoeberlein/astuto-evo) · Branch `develop`
 
 Astuto Evolution führt das archivierte [astuto/astuto](https://github.com/astuto/astuto) als Community-Projekt weiter. Name und Herkunft bleiben erkennbar, der Neuanfang ebenfalls: aktueller Stack, neue Oberfläche, KI-Funktionen. Ziel ist **kein Eigenbedarf**, sondern ein eigenständiges Open-Source-Projekt für die Nische aus der [Konkurrenzanalyse](konkurrenz.md). Konkrete Aufgaben: [todo.md](todo.md).
 
@@ -56,7 +56,7 @@ Astuto Evolution führt das archivierte [astuto/astuto](https://github.com/astut
 | PostgreSQL | 14.5 (EOL 12.11.2026) | 18 (Dev; 19rc1-Volume verworfen) | 19 (GA 19.11.2026) |
 | Node (Build) | 20 (EOL) | **26** (Laufzeit-Image ohne Node) | 26 LTS ✓ |
 | Debian-Basis | 11 (EOL, Image baute nicht mehr) | 13 trixie | 13 trixie |
-| Docker-Image | `riggraz/astuto`, amd64 | CI: `ghcr.io/nkoeberlein/astuto`, amd64 + arm64 | ✓ |
+| Docker-Image | `riggraz/astuto`, amd64 | CI: `ghcr.io/nkoeberlein/astuto-evo`, amd64 + arm64 | ✓ |
 | Frontend | React 16, Redux, Bootstrap 4 | unverändert | ersetzt (siehe 3.); v3: komplett TypeScript |
 
 ## 3. Versionsstrategie
