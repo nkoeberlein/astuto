@@ -4,7 +4,7 @@ RSpec.describe 'api/app/v1 create post', type: :request, openapi_spec: 'app/v1/o
   let!(:board) { FactoryBot.create(:board) }
   let(:user) { FactoryBot.create(:user).tap(&:confirm) }
   let(:setting) { Current.tenant.tenant_setting }
-  let(:form) { { title: 'Dark mode please', description: 'For late nights', formRenderedAt: 10.seconds.ago.to_i } }
+  let(:form) { { title: 'Dark mode please', description: 'For late nights', formFillMs: 10_000 } }
 
   path '/api/app/v1/boards/{board_id}/posts' do
     parameter name: :board_id, in: :path, type: :string, description: 'Board id or slug'
@@ -100,7 +100,7 @@ RSpec.describe 'api/app/v1 create post', type: :request, openapi_spec: 'app/v1/o
 
       response(422, 'spam: form submitted too fast') do
         schema '$ref' => '#/components/schemas/Error'
-        let(:new_post) { form.merge(formRenderedAt: Time.now.to_i) }
+        let(:new_post) { form.merge(formFillMs: 500) }
         before { sign_in user }
 
         run_test!

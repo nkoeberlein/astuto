@@ -1,4 +1,6 @@
+import { Link } from '@tanstack/react-router'
 import { useVote } from '@/api/mutations'
+import { useLoginRedirect } from '@/features/auth/redirect'
 import { useI18n } from '@/lib/i18n'
 import { VoteCount } from './VoteCount'
 
@@ -10,20 +12,22 @@ type Props = {
 // Toggles the current user's vote. Visitors are sent to the login page.
 export function VoteButton({ post, signedIn }: Props) {
   const { t } = useI18n()
+  const loginRedirect = useLoginRedirect()
   const vote = useVote(post)
   const label = `${t('post.likes_box.title')}: ${post.likesCount}`
   const count = <VoteCount count={post.likesCount} liked={post.liked} label={label} />
 
   if (!signedIn) {
     return (
-      <a
-        href="/users/sign_in"
+      <Link
+        to="/login"
+        search={{ redirect: loginRedirect }}
         title={t('header.log_in')}
         aria-label={`${label} – ${t('header.log_in')}`}
         className="rounded-md hover:bg-accent"
       >
         {count}
-      </a>
+      </Link>
     )
   }
 

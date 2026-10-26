@@ -24,6 +24,7 @@ const initialState: IPost = {
   hotness: 0,
   userId: 0,
   userEmail: '',
+  userGravatarHash: null,
   userFullName: '',
   createdAt: '',
 };
@@ -50,6 +51,7 @@ const postReducer = (
         hotness: action.post.hotness,
         userId: action.post.user_id,
         userEmail: action.post.user_email,
+        userGravatarHash: action.post.user_gravatar_hash,
         userFullName: action.post.user_full_name,
         createdAt: action.post.created_at,
       };

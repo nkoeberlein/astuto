@@ -83,8 +83,30 @@ If you run Astuto with `ACTIVE_JOB_BACKEND=sidekiq`, Astuto Evolution uses
 Sidekiq 8, which requires **Redis 7 or newer**. Check with
 `redis-cli INFO server | grep redis_version` and upgrade Redis first if needed.
 
+## Content Security Policy
+
+2.0 sends a Content Security Policy header. Scripts may only come from the
+instance itself (and Stripe for hosted billing); inline scripts are blocked.
+Custom CSS keeps working, including fonts or images loaded over `https`.
+If a reverse proxy or an integration of yours injects scripts, they are now
+blocked. Set `CSP_REPORT_ONLY=true` to only report violations while you adapt,
+and optionally `CSP_REPORT_URI` to collect the reports.
+
+## Fresh installs: admin account
+
+On the first start the image creates an admin account. Without configuration
+its email is `admin@example.com` and its password is random; it is printed once
+in the container log. To choose them yourself, set before the first start:
+
+```
+ADMIN_EMAIL=you@example.com
+ADMIN_PASSWORD=a-long-secret
+```
+
+Existing installations are not affected: the database is only seeded when it is empty.
+
 ## Docker image
 
 The image moved from `riggraz/astuto` (Docker Hub) to
-`ghcr.io/nkoeberlein/astuto` and is available for amd64 and arm64.
+`ghcr.io/nkoeberlein/astuto-evo` and is available for amd64 and arm64.
 Update the `image:` line of the `web` service accordingly.

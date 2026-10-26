@@ -3,6 +3,19 @@
 All notable changes to Astuto Evolution. Versions follow [Semantic Versioning](https://semver.org).
 Issue numbers refer to the archived [astuto/astuto](https://github.com/astuto/astuto) repository.
 
+## [Unreleased]
+
+### Security
+- The legacy UI no longer hands visitors the email addresses of authors, voters and moderators; they get a Gravatar hash instead. Moderators and the person themselves still see the email.
+- Account lockout: sign-in with email and password now uses Devise `:lockable`, so a single account locks after too many failed attempts – effective against distributed brute-force, independent of the IP-based anti-spam rules. Unlock happens via emailed link and/or after a configurable time (`LOCKABLE_LOCK_STRATEGY`, `LOCKABLE_UNLOCK_STRATEGY`, `LOCKABLE_MAXIMUM_ATTEMPTS`, `LOCKABLE_UNLOCK_IN_HOURS`; defaults: 10 attempts, 2 h, both). See docs/account-lockout.md.
+- Fresh installs no longer start with the password `password`: outside development the admin gets a random password, printed once in the log, or the one from `ADMIN_PASSWORD` (`ADMIN_EMAIL` sets the email).
+- Content Security Policy: scripts only from the instance itself, Stripe (hosted billing) or with a nonce. `CSP_REPORT_ONLY=true` switches to report-only. See UPGRADING.md.
+- `SECURITY.md`: report vulnerabilities privately via GitHub.
+
+### Fixes
+- `/next` and `/next/` were served as a static file, without the server-side meta tags.
+- Gravatar images in the legacy UI loaded over plain `http` on `http` pages.
+
 ## [2.0.0-alpha.2] – 2026-10-25
 
 Fixes fresh installs. Use this instead of 2.0.0-alpha.1.

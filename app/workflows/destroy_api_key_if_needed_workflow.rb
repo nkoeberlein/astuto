@@ -6,16 +6,13 @@ class DestroyApiKeyIfNeededWorkflow
   end
 
   def run
-    if @user.role_changed?
-      # If user gets demoted, remove their API key
-      if (@user.role_was == 'admin' && @user.role == 'moderator') || (@user.role_was == 'moderator' && @user.role == 'user')
-        @user.api_key&.destroy
-      end
-    elsif @user.status_changed?
-      # If user gets blocked, remove their API key
-      if @user.blocked? || @user.deleted?
-        @user.api_key&.destroy
-      end
+    # User.roles orders roles by rank: user < moderator < admin < owner
+    demoted = @user.role_changed? &&
+              User.roles[@user.role.to_s].to_i < User.roles[@user.role_was.to_s].to_i
+    deactivated = !@user.active? || !@user.moderator?
+
+    if demoted || deactivated
+      @user.api_key&.destroy
     end
   end
 end

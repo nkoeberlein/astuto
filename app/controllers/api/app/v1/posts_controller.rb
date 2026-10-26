@@ -1,7 +1,5 @@
 module Api::App::V1
   class PostsController < Api::App::BaseController
-    MIN_SECONDS_TO_FILL_FORM = 2
-
     before_action :require_access
     before_action :require_user, only: [:update, :destroy]
     before_action :check_tenant_subscription, only: [:create, :update, :destroy]
@@ -31,7 +29,7 @@ module Api::App::V1
     end
 
     # POST /api/app/v1/boards/:board_id/posts
-    # { title, description, isAnonymous, honeypot, formRenderedAt }
+    # { title, description, isAnonymous, honeypot, formFillMs }
     def create
       board = Board.friendly.find(params[:board_id])
       anonymous = ActiveModel::Type::Boolean.new.cast(params[:isAnonymous]) || false
@@ -135,8 +133,7 @@ module Api::App::V1
 
       # Honeypot field must stay empty and the form must have been open for a moment
       def spam?
-        rendered_at = params[:formRenderedAt].to_i
-        params[:honeypot].present? || rendered_at.zero? || Time.now.to_i - rendered_at < MIN_SECONDS_TO_FILL_FORM
+        PostSpamCheck.honeypot_filled?(params[:honeypot]) || PostSpamCheck.too_fast?(params[:formFillMs])
       end
   end
 end

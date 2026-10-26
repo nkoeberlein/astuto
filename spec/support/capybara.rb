@@ -8,6 +8,8 @@ Capybara.register_driver :chrome_headless do |app|
   options.add_argument('--no-sandbox')
   options.add_argument('--disable-dev-shm-usage')
   options.add_argument('--window-size=1400,1400')
+  # Lets specs read the browser console (e.g. Content Security Policy violations)
+  options.add_option('goog:loggingPrefs', { browser: 'ALL' })
 
   # Optional: use a specific browser/driver (e.g. Debian chromium on arm64,
   # where Google Chrome is not available)

@@ -299,6 +299,7 @@ class PostP extends React.Component<Props, State> {
 
                 isPowerUser={isPowerUser}
                 authorEmail={postToShow.userEmail}
+                authorGravatarHash={postToShow.userGravatarHash}
                 authorFullName={postToShow.userFullName}
                 currentUserEmail={currentUserEmail}
               />

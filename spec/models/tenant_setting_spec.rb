@@ -177,4 +177,23 @@ RSpec.describe TenantSetting, type: :model do
     tenant_setting.mail_logo_size = 0
     expect(tenant_setting).not_to be_valid
   end
+
+  describe '#email_domain_allowed?' do
+    it 'allows every domain when the list is empty' do
+      tenant_setting.allowed_email_domains = ''
+      expect(tenant_setting.email_domain_allowed?('a@any.example')).to be(true)
+    end
+
+    it 'checks the domain against the list, ignoring spaces after commas' do
+      tenant_setting.allowed_email_domains = 'acme.com, example.org'
+      expect(tenant_setting.email_domain_allowed?('a@example.org')).to be(true)
+      expect(tenant_setting.email_domain_allowed?('a@evil.com')).to be(false)
+    end
+
+    it 'rejects addresses without exactly one @' do
+      tenant_setting.allowed_email_domains = ''
+      expect(tenant_setting.email_domain_allowed?('a@b@acme.com')).to be(false)
+      expect(tenant_setting.email_domain_allowed?(nil)).to be(false)
+    end
+  end
 end

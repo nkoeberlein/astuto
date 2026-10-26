@@ -3,6 +3,7 @@ import type { components, paths } from './schema'
 
 export type Schemas = components['schemas']
 export type Session = Schemas['Session']
+export type OAuthProvider = Schemas['OAuthProvider']
 export type Board = Schemas['Board']
 export type PostStatus = Schemas['PostStatus']
 export type PostListItem = Schemas['PostListItem']

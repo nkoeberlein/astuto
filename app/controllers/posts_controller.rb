@@ -89,10 +89,16 @@ class PostsController < ApplicationController
 
     @page_title = @post.title.length > 60 ? @post.title.slice(0, 60) + "..." : @post.title
 
-    respond_to do |format|
-      format.html
+    # Author emails only for moderators and the author (Legacy::AuthorFields)
+    @post_json = Legacy::AuthorFields.merge(@post, viewer: current_user)
 
-      format.json { render json: @post }
+    respond_to do |format|
+      format.html do
+        likes = @post.likes.select(:id, :user_id, :full_name, :email).left_outer_joins(:user)
+        @likes_json = likes.map { |like| Legacy::AuthorFields.merge(like, viewer: current_user, email_attribute: :email, prefix: '') }
+      end
+
+      format.json { render json: @post_json }
     end
   end
 

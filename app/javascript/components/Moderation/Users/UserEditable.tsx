@@ -94,7 +94,7 @@ class UserEditable extends React.Component<Props, State> {
           editMode === false ?
           <>
             <div className="userInfo">
-              <Gravatar email={user.email} size={42} className="gravatar userGravatar" />
+              <Gravatar protocol="https://" email={user.email} size={42} className="gravatar userGravatar" />
 
               <div className="userFullNameRoleStatus">
                 <span className="userFullName">{ user.fullName }</span>

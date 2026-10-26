@@ -17,12 +17,14 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
+import { useLoginRedirect } from '@/features/auth/redirect'
 import { useI18n } from '@/lib/i18n'
 
 type Props = { board: Board; session: Session }
 
 export function NewPostForm({ board, session }: Props) {
   const { t } = useI18n()
+  const loginRedirect = useLoginRedirect()
   const [open, setOpen] = useState(false)
   const [submittedPending, setSubmittedPending] = useState(false)
   const canPost = session.user !== null || session.tenant.settings.allowAnonymousFeedback
@@ -30,7 +32,9 @@ export function NewPostForm({ board, session }: Props) {
   if (!canPost) {
     return (
       <Button asChild>
-        <a href="/users/sign_in">{t('board.new_post.login_button')}</a>
+        <Link to="/login" search={{ redirect: loginRedirect }}>
+          {t('board.new_post.login_button')}
+        </Link>
       </Button>
     )
   }
@@ -63,11 +67,13 @@ export function NewPostForm({ board, session }: Props) {
 function PostForm(props: Props & { onClose: (pending: boolean) => void }) {
   const { board, session, onClose } = props
   const { t } = useI18n()
+  const loginRedirect = useLoginRedirect()
   const navigate = useNavigate()
   const ids = { title: useId(), description: useId() }
   const create = useCreatePost(board.slug)
-  // Anti-spam: the server rejects forms sent within two seconds or with the honeypot filled
-  const [renderedAt] = useState(() => Math.floor(Date.now() / 1000))
+  // Anti-spam: the server rejects forms sent within two seconds or with the honeypot filled.
+  // A duration (not a timestamp) keeps a wrong client clock from mattering.
+  const [renderedAt] = useState(() => performance.now())
   const [honeypot, setHoneypot] = useState('')
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
@@ -92,7 +98,7 @@ function PostForm(props: Props & { onClose: (pending: boolean) => void }) {
         isAnonymous,
         postStatusId: isModerator && statusId ? Number(statusId) : undefined,
         honeypot,
-        formRenderedAt: renderedAt,
+        formFillMs: Math.round(performance.now() - renderedAt),
       },
       {
         onSuccess: (post) => {
@@ -229,7 +235,9 @@ function PostForm(props: Props & { onClose: (pending: boolean) => void }) {
             )}
             {!user && (
               <Button asChild variant="outline">
-                <a href="/users/sign_in">{t('board.new_post.login_button')}</a>
+                <Link to="/login" search={{ redirect: loginRedirect }}>
+                  {t('board.new_post.login_button')}
+                </Link>
               </Button>
             )}
             <Button type="button" variant="ghost" onClick={() => onClose(false)}>

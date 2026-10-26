@@ -97,4 +97,64 @@ RSpec.describe User, type: :model do
     blocked = FactoryBot.build(:blocked)
     expect(blocked).to be_blocked
   end
+
+  describe 'lockable' do
+    let(:user) { FactoryBot.create(:user).tap(&:confirm) }
+
+    def fail_once
+      user.valid_for_authentication? { false }
+      user.reload
+    end
+
+    it 'is not locked by default' do
+      expect(user).not_to be_access_locked
+    end
+
+    it 'does not lock before maximum_attempts failed attempts' do
+      (Devise.maximum_attempts - 1).times { fail_once }
+
+      expect(user).not_to be_access_locked
+      expect(user.active_for_authentication?).to be(true)
+    end
+
+    it 'locks after maximum_attempts failed attempts' do
+      Devise.maximum_attempts.times { fail_once }
+
+      expect(user).to be_access_locked
+      expect(user.locked_at).to be_present
+      expect(user.unlock_token).to be_present
+      expect(user.active_for_authentication?).to be(false)
+      expect(user.inactive_message).to eq(I18n.t('devise.failure.locked'))
+    end
+
+    it 'sends unlock instructions when it locks' do
+      expect do
+        Devise.maximum_attempts.times { fail_once }
+      end.to have_enqueued_mail(Devise::Mailer, :unlock_instructions)
+    end
+
+    it 'does not lock when the credentials are correct' do
+      expect(user.valid_for_authentication? { user.valid_password?('password') }).to be(true)
+
+      expect(user.reload).not_to be_access_locked
+    end
+
+    it 'clears the counter and token when unlocking' do
+      Devise.maximum_attempts.times { fail_once }
+
+      user.unlock_access!
+
+      expect(user.reload.failed_attempts).to eq(0)
+      expect(user.unlock_token).to be_nil
+      expect(user.locked_at).to be_nil
+    end
+
+    it 'unlocks automatically once unlock_in has passed' do
+      Devise.maximum_attempts.times { fail_once }
+      user.update_column(:locked_at, Devise.unlock_in.ago - 1.minute)
+
+      expect(user.reload).not_to be_access_locked
+      expect(user.active_for_authentication?).to be(true)
+    end
+  end
 end

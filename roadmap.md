@@ -1,6 +1,6 @@
 # Roadmap – Astuto Evolution
 
-Stand: 25.10.2026 · Repository: [nkoeberlein/astuto](https://github.com/nkoeberlein/astuto) · Branch `develop`
+Stand: 25.10.2026 · Repository: [nkoeberlein/astuto-evo](https://github.com/nkoeberlein/astuto-evo) · Branch `develop`
 
 Astuto Evolution führt das archivierte [astuto/astuto](https://github.com/astuto/astuto) als Community-Projekt weiter. Name und Herkunft bleiben erkennbar, der Neuanfang ebenfalls: aktueller Stack, neue Oberfläche, KI-Funktionen. Ziel ist **kein Eigenbedarf**, sondern ein eigenständiges Open-Source-Projekt für die Nische aus der [Konkurrenzanalyse](konkurrenz.md). Konkrete Aufgaben: [todo.md](todo.md).
 
@@ -20,6 +20,15 @@ Astuto Evolution führt das archivierte [astuto/astuto](https://github.com/astut
 - **Quackback** wird zur Support-Suite (Inbox, Help Center, Statusseite). Astuto Evolution bleibt bewusst ein Feedback-Portal: weniger Betrieb, weniger Angriffsfläche.
 - **Fider** ist schlicht, hat aber keine Roadmap und kein Changelog, und Moderation steckt in der Cloud hinter einer Paywall. Astuto Evolution hat beides bereits und bleibt komplett frei.
 - **Proprietäre Tools** konkurrieren über den Preis pro Nutzer. Astuto Evolution kennt keine Limits.
+
+**Bewusst nicht geplant** (Abgleich mit der Konkurrenz, 25.10.2026), damit das Portal schlank bleibt:
+- Help Center, Support-Inbox, Statusseite (Quackback-Richtung)
+- Umfragen (NPS/CSAT): eigenes Produkt
+- Priorisierungs-Frameworks (RICE/ICE): gehören in Jira, Linear oder Productboard; Astuto liefert die Daten über API, MCP und Integrationen
+- Umsatzverknüpfung (Canny Business): braucht CRM- oder Billing-Daten der Kunden; höchstens später über Nutzersegmente
+- Eigene Slack- oder Teams-Apps: beim Self-Hosting müsste jede Installation eine eigene App registrieren; Webhook-Vorlagen und MCP decken den Bedarf
+- Reaktionen sowie Budget- oder Credit-Voting: das einfache Vote-Modell ist ein Merkmal (Downvotes #421 vor einer Umsetzung ebenfalls hinterfragen)
+- Eigene Connectoren zum automatischen Einsammeln von Feedback (Canny Autopilot): stattdessen über MCP, siehe Phase 4
 
 **Prinzipien:**
 1. Läuft mit einem Image plus PostgreSQL, ohne weitere Pflichtdienste.
@@ -47,7 +56,7 @@ Astuto Evolution führt das archivierte [astuto/astuto](https://github.com/astut
 | PostgreSQL | 14.5 (EOL 12.11.2026) | 18 (Dev; 19rc1-Volume verworfen) | 19 (GA 19.11.2026) |
 | Node (Build) | 20 (EOL) | **26** (Laufzeit-Image ohne Node) | 26 LTS ✓ |
 | Debian-Basis | 11 (EOL, Image baute nicht mehr) | 13 trixie | 13 trixie |
-| Docker-Image | `riggraz/astuto`, amd64 | CI: `ghcr.io/nkoeberlein/astuto`, amd64 + arm64 | ✓ |
+| Docker-Image | `riggraz/astuto`, amd64 | CI: `ghcr.io/nkoeberlein/astuto-evo`, amd64 + arm64 | ✓ |
 | Frontend | React 16, Redux, Bootstrap 4 | unverändert | ersetzt (siehe 3.); v3: komplett TypeScript |
 
 ## 3. Versionsstrategie
@@ -72,7 +81,7 @@ Astuto Evolution führt das archivierte [astuto/astuto](https://github.com/astut
 - Devise bleibt für Login, OAuth und Mails; die Login-Seiten werden SPA-Seiten gegen JSON-Endpunkte.
 - Das alte Frontend wird Seite für Seite ersetzt und am Ende vollständig entfernt (`react-rails`, `react_ujs`, Redux, Bootstrap, jQuery, Turbolinks, Webpack, `i18n-js` 3, `connection_pool`-Pin).
 
-**Anforderungen an die neue UI:** Mobile first, Dark Mode, WCAG 2.2 AA, Branding über CSS-Variablen, ein Komponentensatz auch für das einbettbare Widget, Übersetzungen aus den bestehenden YAML-Dateien (als JSON exportiert).
+**Anforderungen an die neue UI:** Mobile first, Dark Mode, WCAG 2.2 AA, Branding über CSS-Variablen, ein Komponentensatz auch für das einbettbare Widget, Übersetzungen aus den bestehenden YAML-Dateien (als JSON exportiert), RTL-fähig (CSS-Logical-Properties, `dir` aus der Locale; RTL-Übersetzungen, sobald jemand sie beisteuert).
 
 **Multi-Tenancy bleibt (entschieden).** Mehrere Feedback-Portale pro Instanz sind für Unternehmen mit mehreren Produkten oder Marken und für Agenturen wichtig (#76) und die Grundlage einer möglichen gehosteten Variante. Tenant-Signup, Custom Domains und Stripe-Billing bleiben vorerst erhalten. Ob Billing modernisiert oder entfernt wird, hängt vom Geschäftsmodell ab (siehe 7.).
 
@@ -88,7 +97,7 @@ Astuto Evolution führt das archivierte [astuto/astuto](https://github.com/astut
 - [x] Ruby 4.0.9, Rails 8.1.4 mit `load_defaults` 8.1, Devise 5, Puma 8, Sidekiq 8.1, Stripe 20, Debian trixie, Node 26 – Tests grün, keine Deprecations, Produktions-Image läuft
 - [x] Dependabot, `bundler-audit`, Brakeman, lokales `bin/ci`
 - [ ] PostgreSQL 19 bei GA (Anleitung in [UPGRADING.md](UPGRADING.md) ist fertig und getestet)
-- [ ] Security-Policy (`SECURITY.md`)
+- [x] Security-Policy (`SECURITY.md`)
 - [ ] Multi-Tenancy-Modus testen und dokumentieren (Subdomains, Custom Domains, Tenant-Verwaltung); Billing je nach Geschäftsmodell (siehe 7.)
 
 ### Phase 2 – Betrieb und Bugfixes · P1
@@ -107,16 +116,21 @@ Die häufigsten Probleme aus den Upstream-Issues: HTTPS hinter Reverse Proxy (#4
 
 ### Phase 4 – KI und MCP · P1 (MCP in 2.0, Rest 2.x)
 - ✅ **MCP-Server** (Streamable HTTP unter `/mcp` auf dem offiziellen `mcp`-Gem, Auth per API-Key, später OAuth). Tools: Posts suchen, lesen, anlegen, Status ändern, kommentieren, Votes und Trends abfragen, Roadmap lesen. Damit triagieren Claude, Cursor und andere Assistenten Feedback direkt. Unter den Self-Hosted-Tools hat das sonst nur Quackback.
-- **Duplikaterkennung** beim Erstellen (#455): ✅ Postgres-Volltextsuche · offen: optional semantisch mit pgvector und Embeddings
+- **Duplikaterkennung** beim Erstellen (#455): ✅ Postgres-Volltextsuche · offen: optional semantisch mit pgvector und Embeddings, Zusammenführen (Merge) mit konsolidierten Votes – bisher nur im v3-Schema (6.) geplant, wäre aber auch für v2 sinnvoll
 - **KI-Funktionen (opt-in, eigenes Modell):** ✅ Zusammenfassung langer Diskussionen (Moderatoren, neues Frontend) · offen: Vorschläge für Tags und Board (braucht Tags), Changelog-Entwürfe (braucht Changelog), Übersetzung von Feedback
 - Datenschutz: Was an den KI-Anbieter geht, ist dokumentiert und abschaltbar; lokales Modell per Ollama wird unterstützt
+- **Feedback aus anderen Quellen über MCP** statt eigener Connectoren: Ein Assistent in Slack oder Teams liest einen Thread und legt den Post an. Dafür fehlen nur ein Feld „Quelle/Link“ am Post und „im Namen von“ in `create_post`
 
 ### Phase 5 – Nischen-Features · P2
-- **Changelog** mit RSS und E-Mail an Follower
-- **Private Boards** (#414), **Tags** (#171), **Anhänge** (#253, #482)
+- **Changelog** mit RSS und E-Mail an Follower; **RSS pro Board** mit derselben Technik
+- **Digest für Nutzer** (Opt-in: Top-Requests, Statuswechsel gefolgter Posts), Erweiterung der bestehenden Recap-Mails für Moderatoren
+- **Vertrauensstufen:** die ersten N Posts eines Kontos prüfen, danach automatisch freigeben (#362-Familie)
+- **Private Boards** (#414), **Tags** (#171), **Anhänge** (#253, #482; Speicherregel beachten: kein Active Storage, Entscheidung zwischen S3-kompatibel und Postgres, siehe todo.md)
 - **Import** aus Canny, Fider und CSV (#368), um Wechsler aufzunehmen
-- **Einbettbares Widget**, **Webhook-Vorlagen** für Slack, Discord und Teams (#419)
+- **Widget mit Besucher-Identifikation** (signiertes JWT pro Tenant aus der eigenen App): Voraussetzung dafür, dass Widget-Votes echten Kunden zugeordnet werden, und zugleich „Login aus der eigenen App“ ohne OAuth
+- **Einbettbares Widget**, **Webhook-Vorlagen** für Slack, Discord und Teams (#419), **signierte Webhooks** (HMAC-Header)
 - **LDAP/SAML** (#8) für Unternehmen und Behörden
+- Später: **Nutzersegmente** (Votes nach Kundengruppe filtern oder gewichten; setzt Besucher-Identifikation und Custom Fields #420 voraus, Gewichtung steht im v3-Schema) und **Verfallsregeln** (Filter „seit X Monaten ohne Aktivität“, automatisches Archivieren nur als Opt-in)
 - Quick Wins aus den Issues: Roadmap abschaltbar (#361), Standard-Sortierung (#193, #363, #483), OAuth-only-Login (#471), Favicon (#452)
 
 ### Querschnitt – Projekt und Community
@@ -173,7 +187,7 @@ Die häufigsten Probleme aus den Upstream-Issues: HTTPS hinter Reverse Proxy (#4
 **Ziel:** Kostenloses Self-Hosting bleibt der Kern. Zugleich soll Astuto Evolution für mittelständische Unternehmen (etwa 50–1.000 Mitarbeitende) im kommerziellen Einsatz taugen: intern, für Kundenportale und für mehrere Produkte.
 
 **Was diese Zielgruppe erwartet** (fließt in die Prioritäten der todo.md ein):
-- **Identität:** SSO über OIDC (vorhanden: beliebige OAuth2-Anbieter), zusätzlich **SAML** und **LDAP/AD** (#8), Login nur über SSO (#471), automatische Rollen über Gruppen
+- **Identität:** SSO über OIDC (vorhanden: beliebige OAuth2-Anbieter), zusätzlich **SAML** und **LDAP/AD** (#8), Login nur über SSO (#471), automatische Rollen über Gruppen, **2FA/MFA für Admins und Moderatoren**
 - **Mandanten:** mehrere Portale pro Instanz mit eigener Domain und eigenem Branding (vorhanden, testen und dokumentieren), Verwaltung über eine Instanz-Admin-Oberfläche
 - **Compliance:** Audit-Log (wer hat was geändert), DSGVO-Funktionen (Export und Löschung pro Person, Aufbewahrungsfristen), Datenverarbeitung ohne Drittanbieter, KI nur opt-in mit eigenem Modell
 - **Betrieb:** Backup/Restore-Anleitung, mehrere Web-Instanzen hinter Load Balancer, Health-Check-Endpunkt, Prometheus-Metriken, Helm-Chart, signierte Images mit SBOM

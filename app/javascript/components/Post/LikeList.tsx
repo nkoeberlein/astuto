@@ -26,10 +26,11 @@ const LikeList = ({ likes, areLoading, error}: Props) => (
       {
         likes.map((like, i) => (
           <div className="likeListItem" key={i}>
-            <Gravatar email={like.email} size={32} className="gravatar" />
+            <Gravatar protocol="https://" email={like.email || undefined} md5={like.gravatarHash || undefined} size={32} className="gravatar" />
             <div className="likeListItemUserInfo">
               <span className="likeListItemName" title={like.fullName}>{like.fullName}</span>
-              <span className="likeListItemEmail" title={like.email}>{like.email}</span>
+              {/* Only moderators and the voter themselves receive the email */}
+              { like.email && <span className="likeListItemEmail" title={like.email}>{like.email}</span> }
             </div>
           </div>
         ))

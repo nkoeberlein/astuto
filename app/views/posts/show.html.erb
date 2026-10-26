@@ -6,8 +6,8 @@
       boards: @boards,
       postStatuses: @post_statuses,
       originPost: {
-        post: @post,
-        likes: @post.likes.select(:id, :full_name, :email).left_outer_joins(:user),
+        post: @post_json,
+        likes: @likes_json,
       },
       isLoggedIn: user_signed_in?,
       isPowerUser: user_signed_in? ? current_user.moderator? : false,

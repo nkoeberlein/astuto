@@ -211,14 +211,32 @@ RSpec.describe 'api/v1/users', type: :request do
         schema '$ref' => '#/components/schemas/Id'
 
         before do
+          FactoryBot.create(:api_key, user: @moderator)
           @moderator_status_before = @moderator.status
           expect(@moderator.status).to eq('active')
+          expect(@moderator.api_key).to be_present
         end
 
         run_test! do |response|
+          Current.tenant = Tenant.first
           @moderator.reload
           expect(@moderator.status).to eq('blocked')
+          expect(@moderator.api_key).to be_nil
         end
+      end
+
+      # Blocked moderator's API key is rejected on API v1
+      response(401, 'unauthorized when API key belongs to a blocked moderator') do
+        let(:Authorization) { "Bearer #{@moderator_api_token}" }
+        let(:id) { @user.id }
+
+        schema '$ref' => '#/components/schemas/Error'
+
+        before do
+          ApiKey.find_by_token(@moderator_api_token).user.update!(status: 'blocked')
+        end
+
+        run_test!
       end
 
       response(401, 'unauthorized') do

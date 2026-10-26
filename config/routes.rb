@@ -41,7 +41,8 @@ Rails.application.routes.draw do
     devise_for :users, :controllers => {
       :registrations => 'registrations',
       :sessions => 'sessions',
-      :passwords => 'passwords'
+      :passwords => 'passwords',
+      :unlocks => 'unlocks'
     }
 
     devise_scope :user do
@@ -105,7 +106,9 @@ Rails.application.routes.draw do
     namespace :api do
       namespace :app do
         namespace :v1 do
-          resource :session, only: [:show]
+          resource :session, only: [:show, :create, :destroy]
+          resource :registration, only: [:create]
+          resource :password, only: [:create, :update]
           resources :translations, only: [:show], param: :locale, constraints: { locale: /[A-Za-z-]+/ }
           resources :boards, only: [:index, :show] do
             resources :posts, only: [:index, :create]

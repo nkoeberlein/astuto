@@ -7,10 +7,11 @@ tenant = Tenant.create(
 Current.tenant = tenant
 
 # Create an admin user and confirm its email automatically
-owner = User.create(
+credentials = DefaultAdminCredentials.new
+owner = User.create!(
   full_name: 'Admin',
-  email: 'admin@example.com',
-  password: 'password',
+  email: credentials.email,
+  password: credentials.password,
   role: 'owner',
   confirmed_at: Time.zone.now
 )
@@ -23,4 +24,9 @@ CreateWelcomeEntitiesWorkflow.new().run
 puts "A default tenant has been created with name #{tenant.site_name}"
 puts 'A default admin account has been created. Credentials:'
 puts "-> email: #{owner.email}"
-puts "-> password: #{owner.password}"
+if credentials.password_from_env?
+  puts '-> password: the one set in ADMIN_PASSWORD'
+else
+  puts "-> password: #{credentials.password}"
+  puts '   Change it after the first login, or set ADMIN_EMAIL / ADMIN_PASSWORD before the first start.'
+end

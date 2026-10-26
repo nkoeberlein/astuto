@@ -13,6 +13,7 @@ Issue-Nummern beziehen sich auf `astuto/astuto`. Phasen siehe [roadmap.md](roadm
 - [x] `run-tests.yml`: Runner `ubuntu-24.04`
 - [x] README und CONTRIBUTING als Astuto Evolution neu, Links auf `nkoeberlein/astuto`
 - [ ] Remote `upstream` nur noch als Archiv betrachten; Upstream-Branch `add-image-upload` sichern
+- [x] Offene Upstream-Issues abgeglichen (25.10.2026): alle stehen in Todo oder Roadmap, außer #165 (authenticityToken-Props, hinfällig mit dem alten Frontend) sowie #451 und #465 (ohne Inhalt). Lücken zur Konkurrenz und bewusste Ausschlüsse: roadmap.md §1 und Phase 4/5
 
 ### Upstream-PRs übernehmen
 - [x] #477 Gravatar-Avatar-Fix (1 Zeile)
@@ -42,14 +43,16 @@ Issue-Nummern beziehen sich auf `astuto/astuto`. Phasen siehe [roadmap.md](roadm
 
 ### Sicherheit
 - [x] **v3-Voraussetzung:** Webhook-URL/-Header mit JSON statt Marshal verschlüsselt (`Webhook.encryptor`, liest beide Formate), Migration `ReencryptWebhooksAsJson` schreibt bestehende Werte neu
-- [ ] **Datenschutz:** Die alten JSON-Endpunkte (`posts#index/show`, `comments#index` u. a.) liefern `user_email` aller Autoren öffentlich aus. Behoben in der neuen App-API (`AuthorSerializer`); im alten Frontend bis zur Ablösung entfernen oder nur für Moderatoren ausgeben
-- [ ] Standard-Admin `admin@example.com` / `password` (`db/seeds.rb`): Zugangsdaten per ENV setzen oder Passwortwechsel beim ersten Login erzwingen
+- [x] **Datenschutz:** Die alten JSON-Endpunkte (Kommentare, Likes, Statusverlauf, Post-Seite) lieferten `user_email` aller Autoren öffentlich aus. Jetzt nur noch für Moderatoren und die Person selbst, sonst Gravatar-Hash (`Legacy::AuthorFields`); neue App-API über `AuthorSerializer`
+- [x] Standard-Admin: `ADMIN_EMAIL` / `ADMIN_PASSWORD`, ohne Passwort außerhalb von Development ein zufälliges, einmal im Log ausgegeben (`DefaultAdminCredentials`)
 - [x] SMTP-Standard `openssl_verify_mode: "none"` → `"peer"` (`config/environments/production.rb`)
 - [x] Header-Links und Logo-Link: nur `http(s)`, `mailto` und Pfade erlaubt (`SafeUrl`, Validierung in `TenantSetting`); vorher ließ sich ein `javascript:`-Link speichern, den der alte Header ausgab
 - [x] `rack-attack`-Anti-Spam für `/posts` stürzte bei fehlenden Feldern mit `TypeError` ab (500); fehlender Zeitstempel zählt jetzt als Spam
-- [ ] Spamschutz der App-API (`POST /api/app/v1/boards/:id/posts`) an das alte UI angleichen: auffällige IPs eine Stunde sperren (bisher nur Honeypot + Zeitstempel pro Anfrage)
-- [ ] Content Security Policy aktivieren (`config/initializers/content_security_policy.rb` ist komplett auskommentiert)
-- [ ] Kurzer Security-Check: `rack-attack`-Regeln, API-Key-Handling
+- [x] Spamschutz der App-API (`POST /api/app/v1/boards/:id/posts`) an das alte UI angeglichen: ein ausgefüllter Honeypot sperrt die IP für eine Stunde für beide Endpunkte (`/posts` und App-API); zu schnelles Absenden (`formFillMs` < 2 s, im Browser gemessen) lehnt nur der Controller mit 422 ab (`config/initializers/rack_attack.rb`, `PostSpamCheck`, `spec/requests/rack_attack_spec.rb`)
+- [x] Content Security Policy aktiv: Skripte nur von der Instanz, von Stripe oder mit Nonce; `CSP_REPORT_ONLY` als Notbremse; System-Spec prüft die Browser-Konsole. Nebenbei behoben: `/next` lief als statische Datei an `SpaController` vorbei (keine Meta-Tags), Gravatar-Bilder luden per `http`
+- [x] Rate-Limiting konkretisiert: `/api/v1` (`api/ip`, `api/key`), `/mcp` (`mcp/ip` 60/min, `mcp/key` 120/min) sowie App-API-Auth (`/api/app/v1/session`, `/api/app/v1/registration`, `/api/app/v1/password`) gegen Brute-Force abgesichert; `logins/email` liest jetzt auch `user[email]` bei Devise-Formularen und JSON-Bodies (`config/initializers/rack_attack.rb`)
+- [x] Kurzer Security-Check (`rack-attack`-Regeln, API-Key-Handling): API-Tokens in Cache-Keys per SHA-256 gehasht; `Api::BaseController` prüft `user.active? && user.moderator?`; `Api::V1::UsersController#block` und `DestroyApiKeyIfNeededWorkflow` löschen API-Keys zuverlässig auch beim Blockieren über die API, bei direkter Herabstufung `admin → user` sowie bei gleichzeitigem Rollen- und Statuswechsel (`spec/models/api_key_spec.rb`, `spec/api/v1/users_spec.rb`)
+- [x] Account-Lockout: Devise `:lockable` ergänzt (bricht Brute-Force-Versuche pro Konto ab, unabhängig von rack-attack), Schwellwerte per ENV konfigurierbar (`LOCKABLE_LOCK_STRATEGY`/`LOCKABLE_UNLOCK_STRATEGY`/`LOCKABLE_MAXIMUM_ATTEMPTS`/`LOCKABLE_UNLOCK_IN_HOURS`, Standard: 10 Versuche, 2 h, „both" = Unlock-Mail + Zeitablauf); App-API-Login zählt Fehlversuche jetzt mit (`valid_for_authentication?`), `UnlocksController` lädt Tenant-Daten, Doku in [docs/account-lockout.md](docs/account-lockout.md)
 
 ## P1 – Betrieb und Bugs
 
@@ -72,6 +75,7 @@ Issue-Nummern beziehen sich auf `astuto/astuto`. Phasen siehe [roadmap.md](roadm
 - [x] Devise-Mails über ActiveJob/Sidekiq verschicken (#444) (`User#send_devise_notification`)
 
 ### Webhooks
+- [ ] Webhooks mit HMAC signieren (Signature-Header), damit Empfänger den Absender verifizieren können (Quackback signiert; Voraussetzung für die Vorlagen-Integrationen)
 - [ ] Liquid- und JSON-Fehler beim Ausführen speichern und im UI anzeigen (Delivery-Log pro Webhook) (#458)
 - [x] Template beim Speichern bzw. Testen validieren, Hinweis auf `escape_json` (`WebhooksController#preview/test`, `RunWebhook`)
 - [x] Kommentar-Benachrichtigungen reparieren (#431) (`config/initializers/global_id.rb`, `SendNotificationForCommentWorkflow`)
@@ -96,6 +100,7 @@ Issue-Nummern beziehen sich auf `astuto/astuto`. Phasen siehe [roadmap.md](roadm
 
 ### Mittelstand (roadmap.md, Abschnitt 7)
 - [ ] SAML-Login und LDAP/AD (#8), Login nur per SSO (#471)
+- [ ] 2FA/MFA für Admins und Moderatoren (v2: Devise-TOTP, v3: Better Auth); bei kommerziellem Einsatz bzw. Audits erwartet
 - [ ] Audit-Log für Moderation und Einstellungen
 - [ ] DSGVO: Datenexport und Löschung pro Person, Aufbewahrungsfristen
 - [ ] Health-Check-Endpunkt, Prometheus-Metriken, Backup/Restore-Anleitung, Helm-Chart
@@ -113,15 +118,16 @@ Empfehlung (roadmap.md, Abschnitt 3): getrenntes Frontend mit React 19 + TS 7 + 
 - [x] Posts und Kommentare bearbeiten/löschen, Status ändern (Moderation) im neuen Frontend (`PATCH/DELETE /api/app/v1/posts/:id`, `PATCH/DELETE /api/app/v1/posts/:post_id/comments/:id`, `PostPage.tsx`, `CommentList.tsx`)
 - [x] Roadmap-Seite (`/next/roadmap`, `GET /api/app/v1/roadmap`): Spalten je Status, Board- und Status-Filter in der URL, Startseite ohne Root-Board zeigt die Roadmap wie im alten UI
 - [ ] Einbettbare Roadmap (`/embedded_roadmap`) im neuen Frontend
-- [ ] Login/Registrierung/Passwort als SPA-Seiten (Devise-JSON), OAuth-Buttons
+- [x] Login/Registrierung/Passwort als SPA-Seiten (Devise-JSON: `POST/DELETE /api/app/v1/session`, `POST /api/app/v1/registration`, `POST/PATCH /api/app/v1/password`), OAuth-Buttons (`/next/login`, `/next/register`, `/next/password/forgot`, `/next/password/reset`)
 - [x] CI: OpenAPI neu erzeugen und gegen `frontend/src/api/schema.d.ts` vergleichen (Drift-Check in `run-tests.yml`, nutzt die beim Image-Build erzeugte OpenAPI-Datei; in der CI noch nicht gelaufen)
 - [x] Meta-Tags (Titel, Beschreibung, Open Graph) für öffentliche Seiten serverseitig in `SpaController` (`spec/requests/spa_meta_tags_spec.rb`)
 - [x] `hide_unused_statuses_in_filter_by_status` und `custom_css` im neuen Frontend berücksichtigen (`GET /api/app/v1/post_statuses?board_id=`, `__root.tsx`)
 - [ ] Umstieg: `/next` → `/`, sobald alle Seiten ersetzt sind
 - [x] Designsystem: Branding über CSS-Variablen (bestehende Site-Settings-Farben), Dark Mode, WCAG 2.2 AA, mobile first, volle Bildschirmfläche (2-Spalten-Layout auf Desktop)
 - [x] i18n: YAML-Übersetzungen über `GET /api/app/v1/translations/:locale`
+- [ ] RTL-fähig: im neuen Frontend nur CSS-Logical-Properties (`ms-`/`me-`, `ps-`/`pe-`, `start`/`end` statt `left`/`right`), `dir` am `<html>` aus der Locale; jetzt beachten, nachträglich wird es teuer
 - [x] Öffentliche Seiten: Board, Post-Detail und Kommentare, Roadmap
-- [ ] Auth-Seiten: Login, Registrierung, Passwort, OAuth-Buttons (Devise mit JSON-Endpunkten)
+- [x] Auth-Seiten: Login, Registrierung, Passwort, OAuth-Buttons (Devise mit JSON-Endpunkten)
 - [ ] Moderation (Feedback-Queue, Nutzer) und Site Settings (General, Boards, Status, Roadmap, Auth, Appearance, Webhooks, API)
 - [ ] E2E-Tests (Playwright oder Capybara) für jede neue Seite
 - [ ] Altes Frontend entfernen: `react-rails`, `react_ujs`, Redux, Bootstrap, jQuery, Turbolinks, `jsbundling`/Webpack, `i18n-js` 3; danach Sidekiq 8.1 und `connection_pool`-Pin entfernen
@@ -147,6 +153,8 @@ Empfehlung (roadmap.md, Abschnitt 3): getrenntes Frontend mit React 19 + TS 7 + 
 - [x] Duplikaterkennung beim Erstellen mit Postgres-Volltextsuche (#455) (`Post.search_by_name_or_description`, `Post.similar_to`, Live-Vorschläge in `NewPostForm.tsx`)
 - [x] KI-Anbieter-Abstraktion: OpenAI-kompatibel (inkl. Ollama), Anthropic; alles opt-in per ENV (`AI_PROVIDER` und `AI_MODEL`, kein fest eingebautes Modell), ohne KI voll funktionsfähig (`Ai::Client`)
 - [ ] Optional semantische Duplikate mit pgvector und Embeddings
+- [ ] Feedback aus anderen Quellen über MCP: Feld „Quelle/Link“ am Post (API, MCP, Anzeige) und `create_post` im Namen eines Nutzers (wie `impersonated_user_id` in API v1, nur Admins); Doku-Rezept „Slack-Thread → Post“ mit Claude
+- [ ] Duplikate zusammenführen (Merge): `merged_into_post_id` mit Umleitung, Votes und Kommentare konsolidieren (steht bisher nur im v3-Schema, roadmap §6; alle Wettbewerber mit Duplikaterkennung haben Merge)
 - [x] Zusammenfassung langer Diskussionen: Button im Moderationsbereich der Post-Seite (`/next`), `POST /api/app/v1/posts/:id/summary`, einen Tag gecacht
 - [ ] Vorschläge für Board und Tags (Methode in `Ai::Client` vorhanden; braucht Tags #171)
 - [ ] Changelog-Entwürfe aus erledigten Posts (Methode vorhanden; braucht die Changelog-Funktion)
@@ -165,15 +173,20 @@ Empfehlung (roadmap.md, Abschnitt 3): getrenntes Frontend mit React 19 + TS 7 + 
 - [x] Combobox für den Status im Post-Formular (#119): Moderatoren wählen beim Erstellen einen Status; App-API nimmt `postStatusId` (nur Moderatoren), Timeline-Eintrag wird mitgedeckt
 - [x] Roadmap zeigt Votes und Kommentare, Sortierung nach „zuletzt aktualisiert“ (#484), im neuen Frontend; nur freigegebene Posts (das alte UI zeigt auch ausstehende)
 - [ ] Übersicht „Mein Feedback“ (#429)
+- [ ] Vertrauensstufen: neue Freigaberegel „die ersten N Posts eines Kontos prüfen, danach automatisch freigeben“ (#362-Familie)
+- [ ] RSS-Feed pro Board (neueste Posts), gemeinsam mit dem Changelog-RSS bauen
+- [ ] Digest für Nutzer: `SendRecapEmailsJob` verschickt bisher nur an Moderatoren; Opt-in für alle Nutzer (Top-Requests, Statuswechsel gefolgter Posts)
+- [ ] Sitemap.xml für öffentliche Boards, Posts und Roadmap (SEO: Feedback-Portale leben von der Indexierung, Fider verkauft sie hinter Paywall; `robots.txt` ist statisch)
 - [x] Eigene Links bzw. URL im Header (#479, #351): `custom_links` (jsonb: `{label, url}`), Textarea im General-Tab, gerendert in Legacy-Header und neuem Frontend
 - [x] Datenbank-Transaktionen in Workflows (#169): Post-Update/-Create jeweils atomar mit Follow bzw. Statuswechsel-Eintrag; Mails werden nach dem Commit versendet; gleiche Sicherung im öffentlichen API v1. Anlegen läuft für altes UI, App-API und MCP über `CreatePostWorkflow` (`create!` in der Transaktion, vorher rollten fehlgeschlagene Follows nicht zurück)
 
 ### Lücken zur Konkurrenz (siehe konkurrenz.md)
 - [ ] Changelog: Einträge mit erledigten Posts verknüpfen, RSS-Feed, E-Mail an Follower
 - [ ] Webhook-Vorlagen für Slack, Discord und Teams (#419)
+- [ ] Einbettbares Widget (Feedback, Roadmap, Changelog) **mit Besucher-Identifikation**: die eigene App signiert ein JWT mit einem Geheimnis pro Tenant, Astuto ordnet Votes und Posts dem echten Nutzer zu (anlegen oder per E-Mail/externer ID verknüpfen). Ohne das bleiben Widget-Votes anonym. Von P3 hochgezogen
 
 ## P2 – Projekt und Community
-- [ ] `SECURITY.md` mit Meldeweg für Sicherheitslücken
+- [x] `SECURITY.md` mit Meldeweg (GitHub Private Vulnerability Reporting), Fristen und Scope
 - [ ] `CHANGELOG.md` und Release-Prozess (SemVer, Release Notes, Image-Tags): CHANGELOG und erstes Tag `v2.0.0-alpha.1` vorhanden; Version steht in `AstutoProject::VERSION` und `frontend/package.json`. Offen: Release-Checkliste, signierte Images
 - [ ] Doku aus `astuto/astuto-docs` übernehmen (Lizenz prüfen), Links in `config/initializers/project.rb` und `app/javascript/constants/project.ts` umstellen
 - [ ] Übersetzungsplattform festlegen (z. B. Weblate)
@@ -182,21 +195,22 @@ Empfehlung (roadmap.md, Abschnitt 3): getrenntes Frontend mit React 19 + TS 7 + 
 
 ## P3 – Größere Features (nach Bedarf)
 
-- [ ] Einbettbares Widget (Feedback, Roadmap, Changelog)
 - [ ] Native Integrationen Linear, GitHub, Jira mit Status-Sync
 - [ ] Import aus Canny (neben CSV, #368)
 
-- [ ] Bild-Upload und Anhänge, auf Upstream-PR #454 aufbauen (#253, #482)
+- [ ] Bild-Upload und Anhänge, auf Upstream-PR #454 aufbauen (#253, #482); **vorher entscheiden:** Speicher ohne Active Storage (Regel für v2/v3), z. B. S3-kompatibel oder Postgres-`bytea` – unnötig wäre eine Baustelle, die die v3-Migration wieder verkompliziert
 - [ ] Tags für Posts (#171)
 - [ ] Private Boards (#414)
 - [ ] Admin-Freigabe neuer Nutzer (#362), eigene Signup-Anforderungen (#30)
 - [ ] Import/Export (#368)
 - [ ] Roadmap per Drag-and-drop sortieren (#473)
-- [ ] Votes auf Kommentare (#408), Downvotes (#421), Vote-Limit pro Monat (#422)
+- [ ] Votes auf Kommentare (#408), Downvotes (#421), Vote-Limit pro Monat (#422); Downvotes vor einer Umsetzung hinterfragen, Reaktionen und Budget-Voting sind bewusst ausgeschlossen (roadmap.md §1)
 - [ ] Soft-Delete für Kommentare (#162), private Kommentare (#418)
 - [ ] API: Invitations und Follows (#434), Nutzerinfos anzeigen (#322)
 - [ ] Avatar-Upload statt nur Gravatar (#469)
 - [ ] Custom Fields für Nutzer (#420), Standardkonfigurationen für OAuth und Webhooks (#419)
+- [ ] Nutzersegmente: Votes nach Kundengruppe filtern oder gewichten (setzt Besucher-Identifikation und Custom Fields voraus; Gewichtung im v3-Schema)
+- [ ] Verfallsregeln: Moderationsfilter „seit X Monaten ohne Aktivität“, automatisches Archivieren nur als Opt-in
 - [ ] LDAP/AD-Login (#8)
 - [ ] GitHub-Integration (#365)
 - [ ] Custom JavaScript (#376), nur mit CSP und Admin-Warnung

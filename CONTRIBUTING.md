@@ -9,9 +9,9 @@ We would like the Astuto Evolution community to be a welcoming environment for b
 There are many ways to contribute to Astuto, not just coding. In this section we list the most common ones:
 
 - **Getting involved in the community**: we love to hear opinions about our product. Dropping a comment on an open issue or pull request is an easy yet impactful way to contribute.
-- **Reporting bugs or proposing features**:  [open a new issue](https://github.com/nkoeberlein/astuto/issues/new) on GitHub. Before posting, check if a similar issue has already been reported. Try to be concise but also unambiguous.
+- **Reporting bugs or proposing features**:  [open a new issue](https://github.com/nkoeberlein/astuto-evo/issues/new) on GitHub. Before posting, check if a similar issue has already been reported. Try to be concise but also unambiguous.
 - **Translating Astuto into a new language**: we want Astuto to speak all languages and we need contributors to achieve this goal! See [Translations](#translations) below.
-- **Coding**: [open a pull request](https://github.com/nkoeberlein/astuto/pulls) with your bug fix or feature implementation. Before diving into coding, you may find [the coding and testing section](#coding-and-testing) useful.
+- **Coding**: [open a pull request](https://github.com/nkoeberlein/astuto-evo/pulls) with your bug fix or feature implementation. Before diving into coding, you may find [the coding and testing section](#coding-and-testing) useful.
 
 If you still have any doubt, feel free to open an issue and ask! And remember: there are no stupid questions 😉
 

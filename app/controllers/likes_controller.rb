@@ -6,13 +6,14 @@ class LikesController < ApplicationController
     likes = Like
       .select(
         :id,
+        :user_id,
         :full_name,
         :email
       )
       .left_outer_joins(:user)
       .where(post_id: params[:post_id])
 
-    render json: likes
+    render json: likes.map { |like| Legacy::AuthorFields.merge(like, viewer: current_user, email_attribute: :email, prefix: '') }
   end
 
   def create
@@ -21,9 +22,9 @@ class LikesController < ApplicationController
     if like.save
       render json: {
         id: like.id,
+        user_id: current_user.id,
         full_name: current_user.full_name,
-        email: current_user.email,
-      }, status: :created
+      }.merge(Legacy::AuthorFields.call(viewer: current_user, user_id: current_user.id, email: current_user.email, prefix: '')), status: :created
     else
       render json: {
         error: like.errors.full_messages

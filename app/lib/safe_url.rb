@@ -7,8 +7,7 @@ module SafeUrl
   def self.safe?(url)
     value = url.to_s.strip
     return false if value.empty?
-    # Same-site path, but not a protocol-relative "//host" URL
-    return true if value.start_with?('/') && !value.start_with?('//')
+    return true if local_path?(value)
 
     uri = URI.parse(value)
     scheme = uri.scheme.to_s.downcase
@@ -17,6 +16,15 @@ module SafeUrl
     scheme == 'mailto' || uri.host.present?
   rescue URI::InvalidURIError
     false
+  end
+
+  # Same-site path like "/next/posts/1", but not a protocol-relative "//host"
+  # URL. Backslashes and line breaks are rejected because browsers treat "/\host"
+  # like "//host". Use it for return targets after sign-in.
+  def self.local_path?(value)
+    return false unless value.is_a?(String)
+
+    value.start_with?('/') && !value.start_with?('//') && !value.match?(/[\\\r\n]/)
   end
 
   # Returns the URL if it is safe, otherwise nil

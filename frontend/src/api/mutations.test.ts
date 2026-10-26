@@ -1,8 +1,8 @@
 import { type InfiniteData, QueryClient } from '@tanstack/react-query'
 import { describe, expect, it } from 'vitest'
-import type { Post, PostPage } from './client'
-import { applyVote } from './mutations'
-import { postQuery } from './queries'
+import type { Post, PostPage, Session } from './client'
+import { applySession, applyVote } from './mutations'
+import { postQuery, sessionQuery } from './queries'
 
 const listItem = (id: number) => ({
   id,
@@ -48,5 +48,26 @@ describe('applyVote', () => {
     })
     // Other queries under ['boards'] (the board list) stay untouched
     expect(queryClient.getQueryData(['boards'])).toHaveLength(1)
+  })
+})
+
+describe('applySession', () => {
+  it('stores the new session in the sessionQuery cache', () => {
+    const queryClient = new QueryClient()
+    const nextSession = {
+      csrfToken: 'new-token',
+      aiEnabled: false,
+      user: {
+        id: 7,
+        email: 'ada@example.com',
+        fullName: 'Ada Lovelace',
+        role: 'user',
+        avatarUrl: 'https://example.com/a.png',
+      },
+    } as unknown as Session
+
+    applySession(queryClient, nextSession)
+
+    expect(queryClient.getQueryData<Session>(sessionQuery.queryKey)).toEqual(nextSession)
   })
 })

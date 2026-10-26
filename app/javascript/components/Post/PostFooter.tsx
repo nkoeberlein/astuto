@@ -14,6 +14,7 @@ interface Props {
   handleDeletePost(): void;
   isPowerUser: boolean;
   authorEmail: string;
+  authorGravatarHash: string;
   authorFullName: string;
   currentUserEmail: string;
 }
@@ -24,16 +25,18 @@ const PostFooter = ({
   handleDeletePost,
   isPowerUser,
   authorEmail,
+  authorGravatarHash,
   authorFullName,
   currentUserEmail,
 }: Props) => (
   <div className="postFooter">
     <div className="postAuthor">
       {
-        authorEmail ?
+        // Visitors get no email, only the Gravatar hash, which exists whenever there is an author
+        authorGravatarHash ?
           <>
           <span>{I18n.t('post.published_by').toLowerCase()} &nbsp;</span>
-          <Gravatar email={authorEmail} size={24} className="postAuthorAvatar" /> &nbsp;
+          <Gravatar protocol="https://" md5={authorGravatarHash} size={24} className="postAuthorAvatar" /> &nbsp;
           <span>{authorFullName}</span>
           </>
         :

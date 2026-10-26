@@ -5,6 +5,11 @@
       <stop offset="50%" stop-color="#f97316"/>
       <stop offset="100%" stop-color="#ea580c"/>
     </linearGradient>
+    <linearGradient id="wordmarkGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fdba74"/>
+      <stop offset="45%" stop-color="#f97316"/>
+      <stop offset="100%" stop-color="#ea580c"/>
+    </linearGradient>
     <linearGradient id="slateGradW" x1="0%" y1="0%" x2="0%" y2="100%">
       <stop offset="0%" stop-color="#1e293b"/>
       <stop offset="100%" stop-color="#0f172a"/>
@@ -30,16 +35,16 @@
     <polygon points="162,116 174,128 162,144 146,132" fill="url(#evoGradW)"/>
   </g>
 
-  <!-- Main Wordmark: "astuto" + "EVO" Pill Badge -->
-  <text x="292" y="156" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="136" font-weight="900" letter-spacing="-3" fill="#0f172a">astuto</text>
+  <!-- Main Wordmark: "astuto" in high-contrast warm amber/orange gradient (readable on both dark and light backgrounds) -->
+  <text x="292" y="156" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="136" font-weight="900" letter-spacing="-3" fill="url(#wordmarkGrad)">astuto</text>
 
-  <!-- "EVO" Gradient Pill Badge next to "astuto" -->
+  <!-- "EVO" Pill Badge next to "astuto" -->
   <g filter="url(#badgeShadow)" transform="translate(722, 68)">
-    <rect x="0" y="0" width="218" height="86" rx="43" fill="url(#evoGradW)"/>
+    <rect x="0" y="0" width="218" height="86" rx="43" fill="url(#evoGradW)" stroke="#fff7ed" stroke-width="3"/>
     <text x="109" y="59" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="48" font-weight="900" letter-spacing="4" fill="#ffffff">EVO</text>
   </g>
 
-  <!-- Subtitle: ASTUTO EVOLUTION + tagline -->
-  <text x="298" y="210" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="23" font-weight="800" letter-spacing="3.5" fill="#ea580c">ASTUTO EVOLUTION</text>
-  <text x="298" y="244" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="24" font-weight="500" fill="#64748b">open source · self-hosted · AI-native customer feedback</text>
+  <!-- Subtitle: ASTUTO EVOLUTION + tagline (high contrast on both dark #0d1117 and light #ffffff) -->
+  <text x="298" y="210" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="23" font-weight="800" letter-spacing="3.5" fill="#fb923c">ASTUTO EVOLUTION</text>
+  <text x="298" y="244" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="24" font-weight="600" fill="#94a3b8">open source · self-hosted · AI-native customer feedback</text>
 </svg>

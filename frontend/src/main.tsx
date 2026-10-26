@@ -8,6 +8,7 @@ import {
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { ApiError } from './api/client'
+import { APP_BASEPATH } from './lib/project'
 import { routeTree } from './routeTree.gen'
 import './styles.css'
 
@@ -24,7 +25,7 @@ const queryClient = new QueryClient({
 
 const router = createRouter({
   routeTree,
-  basepath: '/next',
+  basepath: APP_BASEPATH,
   context: { queryClient },
   defaultPreload: 'intent',
   defaultPreloadStaleTime: 0,

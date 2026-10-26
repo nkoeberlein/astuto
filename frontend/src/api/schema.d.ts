@@ -4,6 +4,165 @@
  */
 
 export interface paths {
+    "/api/app/v1/session": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Current session
+         * @description Current user (or null), CSRF token, tenant branding and public settings.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description signed-in user */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Session"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        /** Log in with email and password */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["LoginInput"];
+                };
+            };
+            responses: {
+                /** @description signed in successfully, failed attempts counter reset */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Session"];
+                    };
+                };
+                /** @description account is locked (too many failed attempts) */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description blocked account */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        /** Sign out */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description signed out */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Session"];
+                    };
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/registration": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Register a new user account */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["RegisterInput"];
+                };
+            };
+            responses: {
+                /** @description registered via invitation, immediately confirmed and signed in */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["RegistrationResult"];
+                    };
+                };
+                /** @description email registration disabled by policy */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description validation error (password mismatch) */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/app/v1/boards": {
         parameters: {
             query?: never;
@@ -384,6 +543,88 @@ export interface paths {
         options?: never;
         head?: never;
         patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/password": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Send password reset instructions */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["ForgotPasswordInput"];
+                };
+            };
+            responses: {
+                /** @description instructions sent (paranoid mode) */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["MessageResponse"];
+                    };
+                };
+                /** @description invalid email format */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Reset password with token */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["ResetPasswordInput"];
+                };
+            };
+            responses: {
+                /** @description password reset unlocks a locked account */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PasswordResetResponse"];
+                    };
+                };
+                /** @description invalid or expired token */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
         trace?: never;
     };
     "/api/app/v1/boards/{board_id}/posts": {
@@ -788,45 +1029,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/app/v1/session": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Current session
-         * @description Current user (or null), CSRF token, tenant branding and public settings.
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description signed-in user */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["Session"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/api/app/v1/translations/{locale}": {
         parameters: {
             query?: never;
@@ -968,6 +1170,12 @@ export interface components {
             role: "user" | "moderator" | "admin" | "owner";
             avatarUrl: string;
         };
+        OAuthProvider: {
+            id: number;
+            name: string;
+            logo: string | null;
+            startUrl: string;
+        };
         TenantSettings: {
             /** @enum {string} */
             brandDisplay: "name_and_logo" | "name_only" | "logo_only" | "no_name_no_logo";
@@ -985,6 +1193,8 @@ export interface components {
                 url?: string;
             }[];
             loginOnlyWithOauth: boolean;
+            /** @enum {string} */
+            emailRegistrationPolicy: "all_allowed" | "custom_domains_allowed" | "none_allowed";
             showVoteCount: boolean;
             showVoteButtonInBoard: boolean;
             showPoweredBy: boolean;
@@ -998,6 +1208,7 @@ export interface components {
             siteLogo: string | null;
             siteFavicon: string | null;
             locale: string;
+            oauthProviders: components["schemas"]["OAuthProvider"][];
             settings: components["schemas"]["TenantSettings"];
         };
         Session: {
@@ -1006,6 +1217,38 @@ export interface components {
             /** @description True for moderators when an AI provider is configured */
             aiEnabled: boolean;
             tenant: components["schemas"]["Tenant"];
+        };
+        LoginInput: {
+            email: string;
+            password: string;
+            rememberMe?: boolean;
+        };
+        RegisterInput: {
+            fullName: string;
+            email: string;
+            password: string;
+            passwordConfirmation: string;
+            invitationToken?: string | null;
+        };
+        RegistrationResult: {
+            confirmationRequired: boolean;
+            message: string;
+            session: components["schemas"]["Session"];
+        };
+        ForgotPasswordInput: {
+            email: string;
+        };
+        ResetPasswordInput: {
+            resetPasswordToken: string;
+            password: string;
+            passwordConfirmation: string;
+        };
+        PasswordResetResponse: {
+            message: string;
+            session: components["schemas"]["Session"];
+        };
+        MessageResponse: {
+            message: string;
         };
         Board: {
             id: number;
@@ -1093,8 +1336,8 @@ export interface components {
             postStatusId?: number | null;
             /** @description Hidden form field, must stay empty */
             honeypot?: string;
-            /** @description Unix time when the form was shown (anti-spam) */
-            formRenderedAt: number;
+            /** @description Milliseconds the form was open before it was sent (anti-spam) */
+            formFillMs: number;
         };
         UpdatePost: {
             title?: string;

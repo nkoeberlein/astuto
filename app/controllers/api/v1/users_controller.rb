@@ -81,7 +81,11 @@ module Api
 
         authorize([:api, user])
 
-        user.update!(status: 'blocked')
+        ActiveRecord::Base.transaction do
+          user.status = 'blocked'
+          DestroyApiKeyIfNeededWorkflow.new(user: user).run
+          user.save!
+        end
 
         render json: { id: user.id }, status: :ok
       end

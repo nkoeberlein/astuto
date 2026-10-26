@@ -3,7 +3,7 @@ class User < ApplicationRecord
   
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :confirmable,
-         :trackable
+         :trackable, :lockable
     
   validates_confirmation_of :password
   
@@ -42,6 +42,8 @@ class User < ApplicationRecord
   end
 
   def inactive_message
+    return I18n.t('devise.failure.locked') if access_locked?
+
     active? ? super : I18n.t('errors.user_blocked_or_deleted')
   end
 
@@ -70,9 +72,23 @@ class User < ApplicationRecord
     devise_mailer.send(notification, self, *args).deliver_later
   end
 
+  # Like Devise's send_reset_password_instructions, but the email links to the
+  # password reset page of the v2 frontend (/next/password/reset)
+  def send_next_reset_password_instructions
+    token = set_reset_password_token
+    send_devise_notification(:reset_password_instructions, token, template_name: 'reset_password_instructions_next')
+    token
+  end
+
+  # Gravatar identifies avatars by the MD5 of the trimmed, lowercased email
+  def self.gravatar_hash(email)
+    return nil if email.blank?
+
+    Digest::MD5.hexdigest(email.to_s.strip.downcase)
+  end
+
   def gravatar_url
-    gravatar_id = Digest::MD5::hexdigest(email.downcase)
-    "https://secure.gravatar.com/avatar/#{gravatar_id}?d=retro"
+    "https://secure.gravatar.com/avatar/#{User.gravatar_hash(email)}?d=retro"
   end
 
   def full_name_or_email

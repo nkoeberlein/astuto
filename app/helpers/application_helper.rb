@@ -116,10 +116,15 @@ module ApplicationHelper
     css.to_s.gsub('<') { '\3c ' }.html_safe
   end
 
-  # Redirect to previous page if present; otherwise redirect to root
+  # Redirect to previous page if it is a local path or an http(s) URL on this
+  # host; otherwise use the block (e.g. root). Anything else, like "evil.com",
+  # would make redirect_to raise UnsafeRedirectError.
   def safe_return_to_redirect(url)
-    uri = URI.parse(url)
-    uri.host.present? && uri.host != request.host ? yield : url
+    return url if SafeUrl.local_path?(url)
+
+    uri = URI.parse(url.to_s)
+    same_host = %w[http https].include?(uri.scheme) && uri.host.present? && uri.host == request.host
+    same_host ? url : yield
   rescue URI::InvalidURIError
     yield
   end

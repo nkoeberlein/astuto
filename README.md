@@ -1,5 +1,8 @@
 <p align="center">
-  <img width="460" alt="Astuto Evolution (Evo)" src="./images/logo-and-name.png" />
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="./images/logo-and-name-dark.png" />
+    <img width="460" alt="Astuto Evolution (Evo)" src="./images/logo-and-name.png" />
+  </picture>
 </p>
 
 <h1 align="center">Astuto Evolution (Evo) 🦊</h1>
@@ -42,11 +45,31 @@ Astuto Evolution helps you collect, manage and prioritize feedback from your cus
 |---|---|---|
 | Ruby / Rails | 3.0 / 6.1 (end of life) | 4.0 / 8.1 |
 | PostgreSQL | 14 (EOL 11/2026) | 18 (19 once it is released) |
-| Docker image | `riggraz/astuto` (amd64) | `ghcr.io/nkoeberlein/astuto` (amd64 + arm64) |
+| Docker image | `riggraz/astuto` (amd64) | `ghcr.io/nkoeberlein/astuto-evo` (amd64 + arm64) |
 | User interface | React 16, Bootstrap 4 | being rebuilt (React 19, TypeScript, Tailwind), public pages under `/next` |
 | AI / MCP | – | MCP server, opt-in AI discussion summary |
 
 Upgrading an existing Astuto installation: see [UPGRADING.md](UPGRADING.md).
+
+## Planned features
+
+> Nothing below is released yet. Status and priorities: [roadmap.md](roadmap.md), tasks: [todo.md](todo.md).
+
+### In v2 (towards 2.0)
+
+- **Complete the new UI** (React 19 + TanStack, served under `/next` and then moved to `/`): roadmap page, login / sign-up / password as SPA pages with OAuth buttons, moderation queue and site settings, editing and deleting posts and comments, status changes
+- **Design system:** branding over CSS variables (reusing your current site colors), dark mode, WCAG 2.2 AA, mobile first
+- **AI-native features:** MCP server under `/mcp` with API-key auth (already part of the alpha) so assistants like Claude, Cursor and others can search, read, create and triage feedback; duplicate detection while posting (Postgres full-text search, optionally semantic with pgvector); discussion summaries and tag/board suggestions, all strictly opt-in per site settings
+- **Operations:** webhook error visibility (delivery log per webhook), "send test mail" for site settings, configurable favicon and header links, roadmap can be disabled, instance-wide default sort order, OAuth-only login option
+- **Cleanup:** the legacy React 16 / Redux / Bootstrap 4 frontend and its gems and packages are removed once every page is rebuilt
+
+### In v3 (major upgrade, fully TypeScript)
+
+- **Full TypeScript rewrite:** [TanStack Start](https://tanstack.com/start) + Drizzle (PostgreSQL) + Tailwind; Rails is dropped. The decision has been made (see roadmap, section 3); the v2 React frontend carries over unchanged, so v3 becomes a backend swap (endpoint by endpoint)
+- **New data model** with upgrade-path guarantees: UUIDv7 ids, unified activity timeline, votes with weight, full-text search (optional pgvector). Existing 2.x installations migrate automatically on first start of v3, old tables are archived — for admins the upgrade stays a Docker image tag change
+- **Modern auth:** e.g. Better Auth with multiple OAuth providers and passkeys
+- **Everything ported:** webhooks (Liquid templates), mails, background jobs and the MCP server move to TypeScript; SSR for public boards for SEO
+- **Licensing stays AGPL-3.0** in v3; a commercial dual-license is possible only via CLA from the first v3 commit (see roadmap, section 6/7)
 
 ## Get started
 
@@ -57,15 +80,15 @@ To run it from source:
 1. Install Docker and Docker Compose
 2. Clone the repository:
    ```
-   git clone https://github.com/nkoeberlein/astuto.git astuto-evolution
-   cd astuto-evolution
+   git clone https://github.com/nkoeberlein/astuto-evo.git astuto-evo
+   cd astuto-evo
    ```
 3. Start it:
    ```
    docker compose up
    ```
    If port 3000 is taken on your machine, use another one: `ASTUTO_PORT=3456 docker compose up`
-4. Open http://localhost:3000. A default account is created with email `admin@example.com` and password `password`. Change it right away.
+4. Open http://localhost:3000. In development, a default account is created with email `admin@example.com` and password `password`. The production image instead generates a random password and prints it once in the container log on the first start; set `ADMIN_EMAIL` and `ADMIN_PASSWORD` to choose your own.
 
 ## Documentation
 
@@ -73,7 +96,7 @@ The original documentation still applies and lives in the archived [astuto/astut
 
 ## Contributing
 
-Proposing features, reporting issues, translating and improving documentation are as welcome as code. Please read the [contributing guidelines](CONTRIBUTING.md) and use the [issue tracker](https://github.com/nkoeberlein/astuto/issues).
+Proposing features, reporting issues, translating and improving documentation are as welcome as code. Please read the [contributing guidelines](CONTRIBUTING.md) and use the [issue tracker](https://github.com/nkoeberlein/astuto-evo/issues).
 
 ## Credits
 

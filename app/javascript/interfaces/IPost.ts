@@ -24,6 +24,7 @@ interface IPost {
   hotness: number;
   userId: number;
   userEmail: string;
+  userGravatarHash: string;
   userFullName: string;
   createdAt: string;
 }
@@ -44,6 +45,7 @@ export const postJSON2JS = (postJSON: IPostJSON): IPost => ({
   hotness: postJSON.hotness,
   userId: postJSON.user_id,
   userEmail: postJSON.user_email,
+  userGravatarHash: postJSON.user_gravatar_hash,
   userFullName: postJSON.user_full_name,
   createdAt: postJSON.created_at,
 });
