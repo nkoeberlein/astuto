@@ -29,7 +29,7 @@ Image: `ghcr.io/nkoeberlein/astuto-evo:2.0.0-alpha.3` (amd64 + arm64).
 ## [2.0.0-alpha.2] – 2026-10-25
 
 Fixes fresh installs. Use this instead of 2.0.0-alpha.1.
-Image: `ghcr.io/nkoeberlein/astuto:2.0.0-alpha.2` (amd64 + arm64).
+Image: `ghcr.io/nkoeberlein/astuto-evo:2.0.0-alpha.2` (amd64 + arm64).
 
 ### Fixes
 - A fresh install was migrated but not seeded (no tenant, no admin), so every page returned an error. The entrypoint compared the whole `db:version` output, which since Rails 7.1 also contains the database name. Upgrades of existing installations were not affected.
@@ -39,7 +39,7 @@ Image: `ghcr.io/nkoeberlein/astuto:2.0.0-alpha.2` (amd64 + arm64).
 ## [2.0.0-alpha.1] – 2026-10-25
 
 First alpha of Astuto Evolution, the community continuation of Astuto 1.x.
-Image: `ghcr.io/nkoeberlein/astuto:2.0.0-alpha.1` (amd64 + arm64).
+Image: `ghcr.io/nkoeberlein/astuto-evo:2.0.0-alpha.1` (amd64 + arm64).
 Upgrading from 1.x: read [UPGRADING.md](UPGRADING.md) and back up your database first.
 
 ### Platform
