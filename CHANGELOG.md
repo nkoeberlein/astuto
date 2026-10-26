@@ -5,16 +5,26 @@ Issue numbers refer to the archived [astuto/astuto](https://github.com/astuto/as
 
 ## [Unreleased]
 
+## [2.0.0-alpha.3] – 2026-10-26
+
+Image: `ghcr.io/nkoeberlein/astuto-evo:2.0.0-alpha.3` (amd64 + arm64).
+
 ### Security
 - The legacy UI no longer hands visitors the email addresses of authors, voters and moderators; they get a Gravatar hash instead. Moderators and the person themselves still see the email.
 - Account lockout: sign-in with email and password now uses Devise `:lockable`, so a single account locks after too many failed attempts – effective against distributed brute-force, independent of the IP-based anti-spam rules. Unlock happens via emailed link and/or after a configurable time (`LOCKABLE_LOCK_STRATEGY`, `LOCKABLE_UNLOCK_STRATEGY`, `LOCKABLE_MAXIMUM_ATTEMPTS`, `LOCKABLE_UNLOCK_IN_HOURS`; defaults: 10 attempts, 2 h, both). See docs/account-lockout.md.
+- Rate limits for brute-force-sensitive endpoints: `/mcp` (per IP and per API key) no longer runs into the general request limit, and logins – the legacy form and `POST /api/app/v1/session` – are throttled by IP and by email.
+- API keys only work while their user is an active moderator; keys are removed on any demotion (admin → user counts) and on blocking.
 - Fresh installs no longer start with the password `password`: outside development the admin gets a random password, printed once in the log, or the one from `ADMIN_PASSWORD` (`ADMIN_EMAIL` sets the email).
 - Content Security Policy: scripts only from the instance itself, Stripe (hosted billing) or with a nonce. `CSP_REPORT_ONLY=true` switches to report-only. See UPGRADING.md.
 - `SECURITY.md`: report vulnerabilities privately via GitHub.
 
+### Features
+- v2 frontend: login, sign-up and password reset pages under `/next`, with OAuth buttons and the legacy rules (registration policy, allowed email domains, invitations, email confirmation, OAuth-only login). Locked accounts show the lockout warning, the last failed attempt before it.
+
 ### Fixes
 - `/next` and `/next/` were served as a static file, without the server-side meta tags.
 - Gravatar images in the legacy UI loaded over plain `http` on `http` pages.
+- The app API anti-spam measures the form fill time client-side (`formFillMs` via `performance.now()`) instead of a browser-sent timestamp, so a clock a few seconds ahead no longer rejected people who took their time.
 
 ## [2.0.0-alpha.2] – 2026-10-25
 
