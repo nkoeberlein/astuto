@@ -5,6 +5,10 @@ Issue numbers refer to the archived [astuto/astuto](https://github.com/astuto/as
 
 ## [Unreleased]
 
+### Removed
+- **Billing.** Astuto Evolution has no paid plans: the Stripe billing of the former astuto.io hosting is gone (billing pages, trial period, read-only mode after the trial, trial and subscription emails, `stripe` gem, `STRIPE_*` and `TRIAL_PERIOD_DAYS` variables). The table `tenant_billings` is dropped. The Content Security Policy no longer allows Stripe.
+- The astuto.io promo banner and the call to the astuto.io certificate API when a custom domain is saved (`ASTUTO_CNAME_API_URL`, `ASTUTO_CNAME_API_KEY`).
+
 ### Changed
 - Emails are sent from `EMAIL_MAIL_FROM` or, without it, `noreply@<host of BASE_URL>` (before: `noreply@astuto.io`, the discontinued hosted service). `EMAIL_MAIL_REPLY_TO` defaults to the sender.
 - **The new user interface replaces the old one at `/`.** Every page – boards, posts, roadmap, embedded roadmap, login, sign-up, password reset, profile, moderation and site settings – comes from the v2 frontend. `/next/...` redirects to `/...` (301), and the Devise pages `/users/sign_in`, `/users/sign_up`, `/users/password/new|edit` and `/users/edit` redirect to the new pages, keeping their notices (e.g. after confirming an email). See UPGRADING.md for custom CSS.
@@ -16,6 +20,7 @@ Issue numbers refer to the archived [astuto/astuto](https://github.com/astuto/as
 - Legacy webhook endpoints `PUT /webhooks/:id/test` and `PUT /webhooks_preview` checked no permissions: anyone, even without an account, could fire a feedback space's webhooks with test data and read the target's response. Both now require an admin.
 
 ### Features
+- Multi-tenancy is documented (docs/multi-tenancy.md): DNS, TLS, custom domains. `bin/rails tenants:create|list|block|unblock` manages feedback spaces until the instance admin UI exists. `/custom_domain_check` answers Caddy's on-demand TLS, so certificates for custom domains come automatically. The custom domain hint names this instance instead of `cname.astuto.io`.
 - Webhooks are signed: every request carries `X-Astuto-Signature` (HMAC-SHA256 of timestamp and body with a per-webhook secret), `X-Astuto-Timestamp` and `X-Astuto-Event`. Existing webhooks got a secret during the update; receivers can start checking whenever they like. See docs/webhooks.md.
 - Webhook delivery log (#458): the newest 50 runs per webhook with status, HTTP code, duration and the template, JSON or network error, under Site settings › Webhooks › Deliveries. Requests time out after 15 seconds.
 - Site settings › General › Emails: **Send test email** checks the email configuration and shows the server's error (e.g. SMTP authentication) right away, even with `EMAIL_RAISE_DELIVERY_ERRORS=false`.
@@ -35,6 +40,9 @@ Issue numbers refer to the archived [astuto/astuto](https://github.com/astuto/as
 - v2 frontend: embeddable roadmap at `/next/embedded_roadmap` for an iframe on another site, without header and footer; posts open in a new tab. It takes the legacy embed parameters (`show_boards`, `show_statuses`, `show_board_filter=false`, `show_status_filter=false`), so existing embed codes keep working after the switch from `/next` to `/`. Only this page may be framed by other sites, and only while the roadmap is enabled.
 
 ### Fixes
+- Multi-tenancy: feedback spaces were not found when the `BASE_URL` host had more than two labels (`acme.feedback.example.com`, `feedback.example.co.uk`), because the subdomain depended on Rails' `tld_length`. The subdomain is now everything in front of the `BASE_URL` host, also behind a proxy (`X-Forwarded-Host`). Cookies for OAuth logins are set for the `BASE_URL` host instead of its parent domain.
+- Multi-tenancy: custom domains with top-level domains longer than six letters (`.solutions`, `.community`) were rejected, and with `RAILS_HOSTS` set, every custom domain had to be listed there too. They are now allowed automatically.
+- "Use browser language" had no effect on the new interface and the app API.
 - German: every text of the new interface is translated now (about 100 entries were English or missing), including invitation emails and recap subjects (#466).
 - The reply field under a comment was labelled with its raw translation key for screen readers.
 - The general settings page counted as changed right after loading when the header links came back from the database with their keys in another order.

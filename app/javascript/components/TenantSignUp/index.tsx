@@ -16,7 +16,6 @@ interface Props {
   astutoLogoImage: string;
   feedbackSpaceCreatedImage: string;
   pendingTenantImage: string;
-  trialPeriodDays: number;
   authenticityToken: string;
 }
 
@@ -39,7 +38,6 @@ class TenantSignUpRoot extends React.Component<Props> {
       feedbackSpaceCreatedImage,
       pendingTenantImage,
       baseUrl,
-      trialPeriodDays,
       authenticityToken,
     } = this.props;
 
@@ -54,7 +52,6 @@ class TenantSignUpRoot extends React.Component<Props> {
           feedbackSpaceCreatedImage={feedbackSpaceCreatedImage}
           pendingTenantImage={pendingTenantImage}
           baseUrl={baseUrl}
-          trialPeriodDays={trialPeriodDays}
           authenticityToken={authenticityToken}
         />
       </Provider>

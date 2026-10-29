@@ -2,7 +2,6 @@ module Api::App::V1
   class PostStatusesController < Api::App::BaseController
     before_action :require_access, only: [:index]
     before_action :require_admin, except: [:index]
-    before_action :check_tenant_subscription, except: [:index]
 
     # GET /api/app/v1/post_statuses?board_id=
     def index

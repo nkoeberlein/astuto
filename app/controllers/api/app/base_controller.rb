@@ -20,7 +20,7 @@ module Api
           return render_error(:forbidden, 'Feedback space is not active') if tenant.pending? || tenant.blocked?
 
           Current.tenant = tenant
-          I18n.locale = tenant.locale.presence || I18n.default_locale
+          I18n.locale = tenant_locale(tenant, tenant_setting, request)
         end
 
         def tenant_setting

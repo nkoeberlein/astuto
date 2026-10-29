@@ -34,6 +34,10 @@ module App
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
 
+    # Subdomains (multi-tenancy, login. routes, cookie domains) are counted from the
+    # BASE_URL host: feedback.example.co.uk gives a tld_length of 3, localhost 0
+    config.action_dispatch.tld_length = [URI.parse(ENV['BASE_URL'].to_s).host.to_s.split('.').size - 1, 0].max rescue 1
+
     # If configured, add trusted proxy to the list of trusted proxies
     config.middleware.insert_after ActionDispatch::RemoteIp, Rack::Attack
     if ENV["TRUSTED_PROXY"]
@@ -66,34 +70,6 @@ module App
 
     def posts_per_page
       15
-    end
-
-    def trial_period_days
-      ENV.key?("TRIAL_PERIOD_DAYS") ? ENV["TRIAL_PERIOD_DAYS"].to_i.days : 7.days
-    end
-
-    def stripe_secret_key
-      ENV["STRIPE_SECRET_KEY"]
-    end
-
-    def stripe_public_key
-      ENV["STRIPE_PUBLIC_KEY"]
-    end
-
-    def stripe_endpoint_secret
-      ENV["STRIPE_ENDPOINT_SECRET"]
-    end
-
-    def stripe_manage_subscription_url
-      ENV["STRIPE_MANAGE_SUBSCRIPTION_URL"]
-    end
-
-    def stripe_monthly_lookup_key
-      ENV["STRIPE_MONTHLY_LOOKUP_KEY"]
-    end
-
-    def stripe_yearly_lookup_key
-      ENV["STRIPE_YEARLY_LOOKUP_KEY"]
     end
 
     def sidekiq_enabled?

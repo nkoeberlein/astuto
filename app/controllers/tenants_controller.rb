@@ -58,11 +58,6 @@ class TenantsController < ApplicationController
 
       CreateWelcomeEntitiesWorkflow.new().run
 
-      if is_o_auth_login
-        CreateStripeCustomer.new().run
-        TenantMailer.trial_start(tenant: @tenant).deliver_now # deliver_later doesn't work here
-      end
-
       logger.info { "New tenant registration: #{Current.tenant.inspect}" }
 
       render json: @tenant, status: :created
@@ -77,19 +72,6 @@ class TenantsController < ApplicationController
   def update
     @tenant = Current.tenant_or_raise!
     authorize @tenant
-
-    # If the custom domain has changed, we need to provision SSL certificate
-    custom_domain_response = AddCustomDomainWorkflow.new(
-      new_custom_domain: params[:tenant][:custom_domain],
-      current_custom_domain: @tenant.custom_domain
-    ).run
-
-    if custom_domain_response == false
-      render json: {
-        error: "Error adding custom domain"
-      }, status: :unprocessable_entity
-      return
-    end
 
     # Since custom_domain is unique at db level, we need to set it to nil if it is blank
     # to avoid unique constraint violation

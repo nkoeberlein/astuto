@@ -135,7 +135,11 @@ function GeneralForm(props: {
             onChange={(value) => set('customDomain', value || null)}
             help={
               draft.customDomain && draft.customDomain !== settings.customDomain
-                ? t('site_settings.general.custom_domain_help', { domain: draft.customDomain })
+                ? t('site_settings.general.custom_domain_help', {
+                    domain: draft.customDomain,
+                    // Any host of this instance works as the CNAME target
+                    target: window.location.hostname,
+                  })
                 : undefined
             }
           />

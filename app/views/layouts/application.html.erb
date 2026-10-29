@@ -18,14 +18,6 @@
   </head>
 
   <body>
-    <% if @tenant and not @tenant.tenant_billing.has_active_subscription? and (user_signed_in? and current_user.owner?) %>
-      <%= render 'layouts/no_active_subscription_banner' %>
-    <% end %>
-
-    <% if Rails.application.multi_tenancy? && @tenant && @tenant.subdomain == "feedback" %>
-      <%= render 'layouts/promo_banner' %>
-    <% end %>
-
     <% if @tenant %>
       <%= render 'layouts/header' %>
     <% end %>

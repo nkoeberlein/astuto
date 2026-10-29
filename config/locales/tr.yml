@@ -202,7 +202,7 @@ tr:
         collapse_boards_in_header_no_collapse: 'Hiçbir zaman'
         collapse_boards_in_header_always_collapse: 'Her zaman'
         subtitle_visibility: 'Görünüm'
-        custom_domain_help: 'İlk olarak, DNS ayarlarınızda "%{domain}" adresini "cname.astuto.io" adresine yönlendiren bir CNAME kaydı ekleyin. Ardından, aşağıdaki "Kaydet" düğmesine tıklayın.'
+        custom_domain_help: 'İlk olarak, DNS ayarlarınızda "%{domain}" adresini "%{target}" adresine yönlendiren bir CNAME kaydı ekleyin. Ardından, aşağıdaki "Kaydet" düğmesine tıklayın.'
         custom_domain_learn_more: 'Özel etki alanını nasıl yapılandıracağınızı öğrenin'
         show_vote_count_help: 'Bu ayarı etkinleştirirseniz, kullanıcılar gönderilerin oylama sayısını görüntüleyebilir. Bu, kullanıcıların zaten popüler gönderilere oy vermeye teşvik edebilir, bu da bir küresel etkiye yol açabilir.'
         show_vote_button_in_board_help: 'Bu ayarı etkinleştirirseniz, kullanıcılar gönderilerin oylama sayısını görüntüleyebilir. Bu, kullanıcıların zaten popüler gönderilere oy vermeye teşvik edebilir, bu da bir küresel etkiye yol açabilir.'

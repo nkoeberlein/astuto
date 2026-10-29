@@ -349,7 +349,7 @@ const GeneralSiteSettingsP = ({
                 originForm.customDomain !== customDomain && customDomain !== '' &&
                 <div style={{marginTop: 16}}>
                   <SmallMutedText>
-                    { I18n.t('site_settings.general.custom_domain_help', { domain: customDomain }) }
+                    { I18n.t('site_settings.general.custom_domain_help', { domain: customDomain, target: window.location.hostname }) }
                   </SmallMutedText>
                 </div>
               }

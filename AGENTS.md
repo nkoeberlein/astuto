@@ -15,7 +15,7 @@ Astuto Evolution: community continuation of Astuto, a self-hosted customer feedb
 - `app/jobs` – ActiveJob (`RunWebhook`, recap emails); backend is async or Sidekiq via `ACTIVE_JOB_BACKEND`
 - `app/javascript` – legacy React 16 + Redux frontend (being replaced by `frontend/`), mounted via react-rails
 - `config/locales` – backend i18n; `app/javascript/translations` – frontend i18n (i18n-js, Crowdin)
-- `spec/` – RSpec: models, policies, requests, API (rswag); about 610 examples. Browser tests are Playwright in `frontend/e2e`. Spec files must end in `_spec.rb`, or RSpec skips them
+- `spec/` – RSpec: models, policies, requests, API (rswag); about 630 examples. Browser tests are Playwright in `frontend/e2e`. Spec files must end in `_spec.rb`, or RSpec skips them
 
 ## Commands
 - Dev: `docker compose up` (app on :3000, override with `ASTUTO_PORT`; default admin `admin@example.com` / `password` in development; elsewhere a random password unless `ADMIN_PASSWORD` is set, see `DefaultAdminCredentials`)
@@ -26,7 +26,7 @@ Astuto Evolution: community continuation of Astuto, a self-hosted customer feedb
 - Prod image: `docker build --build-arg ENVIRONMENT=production --target prod .`
 
 ## Patterns
-- Multi-tenancy via `Current.tenant` (subdomain-based when `MULTI_TENANCY=true`); every model is tenant-scoped.
+- Multi-tenancy via `Current.tenant` (subdomain = labels in front of the `BASE_URL` host, or a custom domain, when `MULTI_TENANCY=true`); every model is tenant-scoped. No billing: feedback spaces come from `bin/rails tenants:create` (docs/multi-tenancy.md).
 - All configuration via ENV (SMTP `EMAIL_*`, `POSTGRES_*`, `BASE_URL`, `TRUSTED_PROXY`).
 - The DB is migrated automatically by `docker-entrypoint.sh` on container start.
 - v2 frontend is RTL-ready: use CSS logical properties only (`ms-`/`me-`, `ps-`/`pe-`, `start`/`end`), never `left`/`right` utilities.
@@ -36,7 +36,6 @@ Astuto Evolution: community continuation of Astuto, a self-hosted customer feedb
 - Backend is on Ruby 4.0 / Rails 8.1 / Devise 5 / Sidekiq 8.1 (`load_defaults` 8.1). The React 16/Redux/Bootstrap 4 frontend will be replaced in v2, not migrated: do not invest in it beyond fixes. v3 plans a full TypeScript rewrite (see `roadmap.md`).
 - The test env never reloads code (`enable_reloading = false`): a dev server in the same container writes files on boot, which used to reload classes mid-run.
 - `config/initializers/cookie_rotator.rb` keeps cookies signed with pre-7.0 SHA1 keys valid; it can go in 2027.
-- Stripe's API version is pinned in `config/initializers/stripe.rb`; raise it only after testing billing against a Stripe test account.
 - New ActiveJob queues (`queue_as`) must be added to `config/sidekiq.yml`, or Sidekiq never runs them.
 - The production image build generates API docs with `RAILS_ENV=test` without test gems installed: gems in the test group must not be auto-required (`require: false`).
 - Postgres ≥ 18 images store data under `/var/lib/postgresql/<major>/docker`; see `UPGRADING.md`.
@@ -47,7 +46,7 @@ Astuto Evolution: community continuation of Astuto, a self-hosted customer feedb
 - Legacy JSON must not expose other users' emails: build author fields with `Legacy::AuthorFields` (email only for moderators and the person themselves, Gravatar hash for everyone).
 - `public/**/index.html` is never served for bare directories (`public_file_server.index_name`), so `/next/` reaches the redirect to `/`.
 - Pages of the v2 frontend are listed in `config/routes.rb` (`spa#show`); a new frontend route needs a Rails route too. Named routes (`post_url`, `roadmap_url`, `moderation_feedback_url`, ...) keep mail links working.
-- Devise's HTML pages (`/users/sign_in`, `/users/sign_up`, `/users/password/new|edit`, `/users/edit`) redirect to the v2 pages and keep the flash; `SpaController` hands it to the frontend in `<meta name="astuto-flash">`. Resend confirmation/unlock, billing, tenant signup and the OAuth test page are still Rails views with the legacy bundle.
+- Devise's HTML pages (`/users/sign_in`, `/users/sign_up`, `/users/password/new|edit`, `/users/edit`) redirect to the v2 pages and keep the flash; `SpaController` hands it to the frontend in `<meta name="astuto-flash">`. Resend confirmation/unlock, tenant signup (disabled) and the OAuth test page are still Rails views with the legacy bundle.
 - Admin-entered URLs that end up in an `href` (header links, logo link) must pass `SafeUrl.safe?`; render via `TenantSetting#safe_custom_links` / `#safe_logo_custom_url`.
 - Password reset emails have two templates: `reset_password_instructions` (legacy UI) and `reset_password_instructions_next` (v2, sent by `User#send_next_reset_password_instructions` from the app API).
 - v2 login links pass `?redirect=<path>` (`useLoginRedirect`); OAuth carries it as `return_to` in the `oauth_return_to` cookie, because the callback may run on another host.

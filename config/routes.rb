@@ -18,14 +18,6 @@ Rails.application.routes.draw do
       
       resource :tenants, only: [:create]
     end
-
-    constraints subdomain: 'billing' do
-      get '/billing', to: 'billing#index'
-      get '/billing/return', to: 'billing#return'
-      post '/create_checkout_session', to: 'billing#create_checkout_session'
-      get '/session_status', to: 'billing#session_status'
-      post '/webhook', to: 'billing#webhook'
-    end
   end
 
   constraints subdomain: /.*/ do
@@ -55,8 +47,6 @@ Rails.application.routes.draw do
 
     get '/pending-tenant', to: 'static_pages#pending_tenant'
     get '/blocked-tenant', to: 'static_pages#blocked_tenant'
-    
-    get '/request_billing_page', to: 'billing#request_billing_page'
     
     devise_for :users, :controllers => {
       :registrations => 'registrations',
@@ -191,6 +181,9 @@ Rails.application.routes.draw do
       end
     end
   end
+
+  # Caddy on-demand TLS asks here before it requests a certificate (docs/multi-tenancy.md)
+  get '/custom_domain_check', to: 'custom_domain_checks#show'
 
   # Healthcheck endpoint
   get '/health', to: proc {

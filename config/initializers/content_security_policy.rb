@@ -1,22 +1,19 @@
 # Content Security Policy. Mainly a second line of defence against script
-# injection: scripts only from this site (plus Stripe for hosted billing) or
-# inline with the per-session nonce. Inline styles stay allowed, because tenant
+# injection: scripts only from this site or inline with the per-response nonce. Inline styles stay allowed, because tenant
 # custom CSS, server-rendered style attributes and the v2 frontend need them.
 #
 # CSP_REPORT_ONLY=true reports violations instead of blocking them (emergency
 # switch if a custom integration breaks); CSP_REPORT_URI receives the reports.
 
 Rails.application.configure do
-  stripe = %w[https://js.stripe.com https://*.js.stripe.com https://checkout.stripe.com]
-
   config.content_security_policy do |policy|
     policy.default_src :self
-    policy.script_src  :self, 'https://js.stripe.com'
+    policy.script_src  :self
     policy.style_src   :self, :unsafe_inline, :https
     policy.img_src     :self, :https, :data
     policy.font_src    :self, :https, :data
-    policy.connect_src :self, 'https://api.stripe.com', 'https://checkout.stripe.com'
-    policy.frame_src   *stripe
+    policy.connect_src :self
+    policy.frame_src   :self
     policy.object_src  :none
     policy.base_uri    :self
     policy.report_uri  ENV['CSP_REPORT_URI'] if ENV['CSP_REPORT_URI'].present?

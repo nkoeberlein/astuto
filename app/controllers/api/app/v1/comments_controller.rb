@@ -2,7 +2,6 @@ module Api::App::V1
   class CommentsController < Api::App::BaseController
     before_action :require_access
     before_action :require_user, only: [:create, :update, :destroy]
-    before_action :check_tenant_subscription, only: [:create, :update, :destroy]
 
     # GET /api/app/v1/posts/:post_id/comments
     def index

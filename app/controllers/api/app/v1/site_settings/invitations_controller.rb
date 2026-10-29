@@ -3,7 +3,6 @@ module Api::App::V1::SiteSettings
   # Links lead to the v2 sign-up page, which accepts the invitation token.
   class InvitationsController < Api::App::BaseController
     before_action :require_admin
-    before_action :check_tenant_subscription, only: [:create, :test]
 
     # GET /api/app/v1/site_settings/invitations
     def index

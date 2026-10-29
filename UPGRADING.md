@@ -14,8 +14,11 @@ settings depend on it.
 - **Sidekiq** (only with `ACTIVE_JOB_BACKEND=sidekiq`): needs Redis 7 or newer
   (see below). Queues come from `config/sidekiq.yml`; if you start Sidekiq with
   your own `-q` flags, include `webhooks`, otherwise webhooks never run.
-- **Billing** (multi-tenant hosting only): requests use Stripe API version
-  `2024-04-10`. Set the same version on your webhook endpoint in the Stripe dashboard.
+- **Billing is gone** (it only applied to multi-tenant hosting): the migration
+  `DropTenantBillings` deletes the trial and subscription data, and feedback spaces whose
+  trial had ended are writable again. Remove `STRIPE_*`, `TRIAL_PERIOD_DAYS` and
+  `ASTUTO_CNAME_API_*` from your environment; the `notify_tenants_trial_period` rake task no
+  longer exists. Multi-tenant setups: see docs/multi-tenancy.md.
 - The image no longer contains Node.js; Astuto does not need it at runtime.
 - **New user interface at `/`.** Every page now comes from the new frontend. Links to
   the old pages keep working: `/next/...` (the preview of 2.0) redirects to `/...`, and
@@ -98,7 +101,7 @@ Sidekiq 8, which requires **Redis 7 or newer**. Check with
 ## Content Security Policy
 
 2.0 sends a Content Security Policy header. Scripts may only come from the
-instance itself (and Stripe for hosted billing); inline scripts are blocked.
+instance itself; inline scripts are blocked.
 Custom CSS keeps working, including fonts or images loaded over `https`.
 If a reverse proxy or an integration of yours injects scripts, they are now
 blocked. Set `CSP_REPORT_ONLY=true` to only report violations while you adapt,

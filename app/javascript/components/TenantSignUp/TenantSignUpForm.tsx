@@ -13,7 +13,6 @@ interface Props {
   isSubmitting: boolean;
   error: string;
   handleSignUpSubmit(siteName: string, subdomain: string): void;
-  trialPeriodDays: number;
   currentStep: number;
   setCurrentStep(step: number): void;
 }
@@ -22,7 +21,6 @@ const TenantSignUpForm = ({
   isSubmitting,
   error,
   handleSignUpSubmit,
-  trialPeriodDays,
   currentStep,
   setCurrentStep,
 }: Props) => {
@@ -89,9 +87,6 @@ const TenantSignUpForm = ({
         >
           { isSubmitting ? <Spinner /> : 'Create feedback space' }
         </Button>
-        <p className="smallMutedText" style={{textAlign: 'center'}}>
-          Your trial starts now and ends in {trialPeriodDays.toString()} days.
-        </p>
         <p className="smallMutedText" style={{textAlign: 'center'}}>
           By clicking "Create", you agree to our <a href="https://astuto.io/terms-of-service" target="_blank" className="link">Terms of Service</a> and <a href="https://astuto.io/privacy-policy" target="_blank" className="link">Privacy Policy</a>.
         </p>

@@ -1,6 +1,5 @@
 class FollowsController < ApplicationController
   before_action :authenticate_user!, only: [:create, :destroy]
-  before_action :check_tenant_subscription, only: [:create, :destroy]
 
   def index
     unless user_signed_in?

@@ -61,8 +61,6 @@ gem 'rack-attack', '6.8.0'
 # Slugs
 gem 'friendly_id', '5.7.0'
 
-# Billing
-gem 'stripe', '20.0.0'
 
 # Serve swagger docs
 gem 'rswag-api', '2.17.0'

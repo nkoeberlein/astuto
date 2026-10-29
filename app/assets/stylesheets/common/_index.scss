@@ -347,22 +347,6 @@ body {
   a:hover { text-decoration: underline; }
 }
 
-.noActiveSubscriptionBanner {
-  @extend
-    .alert,
-    .alert-warning,
-    .text-center,
-    .m-0;
-}
-
-.promoBanner {
-  @extend
-    .alert,
-    .alert-primary,
-    .text-center,
-    .m-0;
-}
-
 .highlighted {
   @extend .p-2;
   

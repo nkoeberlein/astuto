@@ -2,7 +2,6 @@ module Api::App::V1
   class BoardsController < Api::App::BaseController
     before_action :require_access, only: [:index, :show]
     before_action :require_admin, except: [:index, :show]
-    before_action :check_tenant_subscription, except: [:index, :show]
 
     # GET /api/app/v1/boards
     def index

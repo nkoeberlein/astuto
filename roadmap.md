@@ -83,7 +83,7 @@ Astuto Evolution führt das archivierte [astuto/astuto](https://github.com/astut
 
 **Anforderungen an die neue UI:** Mobile first, Dark Mode, WCAG 2.2 AA, Branding über CSS-Variablen, ein Komponentensatz auch für das einbettbare Widget, Übersetzungen aus den bestehenden YAML-Dateien (als JSON exportiert), RTL-fähig (CSS-Logical-Properties, `dir` aus der Locale; RTL-Übersetzungen, sobald jemand sie beisteuert).
 
-**Multi-Tenancy bleibt (entschieden).** Mehrere Feedback-Portale pro Instanz sind für Unternehmen mit mehreren Produkten oder Marken und für Agenturen wichtig (#76) und die Grundlage einer möglichen gehosteten Variante. Tenant-Signup, Custom Domains und Stripe-Billing bleiben vorerst erhalten. Ob Billing modernisiert oder entfernt wird, hängt vom Geschäftsmodell ab (siehe 7.).
+**Multi-Tenancy bleibt (entschieden).** Mehrere Feedback-Portale pro Instanz sind für Unternehmen mit mehreren Produkten oder Marken und für Agenturen wichtig (#76) und die Grundlage einer möglichen gehosteten Variante. **Kein Billing (entschieden):** Stripe-Billing und Trial des eingestellten astuto.io-Angebots sind entfernt. Custom Domains bleiben (TLS per Caddy On-Demand-TLS, siehe `docs/multi-tenancy.md`); der abgeschaltete Tenant-Signup fällt mit dem alten Frontend weg, Tenants entstehen per Rake-Task und später in der Instanz-Admin-Oberfläche (#76).
 
 ## 4. Phasen
 
@@ -98,7 +98,7 @@ Astuto Evolution führt das archivierte [astuto/astuto](https://github.com/astut
 - [x] Dependabot, `bundler-audit`, Brakeman, lokales `bin/ci`
 - [ ] PostgreSQL 19 bei GA (Anleitung in [UPGRADING.md](UPGRADING.md) ist fertig und getestet)
 - [x] Security-Policy (`SECURITY.md`)
-- [ ] Multi-Tenancy-Modus testen und dokumentieren (Subdomains, Custom Domains, Tenant-Verwaltung); Billing je nach Geschäftsmodell (siehe 7.)
+- [x] Multi-Tenancy-Modus getestet und dokumentiert (`docs/multi-tenancy.md`: Subdomains, Custom Domains, TLS, Tenant-Verwaltung per Rake); Billing entfernt
 
 ### Phase 2 – Betrieb und Bugfixes · P1
 Die häufigsten Probleme aus den Upstream-Issues: HTTPS hinter Reverse Proxy (#478, #201), OAuth-Cookie (#472), SMTP (#330 u. a.), Webhook-Fehler sichtbar machen (#458), konfigurierbare DB (#326, #207), Standard-Admin-Passwort, unsicherer SMTP-Standard. Details in todo.md.
@@ -113,7 +113,7 @@ Die häufigsten Probleme aus den Upstream-Issues: HTTPS hinter Reverse Proxy (#4
 7. ✅ Auth-Seiten (Login, Registrierung, Passwort, OAuth) und eingebettete Roadmap
 8. ✅ Moderation (Feedback-Queue, Nutzer), Site Settings (alle Bereiche) und Profil-Einstellungen
 9. ✅ Umstieg: das neue Frontend liefert alle Seiten unter `/` aus (`/next/*` leitet um)
-10. Altes Frontend und dessen Gems/Pakete entfernen (`react-rails`, `i18n-js`, Webpack, Bootstrap); hängt an Billing und Tenant-Signup (Entscheidung Geschäftsmodell, Abschnitt 7)
+10. Altes Frontend und dessen Gems/Pakete entfernen (`react-rails`, `i18n-js`, Webpack, Bootstrap); dabei fällt der abgeschaltete Tenant-Signup weg (Billing ist bereits entfernt)
 
 ### Phase 4 – KI und MCP · P1 (MCP in 2.0, Rest 2.x)
 - ✅ **MCP-Server** (Streamable HTTP unter `/mcp` auf dem offiziellen `mcp`-Gem, Auth per API-Key, später OAuth). Tools: Posts suchen, lesen, anlegen, Status ändern, kommentieren, Votes und Trends abfragen, Roadmap lesen. Damit triagieren Claude, Cursor und andere Assistenten Feedback direkt. Unter den Self-Hosted-Tools hat das sonst nur Quackback.
@@ -203,7 +203,7 @@ Die häufigsten Probleme aus den Upstream-Issues: HTTPS hinter Reverse Proxy (#4
 
 | Modell | Passt zu | Voraussetzung |
 |---|---|---|
-| Gehostete Variante (Managed, EU-Hosting) | Firmen ohne eigenen Betrieb | Multi-Tenancy (vorhanden), Billing (vorhanden, Stripe-Gem modernisieren) |
+| Gehostete Variante (Managed, EU-Hosting) | Firmen ohne eigenen Betrieb | Multi-Tenancy (vorhanden); Abrechnung außerhalb der Software (Billing ist entfernt) |
 | Support und SLA | Mittelstand mit eigener Installation | Versionierung mit LTS, Ansprechpartner |
 | Kommerzielle Lizenz | AGPL-scheue Rechtsabteilungen | erst in v3, CLA |
 | Einrichtung und Integration (Dienstleistung) | SSO, Migration von Canny/UserVoice | Import-Funktion (#368) |

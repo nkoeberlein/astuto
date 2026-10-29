@@ -6,7 +6,6 @@ module Api::App::V1::SiteSettings
     JSON_ERROR = "Webhook body must render valid JSON (tip: use the '| escape_json' filter on string variables)".freeze
 
     before_action :require_admin
-    before_action :check_tenant_subscription, only: [:create, :update, :destroy, :test]
 
     # GET /api/app/v1/site_settings/webhooks
     def index

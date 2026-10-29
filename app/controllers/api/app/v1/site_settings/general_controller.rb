@@ -13,7 +13,6 @@ module Api::App::V1::SiteSettings
     ].freeze
 
     before_action :require_admin
-    before_action :check_tenant_subscription, only: [:update]
 
     # GET /api/app/v1/site_settings/general
     def show
@@ -33,14 +32,6 @@ module Api::App::V1::SiteSettings
       # Blank means "none": custom_domain is unique in the database, a blank favicon uses the default one
       %w[custom_domain site_favicon].each { |field| tenant_changes[field] = nil if tenant_changes.key?(field) && tenant_changes[field].blank? }
       tenant_changes.delete('custom_domain') unless Rails.application.multi_tenancy?
-
-      if tenant_changes.key?('custom_domain')
-        added = AddCustomDomainWorkflow.new(
-          new_custom_domain: tenant_changes['custom_domain'],
-          current_custom_domain: tenant.custom_domain
-        ).run
-        return render_error(:unprocessable_content, 'Error adding custom domain') if added == false
-      end
 
       tenant.assign_attributes(tenant_changes)
       tenant_setting.assign_attributes(setting_changes)

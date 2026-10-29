@@ -7,7 +7,6 @@ module Api::App::V1::SiteSettings
     FIELDS = %w[name logo is_enabled client_id client_secret authorize_url token_url profile_url scope json_user_name_path json_user_email_path].freeze
 
     before_action :require_admin
-    before_action :check_tenant_subscription, except: [:index]
 
     # GET /api/app/v1/site_settings/o_auths
     def index

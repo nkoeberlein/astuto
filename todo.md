@@ -94,10 +94,14 @@ Issue-Nummern beziehen sich auf `astuto/astuto`. Phasen siehe [roadmap.md](roadm
 - [x] „Post bearbeiten/löschen“ (#210): der Capybara-Spec ist mit dem alten UI entfallen; der Playwright-Admin-Ablauf bearbeitet und löscht jetzt einen Post
 
 ### Multi-Tenancy und SaaS-Teile (entschieden: Multi-Tenancy bleibt)
-- [ ] Multi-Tenancy-Modus (`MULTI_TENANCY=true`) mit Subdomains und Custom Domains testen, Doku schreiben; App-API und neues Frontend im Multi-Tenancy-Modus prüfen
-- [ ] Entscheidung Geschäftsmodell (roadmap.md, Abschnitt 7): Stripe-Billing modernisieren (gehostete Variante) oder entfernen
-- [ ] astuto.io-spezifische Teile entfernen bzw. konfigurierbar machen: Promo-Banner, `ASTUTO_CNAME_API_*`, Mails mit astuto.io-Links
-- [x] Mailer-Standardabsender: `EMAIL_MAIL_FROM`, sonst `noreply@<Host aus BASE_URL>` (`Rails.application.default_mail_from`); Reply-To fällt auf den Absender zurück. Offen: `TenantMailer` (Billing-Mails mit astuto.io-Adressen) hängt an der Geschäftsmodell-Entscheidung
+- [x] Multi-Tenancy-Modus im Browser getestet (zwei Tenants auf `*.astuto.test`: Trennung der Daten, Sessions, Logins, Custom Domain) und dokumentiert (`docs/multi-tenancy.md`). Dabei behoben: Subdomain hing an `tld_length` (kaputt bei `BASE_URL`-Hosts mit mehr als zwei Teilen), Custom Domains mit langen TLDs abgelehnt und von `RAILS_HOSTS` blockiert, Browsersprache im neuen Frontend ignoriert
+- [x] Entscheidung: **kein Billing.** Stripe-Billing, Trial, Billing-Mails (`TenantMailer`), Tabelle `tenant_billings` und `stripe`-Gem entfernt
+- [x] astuto.io-spezifische Teile entfernt: Promo-Banner, Zertifikats-API `ASTUTO_CNAME_API_*` (ersetzt durch `/custom_domain_check` für Caddys On-Demand-TLS), CNAME-Hinweis auf `cname.astuto.io`, Kontaktadresse auf der Seite „E-Mail bestätigen“
+- [x] Mailer-Standardabsender: `EMAIL_MAIL_FROM`, sonst `noreply@<Host aus BASE_URL>` (`Rails.application.default_mail_from`); Reply-To fällt auf den Absender zurück
+- [x] Tenants per Rake verwalten: `bin/rails tenants:create|list|block|unblock` (Übergang bis zur Instanz-Admin-Oberfläche)
+- [ ] OAuth-Login auf Custom Domains: Callback läuft auf der Subdomain, der `token_state`-Cookie der Custom Domain kommt dort nicht an (#472). Lösung: Zustand signiert im `state`-Parameter statt im Cookie
+- [ ] `Tenant#destroy` scheitert am Fremdschlüssel von `tenant_settings` (Default-Scope ohne `Current.tenant`); nötig für „Tenant löschen“ in der Admin-Oberfläche
+- [ ] Tenant-Signup (`login.`-Subdomain, `TenantsController#new/create`, OAuth-Grund `tenantsignup`, altes React) ist abgeschaltet und wird mit dem alten Frontend entfernt
 - [ ] Instanz-Admin-Oberfläche für Tenants (anlegen, sperren, Domains) (#76)
 
 ### Mittelstand (roadmap.md, Abschnitt 7)

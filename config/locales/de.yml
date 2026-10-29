@@ -133,8 +133,6 @@ de:
     sort_by:
       most_voted: 'Beliebteste'
       recently_updated: 'Zuletzt aktualisiert'
-  billing:
-    title: 'Abrechnung'
   blocked_tenant:
     title: 'Dieser Feedback-Bereich wurde blockiert'
   board:
@@ -290,7 +288,7 @@ de:
       collapse_boards_in_header_no_collapse: 'nie'
       collapse_boards_in_header_always_collapse: 'immer'
       subtitle_visibility: 'Sichtbarkeit'
-      custom_domain_help: 'Zuerst fügen Sie in Ihren DNS-Einstellungen einen CNAME Eintrag hinzu, der "%{domain}" zu "cname.astuto.io" zeigt. Klicken Sie dann unten auf "Speichern".'
+      custom_domain_help: 'Zuerst fügen Sie in Ihren DNS-Einstellungen einen CNAME Eintrag hinzu, der "%{domain}" zu "%{target}" zeigt. Klicken Sie dann unten auf "Speichern".'
       custom_domain_learn_more: 'Erfahren Sie, wie Sie eine eigene Domain konfigurieren'
       show_vote_count_help: 'Wird diese Einstellung aktiviert, können Nutzer*innen sehen, wie oft für einen Post gevotet wurde. Das kann Nutzer*innen dazu anregen, ebenfalls für beliebte Posts zu stimmen – das würde einem Schneeballeffekt entsprechen.'
       show_vote_button_in_board_help: 'Wenn Sie diese Einstellung aktivieren, können Nutzer*innen Beiträge von der Board-Seite bewerten. Dies kann Nutzer*innen dazu veranlassen, über mehr Beiträge abzustimmen, was zu einer höheren Anzahl von Stimmen führt – die Bedeutung indes verringert sich.'

@@ -105,8 +105,6 @@ pt:
     log_in: 'Entrar / Cadastrar'
   roadmap:
     title: 'Mapa'
-  billing:
-    title: 'Faturamento'
   blocked_tenant:
     title: 'Este espaço de comentários foi bloqueado'
   board:
@@ -202,7 +200,7 @@ pt:
       collapse_boards_in_header_no_collapse: 'Nunca'
       collapse_boards_in_header_always_collapse: 'Sempre'
       subtitle_visibility: 'Visibilidade'
-      custom_domain_help: 'Primeiro, nas suas configurações DNS, adicione um registro CNAME apontando "%{domain}" para "cname.astuto.io". Em seguida, clique no botão "Salvar" abaixo.'
+      custom_domain_help: 'Primeiro, nas suas configurações DNS, adicione um registro CNAME apontando "%{domain}" para "%{target}". Em seguida, clique no botão "Salvar" abaixo.'
       custom_domain_learn_more: 'Aprenda como configurar um domínio personalizado'
       show_vote_count_help: 'Se você habilitar essa configuração, os usuários poderão ver a contagem de votos das postagens. Isso pode incentivar os usuários a votar em postagens já populares, levando a um efeito de bola de neve.'
       show_vote_button_in_board_help: 'Se você habilitar esta configuração, os usuários poderão votar nas postagens da página do fórum. Isso pode incentivar os usuários a votar em mais postagens, levando a um número maior de votos, mas de menor significância.'

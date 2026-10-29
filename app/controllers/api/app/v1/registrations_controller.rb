@@ -1,6 +1,5 @@
 module Api::App::V1
   class RegistrationsController < Api::App::BaseController
-    before_action :check_tenant_subscription, only: [:create]
 
     # POST /api/app/v1/registration
     # { fullName, email, password, passwordConfirmation, invitationToken }

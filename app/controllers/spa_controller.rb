@@ -54,8 +54,8 @@ class SpaController < ActionController::Base
     # Also sets Current.tenant and the locale for the rest of the request
     def inject_meta_tags(html, tenant)
       Current.tenant = tenant
-      I18n.locale = tenant.locale.presence || I18n.default_locale
       setting = TenantSetting.first_or_create
+      I18n.locale = tenant_locale(tenant, setting, request)
 
       title, description = resolve_page_meta(tenant, setting)
       escaped_title = ERB::Util.html_escape(title)

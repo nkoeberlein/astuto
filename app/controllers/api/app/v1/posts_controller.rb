@@ -2,7 +2,6 @@ module Api::App::V1
   class PostsController < Api::App::BaseController
     before_action :require_access
     before_action :require_user, only: [:update, :destroy]
-    before_action :check_tenant_subscription, only: [:create, :update, :destroy]
 
     # GET /api/app/v1/boards/:board_id/posts?search=&sort_by=&post_status_ids[]=&page=
     def index

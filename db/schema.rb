@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_29_131031) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_29_150000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -156,20 +156,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_29_131031) do
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
-  create_table "tenant_billings", force: :cascade do |t|
-    t.bigint "tenant_id", null: false
-    t.integer "status", default: 0, null: false
-    t.datetime "trial_ends_at", precision: nil
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "customer_id"
-    t.datetime "subscription_ends_at", precision: nil
-    t.string "slug"
-    t.string "auth_token"
-    t.index ["slug"], name: "index_tenant_billings_on_slug", unique: true
-    t.index ["tenant_id"], name: "index_tenant_billings_on_tenant_id"
-  end
-
   create_table "tenant_default_o_auths", force: :cascade do |t|
     t.bigint "tenant_id", null: false
     t.bigint "o_auth_id", null: false
@@ -313,7 +299,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_29_131031) do
   add_foreign_key "posts", "post_statuses"
   add_foreign_key "posts", "tenants"
   add_foreign_key "posts", "users"
-  add_foreign_key "tenant_billings", "tenants"
   add_foreign_key "tenant_default_o_auths", "o_auths"
   add_foreign_key "tenant_default_o_auths", "tenants"
   add_foreign_key "tenant_settings", "tenants"

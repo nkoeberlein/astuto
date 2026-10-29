@@ -55,9 +55,6 @@ class User < ApplicationRecord
     if tenant.status == "pending" and tenant.users.count == 1
       tenant.status = "active"
       tenant.save
-
-      CreateStripeCustomer.new().run
-      TenantMailer.trial_start(tenant: tenant).deliver_later
     end
   end
 

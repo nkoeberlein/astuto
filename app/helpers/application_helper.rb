@@ -87,16 +87,41 @@ module ApplicationHelper
     resource ? url_helper.call(resource, options) : url_helper.call(options)
   end
 
+  # Language of a request: the feedback space's language, or the browser's preferred one when
+  # "use browser language" is on and the app has it (legacy pages, app API, v2 pages)
+  def tenant_locale(tenant, tenant_setting, request)
+    default = tenant.locale.presence || I18n.default_locale.to_s
+    return default unless tenant_setting&.use_browser_locale
+
+    available = I18n.available_locales.map(&:to_s)
+    preferred = request.env['HTTP_ACCEPT_LANGUAGE'].to_s.split(',').map { |part| part.split(';').first.to_s.strip }
+    preferred.each do |tag|
+      exact = available.find { |locale| locale.casecmp?(tag) }
+      return exact if exact
+
+      language = tag.split('-').first.to_s.downcase
+      return 'zh-CN' if language == 'zh' && available.include?('zh-CN')
+      return language if available.include?(language)
+    end
+    default
+  end
+
   def get_tenant_from_request(request)
     if Rails.application.multi_tenancy?
-      request_host = request.headers['HTTP_X_FORWARDED_HOST'] || request.host
+      request_host = (request.headers['HTTP_X_FORWARDED_HOST'] || request.host).to_s.split(':').first.to_s.downcase
       request_host_splitted = request_host.split('.')
-      app_host_splitted = URI.parse(Rails.application.base_url).host.split('.')
+      app_host_splitted = Rails.application.base_url_host.downcase.split('.')
 
-      if app_host_splitted.join('.') == request_host_splitted.last(app_host_splitted.length).join('.')
-        return nil if request.subdomain.blank? or RESERVED_SUBDOMAINS.include?(request.subdomain)
+      if request_host_splitted.length > app_host_splitted.length &&
+         app_host_splitted == request_host_splitted.last(app_host_splitted.length)
+        # Everything in front of the BASE_URL host, also for hosts like feedback.example.co.uk
+        # (request.subdomain would depend on tld_length)
+        subdomain = request_host_splitted.first(request_host_splitted.length - app_host_splitted.length).join('.')
+        return nil if RESERVED_SUBDOMAINS.include?(subdomain)
 
-        tenant = Tenant.find_by(subdomain: request.subdomain)
+        tenant = Tenant.find_by(subdomain: subdomain)
+      elsif request_host == app_host_splitted.join('.')
+        return nil
       else
         tenant = Tenant.find_by(custom_domain: request_host)
       end

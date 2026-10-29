@@ -7,7 +7,6 @@ module Api::App::V1::Moderation
     SETTABLE_STATUSES = %w[active blocked].freeze
 
     before_action :require_moderator
-    before_action :check_tenant_subscription, only: [:update]
 
     # GET /api/app/v1/moderation/users?search=&role=&status=&page=
     def index

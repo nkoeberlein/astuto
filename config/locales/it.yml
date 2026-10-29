@@ -105,8 +105,6 @@ it:
     log_in: 'Accedi / Registrati'
   roadmap:
     title: 'Roadmap'
-  billing:
-    title: 'Abbonamento'
   blocked_tenant:
     title: 'Questo spazio di feedback è stato bloccato'
   board:
@@ -202,7 +200,7 @@ it:
       collapse_boards_in_header_no_collapse: 'Mai'
       collapse_boards_in_header_always_collapse: 'Sempre'
       subtitle_visibility: 'Visibilità'
-      custom_domain_help: 'Innanzitutto, nelle impostazioni DNS, aggiungi un record CNAME che punta "%{domain}" a "cname.astuto.io". Quindi, clicca sul pulsante "Salva" qui sotto.'
+      custom_domain_help: 'Innanzitutto, nelle impostazioni DNS, aggiungi un record CNAME che punta "%{domain}" a "%{target}". Quindi, clicca sul pulsante "Salva" qui sotto.'
       custom_domain_learn_more: 'Scopri come configurare un dominio personalizzato'
       show_vote_count_help: 'Se abiliti questa impostazione, gli utenti saranno in grado di vedere il numero di voti dei post. Questo può incentivare gli utenti a votare su post già popolari, portando a un effetto a valanga.'
       show_vote_button_in_board_help: 'Se abiliti questa impostazione, gli utenti saranno in grado di votare i post dalla bacheca. Questo può incentivare gli utenti a votare su un maggior numero di post, risultando in un maggior numero di voti ma di minore importanza.'

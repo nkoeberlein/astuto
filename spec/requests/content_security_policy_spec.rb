@@ -9,12 +9,13 @@ RSpec.describe 'Content Security Policy', type: :request do
     csp.split(';').map(&:strip).find { |d| d.start_with?("#{name} ") }.to_s
   end
 
-  it 'only allows scripts from this site, Stripe or with the nonce' do
+  it 'only allows scripts from this site or with the nonce' do
     get root_path
 
     expect(response).to have_http_status(:ok)
     script_src = directive('script-src')
-    expect(script_src).to include("'self'", 'https://js.stripe.com', "'nonce-")
+    expect(script_src).to include("'self'", "'nonce-")
+    expect(csp).not_to include('stripe')
     expect(script_src).not_to include("'unsafe-inline'", "'unsafe-eval'")
     expect(directive('object-src')).to eq("object-src 'none'")
   end

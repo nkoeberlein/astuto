@@ -371,7 +371,6 @@ GEM
       actionpack (>= 6.1)
       activesupport (>= 6.1)
       sprockets (>= 3.0.0)
-    stripe (20.0.0)
       bigdecimal
       logger
     strscan (3.1.8)
@@ -448,7 +447,6 @@ DEPENDENCIES
   sidekiq (= 8.1.7)
   sidekiq-cron (= 2.4.0)
   sprockets-rails (= 3.5.2)
-  stripe (= 20.0.0)
   turbolinks (= 5.2.1)
   tzinfo-data
   web-console (>= 3.3.0)

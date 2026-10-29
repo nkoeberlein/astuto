@@ -1,7 +1,6 @@
 class PostsController < ApplicationController
   before_action :authenticate_user!, only: [:update, :destroy]
   before_action :authenticate_moderator, only: [:moderation]
-  before_action :check_tenant_subscription, only: [:create, :update, :destroy]
 
   def index
     start_date = params[:start_date] ? Date.parse(params[:start_date]) : Date.parse('1970-01-01')

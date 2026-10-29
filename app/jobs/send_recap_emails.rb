@@ -11,10 +11,7 @@ class SendRecapEmails < ActiveJob::Base
     one_week_ago = 1.week.ago.utc.change(hour: hour, min: 0, sec: 0)
     one_month_ago = 1.month.ago.utc.change(hour: hour, min: 0, sec: 0)
 
-    # Get tenants with active subscriptions
-    tbs = TenantBilling.unscoped.all
-    tbs = tbs.select { |tb| tb.has_active_subscription? }
-    tenants = Tenant.where(id: tbs.map(&:tenant_id))
+    tenants = Tenant.where(status: 'active')
 
     # Based on the current date, determine which recap notifications to send
     frequencies_to_notify = ['daily']
