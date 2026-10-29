@@ -14,7 +14,7 @@ RSpec.describe 'Rack::Attack rate limiting and anti-spam', type: :request do
     # Throttle windows start at multiples of their period (20 s, 1 min, 5 min). Frozen time
     # just after the start of a 5-minute window keeps every request of an example in one
     # window; otherwise a run across a boundary resets the counter and the limit never hits.
-    window_start = (Time.now.to_i / 300 + 1) * 300
+    window_start = ((Time.now.to_i / 300) + 1) * 300
     travel_to(Time.zone.at(window_start + 1)) { example.run }
   ensure
     Rack::Attack.cache.store = previous_store

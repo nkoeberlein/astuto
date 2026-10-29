@@ -92,15 +92,13 @@ class Post < ApplicationRecord
 
     def order_by(sort_by)
       case sort_by
-      when 'newest'
-        order(created_at: :desc)
       when 'trending'
         order(hotness: :desc)
       when 'most_voted'
         order(likes_count: :desc)
       when 'oldest'
         order(created_at: :asc)
-      else
+      else # 'newest'
         order(created_at: :desc)
       end
     end

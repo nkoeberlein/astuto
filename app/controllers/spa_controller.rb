@@ -20,7 +20,8 @@ class SpaController < ActionController::Base
       html = inject_flash(html)
       allow_iframe_embedding if tenant && embedded_roadmap?
       allow_widget_embedding if tenant && page_path == 'embed'
-      render html: html.html_safe, layout: false, content_type: 'text/html'
+      # Our own built index.html; everything injected into it is escaped above
+      render html: html.html_safe, layout: false, content_type: 'text/html' # rubocop:disable Rails/OutputSafety
     else
       render plain: 'The v2 frontend is not built. Run `npm run build` in frontend/ or use the Vite dev server (port 5173).', status: :not_found
     end

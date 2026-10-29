@@ -210,7 +210,7 @@ RSpec.describe 'api/v1/votes', type: :request do
           @like_count_before = Like.count
         end
 
-        run_test! do |response|
+        run_test! do |_response|
           Current.tenant = @current_tenant # Restore the current tenant
           expect(Like.count).to eq(@like_count_before - 1)
           expect { Like.find(id) }.to raise_error(ActiveRecord::RecordNotFound)

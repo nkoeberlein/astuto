@@ -18,7 +18,7 @@ module InstanceAdmin
       # Invisible (404) unless switched on, and only on the base host, never on a feedback space
       def ensure_available
         available = Rails.application.multi_tenancy? &&
-          self.class.password.present? &&
+          instance_admin_password.present? &&
           request.host.to_s.downcase == Rails.application.base_url_host.downcase
         head :not_found unless available
       end
@@ -28,7 +28,7 @@ module InstanceAdmin
           # Both comparisons always run, so the timing does not tell which part was wrong
           [
             ActiveSupport::SecurityUtils.secure_compare(username.to_s, USERNAME),
-            ActiveSupport::SecurityUtils.secure_compare(password.to_s, self.class.password),
+            ActiveSupport::SecurityUtils.secure_compare(password.to_s, instance_admin_password),
           ].all?
         end
       end
@@ -45,7 +45,7 @@ module InstanceAdmin
         uri.to_s
       end
 
-      def self.password
+      def instance_admin_password
         ENV['INSTANCE_ADMIN_PASSWORD'].to_s
       end
   end

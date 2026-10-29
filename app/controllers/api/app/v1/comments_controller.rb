@@ -21,7 +21,7 @@ module Api::App::V1
         parent: parent,
         body: params[:body],
         # Only moderators can mark a comment as an official post update
-        is_post_update: current_user.moderator? && ActiveModel::Type::Boolean.new.cast(params[:isPostUpdate]) || false
+        is_post_update: (current_user.moderator? && ActiveModel::Type::Boolean.new.cast(params[:isPostUpdate])) || false
       )
       return render_error(:unprocessable_content, comment.errors.full_messages.join(', ')) unless comment.save
 

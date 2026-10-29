@@ -222,7 +222,7 @@ RSpec.describe 'api/v1/comments', type: :request do
 
         schema type: :object, properties: { id: { type: :integer } }
 
-        run_test! do |response|
+        run_test! do |_response|
           @comment_1.reload
           expect(@comment_1.body).to eq(comment[:body])
         end
@@ -275,7 +275,7 @@ RSpec.describe 'api/v1/comments', type: :request do
           @current_tenant = Current.tenant # Need to store the current tenant to use it later after request
         end
 
-        run_test! do |response|
+        run_test! do |_response|
           Current.tenant = @current_tenant # Restore the current tenant
 
           expect(Comment.find_by(id: @comment_1.id)).to be_nil
@@ -321,7 +321,7 @@ RSpec.describe 'api/v1/comments', type: :request do
           @comment_1.update!(is_post_update: false)
         end
 
-        run_test! do |response|
+        run_test! do |_response|
           @comment_1.reload
           expect(@comment_1.is_post_update).to eq(true)
         end
@@ -367,7 +367,7 @@ RSpec.describe 'api/v1/comments', type: :request do
           @comment_1.update!(is_post_update: true)
         end
 
-        run_test! do |response|
+        run_test! do |_response|
           @comment_1.reload
           expect(@comment_1.is_post_update).to eq(false)
         end

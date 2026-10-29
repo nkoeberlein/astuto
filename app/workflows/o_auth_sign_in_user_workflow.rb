@@ -61,7 +61,7 @@ class OAuthSignInUserWorkflow
       end
 
       return user
-    rescue => error
+    rescue
       return nil
     end
   end

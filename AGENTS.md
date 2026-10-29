@@ -21,7 +21,8 @@ Astuto Evolution: community continuation of Astuto, a self-hosted customer feedb
 - Tests: `docker compose exec web bundle exec rspec`
 - API docs: `RSWAG_SWAGGERIZE=true RAILS_ENV=test bundle exec rake rswag:specs:swaggerize` (writes `swagger/v1/swagger.yaml` and `swagger/app/v1/openapi.yaml`)
 - Frontend: `docker compose up` → http://localhost:5173/; in `frontend/`: `npm run lint|typecheck|test|build`, `npm run api:types` after API changes; `npm run e2e` (Playwright) against a running instance, also in CI (`run-tests.yml`)
-- Local CI: `docker compose exec web bin/ci` (bundler-audit, npm audit of frontend/ for critical advisories, Brakeman, RSpec, seeds)
+- Local CI: `docker compose exec web bin/ci` (bundler-audit, npm audit of frontend/ for critical advisories, Brakeman, RuboCop, RSpec, seeds)
+- Lint: `BUNDLE_GEMFILE=lint/Gemfile bundle exec rubocop` (own bundle; `.rubocop.yml` enables Lint, Security and a few Rails/RSpec cops, no style rules; CI `lint.yml`)
 - Prod image: `docker build --build-arg ENVIRONMENT=production --target prod .`
 
 ## Patterns

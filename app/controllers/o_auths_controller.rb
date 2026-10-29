@@ -44,7 +44,7 @@ class OAuthsController < ApplicationController
   # [subdomain.]base_url/o_auths/:id/callback
   # Exchange authorization code for access token, fetch user info and sign in/up
   def callback
-    reason, tenant_domain, token_state = params[:state].split(TOKEN_STATE_SEPARATOR, 3)
+    reason, tenant_domain, _ = params[:state].split(TOKEN_STATE_SEPARATOR, 3)
 
     unless reason == "test"
       # Started on a custom domain: the callback runs on the subdomain (or login.) host, where

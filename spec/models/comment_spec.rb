@@ -36,8 +36,8 @@ RSpec.describe Comment, type: :model do
 
   it 'can have 1+ children' do
     parent = FactoryBot.create(:comment)
-    child1 = FactoryBot.create(:comment, parent: parent)
-    child2 = FactoryBot.create(:comment, parent: parent)
+    FactoryBot.create(:comment, parent: parent)
+    FactoryBot.create(:comment, parent: parent)
 
     expect(parent.children.length).to eq(2)
   end

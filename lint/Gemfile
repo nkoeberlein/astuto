@@ -1,0 +1,9 @@
+# RuboCop runs with its own bundle (CI: .github/workflows/lint.yml), so its parser gems do not
+# pin versions of the app's gems:
+#   BUNDLE_GEMFILE=lint/Gemfile bundle install
+#   BUNDLE_GEMFILE=lint/Gemfile bundle exec rubocop
+source 'https://rubygems.org'
+
+gem 'rubocop', '1.92.2'
+gem 'rubocop-rails', '2.38.0'
+gem 'rubocop-rspec', '3.10.2'

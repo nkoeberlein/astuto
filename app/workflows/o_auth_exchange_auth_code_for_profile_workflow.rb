@@ -56,7 +56,7 @@ class OAuthExchangeAuthCodeForProfileWorkflow
       
       token_response = HTTParty.post(
         @o_auth.token_url,
-        headers: { "Accept": "application/json" },
+        headers: { Accept: "application/json" },
         body: token_request_params
       )
       access_token = token_response['access_token']
@@ -73,7 +73,7 @@ class OAuthExchangeAuthCodeForProfileWorkflow
       end
 
       return profile_response
-    rescue => error
+    rescue
       return nil
     end
   end

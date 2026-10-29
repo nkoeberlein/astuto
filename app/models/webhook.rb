@@ -14,7 +14,7 @@ class Webhook < ApplicationRecord
   has_many :deliveries, class_name: 'WebhookDelivery', dependent: :delete_all
 
   validates :name, presence: true, uniqueness: { scope: :tenant_id }, length: { maximum: 255 }
-  validates :url, presence: true, format: { with: URI::regexp(%w(http https)), message: I18n.t('common.validations.url') }
+  validates :url, presence: true, format: { with: URI::RFC2396_PARSER.make_regexp(%w(http https)), message: I18n.t('common.validations.url') }
   validates :trigger, presence: true
   validates :http_method, presence: true
 

@@ -6,5 +6,5 @@ I18n.available_locales = [:en, :it, :de, :fr, :es, :pt, 'zh-CN', :ru, :vi, :tr, 
 # Custom pluralization rules
 # The frontend (frontend/src/lib/i18n.tsx) picks one/other from `count` on its own
 I18n::Backend::Simple.include(I18n::Backend::Pluralization)
-I18n.backend.store_translations 'zh-CN', i18n: { plural: { rule: lambda { |n| :other } } } # Chinese simplified
-I18n.backend.store_translations :vi, i18n: { plural: { rule: lambda { |n| :other } } } # Vietnamese
+I18n.backend.store_translations 'zh-CN', i18n: { plural: { rule: lambda { |_n| :other } } } # Chinese simplified
+I18n.backend.store_translations :vi, i18n: { plural: { rule: lambda { |_n| :other } } } # Vietnamese

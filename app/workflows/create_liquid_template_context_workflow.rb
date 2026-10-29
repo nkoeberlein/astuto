@@ -137,12 +137,7 @@ class CreateLiquidTemplateContextWorkflow
     # Add context variables specific to the webhook trigger
     # Must match TEMPLATE_VARIABLES above
     case webhook_trigger
-    when 'new_post'
-      context['post'] = @entities[:post].as_json(only: POST_ATTRIBUTES, methods: POST_VIRTUAL_ATTRIBUTES)
-      context['post_author'] = @entities.key?(:post_author) ? @entities[:post_author].as_json(only: USER_ATTRIBUTES) : nil
-      context['board'] = @entities[:board].as_json(only: BOARD_ATTRIBUTES)
-
-    when 'new_post_pending_approval'
+    when 'new_post', 'new_post_pending_approval'
       context['post'] = @entities[:post].as_json(only: POST_ATTRIBUTES, methods: POST_VIRTUAL_ATTRIBUTES)
       context['post_author'] = @entities.key?(:post_author) ? @entities[:post_author].as_json(only: USER_ATTRIBUTES) : nil
       context['board'] = @entities[:board].as_json(only: BOARD_ATTRIBUTES)

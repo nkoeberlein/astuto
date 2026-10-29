@@ -14,6 +14,7 @@ Issue numbers refer to the archived [astuto/astuto](https://github.com/astuto/as
 - The astuto.io promo banner and the call to the astuto.io certificate API when a custom domain is saved (`ASTUTO_CNAME_API_URL`, `ASTUTO_CNAME_API_KEY`).
 
 ### Changed
+- **RuboCop** checks the Ruby code in CI (`lint.yml`) and in `bin/ci`: Lint, Security and a few Rails/RSpec cops, no style rules, with its own bundle in `lint/`. The 51 findings it had are fixed (mostly unused variables; no bugs among them).
 - Emails are sent from `EMAIL_MAIL_FROM` or, without it, `noreply@<host of BASE_URL>` (before: `noreply@astuto.io`, the discontinued hosted service). `EMAIL_MAIL_REPLY_TO` defaults to the sender.
 - **The new user interface replaces the old one at `/`.** Every page – boards, posts, roadmap, embedded roadmap, login, sign-up, password reset, profile, moderation and site settings – comes from the v2 frontend. `/next/...` redirects to `/...` (301), and the Devise pages `/users/sign_in`, `/users/sign_up`, `/users/password/new|edit` and `/users/edit` redirect to the new pages, keeping their notices (e.g. after confirming an email). See UPGRADING.md for custom CSS.
 - The Capybara system specs of the old UI are gone; Playwright end-to-end tests cover the new pages, including a Content Security Policy check in the browser console.
