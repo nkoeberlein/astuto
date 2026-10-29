@@ -30,6 +30,7 @@ export type OAuthInput = Schemas['OAuthInput']
 export type Webhook = Schemas['Webhook']
 export type WebhookInput = Schemas['WebhookInput']
 export type WebhookHeader = Schemas['WebhookHeader']
+export type Invitation = Schemas['Invitation']
 export type Translations = { [key: string]: string | Translations }
 
 export class ApiError extends Error {

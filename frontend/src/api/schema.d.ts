@@ -1654,6 +1654,124 @@ export interface paths {
         };
         trace?: never;
     };
+    "/api/app/v1/site_settings/invitations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Invitations sent (admins) */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description with status */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Invitation"][];
+                    };
+                };
+                /** @description moderators are not admins */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        /** Send invitations (admins) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["InvitationInput"];
+                };
+            };
+            responses: {
+                /** @description sends to new addresses, skips members, accepted and invalid ones */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["InvitationResult"];
+                    };
+                };
+                /** @description more than 20 addresses */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/site_settings/invitations/test": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Send a test invitation to oneself (admins) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["InvitationTestInput"];
+                };
+            };
+            responses: {
+                /** @description sent to the admin, with a v2 sign-up link */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["InvitationTestResult"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/app/v1/site_settings/o_auths": {
         parameters: {
             query?: never;
@@ -2598,6 +2716,35 @@ export interface components {
         /** @description Template variables per trigger, e.g. post.title */
         WebhookVariables: {
             [key: string]: string[];
+        };
+        Invitation: {
+            id: number;
+            email: string;
+            /** @enum {string} */
+            status: "pending" | "accepted" | "expired";
+            /** Format: date-time */
+            sentAt: string;
+            /** Format: date-time */
+            acceptedAt: string | null;
+        };
+        InvitationInput: {
+            /** @description At most 20 addresses */
+            to: string[];
+            subject: string;
+            /** @description Must contain %link% */
+            body: string;
+        };
+        InvitationTestInput: {
+            subject: string;
+            body: string;
+        };
+        InvitationResult: {
+            sent: number;
+            /** @description Invalid, registered or already accepted */
+            skipped: string[];
+        };
+        InvitationTestResult: {
+            sentTo: string;
         };
         VoteState: {
             liked: boolean;

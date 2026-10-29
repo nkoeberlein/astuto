@@ -274,6 +274,7 @@ de:
         other: 'Send %{count} invitations'
       submit_success: 'Invitations sent!'
       submit_failure: 'An error occurred while sending invitations'
+      skipped: 'Nicht gesendet (bereits registriert, bereits angenommen oder ungültig): %{emails}'
       invalid_emails: 'Invalid email addresses: %{emails}'
       too_many_emails: 'You can only send %{count} invitations at a time.'
       invitation_link_not_found: 'You must use the %link% placeholder in the email body'

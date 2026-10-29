@@ -168,6 +168,17 @@ module Swagger
         WebhookPreview: object({ url: STRING, body: STRING }),
         WebhookTestResult: object({ status: INTEGER, body: STRING.merge(description: 'Response body, at most 4000 characters') }),
         WebhookVariables: { type: :object, additionalProperties: { type: :array, items: STRING }, description: 'Template variables per trigger, e.g. post.title' },
+        Invitation: object({
+          id: INTEGER, email: STRING, status: { type: :string, enum: %w[pending accepted expired] },
+          sentAt: DATETIME, acceptedAt: { type: :string, format: 'date-time', nullable: true }
+        }),
+        InvitationInput: object({
+          to: { type: :array, items: STRING, description: 'At most 20 addresses' },
+          subject: STRING, body: STRING.merge(description: 'Must contain %link%')
+        }),
+        InvitationTestInput: object({ subject: STRING, body: STRING }),
+        InvitationResult: object({ sent: INTEGER, skipped: { type: :array, items: STRING, description: 'Invalid, registered or already accepted' } }),
+        InvitationTestResult: object({ sentTo: STRING }),
         VoteState: object({ liked: BOOLEAN, likesCount: INTEGER }),
         FollowState: object({ followed: BOOLEAN }),
         Summary: object({ summary: STRING }),

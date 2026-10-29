@@ -184,3 +184,9 @@ export const webhookVariablesQuery = queryOptions({
   queryFn: () => unwrap(api.GET('/api/app/v1/site_settings/webhooks/variables')),
   staleTime: Number.POSITIVE_INFINITY,
 })
+
+// Site settings › Invitations (admins)
+export const invitationsQuery = queryOptions({
+  queryKey: ['siteSettings', 'invitations'],
+  queryFn: () => unwrap(api.GET('/api/app/v1/site_settings/invitations')),
+})

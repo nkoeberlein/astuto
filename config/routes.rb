@@ -138,6 +138,9 @@ Rails.application.routes.draw do
               post :preview, on: :collection
               post :test, on: :member
             end
+            resources :invitations, only: [:index, :create] do
+              post :test, on: :collection
+            end
           end
         end
       end

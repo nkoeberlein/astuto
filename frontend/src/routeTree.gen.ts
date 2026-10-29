@@ -24,6 +24,7 @@ import { Route as Site_settingsAppearanceRouteImport } from './routes/site_setti
 import { Route as Site_settingsAuthenticationRouteImport } from './routes/site_settings.authentication'
 import { Route as Site_settingsBoardsRouteImport } from './routes/site_settings.boards'
 import { Route as Site_settingsGeneralRouteImport } from './routes/site_settings.general'
+import { Route as Site_settingsInvitationsRouteImport } from './routes/site_settings.invitations'
 import { Route as Site_settingsPost_statusesRouteImport } from './routes/site_settings.post_statuses'
 import { Route as Site_settingsRoadmapRouteImport } from './routes/site_settings.roadmap'
 import { Route as Site_settingsWebhooksRouteImport } from './routes/site_settings.webhooks'
@@ -104,6 +105,12 @@ const Site_settingsGeneralRoute = Site_settingsGeneralRouteImport.update({
   path: '/site_settings/general',
   getParentRoute: () => rootRouteImport,
 } as any)
+const Site_settingsInvitationsRoute =
+  Site_settingsInvitationsRouteImport.update({
+    id: '/site_settings/invitations',
+    path: '/site_settings/invitations',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const Site_settingsPost_statusesRoute =
   Site_settingsPost_statusesRouteImport.update({
     id: '/site_settings/post_statuses',
@@ -137,6 +144,7 @@ export interface FileRoutesByFullPath {
   '/site_settings/authentication': typeof Site_settingsAuthenticationRoute
   '/site_settings/boards': typeof Site_settingsBoardsRoute
   '/site_settings/general': typeof Site_settingsGeneralRoute
+  '/site_settings/invitations': typeof Site_settingsInvitationsRoute
   '/site_settings/post_statuses': typeof Site_settingsPost_statusesRoute
   '/site_settings/roadmap': typeof Site_settingsRoadmapRoute
   '/site_settings/webhooks': typeof Site_settingsWebhooksRoute
@@ -157,6 +165,7 @@ export interface FileRoutesByTo {
   '/site_settings/authentication': typeof Site_settingsAuthenticationRoute
   '/site_settings/boards': typeof Site_settingsBoardsRoute
   '/site_settings/general': typeof Site_settingsGeneralRoute
+  '/site_settings/invitations': typeof Site_settingsInvitationsRoute
   '/site_settings/post_statuses': typeof Site_settingsPost_statusesRoute
   '/site_settings/roadmap': typeof Site_settingsRoadmapRoute
   '/site_settings/webhooks': typeof Site_settingsWebhooksRoute
@@ -178,6 +187,7 @@ export interface FileRoutesById {
   '/site_settings/authentication': typeof Site_settingsAuthenticationRoute
   '/site_settings/boards': typeof Site_settingsBoardsRoute
   '/site_settings/general': typeof Site_settingsGeneralRoute
+  '/site_settings/invitations': typeof Site_settingsInvitationsRoute
   '/site_settings/post_statuses': typeof Site_settingsPost_statusesRoute
   '/site_settings/roadmap': typeof Site_settingsRoadmapRoute
   '/site_settings/webhooks': typeof Site_settingsWebhooksRoute
@@ -200,6 +210,7 @@ export interface FileRouteTypes {
     | '/site_settings/authentication'
     | '/site_settings/boards'
     | '/site_settings/general'
+    | '/site_settings/invitations'
     | '/site_settings/post_statuses'
     | '/site_settings/roadmap'
     | '/site_settings/webhooks'
@@ -220,6 +231,7 @@ export interface FileRouteTypes {
     | '/site_settings/authentication'
     | '/site_settings/boards'
     | '/site_settings/general'
+    | '/site_settings/invitations'
     | '/site_settings/post_statuses'
     | '/site_settings/roadmap'
     | '/site_settings/webhooks'
@@ -240,6 +252,7 @@ export interface FileRouteTypes {
     | '/site_settings/authentication'
     | '/site_settings/boards'
     | '/site_settings/general'
+    | '/site_settings/invitations'
     | '/site_settings/post_statuses'
     | '/site_settings/roadmap'
     | '/site_settings/webhooks'
@@ -261,6 +274,7 @@ export interface RootRouteChildren {
   Site_settingsAuthenticationRoute: typeof Site_settingsAuthenticationRoute
   Site_settingsBoardsRoute: typeof Site_settingsBoardsRoute
   Site_settingsGeneralRoute: typeof Site_settingsGeneralRoute
+  Site_settingsInvitationsRoute: typeof Site_settingsInvitationsRoute
   Site_settingsPost_statusesRoute: typeof Site_settingsPost_statusesRoute
   Site_settingsRoadmapRoute: typeof Site_settingsRoadmapRoute
   Site_settingsWebhooksRoute: typeof Site_settingsWebhooksRoute
@@ -373,6 +387,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Site_settingsGeneralRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/site_settings/invitations': {
+      id: '/site_settings/invitations'
+      path: '/site_settings/invitations'
+      fullPath: '/site_settings/invitations'
+      preLoaderRoute: typeof Site_settingsInvitationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/site_settings/post_statuses': {
       id: '/site_settings/post_statuses'
       path: '/site_settings/post_statuses'
@@ -413,6 +434,7 @@ const rootRouteChildren: RootRouteChildren = {
   Site_settingsAuthenticationRoute: Site_settingsAuthenticationRoute,
   Site_settingsBoardsRoute: Site_settingsBoardsRoute,
   Site_settingsGeneralRoute: Site_settingsGeneralRoute,
+  Site_settingsInvitationsRoute: Site_settingsInvitationsRoute,
   Site_settingsPost_statusesRoute: Site_settingsPost_statusesRoute,
   Site_settingsRoadmapRoute: Site_settingsRoadmapRoute,
   Site_settingsWebhooksRoute: Site_settingsWebhooksRoute,

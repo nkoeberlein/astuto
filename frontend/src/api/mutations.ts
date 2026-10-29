@@ -545,3 +545,19 @@ export function useWebhookMutations() {
     }),
   }
 }
+
+// Invitations (site settings, admins)
+export function useInvitationMutations() {
+  const queryClient = useQueryClient()
+  return {
+    send: useMutation({
+      mutationFn: (input: { to: string[]; subject: string; body: string }) =>
+        unwrap(api.POST('/api/app/v1/site_settings/invitations', { body: input })),
+      onSettled: () => queryClient.invalidateQueries({ queryKey: ['siteSettings', 'invitations'] }),
+    }),
+    test: useMutation({
+      mutationFn: (input: { subject: string; body: string }) =>
+        unwrap(api.POST('/api/app/v1/site_settings/invitations/test', { body: input })),
+    }),
+  }
+}
