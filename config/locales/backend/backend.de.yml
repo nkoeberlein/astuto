@@ -227,3 +227,7 @@ de:
       confirm_label: 'Zur Bestätigung „%{subdomain}“ eingeben'
       confirm_mismatch: 'Die Subdomain stimmte nicht überein. Es wurde nichts gelöscht.'
       delete: 'Endgültig löschen'
+  pending_tenant:
+    title: 'E-Mail-Adresse bestätigen'
+    body: 'Bitte im Posteingang (und im Spam-Ordner) nachsehen und den Aktivierungslink anklicken.'
+    help: 'Hilfe nötig? Bitte an die Verwaltung dieser Instanz wenden.'

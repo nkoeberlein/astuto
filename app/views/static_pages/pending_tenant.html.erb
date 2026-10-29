@@ -1,11 +1,4 @@
-<div class="smallContainer">
-  <div class="box" style="text-align: center">
-    <h3>Verify your email address</h3>
-    
-    <%= image_tag("pending-tenant.png", size: 64, style: "margin: 0 auto") %>
-    
-    <p>Please check your email inbox (and your spam folder!) and click on the activation link.</p>
-
-    <p>Need help? Contact the administrator of this instance.</p>
-  </div>
-</div>
+<% content_for :title, t('pending_tenant.title') %>
+<h1><%= t('pending_tenant.title') %></h1>
+<p><%= t('pending_tenant.body') %></p>
+<p class="muted"><%= t('pending_tenant.help') %></p>

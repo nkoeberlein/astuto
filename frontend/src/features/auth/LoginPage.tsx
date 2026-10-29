@@ -118,17 +118,29 @@ export function LoginPage({ redirect }: { redirect?: string }) {
           </div>
         )}
 
-        {canRegister && (
-          <div className="mt-6 border-t border-border/70 pt-4 text-center text-sm">
-            <Link
-              to="/register"
-              search={{ redirect }}
-              className="font-medium text-primary hover:underline"
-            >
-              {t('common.forms.auth.sign_up')}
+        <div className="mt-6 space-y-2 border-t border-border/70 pt-4 text-center text-sm">
+          {canRegister && (
+            <p>
+              <Link
+                to="/register"
+                search={{ redirect }}
+                className="font-medium text-primary hover:underline"
+              >
+                {t('common.forms.auth.sign_up')}
+              </Link>
+            </p>
+          )}
+          <p>
+            <Link to="/confirmation/new" className="text-muted-foreground hover:underline">
+              {t('common.forms.auth.confirmation_instructions_not_received')}
             </Link>
-          </div>
-        )}
+          </p>
+          <p>
+            <Link to="/unlock/new" className="text-muted-foreground hover:underline">
+              {t('common.forms.auth.unlock_instructions_not_received')}
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   )

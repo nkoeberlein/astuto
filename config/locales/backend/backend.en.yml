@@ -227,3 +227,7 @@ en:
       confirm_label: 'Type "%{subdomain}" to confirm'
       confirm_mismatch: 'The subdomain did not match. Nothing was deleted.'
       delete: 'Delete permanently'
+  pending_tenant:
+    title: 'Verify your email address'
+    body: 'Please check your email inbox (and your spam folder) and click the activation link.'
+    help: 'Need help? Contact the administrator of this instance.'

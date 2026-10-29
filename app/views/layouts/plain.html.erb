@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="<%= I18n.locale %>" dir="<%= SpaController::RTL_LANGUAGES.include?(I18n.locale.to_s.split('-').first) ? 'rtl' : 'ltr' %>">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex">
+    <title><%= content_for(:title) || AstutoProject::NAME %></title>
+    <%= render 'layouts/plain_styles' %>
+  </head>
+  <body>
+    <main class="notice-page">
+      <%= yield %>
+    </main>
+  </body>
+</html>

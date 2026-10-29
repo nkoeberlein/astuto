@@ -43,7 +43,7 @@ class Rack::Attack
 
     def password_request?(req)
       (req.post? || req.put? || req.patch?) &&
-        (req.path == '/users/password' || req.path == '/api/app/v1/password')
+        %w[/users/password /api/app/v1/password /api/app/v1/confirmation /api/app/v1/unlock].include?(req.path)
     end
 
     def post_creation_request?(req)

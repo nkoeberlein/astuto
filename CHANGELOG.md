@@ -20,6 +20,7 @@ Issue numbers refer to the archived [astuto/astuto](https://github.com/astuto/as
 - Legacy webhook endpoints `PUT /webhooks/:id/test` and `PUT /webhooks_preview` checked no permissions: anyone, even without an account, could fire a feedback space's webhooks with test data and read the target's response. Both now require an admin.
 
 ### Features
+- New pages to request the email confirmation or account unlock link again (`/confirmation/new`, `/unlock/new`, linked from the login page; `POST /api/app/v1/confirmation` and `/api/app/v1/unlock`). Links in emails keep working and land there on errors (expired or already used).
 - Multi-tenancy is documented (docs/multi-tenancy.md): DNS, TLS, custom domains. Instance admin page at `/instance` on the `BASE_URL` host (#76, protected by `INSTANCE_ADMIN_PASSWORD`): list, create, edit, block and delete feedback spaces; `bin/rails tenants:create|list|block|unblock` does the same from the command line. `/custom_domain_check` answers Caddy's on-demand TLS, so certificates for custom domains come automatically. The custom domain hint names this instance instead of `cname.astuto.io`.
 - Webhooks are signed: every request carries `X-Astuto-Signature` (HMAC-SHA256 of timestamp and body with a per-webhook secret), `X-Astuto-Timestamp` and `X-Astuto-Event`. Existing webhooks got a secret during the update; receivers can start checking whenever they like. See docs/webhooks.md.
 - Webhook delivery log (#458): the newest 50 runs per webhook with status, HTTP code, duration and the template, JSON or network error, under Site settings › Webhooks › Deliveries. Requests time out after 15 seconds.
@@ -40,6 +41,7 @@ Issue numbers refer to the archived [astuto/astuto](https://github.com/astuto/as
 - v2 frontend: embeddable roadmap at `/next/embedded_roadmap` for an iframe on another site, without header and footer; posts open in a new tab. It takes the legacy embed parameters (`show_boards`, `show_statuses`, `show_board_filter=false`, `show_status_filter=false`), so existing embed codes keep working after the switch from `/next` to `/`. Only this page may be framed by other sites, and only while the roadmap is enabled.
 
 ### Fixes
+- The pages for pending and blocked feedback spaces crashed (500); they now render without the old interface.
 - Multi-tenancy: feedback spaces were not found when the `BASE_URL` host had more than two labels (`acme.feedback.example.com`, `feedback.example.co.uk`), because the subdomain depended on Rails' `tld_length`. The subdomain is now everything in front of the `BASE_URL` host, also behind a proxy (`X-Forwarded-Host`). Cookies for OAuth logins are set for the `BASE_URL` host instead of its parent domain.
 - Multi-tenancy: custom domains with top-level domains longer than six letters (`.solutions`, `.community`) were rejected, and with `RAILS_HOSTS` set, every custom domain had to be listed there too. They are now allowed automatically.
 - "Use browser language" had no effect on the new interface and the app API.

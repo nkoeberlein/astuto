@@ -122,6 +122,10 @@ class SpaController < ActionController::Base
         ["#{I18n.t('common.forms.auth.sign_up', default: 'Sign up')} · #{site_name}", site_name]
       when 'password/forgot'
         ["#{I18n.t('common.forms.auth.forgot_password', default: 'Forgot your password?')} · #{site_name}", site_name]
+      when 'confirmation/new'
+        ["#{I18n.t('common.forms.auth.resend_confirmation_instructions', default: 'Resend confirmation instructions')} · #{site_name}", site_name]
+      when 'unlock/new'
+        ["#{I18n.t('common.forms.auth.resend_unlock_instructions', default: 'Resend unlock instructions')} · #{site_name}", site_name]
       when 'password/reset'
         ["#{I18n.t('common.forms.auth.change_password', default: 'Change password')} · #{site_name}", site_name]
       else

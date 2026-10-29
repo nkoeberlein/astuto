@@ -43,6 +43,7 @@ module Swagger
         }, required: %i[fullName email password passwordConfirmation]),
         RegistrationResult: object({ confirmationRequired: BOOLEAN, message: STRING, session: ref(:Session) }),
         ForgotPasswordInput: object({ email: STRING }),
+        EmailInput: object({ email: STRING }),
         ResetPasswordInput: object({ resetPasswordToken: STRING, password: STRING, passwordConfirmation: STRING }),
         PasswordResetResponse: object({ message: STRING, session: ref(:Session) }),
         MessageResponse: object({ message: STRING }),

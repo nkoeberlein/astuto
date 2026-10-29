@@ -20,13 +20,12 @@ RSpec.describe 'Content Security Policy', type: :request do
     expect(directive('object-src')).to eq("object-src 'none'")
   end
 
-  it 'gives the inline locale script of the Rails pages the nonce from the header' do
-    get new_user_confirmation_path
+  it 'serves the Rails notice pages without any script' do
+    get pending_tenant_path
 
-    nonce = directive('script-src')[/'nonce-([^']+)'/, 1]
-    expect(nonce).to be_present
-    expect(response.body).to match(/<script[^>]* nonce="#{Regexp.escape(nonce)}"/)
-    expect(response.body).to include('data-turbolinks-eval="false"')
+    expect(response).to have_http_status(:ok)
+    expect(directive('script-src')).to include("'nonce-")
+    expect(response.body).not_to include('<script')
   end
 
   it 'uses a new nonce for every response' do

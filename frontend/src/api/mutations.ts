@@ -369,6 +369,20 @@ export function useForgotPassword() {
   })
 }
 
+export type EmailInput = Schemas['EmailInput']
+
+// Sends the confirmation or unlock link again (same answer whether or not the account exists)
+export function useResendInstructions(kind: 'confirmation' | 'unlock') {
+  return useMutation({
+    mutationFn: (input: EmailInput) =>
+      unwrap(
+        kind === 'confirmation'
+          ? api.POST('/api/app/v1/confirmation', { body: input })
+          : api.POST('/api/app/v1/unlock', { body: input }),
+      ),
+  })
+}
+
 export function useResetPassword() {
   const queryClient = useQueryClient()
   return useMutation({

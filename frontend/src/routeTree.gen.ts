@@ -16,6 +16,7 @@ import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as RoadmapRouteImport } from './routes/roadmap'
 import { Route as BoardsBoardSlugRouteImport } from './routes/boards.$boardSlug'
+import { Route as ConfirmationNewRouteImport } from './routes/confirmation.new'
 import { Route as ModerationFeedbackRouteImport } from './routes/moderation.feedback'
 import { Route as ModerationUsersRouteImport } from './routes/moderation.users'
 import { Route as PasswordForgotRouteImport } from './routes/password.forgot'
@@ -29,6 +30,7 @@ import { Route as Site_settingsInvitationsRouteImport } from './routes/site_sett
 import { Route as Site_settingsPost_statusesRouteImport } from './routes/site_settings.post_statuses'
 import { Route as Site_settingsRoadmapRouteImport } from './routes/site_settings.roadmap'
 import { Route as Site_settingsWebhooksRouteImport } from './routes/site_settings.webhooks'
+import { Route as UnlockNewRouteImport } from './routes/unlock.new'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -63,6 +65,11 @@ const RoadmapRoute = RoadmapRouteImport.update({
 const BoardsBoardSlugRoute = BoardsBoardSlugRouteImport.update({
   id: '/boards/$boardSlug',
   path: '/boards/$boardSlug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConfirmationNewRoute = ConfirmationNewRouteImport.update({
+  id: '/confirmation/new',
+  path: '/confirmation/new',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ModerationFeedbackRoute = ModerationFeedbackRouteImport.update({
@@ -133,6 +140,11 @@ const Site_settingsWebhooksRoute = Site_settingsWebhooksRouteImport.update({
   path: '/site_settings/webhooks',
   getParentRoute: () => rootRouteImport,
 } as any)
+const UnlockNewRoute = UnlockNewRouteImport.update({
+  id: '/unlock/new',
+  path: '/unlock/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -142,6 +154,7 @@ export interface FileRoutesByFullPath {
   '/register': typeof RegisterRoute
   '/roadmap': typeof RoadmapRoute
   '/boards/$boardSlug': typeof BoardsBoardSlugRoute
+  '/confirmation/new': typeof ConfirmationNewRoute
   '/moderation/feedback': typeof ModerationFeedbackRoute
   '/moderation/users': typeof ModerationUsersRoute
   '/password/forgot': typeof PasswordForgotRoute
@@ -155,6 +168,7 @@ export interface FileRoutesByFullPath {
   '/site_settings/post_statuses': typeof Site_settingsPost_statusesRoute
   '/site_settings/roadmap': typeof Site_settingsRoadmapRoute
   '/site_settings/webhooks': typeof Site_settingsWebhooksRoute
+  '/unlock/new': typeof UnlockNewRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -164,6 +178,7 @@ export interface FileRoutesByTo {
   '/register': typeof RegisterRoute
   '/roadmap': typeof RoadmapRoute
   '/boards/$boardSlug': typeof BoardsBoardSlugRoute
+  '/confirmation/new': typeof ConfirmationNewRoute
   '/moderation/feedback': typeof ModerationFeedbackRoute
   '/moderation/users': typeof ModerationUsersRoute
   '/password/forgot': typeof PasswordForgotRoute
@@ -177,6 +192,7 @@ export interface FileRoutesByTo {
   '/site_settings/post_statuses': typeof Site_settingsPost_statusesRoute
   '/site_settings/roadmap': typeof Site_settingsRoadmapRoute
   '/site_settings/webhooks': typeof Site_settingsWebhooksRoute
+  '/unlock/new': typeof UnlockNewRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -187,6 +203,7 @@ export interface FileRoutesById {
   '/register': typeof RegisterRoute
   '/roadmap': typeof RoadmapRoute
   '/boards/$boardSlug': typeof BoardsBoardSlugRoute
+  '/confirmation/new': typeof ConfirmationNewRoute
   '/moderation/feedback': typeof ModerationFeedbackRoute
   '/moderation/users': typeof ModerationUsersRoute
   '/password/forgot': typeof PasswordForgotRoute
@@ -200,6 +217,7 @@ export interface FileRoutesById {
   '/site_settings/post_statuses': typeof Site_settingsPost_statusesRoute
   '/site_settings/roadmap': typeof Site_settingsRoadmapRoute
   '/site_settings/webhooks': typeof Site_settingsWebhooksRoute
+  '/unlock/new': typeof UnlockNewRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -211,6 +229,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/roadmap'
     | '/boards/$boardSlug'
+    | '/confirmation/new'
     | '/moderation/feedback'
     | '/moderation/users'
     | '/password/forgot'
@@ -224,6 +243,7 @@ export interface FileRouteTypes {
     | '/site_settings/post_statuses'
     | '/site_settings/roadmap'
     | '/site_settings/webhooks'
+    | '/unlock/new'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -233,6 +253,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/roadmap'
     | '/boards/$boardSlug'
+    | '/confirmation/new'
     | '/moderation/feedback'
     | '/moderation/users'
     | '/password/forgot'
@@ -246,6 +267,7 @@ export interface FileRouteTypes {
     | '/site_settings/post_statuses'
     | '/site_settings/roadmap'
     | '/site_settings/webhooks'
+    | '/unlock/new'
   id:
     | '__root__'
     | '/'
@@ -255,6 +277,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/roadmap'
     | '/boards/$boardSlug'
+    | '/confirmation/new'
     | '/moderation/feedback'
     | '/moderation/users'
     | '/password/forgot'
@@ -268,6 +291,7 @@ export interface FileRouteTypes {
     | '/site_settings/post_statuses'
     | '/site_settings/roadmap'
     | '/site_settings/webhooks'
+    | '/unlock/new'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -278,6 +302,7 @@ export interface RootRouteChildren {
   RegisterRoute: typeof RegisterRoute
   RoadmapRoute: typeof RoadmapRoute
   BoardsBoardSlugRoute: typeof BoardsBoardSlugRoute
+  ConfirmationNewRoute: typeof ConfirmationNewRoute
   ModerationFeedbackRoute: typeof ModerationFeedbackRoute
   ModerationUsersRoute: typeof ModerationUsersRoute
   PasswordForgotRoute: typeof PasswordForgotRoute
@@ -291,6 +316,7 @@ export interface RootRouteChildren {
   Site_settingsPost_statusesRoute: typeof Site_settingsPost_statusesRoute
   Site_settingsRoadmapRoute: typeof Site_settingsRoadmapRoute
   Site_settingsWebhooksRoute: typeof Site_settingsWebhooksRoute
+  UnlockNewRoute: typeof UnlockNewRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -342,6 +368,13 @@ declare module '@tanstack/react-router' {
       path: '/boards/$boardSlug'
       fullPath: '/boards/$boardSlug'
       preLoaderRoute: typeof BoardsBoardSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/confirmation/new': {
+      id: '/confirmation/new'
+      path: '/confirmation/new'
+      fullPath: '/confirmation/new'
+      preLoaderRoute: typeof ConfirmationNewRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/moderation/feedback': {
@@ -435,6 +468,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Site_settingsWebhooksRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/unlock/new': {
+      id: '/unlock/new'
+      path: '/unlock/new'
+      fullPath: '/unlock/new'
+      preLoaderRoute: typeof UnlockNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -446,6 +486,7 @@ const rootRouteChildren: RootRouteChildren = {
   RegisterRoute: RegisterRoute,
   RoadmapRoute: RoadmapRoute,
   BoardsBoardSlugRoute: BoardsBoardSlugRoute,
+  ConfirmationNewRoute: ConfirmationNewRoute,
   ModerationFeedbackRoute: ModerationFeedbackRoute,
   ModerationUsersRoute: ModerationUsersRoute,
   PasswordForgotRoute: PasswordForgotRoute,
@@ -459,6 +500,7 @@ const rootRouteChildren: RootRouteChildren = {
   Site_settingsPost_statusesRoute: Site_settingsPost_statusesRoute,
   Site_settingsRoadmapRoute: Site_settingsRoadmapRoute,
   Site_settingsWebhooksRoute: Site_settingsWebhooksRoute,
+  UnlockNewRoute: UnlockNewRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -4,10 +4,6 @@ Rails.application.routes.draw do
   end
 
   if Rails.application.multi_tenancy?
-    constraints subdomain: 'showcase' do
-      root to: 'static_pages#showcase', as: :showcase
-    end
-
     constraints subdomain: 'api' do
       mount Rswag::Api::Engine => '/api-docs'
     end
@@ -43,6 +39,8 @@ Rails.application.routes.draw do
     get '/register', to: 'spa#show', as: :spa_register
     get '/password/forgot', to: 'spa#show', as: :spa_password_forgot
     get '/password/reset', to: 'spa#show', as: :spa_password_reset
+    get '/confirmation/new', to: 'spa#show', as: :spa_confirmation_new
+    get '/unlock/new', to: 'spa#show', as: :spa_unlock_new
     get '/profile', to: 'spa#show', as: :spa_profile
     %w[feedback users].each do |section|
       get "/moderation/#{section}", to: 'spa#show', as: "moderation_#{section}"
@@ -63,6 +61,7 @@ Rails.application.routes.draw do
       :registrations => 'registrations',
       :sessions => 'sessions',
       :passwords => 'passwords',
+      :confirmations => 'confirmations',
       :unlocks => 'unlocks'
     }
 
@@ -114,6 +113,8 @@ Rails.application.routes.draw do
           resource :session, only: [:show, :create, :destroy]
           resource :registration, only: [:create]
           resource :password, only: [:create, :update]
+          resource :confirmation, only: [:create]
+          resource :unlock, only: [:create]
           resource :profile, only: [:show, :update, :destroy] do
             post :api_key
           end

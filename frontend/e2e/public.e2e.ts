@@ -35,6 +35,19 @@ test.describe('public pages', () => {
     await expect(page.getByRole('alert')).toBeVisible()
   })
 
+  test('confirmation and unlock links can be requested again', async ({ page }) => {
+    await page.goto('/login')
+    await page.getByRole('link', { name: "Didn't receive confirmation instructions?" }).click()
+    await expect(page).toHaveURL(/\/confirmation\/new$/)
+    await page.getByLabel('Email').fill('nobody@example.com')
+    await page.getByRole('button', { name: 'Resend confirmation instructions' }).click()
+    await expect(page.getByRole('status')).toContainText('If your email address exists')
+
+    await page.goto('/users/unlock?unlock_token=wrong')
+    await expect(page).toHaveURL(/\/unlock\/new$/)
+    await expect(page.getByRole('alert').first()).toBeVisible()
+  })
+
   test('old addresses lead to the new pages', async ({ page }) => {
     await page.goto('/next/roadmap?sort=recently_updated')
     await expect(page).toHaveURL(/\/roadmap\?sort=recently_updated$/)
