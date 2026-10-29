@@ -21,7 +21,7 @@ en:
         recap_notification_frequency_daily: 'Daily'
         recap_notification_frequency_weekly: 'Weekly'
         recap_notification_frequency_monthly: 'Monthly'
-        recap_notification_frequency_help: 'recap notifications let you know if new feedback has been submitted or is waiting for your approval'
+        recap_notification_frequency_help: 'A summary by email: new feedback, the most voted posts and status changes of posts you follow (moderators: also feedback waiting for approval). Nothing is sent when nothing happened.'
         waiting_confirmation: 'Currently waiting confirmation for %{email}'
         no_password_set: 'You must set a password to update your profile'
         set_password: 'Set password'

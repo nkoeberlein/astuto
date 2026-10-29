@@ -43,17 +43,17 @@ class UserMailer < ApplicationMailer
     )
   end
 
-  def recap(frequency:, user:, published_posts_count:, pending_posts_count:)
+  # frequency: "daily", "weekly" or "monthly"; from/to: the period (see SendRecapEmails)
+  def recap(user:, frequency:, from:, to:)
     Current.tenant = user.tenant
 
-    @frequency = frequency
     @user = user
-    @published_posts_count = published_posts_count
-    @pending_posts_count = pending_posts_count
+    @frequency = t("common.forms.auth.recap_notification_frequency_#{frequency}")
+    @digest = RecapDigest.new(user: user, from: from, to: to)
 
     mail(
       to: user.email,
-      subject: t('mailers.user.recap.subject', site_name: site_name, frequency: frequency)
+      subject: t('mailers.user.recap.subject', site_name: site_name, frequency: @frequency)
     )
   end
 

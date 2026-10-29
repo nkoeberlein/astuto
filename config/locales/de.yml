@@ -20,7 +20,7 @@ de:
         recap_notification_frequency_monthly: 'Monatlich'
         recap_notification_frequency_weekly: 'Wöchentlich'
         recap_notification_frequency_daily: 'Täglich'
-        recap_notification_frequency_help: 'Zusammenfassungen informieren dich über neues Feedback und über Feedback, das auf deine Freigabe wartet'
+        recap_notification_frequency_help: 'Eine Zusammenfassung per E-Mail: neues Feedback, die Beiträge mit den meisten Stimmen und Statusänderungen von Beiträgen, denen du folgst (Moderatoren: auch Feedback, das auf Freigabe wartet). Ohne Neuigkeiten kommt keine E-Mail.'
         oauth_only_info: 'Melde dich mit einem der OAuth-Anbieter unten an oder registriere dich darüber. Die Anmeldung per E-Mail ist auf dieser Seite abgeschaltet.'
         notifications: 'Benachrichtigungen'
         email: 'E-Mail'

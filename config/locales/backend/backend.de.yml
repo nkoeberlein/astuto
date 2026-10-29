@@ -40,6 +40,13 @@ de:
       recap:
         pending_posts_count_html: 'Neues Feedback, das auf Freigabe wartet: %{count}'
         published_posts_count_html: 'Neu veröffentlichtes Feedback: %{count}'
+        status_changes_title: 'Statusänderungen von Beiträgen, denen du folgst'
+        no_status: 'kein Status'
+        top_posts_title: 'Die meisten Stimmen in diesem Zeitraum'
+        period_votes:
+          one: '%{count} neue Stimme'
+          other: '%{count} neue Stimmen'
+        more_posts: 'und %{count} weitere'
         body_html: 'Hier ist die Zusammenfassung (%{frequency}) der Aktivität in deinem Feedback-Bereich'
         subject: '[%{site_name}] Zusammenfassung der Aktivität (%{frequency})'
       opening_greeting: 'Hallo %{name}!'

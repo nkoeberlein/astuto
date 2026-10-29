@@ -60,6 +60,13 @@ en:
         body_html: 'Here is the %{frequency} recap of activities in your feedback space'
         published_posts_count_html: 'New published feedback: %{count}'
         pending_posts_count_html: 'New feedback pending approval: %{count}'
+        status_changes_title: 'Status changes of posts you follow'
+        no_status: 'no status'
+        top_posts_title: 'Most voted in this period'
+        period_votes:
+          one: '%{count} new vote'
+          other: '%{count} new votes'
+        more_posts: 'and %{count} more'
   activerecord:
     models:
       board:

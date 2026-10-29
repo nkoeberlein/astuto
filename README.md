@@ -37,7 +37,7 @@ Astuto Evolution helps you collect, manage and prioritize feedback from your cus
 - **API:** programmatically manage your feedback space with the REST API
 - **Moderation Queue:** decide whether to show new feedback immediately or request approval (always, for anonymous feedback, or for the first posts of each account)
 - **Anonymous Feedback:** enable unregistered users to publish feedback
-- **... and more:** invitation system, brand customization, recap emails for administrators, private site settings, 10+ languages
+- **... and more:** invitation system, brand customization, opt-in recap emails (new feedback, most voted posts, status changes of followed posts), private site settings, 10+ languages
 
 ## What changes compared to Astuto 1.x
 
