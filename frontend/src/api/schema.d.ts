@@ -1860,6 +1860,273 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/app/v1/site_settings/webhooks": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Webhooks (admins) */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description with decrypted URL and headers */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Webhook"][];
+                    };
+                };
+                /** @description moderators are not admins */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        /** Create a webhook (admins) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["WebhookInput"];
+                };
+            };
+            responses: {
+                /** @description created, empty header rows dropped */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Webhook"];
+                    };
+                };
+                /** @description unknown HTTP method */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/site_settings/webhooks/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete a webhook (admins) */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description deleted */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /** Update a webhook (admins) */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["WebhookInput"];
+                };
+            };
+            responses: {
+                /** @description switched on */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Webhook"];
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/api/app/v1/site_settings/webhooks/variables": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Template variables per trigger (admins) */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description variables */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["WebhookVariables"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/site_settings/webhooks/preview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Render URL and body with example data (admins) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["WebhookPreviewInput"];
+                };
+            };
+            responses: {
+                /** @description rendered */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["WebhookPreview"];
+                    };
+                };
+                /** @description Liquid syntax error */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/site_settings/webhooks/{id}/test": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Send the webhook with example data (admins) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description sent with the configured method and headers */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["WebhookTestResult"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/app/v1/posts/{post_id}/summary": {
         parameters: {
             query?: never;
@@ -2282,6 +2549,55 @@ export interface components {
             scope?: string;
             jsonUserNamePath?: string | null;
             jsonUserEmailPath?: string;
+        };
+        WebhookHeader: {
+            key: string;
+            value: string;
+        };
+        Webhook: {
+            id: number;
+            name: string;
+            description: string | null;
+            isEnabled: boolean;
+            /** @enum {string} */
+            trigger: "new_post" | "new_post_pending_approval" | "delete_post" | "post_status_change" | "new_comment" | "new_vote" | "new_user";
+            /** @enum {string} */
+            httpMethod: "post" | "put" | "patch" | "delete";
+            /** @description Liquid template */
+            url: string;
+            /** @description Liquid template that renders JSON */
+            httpBody: string | null;
+            httpHeaders: components["schemas"]["WebhookHeader"][];
+        };
+        WebhookInput: {
+            name?: string;
+            description?: string | null;
+            isEnabled?: boolean;
+            /** @enum {string} */
+            trigger?: "new_post" | "new_post_pending_approval" | "delete_post" | "post_status_change" | "new_comment" | "new_vote" | "new_user";
+            /** @enum {string} */
+            httpMethod?: "post" | "put" | "patch" | "delete";
+            url?: string;
+            httpBody?: string | null;
+            httpHeaders?: components["schemas"]["WebhookHeader"][];
+        };
+        WebhookPreviewInput: {
+            trigger: string;
+            url: string;
+            httpBody?: string | null;
+        };
+        WebhookPreview: {
+            url: string;
+            body: string;
+        };
+        WebhookTestResult: {
+            status: number;
+            /** @description Response body, at most 4000 characters */
+            body: string;
+        };
+        /** @description Template variables per trigger, e.g. post.title */
+        WebhookVariables: {
+            [key: string]: string[];
         };
         VoteState: {
             liked: boolean;

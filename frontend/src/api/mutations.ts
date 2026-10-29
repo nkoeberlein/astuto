@@ -22,6 +22,7 @@ import {
   setCsrfToken,
   type UpdateGeneralSettings,
   unwrap,
+  type WebhookInput,
 } from './client'
 import {
   boardsQuery,
@@ -503,6 +504,44 @@ export function useOAuthMutations() {
           }),
         ),
       onSettled,
+    }),
+  }
+}
+
+// Webhooks (site settings, admins)
+export function useWebhookMutations() {
+  const queryClient = useQueryClient()
+  const onSettled = () => queryClient.invalidateQueries({ queryKey: ['siteSettings', 'webhooks'] })
+  return {
+    create: useMutation({
+      mutationFn: (webhook: WebhookInput) =>
+        unwrap(api.POST('/api/app/v1/site_settings/webhooks', { body: webhook })),
+      onSettled,
+    }),
+    update: useMutation({
+      mutationFn: ({ id, ...webhook }: WebhookInput & { id: number }) =>
+        unwrap(
+          api.PATCH('/api/app/v1/site_settings/webhooks/{id}', {
+            params: { path: { id } },
+            body: webhook,
+          }),
+        ),
+      onSettled,
+    }),
+    remove: useMutation({
+      mutationFn: (id: number) =>
+        unwrap(api.DELETE('/api/app/v1/site_settings/webhooks/{id}', { params: { path: { id } } })),
+      onSettled,
+    }),
+    test: useMutation({
+      mutationFn: (id: number) =>
+        unwrap(
+          api.POST('/api/app/v1/site_settings/webhooks/{id}/test', { params: { path: { id } } }),
+        ),
+    }),
+    preview: useMutation({
+      mutationFn: (input: { trigger: string; url: string; httpBody: string | null }) =>
+        unwrap(api.POST('/api/app/v1/site_settings/webhooks/preview', { body: input })),
     }),
   }
 }

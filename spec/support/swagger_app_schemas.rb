@@ -150,6 +150,24 @@ module Swagger
           authorizeUrl: STRING, tokenUrl: STRING, profileUrl: STRING, scope: STRING,
           jsonUserNamePath: NULLABLE_STRING, jsonUserEmailPath: STRING
         }, required: []),
+        WebhookHeader: object({ key: STRING, value: STRING }),
+        Webhook: object({
+          id: INTEGER, name: STRING, description: NULLABLE_STRING, isEnabled: BOOLEAN,
+          trigger: { type: :string, enum: %w[new_post new_post_pending_approval delete_post post_status_change new_comment new_vote new_user] },
+          httpMethod: { type: :string, enum: %w[post put patch delete] },
+          url: STRING.merge(description: 'Liquid template'), httpBody: NULLABLE_STRING.merge(description: 'Liquid template that renders JSON'),
+          httpHeaders: { type: :array, items: ref(:WebhookHeader) }
+        }),
+        WebhookInput: object({
+          name: STRING, description: NULLABLE_STRING, isEnabled: BOOLEAN,
+          trigger: { type: :string, enum: %w[new_post new_post_pending_approval delete_post post_status_change new_comment new_vote new_user] },
+          httpMethod: { type: :string, enum: %w[post put patch delete] },
+          url: STRING, httpBody: NULLABLE_STRING, httpHeaders: { type: :array, items: ref(:WebhookHeader) }
+        }, required: []),
+        WebhookPreviewInput: object({ trigger: STRING, url: STRING, httpBody: NULLABLE_STRING }, required: %i[trigger url]),
+        WebhookPreview: object({ url: STRING, body: STRING }),
+        WebhookTestResult: object({ status: INTEGER, body: STRING.merge(description: 'Response body, at most 4000 characters') }),
+        WebhookVariables: { type: :object, additionalProperties: { type: :array, items: STRING }, description: 'Template variables per trigger, e.g. post.title' },
         VoteState: object({ liked: BOOLEAN, likesCount: INTEGER }),
         FollowState: object({ followed: BOOLEAN }),
         Summary: object({ summary: STRING }),

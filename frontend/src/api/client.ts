@@ -27,6 +27,9 @@ export type BoardInput = Schemas['BoardInput']
 export type PostStatusInput = Schemas['PostStatusInput']
 export type OAuthSettings = Schemas['OAuthSettings']
 export type OAuthInput = Schemas['OAuthInput']
+export type Webhook = Schemas['Webhook']
+export type WebhookInput = Schemas['WebhookInput']
+export type WebhookHeader = Schemas['WebhookHeader']
 export type Translations = { [key: string]: string | Translations }
 
 export class ApiError extends Error {

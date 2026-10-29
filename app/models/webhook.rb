@@ -5,6 +5,8 @@ class Webhook < ApplicationRecord
   after_find :decrypt_url
   before_save :encrypt_http_headers
   after_find :decrypt_http_headers
+  # Back to plain text in memory, so the saved record serializes and runs like a loaded one
+  after_save :decrypt_url, :decrypt_http_headers
 
   validates :name, presence: true, uniqueness: { scope: :tenant_id }, length: { maximum: 255 }
   validates :url, presence: true, format: { with: URI::regexp(%w(http https)), message: I18n.t('common.validations.url') }

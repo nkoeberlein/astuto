@@ -11,6 +11,7 @@ Issue numbers refer to the archived [astuto/astuto](https://github.com/astuto/as
 - Legacy webhook endpoints `PUT /webhooks/:id/test` and `PUT /webhooks_preview` checked no permissions: anyone, even without an account, could fire a feedback space's webhooks with test data and read the target's response. Both now require an admin.
 
 ### Features
+- v2 frontend: site settings › Webhooks at `/next/site_settings/webhooks`: create, edit, switch on or off, delete; headers as key/value rows; template variables of the chosen trigger insert at the cursor; preview renders URL and body with example data and explains JSON errors; the test button sends the saved webhook and shows status and response. New endpoints under `/api/app/v1/site_settings/webhooks` (including `variables`, `preview`, `:id/test`); the variables per trigger now live in one place in the backend.
 - v2 frontend: site settings › Authentication at `/next/site_settings/authentication`: email registration rules (everyone, certain domains, nobody) and OAuth providers – create, edit, switch on or off, test in a popup, copy the callback URL, delete; default providers of the instance can be switched on or off per feedback space. The client secret is never sent to the browser; leaving it empty when editing keeps the current one. New endpoints under `/api/app/v1/site_settings/o_auths`.
 - v2 frontend: site settings › Appearance at `/next/site_settings/appearance`: custom CSS with live preview before saving (`customCss` in `GET/PATCH /api/app/v1/site_settings/general`).
 - v2 frontend: site settings › Roadmap at `/next/site_settings/roadmap`: move statuses into or out of the roadmap, and build the embed code for `/next/embedded_roadmap` (filters, boards, statuses) with a copy button.
@@ -19,6 +20,10 @@ Issue numbers refer to the archived [astuto/astuto](https://github.com/astuto/as
 - v2 frontend: user moderation at `/next/moderation/users` – search by name or email, filter by role and status, block and unblock (moderators), change roles (admins). Same rules as the legacy UI: nobody changes themselves or the owner, moderators only manage users. Unlike the legacy list, the server searches and pages through the users (50 at a time). New endpoints `GET /api/app/v1/moderation/users` and `PATCH /api/app/v1/moderation/users/:id`.
 - v2 frontend: feedback moderation at `/next/moderation/feedback` – posts waiting for approval and rejected posts, approve or reject with one click. Moderators get a moderation link in the header with the number of pending posts. New endpoint `GET /api/app/v1/moderation/posts`; the session tells moderators the pending count (`pendingPostsCount`).
 - v2 frontend: embeddable roadmap at `/next/embedded_roadmap` for an iframe on another site, without header and footer; posts open in a new tab. It takes the legacy embed parameters (`show_boards`, `show_statuses`, `show_board_filter=false`, `show_status_filter=false`), so existing embed codes keep working after the switch from `/next` to `/`. Only this page may be framed by other sites, and only while the roadmap is enabled.
+
+### Fixes
+- Webhooks set to PUT, PATCH or DELETE were always sent as POST.
+- After saving a webhook, the legacy UI got its URL and headers back encrypted.
 
 ## [2.0.0-alpha.3] – 2026-10-26
 

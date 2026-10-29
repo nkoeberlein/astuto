@@ -172,3 +172,15 @@ export const oAuthSettingsQuery = queryOptions({
   queryKey: ['siteSettings', 'oAuths'],
   queryFn: () => unwrap(api.GET('/api/app/v1/site_settings/o_auths')),
 })
+
+// Site settings › Webhooks (admins)
+export const webhooksQuery = queryOptions({
+  queryKey: ['siteSettings', 'webhooks'],
+  queryFn: () => unwrap(api.GET('/api/app/v1/site_settings/webhooks')),
+})
+
+export const webhookVariablesQuery = queryOptions({
+  queryKey: ['siteSettings', 'webhooks', 'variables'],
+  queryFn: () => unwrap(api.GET('/api/app/v1/site_settings/webhooks/variables')),
+  staleTime: Number.POSITIVE_INFINITY,
+})

@@ -133,6 +133,11 @@ Rails.application.routes.draw do
             resources :o_auths, only: [:index, :create, :update, :destroy] do
               put :default, on: :member
             end
+            resources :webhooks, only: [:index, :create, :update, :destroy] do
+              get :variables, on: :collection
+              post :preview, on: :collection
+              post :test, on: :member
+            end
           end
         end
       end

@@ -22,6 +22,15 @@ RSpec.describe Webhook, 'encryption', type: :model do
     expect(loaded.http_headers).to eq([{ 'key' => 'A', 'value' => 'B' }])
   end
 
+  it 'keeps url and headers readable in memory after saving' do
+    webhook = FactoryBot.create(:webhook, url: 'https://example.com/hook', http_headers: '[]')
+
+    expect(webhook.url).to eq('https://example.com/hook')
+    expect(webhook.http_headers).to eq('[]')
+    webhook.update!(name: 'Renamed')
+    expect(Webhook.find(webhook.id).url).to eq('https://example.com/hook')
+  end
+
   it 'still reads values written with Marshal by older versions' do
     webhook = FactoryBot.create(:webhook)
     webhook.update_columns(url: marshal.encrypt_and_sign('https://old.example.com'), http_headers: marshal.encrypt_and_sign('[]'))

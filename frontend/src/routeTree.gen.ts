@@ -26,6 +26,7 @@ import { Route as Site_settingsBoardsRouteImport } from './routes/site_settings.
 import { Route as Site_settingsGeneralRouteImport } from './routes/site_settings.general'
 import { Route as Site_settingsPost_statusesRouteImport } from './routes/site_settings.post_statuses'
 import { Route as Site_settingsRoadmapRouteImport } from './routes/site_settings.roadmap'
+import { Route as Site_settingsWebhooksRouteImport } from './routes/site_settings.webhooks'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -114,6 +115,11 @@ const Site_settingsRoadmapRoute = Site_settingsRoadmapRouteImport.update({
   path: '/site_settings/roadmap',
   getParentRoute: () => rootRouteImport,
 } as any)
+const Site_settingsWebhooksRoute = Site_settingsWebhooksRouteImport.update({
+  id: '/site_settings/webhooks',
+  path: '/site_settings/webhooks',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -133,6 +139,7 @@ export interface FileRoutesByFullPath {
   '/site_settings/general': typeof Site_settingsGeneralRoute
   '/site_settings/post_statuses': typeof Site_settingsPost_statusesRoute
   '/site_settings/roadmap': typeof Site_settingsRoadmapRoute
+  '/site_settings/webhooks': typeof Site_settingsWebhooksRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -152,6 +159,7 @@ export interface FileRoutesByTo {
   '/site_settings/general': typeof Site_settingsGeneralRoute
   '/site_settings/post_statuses': typeof Site_settingsPost_statusesRoute
   '/site_settings/roadmap': typeof Site_settingsRoadmapRoute
+  '/site_settings/webhooks': typeof Site_settingsWebhooksRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -172,6 +180,7 @@ export interface FileRoutesById {
   '/site_settings/general': typeof Site_settingsGeneralRoute
   '/site_settings/post_statuses': typeof Site_settingsPost_statusesRoute
   '/site_settings/roadmap': typeof Site_settingsRoadmapRoute
+  '/site_settings/webhooks': typeof Site_settingsWebhooksRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -193,6 +202,7 @@ export interface FileRouteTypes {
     | '/site_settings/general'
     | '/site_settings/post_statuses'
     | '/site_settings/roadmap'
+    | '/site_settings/webhooks'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -212,6 +222,7 @@ export interface FileRouteTypes {
     | '/site_settings/general'
     | '/site_settings/post_statuses'
     | '/site_settings/roadmap'
+    | '/site_settings/webhooks'
   id:
     | '__root__'
     | '/'
@@ -231,6 +242,7 @@ export interface FileRouteTypes {
     | '/site_settings/general'
     | '/site_settings/post_statuses'
     | '/site_settings/roadmap'
+    | '/site_settings/webhooks'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -251,6 +263,7 @@ export interface RootRouteChildren {
   Site_settingsGeneralRoute: typeof Site_settingsGeneralRoute
   Site_settingsPost_statusesRoute: typeof Site_settingsPost_statusesRoute
   Site_settingsRoadmapRoute: typeof Site_settingsRoadmapRoute
+  Site_settingsWebhooksRoute: typeof Site_settingsWebhooksRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -374,6 +387,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Site_settingsRoadmapRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/site_settings/webhooks': {
+      id: '/site_settings/webhooks'
+      path: '/site_settings/webhooks'
+      fullPath: '/site_settings/webhooks'
+      preLoaderRoute: typeof Site_settingsWebhooksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -395,6 +415,7 @@ const rootRouteChildren: RootRouteChildren = {
   Site_settingsGeneralRoute: Site_settingsGeneralRoute,
   Site_settingsPost_statusesRoute: Site_settingsPost_statusesRoute,
   Site_settingsRoadmapRoute: Site_settingsRoadmapRoute,
+  Site_settingsWebhooksRoute: Site_settingsWebhooksRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -137,7 +137,8 @@ Empfehlung (roadmap.md, Abschnitt 3): getrenntes Frontend mit React 19 + TS 7 + 
 - [x] Site Settings › Roadmap (`/next/site_settings/roadmap`): Status in/aus der Roadmap, Einbett-Code für `/next/embedded_roadmap` mit Board-/Status-Auswahl und Kopier-Knopf
 - [x] Site Settings › Appearance (`/next/site_settings/appearance`): eigenes CSS mit Live-Vorschau, über den General-Endpunkt gespeichert
 - [x] Site Settings › Authentication (`/next/site_settings/authentication`): E-Mail-Registrierung (Policy, erlaubte Domains) und OAuth-Anbieter (anlegen, bearbeiten, an/aus, Test-Popup, Callback-URL kopieren, löschen; Standard-Anbieter pro Tenant an/aus); Client-Secret verlässt den Server nie
-- [ ] Site Settings › Webhooks, Invitations, API-Keys
+- [x] Site Settings › Webhooks (`/next/site_settings/webhooks`): CRUD, Header-Zeilen, Variablen je Auslöser zum Einfügen (Liste jetzt einmal im Backend: `CreateLiquidTemplateContextWorkflow::TEMPLATE_VARIABLES`), Vorschau mit JSON-Fehlerhinweis, Test mit Status und Antwort. Nebenbei behoben: PUT/PATCH/DELETE gingen immer als POST raus; nach dem Speichern standen URL und Header verschlüsselt im Speicher
+- [ ] Site Settings › Invitations, API-Keys
 - [ ] E2E-Tests (Playwright oder Capybara) für jede neue Seite
 - [ ] Altes Frontend entfernen: `react-rails`, `react_ujs`, Redux, Bootstrap, jQuery, Turbolinks, `jsbundling`/Webpack, `i18n-js` 3; danach Sidekiq 8.1 und `connection_pool`-Pin entfernen
 - [ ] `app/controllers` (22 Dateien) nach Bereichen gliedern (z. B. `api/app/v1/site_settings/`)

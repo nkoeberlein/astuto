@@ -7,6 +7,25 @@ class CreateLiquidTemplateContextWorkflow
   POST_VIRTUAL_ATTRIBUTES = [:url].freeze
   COMMENT_ATTRIBUTES = [:id, :body, :user_id, :post_id, :created_at, :updated_at].freeze
 
+  # Variables each trigger offers in templates: context key => attributes
+  # (the legacy UI keeps its own copy in TemplateVariablesSelector.tsx)
+  POST_VARIABLES = POST_ATTRIBUTES + POST_VIRTUAL_ATTRIBUTES
+  TEMPLATE_VARIABLES = {
+    'new_post' => { post: POST_VARIABLES, post_author: USER_ATTRIBUTES, board: BOARD_ATTRIBUTES },
+    'new_post_pending_approval' => { post: POST_VARIABLES, post_author: USER_ATTRIBUTES, board: BOARD_ATTRIBUTES },
+    'delete_post' => { post: [:id] },
+    'post_status_change' => { post: POST_VARIABLES, post_author: USER_ATTRIBUTES, board: BOARD_ATTRIBUTES, post_status: POST_STATUS_ATTRIBUTES },
+    'new_comment' => { comment: COMMENT_ATTRIBUTES, comment_author: USER_ATTRIBUTES, post: POST_VARIABLES, post_author: USER_ATTRIBUTES, board: BOARD_ATTRIBUTES },
+    'new_vote' => { vote_author: USER_ATTRIBUTES, post: POST_VARIABLES, post_author: USER_ATTRIBUTES, board: BOARD_ATTRIBUTES },
+    'new_user' => { user: USER_ATTRIBUTES }
+  }.freeze
+
+  # ["post.id", "post.title", ..., "tenant.site_name"] for a trigger
+  def self.variables_for(trigger)
+    groups = TEMPLATE_VARIABLES.fetch(trigger.to_s, {}).merge(tenant: TENANT_ATTRIBUTES)
+    groups.flat_map { |name, attributes| attributes.map { |attribute| "#{name}.#{attribute}" } }
+  end
+
   attr_accessor :webhook_trigger, :is_test, :entities
 
   def initialize(webhook_trigger: "new_post", is_test: false, entities: {})

@@ -77,15 +77,16 @@ class RunWebhook < ActiveJob::Base
 
   private
 
+    # The enum value is a string ("http_put"); comparing with symbols sent every webhook as POST
     def map_webhook_http_method(http_method)
-      case http_method
-      when :http_post
+      case http_method.to_s
+      when 'http_post'
         'POST'
-      when :http_put
+      when 'http_put'
         'PUT'
-      when :http_patch
+      when 'http_patch'
         'PATCH'
-      when :http_delete
+      when 'http_delete'
         'DELETE'
       else
         'POST'
