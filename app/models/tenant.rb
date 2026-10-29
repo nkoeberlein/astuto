@@ -1,4 +1,6 @@
 class Tenant < ApplicationRecord
+  # Audit entries reference users, so they go first
+  has_many :audit_events, dependent: :delete_all
   has_one :tenant_setting, dependent: :destroy
   has_many :boards, dependent: :destroy
   has_many :post_statuses, dependent: :destroy

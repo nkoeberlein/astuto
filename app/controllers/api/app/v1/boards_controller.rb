@@ -18,6 +18,7 @@ module Api::App::V1
       board = Board.new(board_params)
       return render_error(:unprocessable_content, board.errors.full_messages.join(', ')) unless board.save
 
+      audit('board.create', board, changes: board.saved_changes)
       render status: :created, json: BoardSerializer.call(board)
     end
 
@@ -26,12 +27,15 @@ module Api::App::V1
       board = Board.find(params[:id])
       return render_error(:unprocessable_content, board.errors.full_messages.join(', ')) unless board.update(board_params)
 
+      audit('board.update', board, changes: board.saved_changes) if board.saved_changes?
       render json: BoardSerializer.call(board)
     end
 
     # DELETE /api/app/v1/boards/:id (admins). Deletes the board's posts as well.
     def destroy
-      Board.find(params[:id]).destroy!
+      board = Board.find(params[:id])
+      board.destroy!
+      audit('board.delete', board)
       head :no_content
     end
 
@@ -39,6 +43,7 @@ module Api::App::V1
     def reorder
       return render_error(:unprocessable_content, I18n.t('errors.board.update_order')) unless apply_order(Board, params[:ids])
 
+      audit('board.reorder')
       index
     end
 

@@ -62,6 +62,16 @@ module Api
           true
         end
 
+        # Audit log entry for an admin or moderator action; a logging problem never fails the action
+        def audit(action, subject = nil, changes: {}, prefix: nil, subject_label: nil)
+          AuditEvent.record!(
+            action: action, actor: current_user, subject: subject, changes: changes, prefix: prefix,
+            subject_label: subject_label, source: 'app', ip: request.remote_ip
+          )
+        rescue StandardError => e
+          Rails.logger.error { "[audit] #{action} not recorded: #{e.class}: #{e.message}" }
+        end
+
         # Posts that are not approved are only visible to moderators
         def find_visible_post(id)
           post = Post.friendly.find(id)

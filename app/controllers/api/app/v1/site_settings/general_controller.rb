@@ -44,6 +44,8 @@ module Api::App::V1::SiteSettings
         return render_error(:unprocessable_content, errors.join(', '))
       end
 
+      changes = AuditEvent.clean(tenant.saved_changes, 'tenant').merge(AuditEvent.clean(tenant_setting.saved_changes, 'tenant_setting'))
+      audit('site_settings.update', tenant, changes: changes, prefix: '') if changes.any?
       render json: serialize
     end
 

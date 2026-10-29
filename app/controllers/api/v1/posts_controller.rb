@@ -69,6 +69,7 @@ module Api
         authorize([:api, post])
 
         if post.update(post_update_params)
+          audit('post.update', post, changes: post.saved_changes) if post.user_id != current_user.id && post.saved_changes?
           render json: { id: post.id }, status: :ok
         else
           render json: { errors: post.errors.full_messages }, status: :unprocessable_entity
@@ -86,6 +87,7 @@ module Api
         authorize([:api, post])
 
         post.destroy!
+        audit('post.delete', post) if post.user_id != current_user.id
 
         render json: { id: post.id }, status: :ok
       end
@@ -101,6 +103,7 @@ module Api
         authorize([:api, post])
 
         post.update!(post_update_board_params)
+        audit('post.update', post, changes: post.saved_changes) if post.saved_changes?
 
         render json: { id: post.id }, status: :ok
       end
@@ -132,6 +135,7 @@ module Api
         end
 
         status_change_workflow.notify_followers if status_change_workflow
+        audit('post.update', post, changes: post.saved_changes) if post.saved_changes?
 
         render json: { id: post.id }, status: :ok
       end
@@ -151,6 +155,7 @@ module Api
         authorize([:api, post])
 
         post.update!(approval_status: 'approved')
+        audit('post.update', post, changes: post.saved_changes)
 
         render json: { id: post.id }, status: :ok
       end
@@ -170,6 +175,7 @@ module Api
         authorize([:api, post])
 
         post.update!(approval_status: 'rejected')
+        audit('post.update', post, changes: post.saved_changes)
 
         render json: { id: post.id }, status: :ok
       end

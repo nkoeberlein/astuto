@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_29_150000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_29_160000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -26,6 +26,24 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_29_150000) do
     t.index ["token_digest"], name: "index_api_keys_on_token_digest", unique: true
     t.index ["user_id", "tenant_id"], name: "index_api_keys_on_user_id_and_tenant_id", unique: true
     t.index ["user_id"], name: "index_api_keys_on_user_id"
+  end
+
+  create_table "audit_events", force: :cascade do |t|
+    t.bigint "tenant_id", null: false
+    t.bigint "user_id"
+    t.string "actor_label"
+    t.string "action", null: false
+    t.string "subject_type"
+    t.bigint "subject_id"
+    t.string "subject_label"
+    t.jsonb "field_changes", default: {}, null: false
+    t.string "source", default: "app", null: false
+    t.string "ip"
+    t.datetime "created_at", null: false
+    t.index ["tenant_id", "action"], name: "index_audit_events_on_tenant_id_and_action"
+    t.index ["tenant_id", "created_at"], name: "index_audit_events_on_tenant_id_and_created_at"
+    t.index ["tenant_id"], name: "index_audit_events_on_tenant_id"
+    t.index ["user_id"], name: "index_audit_events_on_user_id"
   end
 
   create_table "boards", force: :cascade do |t|
@@ -277,6 +295,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_29_150000) do
 
   add_foreign_key "api_keys", "tenants"
   add_foreign_key "api_keys", "users"
+  add_foreign_key "audit_events", "tenants"
+  add_foreign_key "audit_events", "users", on_delete: :nullify
   add_foreign_key "boards", "tenants"
   add_foreign_key "comments", "comments", column: "parent_id"
   add_foreign_key "comments", "posts"

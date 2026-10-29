@@ -1659,6 +1659,55 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/app/v1/site_settings/audit_events": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Audit log, newest first (admins) */
+        get: {
+            parameters: {
+                query?: {
+                    category?: "post" | "comment" | "user" | "board" | "post_status" | "site_settings" | "o_auth" | "webhook" | "invitation" | "api_key";
+                    /** @description nextBefore of the previous page */
+                    before?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description entries */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AuditEventPage"];
+                    };
+                };
+                /** @description moderators cannot read it */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/app/v1/boards/reorder": {
         parameters: {
             query?: never;
@@ -3133,6 +3182,34 @@ export interface components {
         /** @description Template variables per trigger, e.g. post.title */
         WebhookVariables: {
             [key: string]: string[];
+        };
+        AuditChange: {
+            /** @description model.attribute, e.g. post.post_status_id */
+            field: string;
+            /** @description Any JSON value; "[filtered]" for secrets */
+            from: unknown;
+            /** @description Any JSON value */
+            to: unknown;
+        };
+        AuditEvent: {
+            id: number;
+            /** Format: date-time */
+            createdAt: string;
+            /** @description category.verb, e.g. post.update, webhook.rotate_secret */
+            action: string;
+            actorName: string | null;
+            subjectType: string | null;
+            subjectLabel: string | null;
+            /** @description Link to the post while it exists */
+            subjectPath: string | null;
+            changes: components["schemas"]["AuditChange"][];
+            /** @enum {string} */
+            source: "app" | "api" | "mcp";
+            ip: string | null;
+        };
+        AuditEventPage: {
+            events: components["schemas"]["AuditEvent"][];
+            nextBefore: number | null;
         };
         Invitation: {
             id: number;

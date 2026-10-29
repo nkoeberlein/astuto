@@ -12,6 +12,7 @@ const SECTIONS = [
   'appearance',
   'webhooks',
   'invitations',
+  'audit_log',
 ] as const
 
 const itemClass =

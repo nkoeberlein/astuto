@@ -19,6 +19,7 @@ module Api::App::V1
       status = PostStatus.new(status_params)
       return render_error(:unprocessable_content, status.errors.full_messages.join(', ')) unless status.save
 
+      audit('post_status.create', status, changes: status.saved_changes)
       render status: :created, json: PostStatusSerializer.call(status)
     end
 
@@ -27,18 +28,23 @@ module Api::App::V1
       status = PostStatus.find(params[:id])
       return render_error(:unprocessable_content, status.errors.full_messages.join(', ')) unless status.update(status_params)
 
+      audit('post_status.update', status, changes: status.saved_changes) if status.saved_changes?
       render json: PostStatusSerializer.call(status)
     end
 
     # DELETE /api/app/v1/post_statuses/:id (admins). Posts keep existing without a status.
     def destroy
-      PostStatus.find(params[:id]).destroy!
+      status = PostStatus.find(params[:id])
+      status.destroy!
+      audit('post_status.delete', status)
       head :no_content
     end
 
     # PUT /api/app/v1/post_statuses/reorder { ids: [...] } (admins): all status ids in the new order
     def reorder
       return render_error(:unprocessable_content, I18n.t('errors.post_status.update_order')) unless apply_order(PostStatus, params[:ids])
+
+      audit('post_status.reorder')
 
       render json: PostStatus.order(order: :asc).map { |status| PostStatusSerializer.call(status) }
     end

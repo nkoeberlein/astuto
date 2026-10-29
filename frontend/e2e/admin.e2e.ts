@@ -128,5 +128,12 @@ test.describe('admin journey', () => {
     await page.getByRole('link', { name: title }).click()
     await page.getByRole('button', { name: 'Delete' }).first().click()
     await expect(page).toHaveURL(/\/boards\/feature-requests/)
+
+    // Approval and deletion of someone else's post are in the audit log
+    await page.goto('/site_settings/audit_log')
+    await page.getByRole('button', { name: 'Posts', exact: true }).click()
+    const entries = page.getByRole('listitem').filter({ hasText: title })
+    await expect(entries.filter({ hasText: 'deleted the post' })).toHaveCount(1)
+    await expect(entries.filter({ hasText: 'changed the post' })).toContainText('approved')
   })
 })

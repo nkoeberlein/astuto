@@ -177,6 +177,14 @@ module Swagger
         WebhookPreview: object({ url: STRING, body: STRING }),
         WebhookTestResult: object({ status: INTEGER, body: STRING.merge(description: 'Response body, at most 4000 characters') }),
         WebhookVariables: { type: :object, additionalProperties: { type: :array, items: STRING }, description: 'Template variables per trigger, e.g. post.title' },
+        AuditChange: object({ field: STRING.merge(description: 'model.attribute, e.g. post.post_status_id'), from: { description: 'Any JSON value; "[filtered]" for secrets' }, to: { description: 'Any JSON value' } }),
+        AuditEvent: object({
+          id: INTEGER, createdAt: DATETIME, action: STRING.merge(description: 'category.verb, e.g. post.update, webhook.rotate_secret'),
+          actorName: NULLABLE_STRING, subjectType: NULLABLE_STRING, subjectLabel: NULLABLE_STRING,
+          subjectPath: NULLABLE_STRING.merge(description: 'Link to the post while it exists'),
+          changes: { type: :array, items: ref(:AuditChange) }, source: { type: :string, enum: %w[app api mcp] }, ip: NULLABLE_STRING
+        }),
+        AuditEventPage: object({ events: { type: :array, items: ref(:AuditEvent) }, nextBefore: NULLABLE_INTEGER }),
         Invitation: object({
           id: INTEGER, email: STRING, status: { type: :string, enum: %w[pending accepted expired] },
           sentAt: DATETIME, acceptedAt: { type: :string, format: 'date-time', nullable: true }

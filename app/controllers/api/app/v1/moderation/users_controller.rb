@@ -54,6 +54,7 @@ module Api::App::V1::Moderation
       end
       return render_error(:unprocessable_content, user.errors.full_messages.join(', ')) unless saved
 
+      audit('user.update', user, changes: user.saved_changes.slice('role', 'status')) if user.saved_changes?
       render json: serialize(user)
     end
 

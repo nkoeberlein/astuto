@@ -106,7 +106,7 @@ Issue-Nummern beziehen sich auf `astuto/astuto`. Phasen siehe [roadmap.md](roadm
 ### Mittelstand (roadmap.md, Abschnitt 7)
 - [ ] SAML-Login und LDAP/AD (#8), Login nur per SSO (#471)
 - [ ] 2FA/MFA für Admins und Moderatoren (v2: Devise-TOTP, v3: Better Auth); bei kommerziellem Einsatz bzw. Audits erwartet
-- [ ] Audit-Log für Moderation und Einstellungen
+- [x] Audit-Log für Moderation und Einstellungen: Tabelle `audit_events` (Akteur, Aktion, Objekt mit Namens-Snapshot, geänderte Felder alt/neu, Quelle App/REST-API/MCP, IP; Secrets gefiltert), aufgezeichnet in App-API, REST-API und MCP; Seite Site settings › Protokoll mit Filter nach Bereich; Aufbewahrung `AUDIT_LOG_RETENTION_DAYS` (365)
 - [ ] DSGVO: Datenexport und Löschung pro Person, Aufbewahrungsfristen
 - [x] Betrieb (`docs/operations.md`): `/health/live` und `/health/ready` (DB, Migrationen, Redis; 503 mit den fehlerhaften Checks), Prometheus-Endpunkt `/metrics` mit `METRICS_TOKEN` (Zählwerte je Tenant, Webhook-Fehler, Sidekiq-Queues), Backup/Restore-Anleitung, Helm-Chart `deploy/helm/astuto-evolution` (Web, optionaler Sidekiq-Worker, Ingress, ServiceMonitor; in der CI mit `helm lint`, `helm template` und kubeconform geprüft). Dazu: DB-Vorbereitung beim Start mit Advisory Lock (mehrere Container gleichzeitig), Prod-Entrypoint führt übergebene Befehle aus (`bundle exec sidekiq`), `REDIS_PASSWORD` wurde an fester Position in die URL gespleißt (kaputt bei `rediss://` und Sonderzeichen)
 - [x] FAQ „AGPL im Unternehmen“ (`docs/agpl-faq.md`, verlinkt im README)

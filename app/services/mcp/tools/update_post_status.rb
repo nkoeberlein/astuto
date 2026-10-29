@@ -37,6 +37,7 @@ module Mcp
           workflow.create_status_change! if status_changed
         end
         workflow.notify_followers if status_changed
+        Base.audit('post.update', user, post, post.saved_changes) if post.saved_changes?
 
         {
           post: {

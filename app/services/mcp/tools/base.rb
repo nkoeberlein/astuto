@@ -19,6 +19,13 @@ module Mcp
         def run(user:, **args)
           raise NotImplementedError
         end
+
+        # Audit log entry for a moderator action through MCP
+        def audit(action, user, subject, changes)
+          AuditEvent.record!(action: action, actor: user, subject: subject, changes: changes, source: 'mcp')
+        rescue StandardError => e
+          Rails.logger.error { "[audit] #{action} not recorded: #{e.class}: #{e.message}" }
+        end
       end
     end
   end

@@ -19,6 +19,7 @@ module Api::App::V1::SiteSettings
       o_auth = OAuth.new(o_auth_params)
       return render_error(:unprocessable_content, o_auth.errors.full_messages.join(', ')) unless o_auth.save
 
+      audit('o_auth.create', o_auth, changes: o_auth.saved_changes)
       render status: :created, json: serialize(o_auth)
     end
 
@@ -27,12 +28,15 @@ module Api::App::V1::SiteSettings
       o_auth = OAuth.find(params[:id])
       return render_error(:unprocessable_content, o_auth.errors.full_messages.join(', ')) unless o_auth.update(o_auth_params)
 
+      audit('o_auth.update', o_auth, changes: o_auth.saved_changes) if o_auth.saved_changes?
       render json: serialize(o_auth)
     end
 
     # DELETE /api/app/v1/site_settings/o_auths/:id
     def destroy
-      OAuth.find(params[:id]).destroy!
+      o_auth = OAuth.find(params[:id])
+      o_auth.destroy!
+      audit('o_auth.delete', o_auth)
       head :no_content
     end
 
@@ -44,8 +48,10 @@ module Api::App::V1::SiteSettings
 
       if enabled && existing.nil?
         TenantDefaultOAuth.create!(o_auth_id: o_auth.id)
-      elsif !enabled
-        existing&.destroy!
+        audit('o_auth.update', o_auth, changes: { 'is_enabled' => [false, true] })
+      elsif !enabled && existing
+        existing.destroy!
+        audit('o_auth.update', o_auth, changes: { 'is_enabled' => [true, false] })
       end
 
       render json: serialize(o_auth)

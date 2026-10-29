@@ -116,6 +116,11 @@ module Api::App::V1
       return render_error(:unprocessable_content, post.errors.full_messages.join(', ')) unless saved
 
       status_change_workflow.notify_followers if status_changed
+      # Moderation: other people's posts, or board, status and approval of any post
+      moderated = post.saved_changes.keys & %w[board_id post_status_id approval_status]
+      if current_user.moderator? && post.saved_changes? && (post.user_id != current_user.id || moderated.any?)
+        audit('post.update', post, changes: post.saved_changes)
+      end
       render json: PostSerializer.detail(post, current_user: current_user)
     end
 
@@ -125,6 +130,7 @@ module Api::App::V1
       authorize post, :destroy?
 
       post.destroy!
+      audit('post.delete', post) if post.user_id != current_user.id
       head :no_content
     end
 

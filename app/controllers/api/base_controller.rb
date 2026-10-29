@@ -24,6 +24,13 @@ module Api
  
     protected
 
+      # Audit log entry for a moderator or admin action through the REST API
+      def audit(action, subject, changes: {})
+        AuditEvent.record!(action: action, actor: current_user, subject: subject, changes: changes, source: 'api', ip: request.remote_ip)
+      rescue StandardError => e
+        Rails.logger.error { "[audit] #{action} not recorded: #{e.class}: #{e.message}" }
+      end
+
       def set_current_tenant
         Current.tenant = get_tenant_from_request(request)
         

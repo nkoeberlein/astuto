@@ -38,7 +38,7 @@ Rails.application.routes.draw do
     %w[feedback users].each do |section|
       get "/moderation/#{section}", to: 'spa#show', as: "moderation_#{section}"
     end
-    %w[general authentication boards post_statuses roadmap webhooks invitations appearance].each do |section|
+    %w[general authentication boards post_statuses roadmap webhooks invitations appearance audit_log].each do |section|
       get "/site_settings/#{section}", to: 'spa#show', as: "site_settings_#{section}"
     end
     # The v2 frontend lived under /next until 2.0; old links and embed codes keep working
@@ -110,6 +110,7 @@ Rails.application.routes.draw do
             resources :invitations, only: [:index, :create] do
               post :test, on: :collection
             end
+            resources :audit_events, only: [:index]
           end
         end
       end

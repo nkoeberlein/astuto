@@ -42,6 +42,8 @@ module Api::App::V1
 
       return render_error(:unprocessable_content, comment.errors.full_messages.join(', ')) unless comment.save
 
+      # Moderators editing other people's comments
+      audit('comment.update', comment, changes: comment.saved_changes) if comment.user_id != current_user.id && comment.saved_changes?
       render json: CommentSerializer.call(comment)
     end
 
@@ -52,6 +54,7 @@ module Api::App::V1
       authorize comment, :destroy?
 
       comment.destroy!
+      audit('comment.delete', comment) if comment.user_id != current_user.id
       head :no_content
     end
   end

@@ -85,6 +85,7 @@ module Api::App::V1
         current_user.api_key&.destroy!
         ApiKey.create!(user: current_user)
       end
+      audit('api_key.create', current_user)
       render status: :created, json: { apiKey: key.token, masked: token_mask(key.token_prefix) }
     end
 

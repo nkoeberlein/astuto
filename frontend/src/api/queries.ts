@@ -207,3 +207,31 @@ export const webhookDeliveriesQuery = (webhookId: number) =>
         }),
       ),
   })
+
+// Categories of the audit log filter (AuditEvent::CATEGORIES in Rails)
+export const AUDIT_CATEGORIES = [
+  'post',
+  'comment',
+  'user',
+  'board',
+  'post_status',
+  'site_settings',
+  'o_auth',
+  'webhook',
+  'invitation',
+  'api_key',
+] as const
+export type AuditCategory = (typeof AUDIT_CATEGORIES)[number]
+
+export const auditEventsQuery = (category: AuditCategory | null) =>
+  infiniteQueryOptions({
+    queryKey: ['siteSettings', 'auditEvents', category],
+    queryFn: ({ pageParam }) =>
+      unwrap(
+        api.GET('/api/app/v1/site_settings/audit_events', {
+          params: { query: { category: category ?? undefined, before: pageParam } },
+        }),
+      ),
+    initialPageParam: undefined as number | undefined,
+    getNextPageParam: (lastPage) => lastPage.nextBefore ?? undefined,
+  })

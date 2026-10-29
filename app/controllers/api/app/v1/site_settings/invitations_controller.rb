@@ -14,6 +14,9 @@ module Api::App::V1::SiteSettings
       result = workflow.run
       return render_error(:unprocessable_content, error_message(result.error)) if result.error
 
+      if result.sent.to_i.positive?
+        audit('invitation.send', nil, subject_label: I18n.t('site_settings.audit_log.invitations_sent', count: result.sent.to_i, default: "#{result.sent} invitations"))
+      end
       render json: { sent: result.sent, skipped: result.skipped }
     end
 

@@ -23,6 +23,7 @@ module Api::App::V1::SiteSettings
       return unless assign(webhook)
       return render_error(:unprocessable_content, webhook.errors.full_messages.join(', ')) unless webhook.save
 
+      audit('webhook.create', webhook, changes: webhook.saved_changes)
       render status: :created, json: serialize(webhook)
     end
 
@@ -36,6 +37,7 @@ module Api::App::V1::SiteSettings
     def rotate_secret
       webhook = Webhook.find(params[:id])
       webhook.regenerate_signing_secret!
+      audit('webhook.rotate_secret', webhook)
       render json: serialize(webhook)
     end
 
@@ -45,12 +47,15 @@ module Api::App::V1::SiteSettings
       return unless assign(webhook)
       return render_error(:unprocessable_content, webhook.errors.full_messages.join(', ')) unless webhook.save
 
+      audit('webhook.update', webhook, changes: webhook.saved_changes) if webhook.saved_changes?
       render json: serialize(webhook)
     end
 
     # DELETE /api/app/v1/site_settings/webhooks/:id
     def destroy
-      Webhook.find(params[:id]).destroy!
+      webhook = Webhook.find(params[:id])
+      webhook.destroy!
+      audit('webhook.delete', webhook)
       head :no_content
     end
 
