@@ -498,6 +498,9 @@ en:
         header_n_key: 'Header %{n} key'
         header_n_value: 'Header %{n} value'
         template_variables_selector_placeholder: 'Select a template variable...'
+        templates_label: 'Fill in for'
+        templates_help: 'Sets method, Content-Type header and a message body for the chosen trigger. Use the incoming webhook URL of the chat tool as URL.'
+        templates_confirm: 'Replace the current body?'
       test_page:
         title: 'Webhook test results'
   moderation:

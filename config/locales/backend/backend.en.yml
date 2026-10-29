@@ -1,4 +1,13 @@
 en:
+  webhook_templates:
+    new_post: 'New feedback in %{board}: %{post}'
+    new_post_pending_approval: 'Feedback waiting for approval in %{board}: %{post}'
+    delete_post: 'Post #%{id} was deleted'
+    post_status_change: '%{post} is now: %{status}'
+    new_comment: '%{author} commented on %{post}'
+    new_vote: '%{author} voted for %{post}'
+    new_user: 'New user: %{user}'
+    open: 'Open'
   errors:
     unknown: 'An unknown error occurred'
     unauthorized: 'You are not authorized'

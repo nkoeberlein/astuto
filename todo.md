@@ -197,7 +197,7 @@ Empfehlung (roadmap.md, Abschnitt 3): getrenntes Frontend mit React 19 + TS 7 + 
 
 ### Lücken zur Konkurrenz (siehe konkurrenz.md)
 - [x] Changelog: `/changelog` (Header-Link, sobald ein Eintrag veröffentlicht ist; Moderatoren immer), Einträge mit Markdown-Text und verknüpften Posts (Suche, Posts mit Status zuerst), Entwürfe, Veröffentlichen/zurückziehen, Post-Seite verlinkt „Im Changelog“; E-Mail an die Follower der verknüpften Posts beim ersten Veröffentlichen (je Person einmal); RSS `/changelog/feed`, Sitemap; Audit-Kategorie `changelog`; Merge nimmt Verknüpfungen mit
-- [ ] Webhook-Vorlagen für Slack, Discord und Teams (#419)
+- [x] Webhook-Vorlagen für Slack, Discord und Teams (#419): Knöpfe „Vorlage für …“ im Webhook-Formular setzen POST, Content-Type und eine Nachricht je Auslöser (Sprache des Spaces, Teams als Adaptive Card für Workflows); `WebhookTemplates`, `GET /api/app/v1/site_settings/webhooks/templates`; Anleitung in `docs/webhooks.md`
 - [ ] Einbettbares Widget (Feedback, Roadmap, Changelog) **mit Besucher-Identifikation**: die eigene App signiert ein JWT mit einem Geheimnis pro Tenant, Astuto ordnet Votes und Posts dem echten Nutzer zu (anlegen oder per E-Mail/externer ID verknüpfen). Ohne das bleiben Widget-Votes anonym. Von P3 hochgezogen
 
 ## P2 – Projekt und Community

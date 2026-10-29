@@ -315,6 +315,9 @@ de:
         title: 'Testergebnis'
       form:
         template_variables_selector_placeholder: 'Variable einfügen'
+        templates_label: 'Vorlage für'
+        templates_help: 'Setzt Methode, Content-Type-Header und eine Nachricht für den gewählten Auslöser. Als URL die Incoming-Webhook-URL des Chat-Tools eintragen.'
+        templates_confirm: 'Den bisherigen Body ersetzen?'
         header_n_value: 'Header %{n}: Wert'
         header_n_key: 'Header %{n}: Name'
         add_header: 'Header hinzufügen'

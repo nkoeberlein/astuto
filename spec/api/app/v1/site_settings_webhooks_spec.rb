@@ -119,6 +119,24 @@ RSpec.describe 'api/app/v1/site_settings/webhooks', type: :request, openapi_spec
     end
   end
 
+  path '/api/app/v1/site_settings/webhooks/templates' do
+    get('Ready-made bodies for Slack, Discord and Microsoft Teams per trigger (admins)') do
+      tags 'Site settings'
+      produces 'application/json'
+
+      response(200, 'templates') do
+        schema '$ref' => '#/components/schemas/WebhookTemplates'
+        before { sign_in admin }
+
+        run_test! do |response|
+          body = JSON.parse(response.body)
+          expect(body.keys).to eq(%w[slack discord teams])
+          expect(body['slack']['new_post']).to include('"text":', '{{ post.title | escape_json }}')
+        end
+      end
+    end
+  end
+
   path '/api/app/v1/site_settings/webhooks/preview' do
     post('Render URL and body with example data (admins)') do
       tags 'Site settings'

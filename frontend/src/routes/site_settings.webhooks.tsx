@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { webhooksQuery, webhookVariablesQuery } from '@/api/queries'
+import { webhooksQuery, webhookTemplatesQuery, webhookVariablesQuery } from '@/api/queries'
 import { ErrorView } from '@/features/layout/ErrorView'
 import { requireAdmin } from '@/features/site-settings/route'
 import { SiteSettingsLayout } from '@/features/site-settings/SiteSettingsLayout'
@@ -11,6 +11,7 @@ export const Route = createFileRoute('/site_settings/webhooks')({
     await Promise.all([
       queryClient.ensureQueryData(webhooksQuery),
       queryClient.ensureQueryData(webhookVariablesQuery),
+      queryClient.ensureQueryData(webhookTemplatesQuery),
     ])
   },
   component: () => (

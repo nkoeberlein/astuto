@@ -17,6 +17,11 @@ module Api::App::V1::SiteSettings
       render json: Webhook.triggers.keys.index_with { |trigger| CreateLiquidTemplateContextWorkflow.variables_for(trigger) }
     end
 
+    # GET /api/app/v1/site_settings/webhooks/templates: bodies for Slack, Discord and Teams per trigger
+    def templates
+      render json: WebhookTemplates.all
+    end
+
     # POST /api/app/v1/site_settings/webhooks
     def create
       webhook = Webhook.new

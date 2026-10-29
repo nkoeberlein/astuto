@@ -3,7 +3,7 @@ import { BookOpen, Eye, FlaskConical, History, KeyRound, Pencil, Plus, Trash2 } 
 import { type FormEvent, useRef, useState } from 'react'
 import type { Webhook, WebhookDelivery, WebhookInput } from '@/api/client'
 import { useWebhookMutations } from '@/api/mutations'
-import { webhooksQuery, webhookVariablesQuery } from '@/api/queries'
+import { webhooksQuery, webhookTemplatesQuery, webhookVariablesQuery } from '@/api/queries'
 import { CopyButton } from '@/components/CopyButton'
 import { FormError } from '@/components/FormError'
 import { Button } from '@/components/ui/button'
@@ -15,6 +15,13 @@ import { projectDocsUrl } from '@/lib/project'
 import { CheckboxField, SelectField, SettingsSection, TextField } from './fields'
 import { HeaderRows } from './HeaderRows'
 import { DeliveryStatus, WebhookDeliveries } from './WebhookDeliveries'
+
+// Product names, not translated
+const TEMPLATE_SERVICES = [
+  ['slack', 'Slack'],
+  ['discord', 'Discord'],
+  ['teams', 'Microsoft Teams'],
+] as const
 
 const TRIGGERS: Webhook['trigger'][] = [
   'new_post',
@@ -201,6 +208,7 @@ function WebhookForm(props: {
 }) {
   const { t } = useI18n()
   const { data: variables } = useSuspenseQuery(webhookVariablesQuery)
+  const { data: templates } = useSuspenseQuery(webhookTemplatesQuery)
   const { preview } = useWebhookMutations()
   const w = props.webhook
   const [draft, setDraft] = useState<Draft>({
@@ -229,6 +237,26 @@ function WebhookForm(props: {
     requestAnimationFrame(() => {
       field?.focus()
       field?.setSelectionRange(start + text.length, start + text.length)
+    })
+  }
+
+  // Chat tool template: POST with a JSON body for the current trigger
+  const applyTemplate = (service: keyof typeof templates) => {
+    const body = templates[service][draft.trigger]
+    if (!body) return
+    if (
+      draft.httpBody.trim() &&
+      !window.confirm(t('site_settings.webhooks.form.templates_confirm'))
+    )
+      return
+    const headers = draft.httpHeaders.filter(
+      (header) => header.key.trim() && header.key.toLowerCase() !== 'content-type',
+    )
+    setDraft({
+      ...draft,
+      httpMethod: 'post',
+      httpBody: body,
+      httpHeaders: [{ key: 'Content-Type', value: 'application/json' }, ...headers],
     })
   }
 
@@ -291,6 +319,28 @@ function WebhookForm(props: {
         keyPlaceholder="Authorization"
         valuePlaceholder="Bearer …"
       />
+
+      <div className="space-y-1.5">
+        <div className="flex flex-wrap items-center gap-2 text-sm">
+          <span className="text-muted-foreground">
+            {t('site_settings.webhooks.form.templates_label')}
+          </span>
+          {TEMPLATE_SERVICES.map(([service, name]) => (
+            <Button
+              key={service}
+              type="button"
+              size="sm"
+              variant="outline"
+              onClick={() => applyTemplate(service)}
+            >
+              {name}
+            </Button>
+          ))}
+        </div>
+        <p className="text-xs text-muted-foreground">
+          {t('site_settings.webhooks.form.templates_help')}
+        </p>
+      </div>
 
       <div className="space-y-1.5">
         <Label htmlFor="webhook-body">{t('activerecord.attributes.webhook.http_body')}</Label>

@@ -6,6 +6,21 @@ comment, vote or user. URL and body are [Liquid](https://shopify.github.io/liqui
 templates; the body must render valid JSON (use `| escape_json` on text variables). The
 variables of each trigger are listed in the form and can be inserted with one click.
 
+## Slack, Discord and Microsoft Teams
+
+*Fill in for Slack / Discord / Microsoft Teams* in the webhook form sets method `POST`, the
+`Content-Type: application/json` header and a message body for the chosen trigger (choose the
+trigger first). The message is written in the language of the feedback space and can be edited
+afterwards. As URL, enter the incoming webhook URL of the chat tool:
+
+| Tool | Where to get the URL |
+| --- | --- |
+| Slack | App *Incoming Webhooks* (or your own Slack app › Incoming Webhooks), one URL per channel |
+| Discord | Channel settings › Integrations › Webhooks › New webhook › Copy webhook URL |
+| Microsoft Teams | Workflows app › template *Post to a channel when a webhook request is received*; the body is an Adaptive Card (the old Office 365 connectors are retired) |
+
+The URL contains the secret of the chat tool; Astuto stores it encrypted.
+
 ## Checking the signature
 
 Every request carries three headers:

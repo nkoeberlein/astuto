@@ -3387,6 +3387,42 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/app/v1/site_settings/webhooks/templates": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Ready-made bodies for Slack, Discord and Microsoft Teams per trigger (admins) */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description templates */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["WebhookTemplates"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/app/v1/site_settings/webhooks/preview": {
         parameters: {
             query?: never;
@@ -4318,6 +4354,20 @@ export interface components {
         /** @description Template variables per trigger, e.g. post.title */
         WebhookVariables: {
             [key: string]: string[];
+        };
+        WebhookTemplates: {
+            /** @description Liquid body per trigger */
+            slack: {
+                [key: string]: string;
+            };
+            /** @description Liquid body per trigger */
+            discord: {
+                [key: string]: string;
+            };
+            /** @description Liquid body per trigger */
+            teams: {
+                [key: string]: string;
+            };
         };
         SamlSettings: {
             enabled: boolean;

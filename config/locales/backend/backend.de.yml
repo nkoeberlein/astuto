@@ -1,4 +1,13 @@
 de:
+  webhook_templates:
+    new_post: 'Neues Feedback in %{board}: %{post}'
+    new_post_pending_approval: 'Feedback wartet auf Freigabe in %{board}: %{post}'
+    delete_post: 'Beitrag #%{id} wurde gelöscht'
+    post_status_change: '%{post} hat jetzt den Status: %{status}'
+    new_comment: '%{author} hat %{post} kommentiert'
+    new_vote: '%{author} hat für %{post} gestimmt'
+    new_user: 'Neuer Nutzer: %{user}'
+    open: 'Öffnen'
   errors:
     unknown: 'Ein unbekannter Fehler ist aufgetreten'
     unauthorized: 'Du bist nicht autorisiert'

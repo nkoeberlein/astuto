@@ -133,6 +133,7 @@ Rails.application.routes.draw do
             end
             resources :webhooks, only: [:index, :create, :update, :destroy] do
               get :variables, on: :collection
+              get :templates, on: :collection
               post :preview, on: :collection
               post :test, on: :member
               get :deliveries, on: :member

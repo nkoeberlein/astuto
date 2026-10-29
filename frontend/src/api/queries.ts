@@ -219,6 +219,13 @@ export const webhookVariablesQuery = queryOptions({
   staleTime: Number.POSITIVE_INFINITY,
 })
 
+// Ready-made bodies for Slack, Discord and Teams per trigger
+export const webhookTemplatesQuery = queryOptions({
+  queryKey: ['siteSettings', 'webhooks', 'templates'],
+  queryFn: () => unwrap(api.GET('/api/app/v1/site_settings/webhooks/templates')),
+  staleTime: Number.POSITIVE_INFINITY,
+})
+
 // Site settings › Invitations (admins)
 export const invitationsQuery = queryOptions({
   queryKey: ['siteSettings', 'invitations'],

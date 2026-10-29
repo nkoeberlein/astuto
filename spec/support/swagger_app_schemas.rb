@@ -199,6 +199,9 @@ module Swagger
         WebhookPreview: object({ url: STRING, body: STRING }),
         WebhookTestResult: object({ status: INTEGER, body: STRING.merge(description: 'Response body, at most 4000 characters') }),
         WebhookVariables: { type: :object, additionalProperties: { type: :array, items: STRING }, description: 'Template variables per trigger, e.g. post.title' },
+        WebhookTemplates: object(
+          WebhookTemplates::SERVICES.index_with { { type: :object, additionalProperties: STRING, description: 'Liquid body per trigger' } }
+        ),
         SamlSettings: object({
           enabled: BOOLEAN, label: STRING.merge(description: 'Text of the login button'),
           idpEntityId: NULLABLE_STRING, idpSsoUrl: NULLABLE_STRING, idpCert: NULLABLE_STRING.merge(description: 'PEM certificate the IdP signs with'),
