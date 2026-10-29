@@ -23,15 +23,16 @@ class Rack::Attack
     end
 
     def login_request?(req)
-      req.post? && (req.path == '/users/sign_in' || req.path == '/api/app/v1/session')
+      req.post? && %w[/users/sign_in /api/app/v1/session /api/app/v1/session/two_factor /api/app/v1/session/ldap].include?(req.path)
     end
 
-    # Devise forms send user[email], the app API sends email. Malformed bodies
+    # Devise forms send user[email], the app API sends email (LDAP: login). Malformed bodies
     # (e.g. "user" as a string) must not raise inside the middleware.
     def login_email(req)
       params = parsed_params(req)
       user_params = params['user']
-      raw_email = (user_params['email'] if user_params.is_a?(Hash)) || params['email']
+      # LDAP logins send a login name instead; it is throttled the same way
+      raw_email = (user_params['email'] if user_params.is_a?(Hash)) || params['email'] || params['login']
       return nil unless raw_email.is_a?(String)
 
       raw_email.downcase.gsub(/\s+/, '').presence
@@ -43,7 +44,7 @@ class Rack::Attack
 
     def password_request?(req)
       (req.post? || req.put? || req.patch?) &&
-        (req.path == '/users/password' || req.path == '/api/app/v1/password')
+        %w[/users/password /api/app/v1/password /api/app/v1/confirmation /api/app/v1/unlock].include?(req.path)
     end
 
     def post_creation_request?(req)
@@ -82,10 +83,12 @@ class Rack::Attack
   # counted by rack-attack and this throttle may be activated too
   # quickly. If so, enable the condition to exclude them from tracking.
 
-  # Throttle all requests by IP (60rpm) except API and MCP endpoints
+  # Throttle all requests by IP (default 300 per 5 minutes) except API and MCP endpoints.
+  # RATE_LIMIT_REQUESTS raises it, e.g. when many people share one IP address (an office
+  # behind NAT) or for the end-to-end tests in CI.
   #
   # Key: "rack::attack:#{Time.now.to_i/:period}:req/ip:#{req.ip}"
-  throttle('req/ip', limit: 300, period: 5.minutes) do |req|
+  throttle('req/ip', limit: ENV.fetch('RATE_LIMIT_REQUESTS', '300').to_i.clamp(1, 1_000_000), period: 5.minutes) do |req|
     client_ip(req) unless req.path.start_with?('/api/v1/') || req.path == '/mcp'
   end
 
@@ -132,6 +135,11 @@ class Rack::Attack
     login_email(req) if login_request?(req)
   end
 
+  # Widget visitor tokens (POST /api/app/v1/widget/session), each opening of the widget sends one
+  throttle('widget/ip', limit: 30, period: 1.minute) do |req|
+    client_ip(req) if req.post? && req.path == '/api/app/v1/widget/session'
+  end
+
   # Throttle registration attempts (including invitation tokens) by IP address
   throttle('registrations/ip', limit: 5, period: 1.minute) do |req|
     client_ip(req) if registration_request?(req)
@@ -142,9 +150,9 @@ class Rack::Attack
     client_ip(req) if password_request?(req)
   end
 
-  # Throttle POST requests to /tenants by IP address
-  throttle('tenant_signups/ip', limit: 5, period: 20.seconds) do |req|
-    client_ip(req) if req.path == '/tenants' && req.post?
+  # Instance admin pages: HTTP Basic auth, so every request is a password guess
+  throttle('instance_admin/ip', limit: 30, period: 1.minute) do |req|
+    client_ip(req) if req.path == '/instance' || req.path.start_with?('/instance/')
   end
 
   # Throttle POST requests to /posts and /api/app/v1/boards/:board_id/posts by IP address using anti-spam measures

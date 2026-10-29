@@ -1,0 +1,41 @@
+# RuboCop (.rubocop.yml): bug-prone code and security, no style rules.
+# Runs with its own bundle (lint/Gemfile), independent of the app's gems.
+
+name: Lint
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - '**/*.rb'
+      - '**/*.rake'
+      - '.rubocop.yml'
+      - 'lint/**'
+      - '.github/workflows/lint.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - '**/*.rb'
+      - '**/*.rake'
+      - '.rubocop.yml'
+      - 'lint/**'
+      - '.github/workflows/lint.yml'
+
+jobs:
+  rubocop:
+    runs-on: ubuntu-24.04
+    env:
+      BUNDLE_GEMFILE: lint/Gemfile
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '4.0.9'
+          bundler-cache: true
+
+      - name: RuboCop
+        run: bundle exec rubocop --format github

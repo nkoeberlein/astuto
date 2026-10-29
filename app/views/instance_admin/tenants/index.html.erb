@@ -1,0 +1,46 @@
+<div class="actions" style="justify-content: space-between">
+  <h1><%= t('instance_admin.tenants.title') %></h1>
+  <a class="button primary" href="<%= new_instance_admin_tenant_path %>"><%= t('instance_admin.tenants.new') %></a>
+</div>
+
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th><%= t('instance_admin.tenants.site_name') %></th>
+        <th><%= t('instance_admin.tenants.address') %></th>
+        <th><%= t('instance_admin.tenants.status') %></th>
+        <th><%= t('instance_admin.tenants.users') %></th>
+        <th><%= t('instance_admin.tenants.posts') %></th>
+        <th><%= t('instance_admin.tenants.created') %></th>
+        <th><span class="muted"><%= t('instance_admin.tenants.actions') %></span></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @tenants.each do |tenant| %>
+        <tr>
+          <td><%= tenant.site_name %><br><span class="muted"><%= tenant.subdomain %> · <%= tenant.locale %></span></td>
+          <td><a href="<%= tenant_url(tenant) %>" target="_blank" rel="noopener"><%= URI.parse(tenant_url(tenant)).host %></a></td>
+          <td class="status-<%= tenant.status %>"><%= t("instance_admin.tenants.statuses.#{tenant.status}") %></td>
+          <td><%= @user_counts.fetch(tenant.id, 0) %></td>
+          <td><%= @post_counts.fetch(tenant.id, 0) %></td>
+          <td><%= tenant.created_at.to_date.iso8601 %></td>
+          <td>
+            <div class="actions">
+              <a href="<%= edit_instance_admin_tenant_path(tenant) %>"><%= t('instance_admin.tenants.edit') %></a>
+              <% if tenant.blocked? %>
+                <%= button_to t('instance_admin.tenants.unblock'), unblock_instance_admin_tenant_path(tenant), method: :put, form_class: 'inline' %>
+              <% else %>
+                <%= button_to t('instance_admin.tenants.block'), block_instance_admin_tenant_path(tenant), method: :put, form_class: 'inline', class: 'danger' %>
+              <% end %>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<% if @tenants.empty? %>
+  <p class="muted"><%= t('instance_admin.tenants.empty') %></p>
+<% end %>

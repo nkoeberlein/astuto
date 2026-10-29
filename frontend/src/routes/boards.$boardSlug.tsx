@@ -51,6 +51,7 @@ function BoardRoute() {
             q: next.search || undefined,
             sort: next.sortBy === defaultSort ? undefined : next.sortBy,
             status: next.statusIds.length ? next.statusIds.join(',') : undefined,
+            tag: next.tagIds?.length ? next.tagIds.join(',') : undefined,
           }
         },
       }),

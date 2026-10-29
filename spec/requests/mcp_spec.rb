@@ -105,7 +105,7 @@ RSpec.describe 'MCP Streamable HTTP (/mcp)', type: :request do
       expect(response).to have_http_status(:forbidden)
     end
 
-    it 'lists all 8 feedback tools via tools/list' do
+    it 'lists all 9 feedback tools via tools/list' do
       post '/mcp',
            params: { jsonrpc: '2.0', id: 2, method: 'tools/list' }.to_json,
            headers: auth_headers
@@ -121,7 +121,8 @@ RSpec.describe 'MCP Streamable HTTP (/mcp)', type: :request do
         'get_roadmap',
         'create_post',
         'update_post_status',
-        'add_comment'
+        'add_comment',
+        'merge_posts'
       )
     end
   end

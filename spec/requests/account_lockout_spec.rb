@@ -1,19 +1,22 @@
 require 'rails_helper'
 
+# Logins go through the app API (the Devise HTML form is gone); Lockable counts wrong passwords
+# and wrong two-factor codes alike
 RSpec.describe 'Account lockout (Devise :lockable)', type: :request do
   let(:password) { 'password123' }
   let(:user) do
     FactoryBot.create(:user, password: password, password_confirmation: password).tap(&:confirm)
   end
 
-  # Signs in with a wrong password through the legacy form and reloads,
-  # so the request-level Lockable logic (Warden strategy) is exercised.
-  def fail_sign_in!
-    post '/users/sign_in', params: { user: { email: user.email, password: 'wrong-password' } }
+  def sign_in_with(given_password)
+    post '/api/app/v1/session', params: { email: user.email, password: given_password }, as: :json
     user.reload
   end
 
-  # Locks the user directly at model level, to set up state for HTTP assertions
+  def fail_sign_in!
+    sign_in_with('wrong-password')
+  end
+
   def lock!
     (Devise.maximum_attempts - user.reload.failed_attempts).times do
       user.valid_for_authentication? { false }
@@ -21,7 +24,7 @@ RSpec.describe 'Account lockout (Devise :lockable)', type: :request do
     user.reload
   end
 
-  describe 'legacy sign-in (/users/sign_in)' do
+  describe 'login (/api/app/v1/session)' do
     it 'does not lock before maximum_attempts failed attempts' do
       (Devise.maximum_attempts - 1).times { fail_sign_in! }
 
@@ -36,22 +39,26 @@ RSpec.describe 'Account lockout (Devise :lockable)', type: :request do
 
     it 'rejects the correct password with the locked message' do
       lock!
+      sign_in_with(password)
 
-      # Lockable's unauthenticated_message → Devise failure app recalls the
-      # sign-in form (200) and shows the locked message via flash
-      post '/users/sign_in', params: { user: { email: user.email, password: password } }
-
-      expect(response.status).to eq(200)
-      expect(flash[:alert]).to eq(I18n.t('devise.failure.locked'))
+      expect(response).to have_http_status(:unauthorized)
+      expect(response.parsed_body['error']).to eq(I18n.t('devise.failure.locked'))
     end
 
     it 'does not count a successful sign-in towards the lock' do
       (Devise.maximum_attempts - 1).times { fail_sign_in! }
+      sign_in_with(password)
 
+      expect(response).to have_http_status(:ok)
+      expect(user.failed_attempts).to eq(0)
+    end
+
+    it 'no longer accepts passwords at the old Devise form' do
       post '/users/sign_in', params: { user: { email: user.email, password: password } }
 
-      expect(user.reload.failed_attempts).to eq(0)
-      expect(user).not_to be_access_locked
+      expect(response).to redirect_to('/login')
+      get '/api/app/v1/session'
+      expect(response.parsed_body['user']).to be_nil
     end
   end
 
@@ -83,10 +90,10 @@ RSpec.describe 'Account lockout (Devise :lockable)', type: :request do
       Devise.maximum_attempts.times { fail_sign_in! }
       user.update_column(:locked_at, Devise.unlock_in.ago - 1.minute)
 
-      post '/users/sign_in', params: { user: { email: user.email, password: password } }
+      sign_in_with(password)
 
-      expect(user.reload).not_to be_access_locked
-      expect(flash[:notice]).to eq(I18n.t('devise.sessions.signed_in'))
+      expect(response).to have_http_status(:ok)
+      expect(user).not_to be_access_locked
     end
   end
 end

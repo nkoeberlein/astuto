@@ -3,7 +3,6 @@ module Api::App::V1
   class VotesController < Api::App::BaseController
     before_action :require_access
     before_action :require_user
-    before_action :check_tenant_subscription
 
     # POST /api/app/v1/posts/:post_id/vote
     def create

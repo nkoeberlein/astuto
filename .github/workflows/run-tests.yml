@@ -9,6 +9,10 @@ on:
     paths:
       - '**'
 
+  push:
+    branches:
+      - main
+
 jobs:
   test:
     runs-on: ubuntu-24.04
@@ -22,7 +26,10 @@ jobs:
 
       # Only web and db: the Vite "frontend" service would create a root-owned
       # frontend/node_modules in the checkout and break npm ci below
+      # The end-to-end tests send more than the default 300 requests per 5 minutes from one IP
       - name: Run Docker containers
+        env:
+          RATE_LIMIT_REQUESTS: '5000'
         run: docker compose -f docker-compose.yml -f docker-compose-prod.yml up --detach web
 
       - name: Install required packages
@@ -37,12 +44,6 @@ jobs:
           docker compose exec web bundle config set deployment false --local
           docker compose exec web bundle install
 
-      - name: Install Google Chrome
-        run: |
-          docker compose exec web wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-          docker compose exec web dpkg -i google-chrome-stable_current_amd64.deb || true
-          docker compose exec web apt-get -fy install
-        
       # The container's entrypoint only prepares its own database
       - name: Prepare test database
         run: docker compose exec -e RAILS_ENV=test web bundle exec rails db:create db:schema:load
@@ -73,9 +74,25 @@ jobs:
           npm run api:types
           git diff --exit-code src/api/schema.d.ts
 
-      - name: Security checks (gems, legacy npm packages, Brakeman)
+      # The v2 frontend in a real browser, against the running production container.
+      # The fresh install's admin gets a known password for the tests.
+      - name: End-to-end tests (Playwright)
+        run: |
+          docker compose exec web bin/rails runner 'User.unscoped.find_by!(role: "owner").update!(password: "e2e-password-ci", password_confirmation: "e2e-password-ci")'
+          cd frontend
+          npx playwright install --with-deps chromium
+          E2E_BASE_URL=http://localhost:3000 E2E_ADMIN_PASSWORD=e2e-password-ci npm run e2e
+
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v5
+        with:
+          name: playwright-report
+          path: frontend/playwright-report
+          retention-days: 7
+
+      - name: Security checks (gems, frontend packages, Brakeman)
         run: |
           docker compose exec web bin/bundler-audit check --update
           docker compose exec web bin/brakeman --quiet --no-pager --exit-on-warn --exit-on-error
-          # yarn is not in the production image; the runner has Ruby and yarn
-          bin/yarn-audit-critical
+          cd frontend && npm audit --audit-level=critical

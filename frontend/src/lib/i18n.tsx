@@ -2,6 +2,13 @@ import { createContext, type ReactNode, use, useMemo } from 'react'
 import type { Translations } from '@/api/client'
 
 type Vars = Record<string, string | number>
+
+// Languages written right to left; the layout uses logical CSS properties, so `dir` flips it
+const RTL_LANGUAGES = ['ar', 'fa', 'he', 'ur', 'yi', 'ps', 'sd', 'ug', 'dv']
+
+export function textDirection(locale: string): 'rtl' | 'ltr' {
+  return RTL_LANGUAGES.includes(locale.split('-')[0]?.toLowerCase() ?? '') ? 'rtl' : 'ltr'
+}
 export type TFunction = (key: string, vars?: Vars) => string
 
 // Looks up a dotted key in Rails-style translations: %{name} interpolation,

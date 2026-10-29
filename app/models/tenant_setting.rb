@@ -7,6 +7,7 @@ class TenantSetting < ApplicationRecord
 
   validates :custom_css, length: { maximum: 32000 }
   validates :default_post_sorting, inclusion: { in: POST_SORT_OPTIONS }
+  validates :trusted_after_posts, numericality: { only_integer: true, greater_than: 0, less_than_or_equal_to: 100 }
   validates :mail_logo_size, numericality: { only_integer: true, greater_than: 0, less_than_or_equal_to: 1024 }
   validate :custom_links_format
   validate :logo_custom_url_format
@@ -39,6 +40,8 @@ class TenantSetting < ApplicationRecord
     :anonymous_require_approval,
     :never_require_approval,
     :always_require_approval,
+    # Anonymous feedback and the first trusted_after_posts posts of each account
+    :new_users_require_approval
   ]
 
   # custom_links is stored as [{ "label" => ..., "url" => ... }]; tolerate
@@ -64,8 +67,20 @@ class TenantSetting < ApplicationRecord
     case feedback_approval_policy
     when 'never_require_approval' then 'approved'
     when 'anonymous_require_approval' then anonymous ? 'pending' : 'approved'
+    when 'new_users_require_approval' then anonymous || !trusted?(user) ? 'pending' : 'approved'
     else 'pending'
     end
+  end
+
+  # Status of an account that signs up by itself (email or OAuth); invited people and logins
+  # vouched for by SAML, LDAP or the widget are active right away
+  def status_for_new_user
+    require_user_approval ? 'pending_approval' : 'active'
+  end
+
+  # Trust grows with approved posts only: rejected ones do not count
+  def trusted?(user)
+    user.present? && user.posts.where(approval_status: 'approved').limit(trusted_after_posts).count >= trusted_after_posts
   end
 
   # Whether the email's domain is on allowed_email_domains (comma-separated).

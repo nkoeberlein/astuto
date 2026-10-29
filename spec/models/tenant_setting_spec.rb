@@ -161,6 +161,28 @@ RSpec.describe TenantSetting, type: :model do
     expect(tenant_setting.approval_status_for_new_post(user: nil, anonymous: true)).to eq('approved')
   end
 
+  it 'trusts accounts after enough approved posts (new_users_require_approval)' do
+    user = FactoryBot.create(:user)
+    tenant_setting.update!(feedback_approval_policy: 'new_users_require_approval', trusted_after_posts: 2)
+    status = ->(anonymous: false) { tenant_setting.approval_status_for_new_post(user: user, anonymous: anonymous) }
+
+    FactoryBot.create(:post, user: user, approval_status: 'approved')
+    FactoryBot.create(:post, user: user, approval_status: 'rejected')
+    FactoryBot.create(:post, user: user, approval_status: 'pending')
+    expect(status.call).to eq('pending')
+
+    FactoryBot.create(:post, user: user, approval_status: 'approved')
+    expect(status.call).to eq('approved')
+    expect(status.call(anonymous: true)).to eq('pending')
+    expect(tenant_setting.approval_status_for_new_post(user: nil, anonymous: true)).to eq('pending')
+    expect(tenant_setting.approval_status_for_new_post(user: FactoryBot.build(:moderator), anonymous: false)).to eq('approved')
+  end
+
+  it 'needs at least one approved post to trust an account' do
+    tenant_setting.trusted_after_posts = 0
+    expect(tenant_setting).not_to be_valid
+  end
+
   it 'can hide the email/password login' do
     expect(tenant_setting.login_only_with_oauth).to be(false)
 

@@ -1,0 +1,20 @@
+<h1><%= t('instance_admin.tenants.new') %></h1>
+
+<%= form_with url: instance_admin_tenants_path, scope: :tenant, method: :post do |f| %>
+  <label for="tenant_site_name"><%= t('instance_admin.tenants.site_name') %></label>
+  <%= f.text_field :site_name, value: @form[:site_name], required: true %>
+
+  <label for="tenant_subdomain"><%= t('instance_admin.tenants.subdomain') %></label>
+  <%= f.text_field :subdomain, value: @form[:subdomain], required: true, pattern: '[a-zA-Z0-9\-]+', autocapitalize: 'none' %>
+  <p class="hint"><%= t('instance_admin.tenants.subdomain_hint', host: Rails.application.base_url_host) %></p>
+
+  <label for="tenant_owner_email"><%= t('instance_admin.tenants.owner_email') %></label>
+  <%= f.email_field :owner_email, value: @form[:owner_email], required: true %>
+
+  <label for="tenant_owner_name"><%= t('instance_admin.tenants.owner_name') %></label>
+  <%= f.text_field :owner_name, value: @form[:owner_name] %>
+
+  <%= render 'locale_select', selected: @form[:locale].presence || I18n.default_locale.to_s %>
+
+  <p style="margin-block-start: 1.5rem"><button type="submit" class="primary"><%= t('instance_admin.tenants.create') %></button></p>
+<% end %>

@@ -32,6 +32,7 @@ module Api
         authorize([:api, board])
 
         if board.save
+          audit('board.create', board, changes: board.saved_changes)
           render json: { id: board.id }, status: :created
         else
           render json: { errors: board.errors.full_messages }, status: :unprocessable_entity

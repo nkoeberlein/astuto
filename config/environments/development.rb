@@ -5,8 +5,7 @@ Rails.application.configure do
   config.hosts << ".lvh.me:3000" # used to test oauth strategies in development
   config.hosts << ".ngrok-free.app"
 
-  # 0 if using localhost, 1 if using lvh.me
-  config.action_dispatch.tld_length = 0
+  # tld_length comes from BASE_URL (config/application.rb): 0 for localhost, 1 for lvh.me
 
   # For Devise
   config.action_mailer.default_url_options = { host: Rails.application.base_url }
@@ -58,8 +57,8 @@ Rails.application.configure do
   end
 
   config.action_mailer.default_options = {
-    from: ENV.fetch("EMAIL_MAIL_FROM", "noreply@astuto.io"),
-    reply_to: ENV.fetch("EMAIL_MAIL_REPLY_TO", "noreply@astuto.io")
+    from: Rails.application.default_mail_from,
+    reply_to: Rails.application.default_mail_reply_to
   }
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
@@ -78,14 +77,6 @@ Rails.application.configure do
 
   # Highlight code that triggered database queries in logs.
   config.active_record.verbose_query_logs = true
-
-  # Debug mode disables concatenation and preprocessing of assets.
-  # This option may cause significant delays in view rendering with a large
-  # number of complex assets.
-  config.assets.debug = true
-
-  # Suppress logger output for asset requests.
-  config.assets.quiet = true
 
   # Raises error for missing translations.
   # config.action_view.raise_on_missing_translations = true

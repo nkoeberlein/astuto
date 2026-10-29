@@ -3,7 +3,7 @@
 # - a status change entry when a moderator picks an initial status (#119)
 # Either all records are written or none.
 #
-# Used by the legacy UI, the app API and the MCP server so they share one set of rules.
+# Used by the app API, the REST API and the MCP server so they share one set of rules.
 class CreatePostWorkflow
   attr_reader :post
 

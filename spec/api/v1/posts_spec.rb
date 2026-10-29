@@ -197,7 +197,7 @@ RSpec.describe 'api/v1/posts', type: :request do
           expect(@post.description).not_to eq('New description')
         end
 
-        run_test! do |response|
+        run_test! do |_response|
           Current.tenant = @current_tenant # Restore the current tenant
           @post = Post.find(@post.id)
           expect(@post.title).to eq('New title')
@@ -255,7 +255,7 @@ RSpec.describe 'api/v1/posts', type: :request do
           expect(Post.find_by(id: @post.id)).to be_present
         end
 
-        run_test! do |response|
+        run_test! do |_response|
           Current.tenant = @current_tenant # Restore the current tenant
           expect(Post.find_by(id: @post.id)).to be_nil
         end
@@ -311,7 +311,7 @@ RSpec.describe 'api/v1/posts', type: :request do
           expect(@post.board_id).not_to eq(post[:board_id])
         end
 
-        run_test! do |response|
+        run_test! do |_response|
           Current.tenant = @current_tenant # Restore the current tenant
           @post = Post.find(@post.id)
           expect(@post.board_id).to eq(post[:board_id])
@@ -381,7 +381,7 @@ RSpec.describe 'api/v1/posts', type: :request do
           expect(@post.post_status_id).not_to eq(post[:post_status_id])
         end
 
-        run_test! do |response|
+        run_test! do |_response|
           Current.tenant = @current_tenant # Restore the current tenant
           @post = Post.find(@post.id)
           @post_status_change = PostStatusChange.where(post_id: @post.id).order(created_at: :desc).first
@@ -404,7 +404,7 @@ RSpec.describe 'api/v1/posts', type: :request do
           expect(@post.post_status_id).not_to eq(post[:post_status_id])
         end
 
-        run_test! do |response|
+        run_test! do |_response|
           Current.tenant = @current_tenant # Restore the current tenant
           @post = Post.find(@post.id)
           @post_status_change = PostStatusChange.where(post_id: @post.id).order(created_at: :desc).first
@@ -456,7 +456,7 @@ RSpec.describe 'api/v1/posts', type: :request do
           expect(@pending_post.approval_status).to eq('pending')
         end
 
-        run_test! do |response|
+        run_test! do |_response|
           Current.tenant = @current_tenant # Restore the current tenant
           @post = Post.find(@pending_post.id)
           expect(@post.approval_status).to eq('approved')
@@ -503,7 +503,7 @@ RSpec.describe 'api/v1/posts', type: :request do
           expect(@pending_post.approval_status).to eq('pending')
         end
 
-        run_test! do |response|
+        run_test! do |_response|
           Current.tenant = @current_tenant # Restore the current tenant
           @post = Post.find(@pending_post.id)
           expect(@post.approval_status).to eq('rejected')

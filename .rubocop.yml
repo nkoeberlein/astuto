@@ -1,0 +1,67 @@
+# RuboCop for bugs, not style: Lint and Security, plus a few Rails and RSpec cops that catch
+# mistakes. Layout and Style stay off on purpose (no mass reformatting before the v3 rewrite).
+# Run: BUNDLE_GEMFILE=lint/Gemfile bundle exec rubocop (CI: .github/workflows/lint.yml)
+plugins:
+  - rubocop-rails
+  - rubocop-rspec
+
+AllCops:
+  TargetRubyVersion: 3.4
+  DisabledByDefault: true
+  NewCops: enable
+  SuggestExtensions: false
+  Exclude:
+    - 'bin/**/*'
+    - 'db/schema.rb'
+    - 'frontend/**/*'
+    - 'lint/**/*'
+    - 'node_modules/**/*'
+    - 'tmp/**/*'
+    - 'vendor/**/*'
+
+Lint:
+  Enabled: true
+# MCP tools share the signature run(user:, **args) even when they do not need the user
+Lint/UnusedMethodArgument:
+  AllowUnusedKeywordArguments: true
+
+Security:
+  Enabled: true
+
+Rails/OutputSafety:
+  Enabled: true
+Rails/ReversibleMigration:
+  Enabled: true
+  # Migrations from before the fork; they ran long ago and stay as they are
+  Exclude:
+    - 'db/migrate/20190918151626_remove_default_order_from_boards_and_post_statuses.rb'
+    - 'db/migrate/20230131194858_create_tenant_settings.rb'
+    - 'db/migrate/20240227110058_change_default_tenant_settings.rb'
+    - 'db/migrate/20240708191938_remove_not_null_user_id_from_posts.rb'
+Rails/UniqBeforePluck:
+  Enabled: true
+Rails/WhereNotWithMultipleConditions:
+  Enabled: true
+Rails/SaveBang:
+  Enabled: false
+Rails/TransactionExitStatement:
+  Enabled: true
+Rails/DuplicateAssociation:
+  Enabled: true
+Rails/DuplicateScope:
+  Enabled: true
+
+RSpec/Focus:
+  Enabled: true
+RSpec/RepeatedExample:
+  Enabled: true
+RSpec/IdenticalEqualityAssertion:
+  Enabled: true
+RSpec/MissingExpectationTargetMethod:
+  Enabled: true
+RSpec/ExpectActual:
+  Enabled: true
+RSpec/ExpectInHook:
+  Enabled: false
+RSpec/Pending:
+  Enabled: false

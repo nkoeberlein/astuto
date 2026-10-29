@@ -22,12 +22,6 @@ Rails.application.configure do
   # Apache or NGINX already handles this.
   config.public_file_server.enabled = true
 
-  # Compress CSS using a preprocessor.
-  # config.assets.css_compressor = :sass
-
-  # Do not fallback to assets pipeline if a precompiled asset is missed.
-  config.assets.compile = false
-
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
   # config.action_controller.asset_host = 'http://assets.example.com'
 
@@ -48,6 +42,8 @@ Rails.application.configure do
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   config.force_ssl = ActiveModel::Type::Boolean.new.cast(ENV.fetch("FORCE_SSL", "false"))
+  # Probes and scrapers call the container directly (pod IP, plain HTTP)
+  config.ssl_options = { redirect: { exclude: ->(request) { request.path.start_with?('/health', '/metrics') } } }
 
   # Use the lowest log level to ensure availability of diagnostic information
   # when problems arise.
@@ -86,8 +82,8 @@ Rails.application.configure do
   end
 
   config.action_mailer.default_options = {
-    from: ENV.fetch("EMAIL_MAIL_FROM", "noreply@astuto.io"),
-    reply_to: ENV.fetch("EMAIL_MAIL_REPLY_TO", "noreply@astuto.io")
+    from: Rails.application.default_mail_from,
+    reply_to: Rails.application.default_mail_reply_to
   }
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to

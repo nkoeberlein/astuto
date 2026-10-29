@@ -61,4 +61,13 @@ RSpec.describe OAuth, type: :model do
     o_auth = FactoryBot.build_stubbed(:o_auth, json_user_name_path: nil)
     expect(o_auth).to be_valid
   end
+
+  it 'keeps profile headers as key/value rows and rejects invalid header names' do
+    o_auth = FactoryBot.build(:o_auth, profile_headers: [{ 'key' => ' X-Client ', 'value' => 1 }, { 'key' => '' }])
+    expect(o_auth.profile_headers).to eq([{ 'key' => 'X-Client', 'value' => '1' }])
+    expect(o_auth).to be_valid
+
+    o_auth.profile_headers = [{ key: 'Bad Header', value: 'x' }]
+    expect(o_auth).not_to be_valid
+  end
 end

@@ -1,0 +1,27 @@
+<h1><%= @tenant.site_name %> <span class="muted">(<%= @tenant.subdomain %>)</span></h1>
+
+<%= form_with url: instance_admin_tenant_path(@tenant), scope: :tenant, method: :patch do |f| %>
+  <label for="tenant_site_name"><%= t('instance_admin.tenants.site_name') %></label>
+  <%= f.text_field :site_name, value: @tenant.site_name, required: true %>
+
+  <label for="tenant_custom_domain"><%= t('instance_admin.tenants.custom_domain') %></label>
+  <%= f.text_field :custom_domain, value: @tenant.custom_domain, placeholder: 'ideas.example.com', autocapitalize: 'none' %>
+  <p class="hint"><%= t('instance_admin.tenants.custom_domain_hint', target: "#{@tenant.subdomain}.#{Rails.application.base_url_host}") %></p>
+
+  <%= render 'locale_select', selected: @tenant.locale %>
+
+  <p style="margin-block-start: 1.5rem" class="actions">
+    <button type="submit" class="primary"><%= t('instance_admin.tenants.save') %></button>
+    <a class="button" href="<%= instance_admin_tenants_path %>"><%= t('instance_admin.tenants.back') %></a>
+  </p>
+<% end %>
+
+<section class="danger-zone">
+  <h2 style="margin-block-start: 0"><%= t('instance_admin.tenants.delete_title') %></h2>
+  <p><%= t('instance_admin.tenants.delete_warning') %></p>
+  <%= form_with url: instance_admin_tenant_path(@tenant), method: :delete do |f| %>
+    <label for="confirm_subdomain"><%= t('instance_admin.tenants.confirm_label', subdomain: @tenant.subdomain) %></label>
+    <%= f.text_field :confirm_subdomain, id: 'confirm_subdomain', autocomplete: 'off', autocapitalize: 'none', required: true %>
+    <p style="margin-block-start: 1rem"><button type="submit" class="danger"><%= t('instance_admin.tenants.delete') %></button></p>
+  <% end %>
+</section>

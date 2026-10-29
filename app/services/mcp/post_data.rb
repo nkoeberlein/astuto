@@ -10,7 +10,7 @@ module Mcp
       Post
         .select(
           'posts.id', 'posts.title', 'posts.slug', 'posts.description', 'posts.board_id',
-          'posts.post_status_id', 'posts.approval_status', 'posts.created_at', 'posts.updated_at',
+          'posts.post_status_id', 'posts.approval_status', 'posts.source_url', 'posts.source_label', 'posts.merged_into_post_id', 'posts.created_at', 'posts.updated_at',
           'COUNT(DISTINCT likes.id) AS likes_count',
           'COUNT(DISTINCT comments.id) AS comments_count',
           '((LOG(COUNT(DISTINCT likes.id) + 1) + LOG(COUNT(DISTINCT comments.id) + 1)) + (EXTRACT(EPOCH FROM posts.created_at) / 45000)) AS hotness'
@@ -43,6 +43,10 @@ module Mcp
         board_id: post.board_id,
         post_status_id: post.post_status_id,
         approval_status: post.approval_status,
+        source_url: post.source_url,
+        source_label: post.source_label,
+        merged_into_post_id: post.merged_into_post_id,
+        tags: post.tags.map(&:name),
         likes_count: post.likes_count.to_i,
         comments_count: post.comments_count.to_i,
         created_at: post.created_at.iso8601

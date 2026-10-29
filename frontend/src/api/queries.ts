@@ -1,5 +1,12 @@
 import { infiniteQueryOptions, queryOptions } from '@tanstack/react-query'
-import { api, setCsrfToken, type Translations, unwrap } from './client'
+import {
+  api,
+  setCsrfToken,
+  type Translations,
+  type UserRole,
+  type UserStatus,
+  unwrap,
+} from './client'
 
 export const SORT_OPTIONS = ['trending', 'newest', 'most_voted', 'oldest'] as const
 export type SortBy = (typeof SORT_OPTIONS)[number]
@@ -8,6 +15,8 @@ export type PostFilters = {
   search: string
   sortBy: SortBy
   statusIds: number[]
+  // Posts with any of these tags
+  tagIds?: number[]
 }
 
 export const sessionQuery = queryOptions({
@@ -67,12 +76,53 @@ export const boardPostsQuery = (boardSlug: string, filters: PostFilters) =>
               sort_by: filters.sortBy,
               search: filters.search || undefined,
               'post_status_ids[]': filters.statusIds.length ? filters.statusIds : undefined,
+              'tag_ids[]': filters.tagIds?.length ? filters.tagIds : undefined,
             },
           },
         }),
       ),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => (lastPage.hasMore ? lastPage.page + 1 : undefined),
+  })
+
+export const tagsQuery = queryOptions({
+  queryKey: ['tags'],
+  queryFn: () => unwrap(api.GET('/api/app/v1/tags')),
+  staleTime: 5 * 60_000,
+})
+
+export const MY_POSTS_FILTERS = ['created', 'voted', 'followed'] as const
+export type MyPostsFilter = (typeof MY_POSTS_FILTERS)[number]
+
+// "My feedback": always refetched when the page opens, since votes and follows change elsewhere
+export const myPostsQuery = (filter: MyPostsFilter) =>
+  infiniteQueryOptions({
+    queryKey: ['my-posts', filter],
+    queryFn: ({ pageParam }) =>
+      unwrap(api.GET('/api/app/v1/my_posts', { params: { query: { filter, page: pageParam } } })),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => (lastPage.hasMore ? lastPage.page + 1 : undefined),
+    staleTime: 0,
+  })
+
+export const changelogQuery = infiniteQueryOptions({
+  queryKey: ['changelog'],
+  queryFn: ({ pageParam }) =>
+    unwrap(api.GET('/api/app/v1/changelog_entries', { params: { query: { page: pageParam } } })),
+  initialPageParam: 1,
+  getNextPageParam: (lastPage) => (lastPage.hasMore ? lastPage.page + 1 : undefined),
+})
+
+// Moderators: approved posts to link to a changelog entry
+export const linkablePostsQuery = (search: string) =>
+  queryOptions({
+    queryKey: ['changelog', 'linkablePosts', search],
+    queryFn: () =>
+      unwrap(
+        api.GET('/api/app/v1/changelog_entries/linkable_posts', {
+          params: { query: { search: search || undefined } },
+        }),
+      ),
   })
 
 export const ROADMAP_SORT_OPTIONS = ['most_voted', 'recently_updated'] as const
@@ -124,3 +174,134 @@ export const commentsQuery = (postSlug: string) =>
         }),
       ),
   })
+
+// Feedback queue of moderators: pending and rejected posts
+export const moderationPostsQuery = queryOptions({
+  queryKey: ['moderation', 'posts'],
+  queryFn: () => unwrap(api.GET('/api/app/v1/moderation/posts')),
+})
+
+// Empty search and missing role/status mean "all users"
+export type UserFilters = { search: string; role?: UserRole; status?: UserStatus }
+
+export const moderationUsersQuery = (filters: UserFilters) =>
+  infiniteQueryOptions({
+    queryKey: ['moderation', 'users', filters],
+    queryFn: ({ pageParam }) =>
+      unwrap(
+        api.GET('/api/app/v1/moderation/users', {
+          params: {
+            query: {
+              page: pageParam,
+              search: filters.search || undefined,
+              role: filters.role,
+              status: filters.status,
+            },
+          },
+        }),
+      ),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => (lastPage.hasMore ? lastPage.page + 1 : undefined),
+  })
+
+// Site settings › General (admins)
+export const generalSettingsQuery = queryOptions({
+  queryKey: ['siteSettings', 'general'],
+  queryFn: () => unwrap(api.GET('/api/app/v1/site_settings/general')),
+})
+
+// Site settings › Authentication: own and default OAuth providers (admins)
+export const oAuthSettingsQuery = queryOptions({
+  queryKey: ['siteSettings', 'oAuths'],
+  queryFn: () => unwrap(api.GET('/api/app/v1/site_settings/o_auths')),
+})
+
+// Site settings › Webhooks (admins)
+export const webhooksQuery = queryOptions({
+  queryKey: ['siteSettings', 'webhooks'],
+  queryFn: () => unwrap(api.GET('/api/app/v1/site_settings/webhooks')),
+})
+
+export const webhookVariablesQuery = queryOptions({
+  queryKey: ['siteSettings', 'webhooks', 'variables'],
+  queryFn: () => unwrap(api.GET('/api/app/v1/site_settings/webhooks/variables')),
+  staleTime: Number.POSITIVE_INFINITY,
+})
+
+// Ready-made bodies for Slack, Discord and Teams per trigger
+export const webhookTemplatesQuery = queryOptions({
+  queryKey: ['siteSettings', 'webhooks', 'templates'],
+  queryFn: () => unwrap(api.GET('/api/app/v1/site_settings/webhooks/templates')),
+  staleTime: Number.POSITIVE_INFINITY,
+})
+
+// Site settings › Invitations (admins)
+export const invitationsQuery = queryOptions({
+  queryKey: ['siteSettings', 'invitations'],
+  queryFn: () => unwrap(api.GET('/api/app/v1/site_settings/invitations')),
+})
+
+// Profile settings of the signed-in user
+export const profileQuery = queryOptions({
+  queryKey: ['profile'],
+  queryFn: () => unwrap(api.GET('/api/app/v1/profile')),
+})
+
+export const webhookDeliveriesQuery = (webhookId: number) =>
+  queryOptions({
+    queryKey: ['siteSettings', 'webhooks', webhookId, 'deliveries'],
+    queryFn: () =>
+      unwrap(
+        api.GET('/api/app/v1/site_settings/webhooks/{id}/deliveries', {
+          params: { path: { id: webhookId } },
+        }),
+      ),
+  })
+
+// Categories of the audit log filter (AuditEvent::CATEGORIES in Rails)
+export const AUDIT_CATEGORIES = [
+  'post',
+  'comment',
+  'user',
+  'board',
+  'post_status',
+  'tag',
+  'changelog',
+  'site_settings',
+  'o_auth',
+  'saml',
+  'ldap',
+  'widget',
+  'webhook',
+  'invitation',
+  'api_key',
+] as const
+export type AuditCategory = (typeof AUDIT_CATEGORIES)[number]
+
+export const auditEventsQuery = (category: AuditCategory | null) =>
+  infiniteQueryOptions({
+    queryKey: ['siteSettings', 'auditEvents', category],
+    queryFn: ({ pageParam }) =>
+      unwrap(
+        api.GET('/api/app/v1/site_settings/audit_events', {
+          params: { query: { category: category ?? undefined, before: pageParam } },
+        }),
+      ),
+    initialPageParam: undefined as number | undefined,
+    getNextPageParam: (lastPage) => lastPage.nextBefore ?? undefined,
+  })
+
+export const samlSettingsQuery = queryOptions({
+  queryKey: ['siteSettings', 'saml'],
+  queryFn: () => unwrap(api.GET('/api/app/v1/site_settings/saml')),
+})
+
+export const widgetSettingsQuery = queryOptions({
+  queryKey: ['siteSettings', 'widget'],
+  queryFn: () => unwrap(api.GET('/api/app/v1/site_settings/widget')),
+})
+
+export const ldapSettingsQuery = queryOptions({
+  queryKey: ['siteSettings', 'ldap'],
+  queryFn: () => unwrap(api.GET('/api/app/v1/site_settings/ldap')),
+})

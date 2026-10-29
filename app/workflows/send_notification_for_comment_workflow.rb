@@ -9,6 +9,8 @@ class SendNotificationForCommentWorkflow
     if comment.is_post_update # Post update
       comment.post.followers.each do |follower|
         next if follower.id == comment.user_id || !follower.notifications_enabled?
+        # Private boards: no mail about posts the follower can no longer see
+        next unless comment.post.board.visible_to?(follower)
 
         UserMailer.notify_follower_of_post_update(comment: comment, follower: follower).deliver_later
       end
@@ -19,6 +21,7 @@ class SendNotificationForCommentWorkflow
       user = comment.post.user
 
       return if user.nil? # anonymous posts don't have a user
+      return unless comment.post.board.visible_to?(user)
       
       if comment.user.id != user.id and
         user.notifications_enabled? and
@@ -29,6 +32,7 @@ class SendNotificationForCommentWorkflow
     else # Reply to a comment
       parent_comment = comment.parent
       user = parent_comment.user
+      return unless comment.post.board.visible_to?(user)
 
       if user.notifications_enabled? and
         parent_comment.user.id != comment.user.id

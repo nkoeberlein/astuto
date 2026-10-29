@@ -8,6 +8,7 @@ module AstutoProject
   REPOSITORY_URL = 'https://github.com/nkoeberlein/astuto-evo'
   ISSUES_URL = "#{REPOSITORY_URL}/issues"
   UPSTREAM_URL = 'https://github.com/astuto/astuto'
-  # Documentation still lives in the archived upstream docs repository
-  DOCS_URL = 'https://github.com/astuto/astuto-docs'
+  # Guides in docs/ of this repository (the upstream astuto-docs repository has no license, so
+  # its text is not copied; docs/ covers the same topics)
+  DOCS_URL = "#{REPOSITORY_URL}/blob/main/docs"
 end

@@ -23,6 +23,9 @@ class ExecutePostStatusChangeLogicWorkflow
     return if @post_status_id.nil?
 
     @post.followers.each do |follower|
+      # Private boards: no mail about posts the follower can no longer see
+      next unless @post.board.visible_to?(follower)
+
       UserMailer.notify_follower_of_post_status_change(post: @post, follower: follower).deliver_later
     end
   end

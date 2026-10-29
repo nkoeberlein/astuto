@@ -1,29 +1,10 @@
 require 'rails_helper'
 
+# The site settings pages are part of the v2 frontend
 RSpec.describe 'site settings routing', :aggregate_failures, type: :routing do
-  let (:base_url) { '/site_settings' }
-
-  it 'routes general' do
-    expect(get: base_url + '/general').to route_to(
-      controller: 'site_settings', action: 'general'
-    )
-  end
-
-  it 'routes boards' do
-    expect(get: base_url + '/boards').to route_to(
-      controller: 'site_settings', action: 'boards'
-    )
-  end
-
-  it 'routes post statuses' do
-    expect(get: base_url + '/post_statuses').to route_to(
-      controller: 'site_settings', action: 'post_statuses'
-    )
-  end
-
-  it 'routes roadmap' do
-    expect(get: base_url + '/roadmap').to route_to(
-      controller: 'site_settings', action: 'roadmap'
-    )
+  it 'routes every section to the SPA' do
+    %w[general authentication boards post_statuses roadmap webhooks invitations appearance].each do |section|
+      expect(get: "/site_settings/#{section}").to route_to(controller: 'spa', action: 'show')
+    end
   end
 end

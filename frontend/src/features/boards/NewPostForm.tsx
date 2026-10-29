@@ -19,6 +19,7 @@ import {
 import { Textarea } from '@/components/ui/textarea'
 import { useLoginRedirect } from '@/features/auth/redirect'
 import { useI18n } from '@/lib/i18n'
+import { isModerator } from '@/lib/roles'
 
 type Props = { board: Board; session: Session }
 
@@ -85,7 +86,7 @@ function PostForm(props: Props & { onClose: (pending: boolean) => void }) {
   const allowAnonymous = session.tenant.settings.allowAnonymousFeedback
 
   // Moderators can directly assign an initial status to the new post (#119)
-  const isModerator = user !== null && ['moderator', 'admin', 'owner'].includes(user.role)
+  const canModerate = isModerator(user)
   const { data: statuses } = useSuspenseQuery(postStatusesQuery)
   const [statusId, setStatusId] = useState('')
 
@@ -96,7 +97,7 @@ function PostForm(props: Props & { onClose: (pending: boolean) => void }) {
         title,
         description,
         isAnonymous,
-        postStatusId: isModerator && statusId ? Number(statusId) : undefined,
+        postStatusId: canModerate && statusId ? Number(statusId) : undefined,
         honeypot,
         formFillMs: Math.round(performance.now() - renderedAt),
       },
@@ -174,7 +175,7 @@ function PostForm(props: Props & { onClose: (pending: boolean) => void }) {
             />
           </div>
 
-          {isModerator && statuses.length > 0 && (
+          {canModerate && statuses.length > 0 && (
             <div className="space-y-1.5">
               <Label>{t('board.new_post.status')}</Label>
               <Select value={statusId} onValueChange={setStatusId}>
@@ -207,7 +208,8 @@ function PostForm(props: Props & { onClose: (pending: boolean) => void }) {
             tabIndex={-1}
             autoComplete="off"
             aria-hidden
-            className="absolute -left-[9999px] h-px w-px opacity-0"
+            // Out of sight without a sideways offset (which would scroll the page in RTL)
+            className="pointer-events-none absolute size-px overflow-hidden opacity-0 [clip-path:inset(50%)]"
           />
 
           <p className="text-sm text-muted-foreground">

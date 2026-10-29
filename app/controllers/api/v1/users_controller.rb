@@ -65,6 +65,7 @@ module Api
         authorize([:api, user])
 
         if user.save
+          audit('user.create', user, changes: user.saved_changes.slice('email', 'full_name', 'role', 'status'))
           render json: { id: user.id }, status: :created
         else
           render json: { errors: user.errors.full_messages }, status: :unprocessable_entity
@@ -86,6 +87,7 @@ module Api
           DestroyApiKeyIfNeededWorkflow.new(user: user).run
           user.save!
         end
+        audit('user.update', user, changes: user.saved_changes.slice('status'))
 
         render json: { id: user.id }, status: :ok
       end

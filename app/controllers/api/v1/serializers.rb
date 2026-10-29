@@ -29,6 +29,8 @@ module Api
         :updated_at
       ].freeze
 
+      TAG_JSON_ATTRIBUTES = [:id, :name, :color].freeze
+
       POST_JSON_ATTRIBUTES = [
         :id,
         :title,
@@ -38,6 +40,9 @@ module Api
         :user,
         :approval_status,
         :slug,
+        :source_url,
+        :source_label,
+        :merged_into_post_id,
         :created_at,
         :updated_at
       ].freeze

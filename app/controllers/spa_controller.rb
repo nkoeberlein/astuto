@@ -1,16 +1,27 @@
-# Serves the built v2 frontend (frontend/ → public/next) for all its client-side routes,
-# injecting server-side <title>, description, Open Graph tags, and favicon for SEO & link previews.
+# Serves the built v2 frontend (frontend/ → public/next) for all its pages (config/routes.rb),
+# injecting server-side <title>, description, Open Graph tags, favicon, language and direction,
+# and the flash messages of Rails pages that redirect here (e.g. after confirming an email).
 class SpaController < ActionController::Base
   include ApplicationHelper
 
   INDEX = Rails.root.join('public/next/index.html')
+  # Same list as textDirection() in frontend/src/lib/i18n.tsx
+  RTL_LANGUAGES = %w[ar fa he ur yi ps sd ug dv].freeze
 
   def show
     response.headers['Cache-Control'] = 'no-cache'
 
     if INDEX.exist?
-      html = inject_meta_tags(INDEX.read)
-      render html: html.html_safe, layout: false, content_type: 'text/html'
+      tenant = get_tenant_from_request(request)
+      return redirect_to(pending_tenant_path) if tenant&.pending?
+      return redirect_to(blocked_tenant_path) if tenant&.blocked?
+
+      html = tenant ? inject_meta_tags(INDEX.read, tenant) : INDEX.read
+      html = inject_flash(html)
+      allow_iframe_embedding if tenant && embedded_roadmap?
+      allow_widget_embedding if tenant && page_path == 'embed'
+      # Our own built index.html; everything injected into it is escaped above
+      render html: html.html_safe, layout: false, content_type: 'text/html' # rubocop:disable Rails/OutputSafety
     else
       render plain: 'The v2 frontend is not built. Run `npm run build` in frontend/ or use the Vite dev server (port 5173).', status: :not_found
     end
@@ -18,13 +29,48 @@ class SpaController < ActionController::Base
 
   private
 
-    def inject_meta_tags(html)
-      tenant = get_tenant_from_request(request)
-      return html unless tenant
+    # Other sites may show the roadmap in an iframe (like the legacy /embedded_roadmap).
+    # All other pages keep X-Frame-Options: SAMEORIGIN against clickjacking.
+    def embedded_roadmap?
+      page_path == 'embedded_roadmap' && TenantSetting.first_or_create.roadmap_enabled?
+    end
 
+    # "boards/feature-requests" for /boards/feature-requests
+    def page_path
+      request.path.delete_prefix('/').delete_suffix('/')
+    end
+
+    # Flash messages as JSON in a meta tag; the frontend shows them once (FlashMessages)
+    def inject_flash(html)
+      messages = flash.to_hash.slice('notice', 'alert').select { |_, text| text.is_a?(String) && text.present? }
+      return html if messages.empty?
+
+      tag = %(<meta name="astuto-flash" content="#{ERB::Util.html_escape(messages.to_json)}" />)
+      html.sub('</head>') { "    #{tag}\n  </head>" }
+    end
+
+    def allow_iframe_embedding
+      response.headers.delete('X-Frame-Options')
+    end
+
+    # The widget (/embed) may be framed while it is on, by the allowed origins only when set
+    def allow_widget_embedding
+      config = WidgetConfig.find_by(enabled: true)
+      return unless config
+
+      allow_iframe_embedding
+      return if config.origins.empty?
+
+      policy = request.content_security_policy&.clone || ActionDispatch::ContentSecurityPolicy.new
+      policy.frame_ancestors(*config.origins)
+      request.content_security_policy = policy
+    end
+
+    # Also sets Current.tenant and the locale for the rest of the request
+    def inject_meta_tags(html, tenant)
       Current.tenant = tenant
-      I18n.locale = tenant.locale.presence || I18n.default_locale
       setting = TenantSetting.first_or_create
+      I18n.locale = tenant_locale(tenant, setting, request)
 
       title, description = resolve_page_meta(tenant, setting)
       escaped_title = ERB::Util.html_escape(title)
@@ -40,7 +86,15 @@ class SpaController < ActionController::Base
       ]
 
       # Block form: a replacement string would read "\0" or "\1" in a title as a backreference
+      # Language and writing direction before any script runs (no flash of the wrong direction)
+      locale = I18n.locale.to_s
+      direction = RTL_LANGUAGES.include?(locale.split('-').first) ? 'rtl' : 'ltr'
+      html = html.sub(/<html[^>]*>/) { %(<html lang="#{ERB::Util.html_escape(locale)}" dir="#{direction}">) }
+
       result = html.sub(%r{<title>.*?</title>}m) { "<title>#{escaped_title}</title>\n    #{meta_tags.join("\n    ")}" }
+      if (feed = feed_link(setting))
+        result = result.sub('</head>') { "    #{feed}\n  </head>" }
+      end
       if tenant.site_favicon.present?
         escaped_favicon = ERB::Util.html_escape(tenant.site_favicon)
         result = result.sub(%r{<link rel="icon"[^>]*>}) { %(<link rel="icon" href="#{escaped_favicon}" />) }
@@ -52,11 +106,11 @@ class SpaController < ActionController::Base
       site_name = tenant.site_name.presence || AstutoProject::NAME
       return [site_name, site_name] if setting.is_private
 
-      path = params[:path].to_s
+      path = page_path
       case path
       when %r{\Aboards/([^/]+)\z}
         slug = Regexp.last_match(1)
-        board = Board.friendly.find(slug) rescue nil
+        board = Board.visible_to(nil).friendly.find(slug) rescue nil
         if board
           desc = plain_excerpt(board.description).presence || site_name
           ["#{board.name} · #{site_name}", desc]
@@ -65,26 +119,60 @@ class SpaController < ActionController::Base
         end
       when %r{\Aposts/([^/]+)\z}
         slug = Regexp.last_match(1)
-        post = Post.where(approval_status: 'approved').friendly.find(slug) rescue nil
+        post = Post.where(approval_status: 'approved').on_boards_visible_to(nil).friendly.find(slug) rescue nil
         if post
           desc = plain_excerpt(post.description).presence || post.title
           ["#{post.title} · #{site_name}", desc]
         else
           [site_name, site_name]
         end
-      when 'roadmap'
+      when 'roadmap', 'embedded_roadmap'
         ["#{I18n.t('roadmap.title', default: 'Roadmap')} · #{site_name}", site_name]
+      when 'moderation/feedback', 'moderation/users'
+        ["#{I18n.t('header.menu.moderation', default: 'Moderation')} · #{site_name}", site_name]
+      when %r{\Asite_settings/}
+        ["#{I18n.t('header.menu.site_settings', default: 'Site settings')} · #{site_name}", site_name]
+      when 'changelog'
+        ["#{I18n.t('changelog.title', default: 'Changelog')} · #{site_name}", site_name]
+      when 'my-feedback'
+        ["#{I18n.t('my_feedback.title', default: 'My feedback')} · #{site_name}", site_name]
+      when 'profile'
+        ["#{I18n.t('header.menu.profile_settings', default: 'Profile settings')} · #{site_name}", site_name]
       when 'login'
         ["#{I18n.t('common.forms.auth.log_in', default: 'Log in')} · #{site_name}", site_name]
       when 'register'
         ["#{I18n.t('common.forms.auth.sign_up', default: 'Sign up')} · #{site_name}", site_name]
       when 'password/forgot'
         ["#{I18n.t('common.forms.auth.forgot_password', default: 'Forgot your password?')} · #{site_name}", site_name]
+      when 'confirmation/new'
+        ["#{I18n.t('common.forms.auth.resend_confirmation_instructions', default: 'Resend confirmation instructions')} · #{site_name}", site_name]
+      when 'unlock/new'
+        ["#{I18n.t('common.forms.auth.resend_unlock_instructions', default: 'Resend unlock instructions')} · #{site_name}", site_name]
       when 'password/reset'
         ["#{I18n.t('common.forms.auth.change_password', default: 'Change password')} · #{site_name}", site_name]
       else
         [site_name, site_name]
       end
+    end
+
+    # Lets browsers and feed readers find the board or changelog feed (FeedsController)
+    def feed_link(setting)
+      return if setting.is_private
+
+      if page_path == 'changelog'
+        title = ERB::Util.html_escape(I18n.t('changelog.title', default: 'Changelog'))
+        return %(<link rel="alternate" type="application/rss+xml" title="#{title}" href="#{changelog_feed_path}" />)
+      end
+
+      slug = page_path[%r{\Aboards/([^/]+)\z}, 1]
+      return unless slug
+
+      board = Board.visible_to(nil).friendly.find(slug)
+      title = ERB::Util.html_escape(board.name)
+      href = ERB::Util.html_escape(board_feed_path(board))
+      %(<link rel="alternate" type="application/rss+xml" title="#{title}" href="#{href}" />)
+    rescue ActiveRecord::RecordNotFound
+      nil
     end
 
     def plain_excerpt(markdown)

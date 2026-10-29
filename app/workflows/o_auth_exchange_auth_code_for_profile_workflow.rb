@@ -22,9 +22,22 @@ class OAuthExchangeAuthCodeForProfileWorkflow
   def request_profile(profile_url, access_token)
     HTTParty.get(
       profile_url,
-      headers: { "Authorization": "Bearer #{access_token}" },
+      headers: profile_headers(access_token),
       format: :json
     ).parsed_response
+  end
+
+  # Bearer token plus the provider's own headers (#485); an own Authorization header wins
+  def profile_headers(access_token)
+    headers = { 'Authorization' => "Bearer #{access_token}" }
+    Array(@o_auth.profile_headers).each do |header|
+      key = header['key'].to_s.strip
+      next if key.empty?
+
+      headers.delete('Authorization') if key.casecmp?('Authorization')
+      headers[key] = header['value'].to_s
+    end
+    headers
   end
 
   def run
@@ -43,7 +56,7 @@ class OAuthExchangeAuthCodeForProfileWorkflow
       
       token_response = HTTParty.post(
         @o_auth.token_url,
-        headers: { "Accept": "application/json" },
+        headers: { Accept: "application/json" },
         body: token_request_params
       )
       access_token = token_response['access_token']
@@ -60,7 +73,7 @@ class OAuthExchangeAuthCodeForProfileWorkflow
       end
 
       return profile_response
-    rescue => error
+    rescue
       return nil
     end
   end

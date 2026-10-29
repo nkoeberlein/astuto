@@ -7,6 +7,25 @@ class CreateLiquidTemplateContextWorkflow
   POST_VIRTUAL_ATTRIBUTES = [:url].freeze
   COMMENT_ATTRIBUTES = [:id, :body, :user_id, :post_id, :created_at, :updated_at].freeze
 
+  # Variables each trigger offers in templates: context key => attributes
+  # (the frontend reads them from /api/app/v1/site_settings/webhooks/variables)
+  POST_VARIABLES = POST_ATTRIBUTES + POST_VIRTUAL_ATTRIBUTES
+  TEMPLATE_VARIABLES = {
+    'new_post' => { post: POST_VARIABLES, post_author: USER_ATTRIBUTES, board: BOARD_ATTRIBUTES },
+    'new_post_pending_approval' => { post: POST_VARIABLES, post_author: USER_ATTRIBUTES, board: BOARD_ATTRIBUTES },
+    'delete_post' => { post: [:id] },
+    'post_status_change' => { post: POST_VARIABLES, post_author: USER_ATTRIBUTES, board: BOARD_ATTRIBUTES, post_status: POST_STATUS_ATTRIBUTES },
+    'new_comment' => { comment: COMMENT_ATTRIBUTES, comment_author: USER_ATTRIBUTES, post: POST_VARIABLES, post_author: USER_ATTRIBUTES, board: BOARD_ATTRIBUTES },
+    'new_vote' => { vote_author: USER_ATTRIBUTES, post: POST_VARIABLES, post_author: USER_ATTRIBUTES, board: BOARD_ATTRIBUTES },
+    'new_user' => { user: USER_ATTRIBUTES }
+  }.freeze
+
+  # ["post.id", "post.title", ..., "tenant.site_name"] for a trigger
+  def self.variables_for(trigger)
+    groups = TEMPLATE_VARIABLES.fetch(trigger.to_s, {}).merge(tenant: TENANT_ATTRIBUTES)
+    groups.flat_map { |name, attributes| attributes.map { |attribute| "#{name}.#{attribute}" } }
+  end
+
   attr_accessor :webhook_trigger, :is_test, :entities
 
   def initialize(webhook_trigger: "new_post", is_test: false, entities: {})
@@ -116,14 +135,9 @@ class CreateLiquidTemplateContextWorkflow
     context['tenant'] = tenant.as_json(only: TENANT_ATTRIBUTES)
 
     # Add context variables specific to the webhook trigger
-    # To keep in sync with app/javascript/components/SiteSettings/Webhooks/TemplateVariablesSelector.tsx
+    # Must match TEMPLATE_VARIABLES above
     case webhook_trigger
-    when 'new_post'
-      context['post'] = @entities[:post].as_json(only: POST_ATTRIBUTES, methods: POST_VIRTUAL_ATTRIBUTES)
-      context['post_author'] = @entities.key?(:post_author) ? @entities[:post_author].as_json(only: USER_ATTRIBUTES) : nil
-      context['board'] = @entities[:board].as_json(only: BOARD_ATTRIBUTES)
-
-    when 'new_post_pending_approval'
+    when 'new_post', 'new_post_pending_approval'
       context['post'] = @entities[:post].as_json(only: POST_ATTRIBUTES, methods: POST_VIRTUAL_ATTRIBUTES)
       context['post_author'] = @entities.key?(:post_author) ? @entities[:post_author].as_json(only: USER_ATTRIBUTES) : nil
       context['board'] = @entities[:board].as_json(only: BOARD_ATTRIBUTES)

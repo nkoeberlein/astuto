@@ -1,0 +1,4 @@
+<p><%= t('mailers.admin.test_email.body', site_name: Current.tenant.site_name) %></p>
+<p style="color: #6b7280; font-size: 13px;">
+  <%= t('mailers.admin.test_email.details', delivery_method: @delivery_method, from: Array(message.from).join(', ')) %>
+</p>

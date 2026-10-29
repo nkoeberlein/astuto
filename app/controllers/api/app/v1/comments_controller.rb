@@ -2,7 +2,6 @@ module Api::App::V1
   class CommentsController < Api::App::BaseController
     before_action :require_access
     before_action :require_user, only: [:create, :update, :destroy]
-    before_action :check_tenant_subscription, only: [:create, :update, :destroy]
 
     # GET /api/app/v1/posts/:post_id/comments
     def index
@@ -22,7 +21,7 @@ module Api::App::V1
         parent: parent,
         body: params[:body],
         # Only moderators can mark a comment as an official post update
-        is_post_update: current_user.moderator? && ActiveModel::Type::Boolean.new.cast(params[:isPostUpdate]) || false
+        is_post_update: (current_user.moderator? && ActiveModel::Type::Boolean.new.cast(params[:isPostUpdate])) || false
       )
       return render_error(:unprocessable_content, comment.errors.full_messages.join(', ')) unless comment.save
 
@@ -43,6 +42,8 @@ module Api::App::V1
 
       return render_error(:unprocessable_content, comment.errors.full_messages.join(', ')) unless comment.save
 
+      # Moderators editing other people's comments
+      audit('comment.update', comment, changes: comment.saved_changes) if comment.user_id != current_user.id && comment.saved_changes?
       render json: CommentSerializer.call(comment)
     end
 
@@ -53,6 +54,7 @@ module Api::App::V1
       authorize comment, :destroy?
 
       comment.destroy!
+      audit('comment.delete', comment) if comment.user_id != current_user.id
       head :no_content
     end
   end

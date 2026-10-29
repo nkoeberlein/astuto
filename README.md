@@ -35,9 +35,13 @@ Astuto Evolution helps you collect, manage and prioritize feedback from your cus
 - **Simple Sign In:** let users log in with email or any OAuth2 provider
 - **Webhooks:** integrate with your existing tools (e.g. Jira, Trello, Slack)
 - **API:** programmatically manage your feedback space with the REST API
-- **Moderation Queue:** decide whether to show new feedback immediately or request approval
+- **Feedback widget:** a button for your own site or app; visitors signed in there vote and post under their account (signed token)
+- **Private boards:** a board for signed-in people only, or for moderators and admins
+- **Tags:** label posts across boards (e.g. by product area) and filter by them
+- **Changelog:** release notes linked to the delivered feedback, with RSS and an email to followers
+- **Moderation Queue:** decide whether to show new feedback immediately or request approval (always, for anonymous feedback, or for the first posts of each account)
 - **Anonymous Feedback:** enable unregistered users to publish feedback
-- **... and more:** invitation system, brand customization, recap emails for administrators, private site settings, 10+ languages
+- **... and more:** invitation system, brand customization, opt-in recap emails (new feedback, most voted posts, status changes of followed posts), private site settings, 10+ languages
 
 ## What changes compared to Astuto 1.x
 
@@ -46,7 +50,7 @@ Astuto Evolution helps you collect, manage and prioritize feedback from your cus
 | Ruby / Rails | 3.0 / 6.1 (end of life) | 4.0 / 8.1 |
 | PostgreSQL | 14 (EOL 11/2026) | 18 (19 once it is released) |
 | Docker image | `riggraz/astuto` (amd64) | `ghcr.io/nkoeberlein/astuto-evo` (amd64 + arm64) |
-| User interface | React 16, Bootstrap 4 | being rebuilt (React 19, TypeScript, Tailwind), public pages under `/next` |
+| User interface | React 16, Bootstrap 4 | rebuilt: React 19, TypeScript, Tailwind, every page at `/` |
 | AI / MCP | – | MCP server, opt-in AI discussion summary |
 
 Upgrading an existing Astuto installation: see [UPGRADING.md](UPGRADING.md).
@@ -57,11 +61,11 @@ Upgrading an existing Astuto installation: see [UPGRADING.md](UPGRADING.md).
 
 ### In v2 (towards 2.0)
 
-- **Complete the new UI** (React 19 + TanStack, served under `/next` and then moved to `/`): roadmap page, login / sign-up / password as SPA pages with OAuth buttons, moderation queue and site settings, editing and deleting posts and comments, status changes
+- **New UI** (React 19 + TanStack) for every page: boards, posts, roadmap, embedding, login / sign-up / password with OAuth, moderation, all site settings, profile. The legacy React 16 / Redux / Bootstrap 4 frontend and its gems and packages are gone
 - **Design system:** branding over CSS variables (reusing your current site colors), dark mode, WCAG 2.2 AA, mobile first
 - **AI-native features:** MCP server under `/mcp` with API-key auth (already part of the alpha) so assistants like Claude, Cursor and others can search, read, create and triage feedback; duplicate detection while posting (Postgres full-text search, optionally semantic with pgvector); discussion summaries and tag/board suggestions, all strictly opt-in per site settings
 - **Operations:** webhook error visibility (delivery log per webhook), "send test mail" for site settings, configurable favicon and header links, roadmap can be disabled, instance-wide default sort order, OAuth-only login option
-- **Cleanup:** the legacy React 16 / Redux / Bootstrap 4 frontend and its gems and packages are removed once every page is rebuilt
+- **Several feedback spaces per instance** (multi-tenancy) with subdomains, custom domains with automatic TLS and an instance admin page, for companies with several products or brands
 
 ### In v3 (major upgrade, fully TypeScript)
 
@@ -92,7 +96,23 @@ To run it from source:
 
 ## Documentation
 
-The original documentation still applies and lives in the archived [astuto/astuto-docs](https://github.com/astuto/astuto-docs) repository. It will move into this repository over time.
+Guides in this repository:
+
+- [Reverse proxy, HTTPS, database and SMTP](docs/reverse-proxy-and-smtp.md)
+- [Operations: health checks, metrics, background jobs, backups, Kubernetes](docs/operations.md)
+- [Multi-tenancy: several feedback spaces, custom domains, instance admin](docs/multi-tenancy.md)
+- [Appearance: logo, colours, custom CSS](docs/appearance.md)
+- [REST API with API keys](docs/api.md)
+- [Webhooks: templates, signatures, delivery log](docs/webhooks.md)
+- [Feedback widget for your own site, with visitor sign-in](docs/widget.md)
+- [MCP server and AI features](docs/mcp-and-ai.md)
+- [Single sign-on: OAuth (provider settings), SAML and LDAP](docs/sso.md)
+- [Account lockout](docs/account-lockout.md) and [two-factor authentication](docs/two-factor-authentication.md)
+- [Privacy and GDPR: stored data, export, deletion, retention](docs/privacy.md)
+- [AGPL in companies: FAQ](docs/agpl-faq.md)
+- [Releasing and verifying signed images](docs/releasing.md)
+
+The original documentation of Astuto 1.x lives in the archived [astuto/astuto-docs](https://github.com/astuto/astuto-docs) repository and will move here over time.
 
 ## Contributing
 

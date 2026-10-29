@@ -31,7 +31,24 @@ RSpec.describe 'api/app/v1/session', type: :request, openapi_spec: 'app/v1/opena
         before { sign_in user }
 
         run_test! do |response|
-          expect(JSON.parse(response.body)['user']).to include('id' => user.id, 'email' => user.email, 'role' => 'user')
+          body = JSON.parse(response.body)
+          expect(body['user']).to include('id' => user.id, 'email' => user.email, 'role' => 'user')
+          expect(body['pendingPostsCount']).to be_nil
+        end
+      end
+
+      response(200, 'moderator, with the number of posts waiting for approval') do
+        schema '$ref' => '#/components/schemas/Session'
+
+        let(:moderator) { FactoryBot.create(:moderator).tap(&:confirm) }
+        before do
+          FactoryBot.create_list(:post, 2, approval_status: 'pending')
+          FactoryBot.create(:post, approval_status: 'rejected')
+          sign_in moderator
+        end
+
+        run_test! do |response|
+          expect(JSON.parse(response.body)['pendingPostsCount']).to eq(2)
         end
       end
     end

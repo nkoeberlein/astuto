@@ -1,5 +1,6 @@
 class User < ApplicationRecord
   include TenantOwnable
+  include User::TwoFactor
   
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :confirmable,
@@ -11,9 +12,12 @@ class User < ApplicationRecord
   has_many :likes, dependent: :destroy
   has_many :comments, dependent: :destroy
   has_one :api_key, dependent: :destroy
+  has_many :follows, dependent: :destroy
+  has_many :changelog_entries, dependent: :nullify
 
   enum :role, [:user, :moderator, :admin, :owner]
-  enum :status, [:active, :blocked, :deleted]
+  # pending_approval: signed up while Site settings › General › Approve new accounts is on (#362)
+  enum :status, [:active, :blocked, :deleted, :pending_approval]
 
   enum :recap_notification_frequency, [:never, :daily, :weekly, :monthly]
 
@@ -44,6 +48,8 @@ class User < ApplicationRecord
   def inactive_message
     return I18n.t('devise.failure.locked') if access_locked?
 
+    return I18n.t('errors.user_pending_approval') if pending_approval?
+
     active? ? super : I18n.t('errors.user_blocked_or_deleted')
   end
 
@@ -55,9 +61,6 @@ class User < ApplicationRecord
     if tenant.status == "pending" and tenant.users.count == 1
       tenant.status = "active"
       tenant.save
-
-      CreateStripeCustomer.new().run
-      TenantMailer.trial_start(tenant: tenant).deliver_later
     end
   end
 
@@ -73,7 +76,7 @@ class User < ApplicationRecord
   end
 
   # Like Devise's send_reset_password_instructions, but the email links to the
-  # password reset page of the v2 frontend (/next/password/reset)
+  # password reset page of the v2 frontend (/password/reset)
   def send_next_reset_password_instructions
     token = set_reset_password_token
     send_devise_notification(:reset_password_instructions, token, template_name: 'reset_password_instructions_next')
@@ -89,6 +92,63 @@ class User < ApplicationRecord
 
   def gravatar_url
     "https://secure.gravatar.com/avatar/#{User.gravatar_hash(email)}?d=retro"
+  end
+
+  # Avatar from Gravatar (the request reveals the email hash to gravatar.com), unless the feedback
+  # space switched it off; the frontend then shows the initial
+  def avatar_url
+    setting = Current.tenant&.tenant_setting
+    (setting.nil? || setting.use_gravatar) ? gravatar_url : nil
+  end
+
+  # Account deletion (by the person or an admin, GDPR): the account stays as "Deleted user" so
+  # posts and comments keep their place, but nothing identifies the person any more
+  def anonymize!
+    transaction do
+      self.status = 'deleted'
+      self.email = "#{SecureRandom.alphanumeric(16)}@deleted.com"
+      self.full_name = I18n.t('defaults.deleted_user_full_name')
+      self.unconfirmed_email = nil
+      self.current_sign_in_ip = nil
+      self.last_sign_in_ip = nil
+      self.oauth_token = nil
+      self.widget_external_id = nil
+      self.notifications_enabled = false
+      skip_confirmation
+      skip_reconfirmation!
+      save!
+      api_key&.destroy!
+      follows.destroy_all
+      disable_two_factor! if otp_secret_ciphertext.present?
+    end
+  end
+
+  # Everything stored about the person (GDPR access request), as a JSON-ready hash
+  def export_data
+    {
+      exportedAt: Time.current.iso8601,
+      feedbackSpace: tenant.site_name,
+      profile: {
+        fullName: full_name, email: email, unconfirmedEmail: unconfirmed_email, role: role, status: status,
+        notificationsEnabled: notifications_enabled, recapNotificationFrequency: recap_notification_frequency,
+        createdAt: created_at&.iso8601, confirmedAt: confirmed_at&.iso8601, signInCount: sign_in_count,
+        currentSignInAt: current_sign_in_at&.iso8601, lastSignInAt: last_sign_in_at&.iso8601,
+        currentSignInIp: current_sign_in_ip, lastSignInIp: last_sign_in_ip,
+        widgetExternalId: widget_external_id,
+        twoFactorEnabled: two_factor_enabled?
+      },
+      posts: posts.includes(:board, :post_status).order(:created_at).map do |post|
+        { id: post.id, title: post.title, description: post.description, board: post.board&.name,
+          status: post.post_status&.name, approvalStatus: post.approval_status, createdAt: post.created_at.iso8601 }
+      end,
+      comments: comments.includes(:post).order(:created_at).map do |comment|
+        { id: comment.id, post: comment.post&.title, body: comment.body, isPostUpdate: comment.is_post_update,
+          createdAt: comment.created_at.iso8601 }
+      end,
+      votes: likes.includes(:post).order(:created_at).map { |like| { post: like.post&.title, createdAt: like.created_at.iso8601 } },
+      follows: follows.includes(:post).order(:created_at).map { |follow| { post: follow.post&.title, createdAt: follow.created_at.iso8601 } },
+      apiKey: api_key && { createdAt: api_key.created_at.iso8601 }
+    }
   end
 
   def full_name_or_email

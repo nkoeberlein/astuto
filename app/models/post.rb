@@ -13,6 +13,10 @@ class Post < ApplicationRecord
   has_many :followers, through: :follows, source: :user
   has_many :comments, dependent: :destroy
   has_many :post_status_changes, dependent: :destroy
+  has_many :changelog_entry_posts, dependent: :delete_all
+  has_many :post_tags, dependent: :delete_all
+  has_many :tags, -> { order(order: :asc) }, through: :post_tags
+  has_many :changelog_entries, through: :changelog_entry_posts
 
   after_create :run_new_post_webhooks
   after_destroy :run_delete_post_webhooks
@@ -20,10 +24,27 @@ class Post < ApplicationRecord
   enum :approval_status, [
     :approved,
     :pending,
-    :rejected
-  ] 
+    :rejected,
+    # Merged into another post (merged_into), see MergePostsWorkflow
+    :merged
+  ]
+
+  belongs_to :merged_into, class_name: 'Post', foreign_key: :merged_into_post_id, optional: true
+  # Merged duplicates are empty shells that redirect here; they go with this post
+  has_many :merged_posts, class_name: 'Post', foreign_key: :merged_into_post_id, dependent: :destroy, inverse_of: :merged_into
 
   validates :title, presence: true, length: { in: 4..128 }
+  validates :source_label, length: { maximum: 40 }
+  validates :source_url, length: { maximum: 500 }
+  validate :source_url_is_a_link
+
+  # Moderators link to where feedback came from (Slack, email, ticket): http(s) or mailto only
+  def source_url_is_a_link
+    return if source_url.blank?
+    return if SafeUrl.safe?(source_url) && !SafeUrl.local_path?(source_url)
+
+    errors.add(:source_url, :invalid)
+  end
 
   paginates_per Rails.application.posts_per_page
 
@@ -71,17 +92,20 @@ class Post < ApplicationRecord
         .limit(limit)
     end
 
+    # Posts on boards the person may see (Board.visible_to)
+    def on_boards_visible_to(user)
+      where(board_id: Board.visible_to(user).select(:id))
+    end
+
     def order_by(sort_by)
       case sort_by
-      when 'newest'
-        order(created_at: :desc)
       when 'trending'
         order(hotness: :desc)
       when 'most_voted'
         order(likes_count: :desc)
       when 'oldest'
         order(created_at: :asc)
-      else
+      else # 'newest'
         order(created_at: :desc)
       end
     end

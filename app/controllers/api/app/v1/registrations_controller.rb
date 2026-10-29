@@ -1,6 +1,5 @@
 module Api::App::V1
   class RegistrationsController < Api::App::BaseController
-    before_action :check_tenant_subscription, only: [:create]
 
     # POST /api/app/v1/registration
     # { fullName, email, password, passwordConfirmation, invitationToken }
@@ -21,21 +20,31 @@ module Api::App::V1
         email: email,
         password: params[:password],
         password_confirmation: params[:passwordConfirmation],
-        status: 'active'
+        status: tenant_setting.status_for_new_user
       )
 
       return render_error(:unprocessable_content, user.errors.full_messages.join(', ')) unless user.save
 
-      if user.active_for_authentication?
+      NotifyAdminsOfPendingUser.call(user)
+      if user.pending_approval?
+        render status: :created, json: {
+          confirmationRequired: !user.confirmed?,
+          approvalRequired: true,
+          message: I18n.t(user.confirmed? ? 'devise.registrations.signed_up_but_pending_approval' : 'devise.registrations.signed_up_but_unconfirmed_and_pending_approval'),
+          session: serialize_session(nil)
+        }
+      elsif user.active_for_authentication?
         sign_in(:user, user)
         render status: :created, json: {
           confirmationRequired: false,
+          approvalRequired: false,
           message: I18n.t('devise.registrations.signed_up'),
           session: serialize_session(user)
         }
       else
         render status: :created, json: {
           confirmationRequired: true,
+          approvalRequired: false,
           message: I18n.t('devise.registrations.signed_up_but_unconfirmed'),
           session: serialize_session(nil)
         }
@@ -67,6 +76,7 @@ module Api::App::V1
         sign_in(:user, user)
         render status: :created, json: {
           confirmationRequired: false,
+          approvalRequired: false,
           message: I18n.t('devise.registrations.signed_up'),
           session: serialize_session(user)
         }

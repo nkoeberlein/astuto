@@ -22,19 +22,19 @@ class CreateWelcomeEntitiesWorkflow
       order: 0,
       show_in_roadmap: true
     )
-    in_progress_post_status = PostStatus.create!(
+    PostStatus.create!(
       name: 'In Progress',
       color: '#9437ff',
       order: 1,
       show_in_roadmap: true
     )
-    completed_post_status = PostStatus.create!(
+    PostStatus.create!(
       name: 'Completed',
       color: '#6ac47c',
       order: 2,
       show_in_roadmap: true
     )
-    rejected_post_status = PostStatus.create!(
+    PostStatus.create!(
       name: 'Rejected',
       color: '#ff2600',
       order: 3,
@@ -55,7 +55,7 @@ class CreateWelcomeEntitiesWorkflow
       post_status_id: planned_post_status.id
     )
 
-    post2 = Post.create!(
+    Post.create!(
       title: 'There are multiple boards',
       description: 'We created two boards for you, "Feature Requests" and "Bug Reports", but you can add or remove as many as you want! Just head to Site settings > Boards!',
       board_id: bug_board.id,

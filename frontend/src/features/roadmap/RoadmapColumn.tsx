@@ -9,10 +9,18 @@ type Props = {
   boardById: Map<number, Board>
   showBoard: boolean
   showVoteCount: boolean
+  // Embedded roadmap: the post opens outside the iframe
+  openPostsInNewTab?: boolean
 }
 
 // One status of the roadmap with its posts, top border in the status color
-export function RoadmapColumn({ column, boardById, showBoard, showVoteCount }: Props) {
+export function RoadmapColumn({
+  column,
+  boardById,
+  showBoard,
+  showVoteCount,
+  openPostsInNewTab = false,
+}: Props) {
   const { t } = useI18n()
   const headingId = `roadmap-status-${column.status.id}`
 
@@ -43,6 +51,7 @@ export function RoadmapColumn({ column, boardById, showBoard, showVoteCount }: P
               post={post}
               boardName={showBoard ? boardById.get(post.boardId)?.name : undefined}
               showVoteCount={showVoteCount}
+              openInNewTab={openPostsInNewTab}
             />
           ))}
         </ul>
@@ -61,15 +70,18 @@ function RoadmapCard(props: {
   post: RoadmapPost
   boardName: string | undefined
   showVoteCount: boolean
+  openInNewTab: boolean
 }) {
   const { t } = useI18n()
   const { post } = props
+  const newTab = props.openInNewTab ? { target: '_blank', rel: 'noopener' } : {}
 
   return (
     <li>
       <Link
         to="/posts/$postSlug"
         params={{ postSlug: post.slug }}
+        {...newTab}
         className="block space-y-2 rounded-lg border bg-card p-3 text-sm shadow-2xs transition-all hover:border-primary/40 hover:shadow-md focus-visible:outline-2 focus-visible:outline-ring"
       >
         <span className="line-clamp-3 font-medium">{post.title}</span>
@@ -79,7 +91,7 @@ function RoadmapCard(props: {
               {props.boardName}
             </span>
           )}
-          <span className="ml-auto flex items-center gap-3">
+          <span className="ms-auto flex items-center gap-3">
             {props.showVoteCount && (
               <span
                 className={cn('flex items-center gap-0.5', post.liked && 'text-primary')}

@@ -3,16 +3,57 @@ module Api
     # Base controller for the JSON API used by the v2 frontend (frontend/).
     # Authentication: Devise session cookie. Writes need the X-CSRF-Token header
     # (token comes from GET /api/app/v1/session).
+    # The embeddable widget sends "Authorization: Bearer <access token>" instead
+    # (Api::App::V1::WidgetSessionsController), because browsers drop cookies in iframes on
+    # other sites. Such requests act only as that visitor and need no CSRF token: browsers
+    # never add the header on their own.
     class BaseController < ApplicationController
+      include TwoFactorLogin
       skip_before_action :load_tenant_data
-      skip_before_action :check_tenant_is_private
 
       prepend_before_action :set_tenant
 
       rescue_from ActiveRecord::RecordNotFound, with: :render_not_found
       rescue_from ActionController::InvalidAuthenticityToken, with: :render_invalid_csrf_token
 
+      WIDGET_TOKEN_LIFETIME = 12.hours
+
+      def self.widget_access_token(user)
+        Rails.application.message_verifier(:widget_session).generate(
+          { 'user_id' => user.id, 'tenant_id' => user.tenant_id }, purpose: :widget_session, expires_in: WIDGET_TOKEN_LIFETIME
+        )
+      end
+
+      def current_user
+        return widget_visitor if widget_bearer?
+
+        super
+      end
+
+      def user_signed_in?
+        current_user.present?
+      end
+
       protected
+
+        def verified_request?
+          (widget_bearer? && widget_visitor.present?) || super
+        end
+
+        def widget_bearer?
+          request.authorization.to_s.start_with?('Bearer ')
+        end
+
+        # nil for invalid or expired tokens, other feedback spaces, and accounts that became staff
+        # or were blocked since
+        def widget_visitor
+          return @widget_visitor if defined?(@widget_visitor)
+
+          payload = Rails.application.message_verifier(:widget_session)
+            .verified(request.authorization.to_s.delete_prefix('Bearer ').strip, purpose: :widget_session)
+          user = payload.is_a?(Hash) && Current.tenant && payload['tenant_id'] == Current.tenant.id && User.find_by(id: payload['user_id'])
+          @widget_visitor = user && user.active_for_authentication? && !user.moderator? ? user : nil
+        end
 
         def set_tenant
           tenant = get_tenant_from_request(request)
@@ -20,7 +61,7 @@ module Api
           return render_error(:forbidden, 'Feedback space is not active') if tenant.pending? || tenant.blocked?
 
           Current.tenant = tenant
-          I18n.locale = tenant.locale.presence || I18n.default_locale
+          I18n.locale = tenant_locale(tenant, tenant_setting, request)
         end
 
         def tenant_setting
@@ -39,10 +80,62 @@ module Api
           render_error(:unauthorized, I18n.t('errors.not_logged_in')) unless user_signed_in?
         end
 
-        # Posts that are not approved are only visible to moderators
+        def require_moderator
+          return render_error(:unauthorized, I18n.t('errors.not_logged_in')) unless user_signed_in?
+          return render_error(:forbidden, I18n.t('errors.unauthorized')) unless current_user.moderator?
+
+          require_two_factor_setup
+        end
+
+        def require_admin
+          return render_error(:unauthorized, I18n.t('errors.not_logged_in')) unless user_signed_in?
+          return render_error(:forbidden, I18n.t('errors.unauthorized')) unless current_user.admin?
+
+          require_two_factor_setup
+        end
+
+        # Staff of a space that requires 2FA work only after setting it up (Profile settings)
+        def require_two_factor_setup
+          render_error(:forbidden, I18n.t('two_factor.setup_required')) if current_user.two_factor_setup_required?
+        end
+
+        # Sets the "order" column of an Orderable model from a full list of ids (first = 0).
+        # Returns false unless the list contains every record exactly once.
+        def apply_order(model, ids)
+          ids = Array(ids).map(&:to_i)
+          return false unless ids.uniq.size == ids.size && ids.sort == model.pluck(:id).sort
+
+          model.transaction do
+            ids.each_with_index { |id, index| model.where(id: id).update_all(order: index, updated_at: Time.current) }
+          end
+          true
+        end
+
+        # Audit log entry for an admin or moderator action; a logging problem never fails the action
+        def audit(action, subject = nil, changes: {}, prefix: nil, subject_label: nil)
+          AuditEvent.record!(
+            action: action, actor: current_user, subject: subject, changes: changes, prefix: prefix,
+            subject_label: subject_label, source: 'app', ip: request.remote_ip
+          )
+        rescue StandardError => e
+          Rails.logger.error { "[audit] #{action} not recorded: #{e.class}: #{e.message}" }
+        end
+
+        # Posts that are not approved are only visible to moderators. A merged duplicate stands
+        # for the post it was merged into (old links, votes and comments keep working).
+        # A board the current person may see (private boards, #414), else 404
+        def find_visible_board(id)
+          board = Board.friendly.find(id)
+          raise ActiveRecord::RecordNotFound unless board.visible_to?(current_user)
+
+          board
+        end
+
         def find_visible_post(id)
           post = Post.friendly.find(id)
+          5.times { post.merged? && post.merged_into ? post = post.merged_into : break }
           raise ActiveRecord::RecordNotFound unless post.approved? || current_user&.moderator?
+          raise ActiveRecord::RecordNotFound unless post.board.visible_to?(current_user)
 
           post
         end

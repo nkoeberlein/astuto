@@ -13,6 +13,8 @@ RSpec.describe 'api/app/v1/posts', type: :request, openapi_spec: 'app/v1/openapi
     parameter name: :page, in: :query, type: :integer, required: false
     parameter name: 'post_status_ids[]', in: :query, type: :array, items: { type: :integer }, required: false,
               description: 'Filter by status; 0 means posts without status'
+    parameter name: 'tag_ids[]', in: :query, type: :array, items: { type: :integer }, required: false,
+              description: 'Filter by tag: posts with any of these tags'
 
     get('List approved posts of a board') do
       tags 'Posts'

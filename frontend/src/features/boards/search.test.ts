@@ -28,10 +28,11 @@ describe('board search params', () => {
   })
 
   it('turns search params into post filters', () => {
-    expect(filtersFromSearch({ status: '0,3,x' })).toEqual({
+    expect(filtersFromSearch({ status: '0,3,x', tag: '5' })).toEqual({
       search: '',
       sortBy: 'trending',
       statusIds: [0, 3],
+      tagIds: [5],
     })
     expect(filtersFromSearch({}, 'most_voted').sortBy).toBe('most_voted')
     expect(filtersFromSearch({ sort: 'newest' }, 'most_voted').sortBy).toBe('newest')

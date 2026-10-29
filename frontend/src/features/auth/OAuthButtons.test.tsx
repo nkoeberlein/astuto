@@ -51,7 +51,7 @@ describe('OAuthButtons', () => {
     const githubLink = screen.getByRole('link', { name: 'Log in with GitHub' })
     expect(githubLink).toHaveAttribute(
       'href',
-      'https://acme.example.com/o_auths/1/start?reason=login&return_to=%2Fnext%2Fposts%2Fdark-mode',
+      'https://acme.example.com/o_auths/1/start?reason=login&return_to=%2Fposts%2Fdark-mode',
     )
     expect(screen.getByRole('link', { name: 'Log in with Keycloak' })).toBeInTheDocument()
   })

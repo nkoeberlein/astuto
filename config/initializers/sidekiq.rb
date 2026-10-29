@@ -1,18 +1,16 @@
 if ENV['ACTIVE_JOB_BACKEND'] == 'sidekiq'
-  Sidekiq.configure_server do |config|
-    redis_url = ENV['REDIS_URL'].dup
-    redis_url.insert(8, ":#{ENV['REDIS_PASSWORD']}@")
+  # REDIS_URL plus an optional REDIS_PASSWORD, passed separately so special characters need no
+  # escaping and rediss:// works (it used to be spliced into the URL at a fixed position)
+  redis_options = { url: ENV.fetch('REDIS_URL', 'redis://localhost:6379/0'), password: ENV['REDIS_PASSWORD'].presence }.compact
 
-    config.logger.level = Rails.env.production? ? Logger::INFO : Logger::DEBUG    
-    config.redis = { url: redis_url }
+  Sidekiq.configure_server do |config|
+    config.logger.level = Rails.env.production? ? Logger::INFO : Logger::DEBUG
+    config.redis = redis_options
   end
 
   Sidekiq.configure_client do |config|
-    redis_url = ENV['REDIS_URL'].dup
-    redis_url.insert(8, ":#{ENV['REDIS_PASSWORD']}@")
-
     config.logger.level = Rails.env.production? ? Logger::INFO : Logger::DEBUG
-    config.redis = { url: redis_url }
+    config.redis = redis_options
   end
 
   # Sidekiq Cron
@@ -24,12 +22,17 @@ if ENV['ACTIVE_JOB_BACKEND'] == 'sidekiq'
         cron: ENV.fetch('SEND_RECAP_EMAIL_CRON') { '0 15 * * *' }, # defaults to every day at 15:00
         class: 'SendRecapEmails'
       )
-      
+      Sidekiq::Cron::Job.create(
+        name: 'PurgeExpiredData Job',
+        cron: ENV.fetch('PURGE_EXPIRED_DATA_CRON') { '30 3 * * *' }, # daily at 03:30
+        class: 'PurgeExpiredData'
+      )
+
       config.cron_poll_interval = Rails.env.production? ? 30 : 15
       config.cron_history_size = 50
       config.default_namespace = 'default'
       config.natural_cron_parsing_mode = :strict
-      
+
       # Handles the case when the Sidekiq process was down for a while and the cron job should have run (set to 10 minutes, i.e. 600 seconds)
       # This could happen during the deployment of a new version of the application
       config.reschedule_grace_period = 600

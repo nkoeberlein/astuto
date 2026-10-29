@@ -1,54 +1,4 @@
 module ApplicationHelper
-  # The email/password login form is hidden when the tenant allows OAuth login
-  # only and at least one provider is enabled (#471). Recovery stays possible
-  # through password reset links and the Devise endpoints are never blocked.
-  def login_only_with_oauth?
-    setting = @tenant_setting || (Current.tenant && Current.tenant.tenant_setting)
-    return false if setting.nil?
-
-    oauths = defined?(@o_auths) ? @o_auths : nil
-    oauths.present? && setting.login_only_with_oauth
-  end
-
-  def check_user_signed_in
-    unless user_signed_in?
-      flash[:alert] = t('errors.not_logged_in')
-      redirect_to new_user_session_path
-      
-      return false
-    end
-  end
-
-  def authenticate_owner
-    return if check_user_signed_in == false
-
-    unless current_user.owner?
-      flash[:alert] = t('errors.not_enough_privileges')
-      redirect_to root_path
-      return
-    end
-  end
-
-  def authenticate_admin
-    return if check_user_signed_in == false
-
-    unless current_user.admin?
-      flash[:alert] = t('errors.not_enough_privileges')
-      redirect_to root_path
-      return
-    end
-  end
-
-  def authenticate_moderator
-    return if check_user_signed_in == false
-
-    unless current_user.moderator?
-      flash[:alert] = t('errors.not_enough_privileges')
-      redirect_to root_path
-      return
-    end
-  end
-
   def get_url_for(url_helper, resource: nil, disallow_custom_domain: false, options: {})
     logger.info { "(start) Call to get_url_for with tenant: #{Current.tenant&.inspect}, url_helper = #{url_helper}, resource = #{resource}, disallow_custom_domain = #{disallow_custom_domain}, options = #{options}" }
 
@@ -87,16 +37,41 @@ module ApplicationHelper
     resource ? url_helper.call(resource, options) : url_helper.call(options)
   end
 
+  # Language of a request: the feedback space's language, or the browser's preferred one when
+  # "use browser language" is on and the app has it (legacy pages, app API, v2 pages)
+  def tenant_locale(tenant, tenant_setting, request)
+    default = tenant.locale.presence || I18n.default_locale.to_s
+    return default unless tenant_setting&.use_browser_locale
+
+    available = I18n.available_locales.map(&:to_s)
+    preferred = request.env['HTTP_ACCEPT_LANGUAGE'].to_s.split(',').map { |part| part.split(';').first.to_s.strip }
+    preferred.each do |tag|
+      exact = available.find { |locale| locale.casecmp?(tag) }
+      return exact if exact
+
+      language = tag.split('-').first.to_s.downcase
+      return 'zh-CN' if language == 'zh' && available.include?('zh-CN')
+      return language if available.include?(language)
+    end
+    default
+  end
+
   def get_tenant_from_request(request)
     if Rails.application.multi_tenancy?
-      request_host = request.headers['HTTP_X_FORWARDED_HOST'] || request.host
+      request_host = (request.headers['HTTP_X_FORWARDED_HOST'] || request.host).to_s.split(':').first.to_s.downcase
       request_host_splitted = request_host.split('.')
-      app_host_splitted = URI.parse(Rails.application.base_url).host.split('.')
+      app_host_splitted = Rails.application.base_url_host.downcase.split('.')
 
-      if app_host_splitted.join('.') == request_host_splitted.last(app_host_splitted.length).join('.')
-        return nil if request.subdomain.blank? or RESERVED_SUBDOMAINS.include?(request.subdomain)
+      if request_host_splitted.length > app_host_splitted.length &&
+         app_host_splitted == request_host_splitted.last(app_host_splitted.length)
+        # Everything in front of the BASE_URL host, also for hosts like feedback.example.co.uk
+        # (request.subdomain would depend on tld_length)
+        subdomain = request_host_splitted.first(request_host_splitted.length - app_host_splitted.length).join('.')
+        return nil if RESERVED_SUBDOMAINS.include?(subdomain)
 
-        tenant = Tenant.find_by(subdomain: request.subdomain)
+        tenant = Tenant.find_by(subdomain: subdomain)
+      elsif request_host == app_host_splitted.join('.')
+        return nil
       else
         tenant = Tenant.find_by(custom_domain: request_host)
       end
@@ -105,15 +80,6 @@ module ApplicationHelper
     end
     
     tenant
-  end
-
-  # Tenant custom CSS goes unescaped into a <style> block. Writing every "<"
-  # as the CSS escape "\3c " means the browser can never see "</style", no
-  # matter how the input is nested (e.g. "</sty</stylele>"). Inside CSS strings
-  # the escape still stands for "<". The block form keeps Ruby from reading
-  # "\3" as a backreference.
-  def custom_css_for_style_tag(css)
-    css.to_s.gsub('<') { '\3c ' }.html_safe
   end
 
   # Redirect to previous page if it is a local path or an http(s) URL on this

@@ -1,6 +1,12 @@
 class Tenant < ApplicationRecord
+  # Audit entries reference users, so they go first
+  has_many :audit_events, dependent: :delete_all
+  has_one :saml_config, dependent: :destroy
+  has_one :ldap_config, dependent: :destroy
+  has_one :widget_config, dependent: :destroy
   has_one :tenant_setting, dependent: :destroy
-  has_one :tenant_billing, dependent: :destroy
+  has_many :changelog_entries, dependent: :delete_all
+  has_many :tags, dependent: :delete_all
   has_many :boards, dependent: :destroy
   has_many :post_statuses, dependent: :destroy
   has_many :posts, dependent: :destroy
@@ -20,7 +26,8 @@ class Tenant < ApplicationRecord
   validates :site_name, presence: true
   validates :subdomain, presence: true, uniqueness: true
   validates :locale, inclusion: { in: I18n.available_locales.map(&:to_s) }
-  validates :custom_domain, format: { with: /\A[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}\z/ }, uniqueness: true, allow_blank: true, allow_nil: true
+  # Top-level domains have up to 63 letters (.online, .agency, .solutions)
+  validates :custom_domain, format: { with: /\A[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,63}\z/ }, uniqueness: true, allow_blank: true, allow_nil: true
 
   accepts_nested_attributes_for :tenant_setting, update_only: true
 

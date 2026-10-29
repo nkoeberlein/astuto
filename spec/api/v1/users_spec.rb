@@ -197,7 +197,7 @@ RSpec.describe 'api/v1/users', type: :request do
           expect(@user.status).to eq('active')
         end
 
-        run_test! do |response|
+        run_test! do |_response|
           @user.reload
           expect(@user.status).to eq('blocked')
         end
@@ -217,7 +217,7 @@ RSpec.describe 'api/v1/users', type: :request do
           expect(@moderator.api_key).to be_present
         end
 
-        run_test! do |response|
+        run_test! do |_response|
           Current.tenant = Tenant.first
           @moderator.reload
           expect(@moderator.status).to eq('blocked')

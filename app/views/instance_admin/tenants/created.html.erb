@@ -1,0 +1,10 @@
+<h1><%= t('instance_admin.tenants.created_title', site_name: @tenant.site_name) %></h1>
+
+<p><a href="<%= tenant_url(@tenant) %>" target="_blank" rel="noopener"><%= tenant_url(@tenant) %></a></p>
+
+<p><%= t('instance_admin.tenants.owner_credentials') %></p>
+<p><%= @workflow.owner.email %></p>
+<p class="secret"><%= @workflow.password %></p>
+<p class="hint"><%= t('instance_admin.tenants.password_hint') %></p>
+
+<p style="margin-block-start: 1.5rem"><a class="button" href="<%= instance_admin_tenants_path %>"><%= t('instance_admin.tenants.back') %></a></p>

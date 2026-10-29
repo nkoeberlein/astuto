@@ -18,8 +18,28 @@ class OAuth < ApplicationRecord
   validates :profile_url, presence: true
   validates :scope, presence: true
   validates :json_user_email_path, presence: true
+  validate :profile_headers_format
+
+  # [{ "key" => ..., "value" => ... }]; rows without a key are dropped
+  def profile_headers=(value)
+    rows = Array(value).filter_map do |header|
+      header = header.to_unsafe_h if header.respond_to?(:to_unsafe_h)
+      next unless header.is_a?(Hash)
+
+      key = header['key'] || header[:key]
+      { 'key' => key.to_s.strip, 'value' => (header['value'] || header[:value]).to_s } if key.present?
+    end
+    super(rows)
+  end
 
   friendly_id :generate_random_slug, use: :scoped, scope: :tenant_id
+
+  def profile_headers_format
+    # Header names: visible ASCII without separators (RFC 9110 token)
+    return if Array(profile_headers).all? { |header| header['key'].to_s.match?(/\A[!#$%&'*+\-.^_`|~0-9A-Za-z]+\z/) }
+
+    errors.add(:profile_headers, :invalid)
+  end
 
   def is_default?
     tenant_id == nil

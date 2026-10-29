@@ -2,22 +2,22 @@ module Api::App::V1
   class PostsController < Api::App::BaseController
     before_action :require_access
     before_action :require_user, only: [:update, :destroy]
-    before_action :check_tenant_subscription, only: [:create, :update, :destroy]
 
     # GET /api/app/v1/boards/:board_id/posts?search=&sort_by=&post_status_ids[]=&page=
     def index
-      board = Board.friendly.find(params[:board_id])
+      board = find_visible_board(params[:board_id])
       result = BoardPostsQuery.new(
         board: board,
         user: current_user,
         search: params[:search],
         sort_by: params[:sort_by],
         post_status_ids: params[:post_status_ids],
+        tag_ids: params[:tag_ids],
         page: params[:page] || 1
       ).call
 
       render json: {
-        posts: result.posts.map { |post| PostSerializer.list_item(post) },
+        posts: result.posts.then { |posts| tags = PostSerializer.tag_ids_by_post(posts); posts.map { |post| PostSerializer.list_item(post, tag_ids: tags.fetch(post.id, [])) } },
         page: result.page,
         hasMore: result.has_more
       }
@@ -31,7 +31,7 @@ module Api::App::V1
     # POST /api/app/v1/boards/:board_id/posts
     # { title, description, isAnonymous, honeypot, formFillMs }
     def create
-      board = Board.friendly.find(params[:board_id])
+      board = find_visible_board(params[:board_id])
       anonymous = ActiveModel::Type::Boolean.new.cast(params[:isAnonymous]) || false
 
       return render_error(:unprocessable_content, I18n.t('errors.unknown')) if spam?
@@ -92,6 +92,16 @@ module Api::App::V1
           end
         end
 
+        if params.key?(:tagIds)
+          tag_ids = Array(params[:tagIds]).map(&:to_i).uniq
+          return render_error(:unprocessable_content, I18n.t('errors.unknown')) unless Tag.where(id: tag_ids).count == tag_ids.size
+
+          old_tag_ids = post.tags.map(&:id)
+        end
+
+        post.source_url = params[:sourceUrl].presence if params.key?(:sourceUrl)
+        post.source_label = params[:sourceLabel].presence if params.key?(:sourceLabel)
+
         if params.key?(:approvalStatus) && params[:approvalStatus].present?
           # Assigning an unknown enum value raises ArgumentError (500)
           unless Post.approval_statuses.key?(params[:approvalStatus].to_s)
@@ -112,12 +122,40 @@ module Api::App::V1
       saved = ActiveRecord::Base.transaction do
         result = post.save
         status_change_workflow.create_status_change! if result && status_changed
+        if result && tag_ids
+          post.tag_ids = tag_ids
+          post.tags.reset # back to the order of the tags
+        end
         result
       end
       return render_error(:unprocessable_content, post.errors.full_messages.join(', ')) unless saved
 
       status_change_workflow.notify_followers if status_changed
+      # Moderation: other people's posts, or board, status and approval of any post
+      changes = post.saved_changes.to_h
+      changes['tag_ids'] = [old_tag_ids, tag_ids.sort] if tag_ids && old_tag_ids.sort != tag_ids.sort
+      moderated = changes.keys & %w[board_id post_status_id approval_status source_url source_label tag_ids]
+      if current_user.moderator? && changes.except('updated_at').any? && (post.user_id != current_user.id || moderated.any?)
+        audit('post.update', post, changes: changes)
+      end
       render json: PostSerializer.detail(post, current_user: current_user)
+    end
+
+    # POST /api/app/v1/posts/:id/merge { targetId } (moderators): merges this post into the
+    # target, which takes over votes, followers and comments; answers with the target
+    def merge
+      return render_error(:forbidden, I18n.t('errors.unauthorized')) unless current_user&.moderator?
+
+      require_two_factor_setup
+      return if performed?
+
+      source = Post.friendly.find(params[:id])
+      target = Post.find(params[:targetId])
+      MergePostsWorkflow.new(source: source, target: target, actor: current_user).run!
+      audit('post.merge', source, changes: { 'merged_into_post_id' => [nil, target.id] }, subject_label: "#{source.title} → #{target.title}")
+      render json: PostSerializer.detail(target.reload, current_user: current_user)
+    rescue MergePostsWorkflow::Error => e
+      render_error(:unprocessable_content, e.message)
     end
 
     # DELETE /api/app/v1/posts/:id
@@ -126,6 +164,7 @@ module Api::App::V1
       authorize post, :destroy?
 
       post.destroy!
+      audit('post.delete', post) if post.user_id != current_user.id
       head :no_content
     end
 

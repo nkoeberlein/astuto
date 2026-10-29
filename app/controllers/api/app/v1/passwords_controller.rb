@@ -26,7 +26,8 @@ module Api::App::V1
       user.unlock_access! if user.respond_to?(:unlock_strategy_enabled?) && user.unlock_strategy_enabled?(:email)
       user.update!(has_set_password: true) unless user.has_set_password?
       signed_in_user = nil
-      if user.active_for_authentication?
+      # With 2FA the reset alone does not sign in: the code is still needed (normal login)
+      if user.active_for_authentication? && !user.two_factor_enabled?
         sign_out(:user)
         sign_in(:user, user)
         signed_in_user = user

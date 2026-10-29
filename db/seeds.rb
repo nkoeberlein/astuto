@@ -16,7 +16,6 @@ owner = User.create!(
   confirmed_at: Time.zone.now
 )
 
-tenant.tenant_billing = TenantBilling.create!(status: 'perpetual')
 
 CreateWelcomeEntitiesWorkflow.new().run
 
