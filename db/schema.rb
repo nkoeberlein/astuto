@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_29_190000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_29_200000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -95,6 +95,26 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_29_190000) do
     t.datetime "updated_at", null: false
     t.index ["email", "tenant_id"], name: "index_invitations_on_email_and_tenant_id", unique: true
     t.index ["tenant_id"], name: "index_invitations_on_tenant_id"
+  end
+
+  create_table "ldap_configs", force: :cascade do |t|
+    t.bigint "tenant_id", null: false
+    t.boolean "enabled", default: false, null: false
+    t.string "label", default: "Company account", null: false
+    t.string "host"
+    t.integer "port", default: 389, null: false
+    t.string "encryption", default: "start_tls", null: false
+    t.boolean "verify_certificate", default: true, null: false
+    t.string "base_dn"
+    t.string "bind_dn"
+    t.string "bind_password_ciphertext"
+    t.string "user_filter", default: "(|(uid=%{login})(sAMAccountName=%{login})(mail=%{login}))", null: false
+    t.string "email_attribute", default: "mail", null: false
+    t.string "name_attribute", default: "displayName", null: false
+    t.boolean "auto_create_users", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tenant_id"], name: "index_ldap_configs_on_tenant_id", unique: true
   end
 
   create_table "likes", force: :cascade do |t|
@@ -327,6 +347,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_29_190000) do
   add_foreign_key "follows", "tenants"
   add_foreign_key "follows", "users"
   add_foreign_key "invitations", "tenants"
+  add_foreign_key "ldap_configs", "tenants"
   add_foreign_key "likes", "posts"
   add_foreign_key "likes", "tenants"
   add_foreign_key "likes", "users"

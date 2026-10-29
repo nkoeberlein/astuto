@@ -12,7 +12,7 @@ class AuditEvent < ApplicationRecord
   MAX_VALUE = 500
 
   # Category of an action ("webhook.update" → "webhook") for the filter in the UI
-  CATEGORIES = %w[post comment user board post_status site_settings o_auth saml webhook invitation api_key].freeze
+  CATEGORIES = %w[post comment user board post_status site_settings o_auth saml ldap webhook invitation api_key].freeze
 
   validates :action, presence: true
   validates :source, inclusion: { in: SOURCES }

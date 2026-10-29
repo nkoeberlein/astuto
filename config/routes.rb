@@ -75,6 +75,7 @@ Rails.application.routes.draw do
         namespace :v1 do
           resource :session, only: [:show, :create, :destroy] do
             post :two_factor
+            post :ldap
           end
           resource :registration, only: [:create]
           resource :password, only: [:create, :update]
@@ -128,6 +129,9 @@ Rails.application.routes.draw do
             resources :audit_events, only: [:index]
             resource :saml, only: [:show, :update], controller: 'saml' do
               post :parse_metadata
+            end
+            resource :ldap, only: [:show, :update], controller: 'ldap' do
+              post :test
             end
           end
         end

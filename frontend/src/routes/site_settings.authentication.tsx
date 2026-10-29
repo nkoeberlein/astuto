@@ -1,5 +1,10 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { generalSettingsQuery, oAuthSettingsQuery, samlSettingsQuery } from '@/api/queries'
+import {
+  generalSettingsQuery,
+  ldapSettingsQuery,
+  oAuthSettingsQuery,
+  samlSettingsQuery,
+} from '@/api/queries'
 import { ErrorView } from '@/features/layout/ErrorView'
 import { AuthenticationSettingsPage } from '@/features/site-settings/AuthenticationSettingsPage'
 import { requireAdmin } from '@/features/site-settings/route'
@@ -12,6 +17,7 @@ export const Route = createFileRoute('/site_settings/authentication')({
       queryClient.ensureQueryData(generalSettingsQuery),
       queryClient.ensureQueryData(oAuthSettingsQuery),
       queryClient.ensureQueryData(samlSettingsQuery),
+      queryClient.ensureQueryData(ldapSettingsQuery),
     ])
   },
   component: () => (

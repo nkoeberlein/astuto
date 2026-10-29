@@ -1,7 +1,7 @@
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { Link, useNavigate } from '@tanstack/react-router'
 import { type FormEvent, useId, useState } from 'react'
-import { useLogin, useTwoFactorLogin } from '@/api/mutations'
+import { useLdapLogin, useLogin, useTwoFactorLogin } from '@/api/mutations'
 import { sessionQuery } from '@/api/queries'
 import { FormError } from '@/components/FormError'
 import { Button } from '@/components/ui/button'
@@ -31,6 +31,9 @@ export function LoginPage({
   const [rememberMe, setRememberMe] = useState(false)
   // Second step for accounts with two-factor authentication
   const [codeStep, setCodeStep] = useState(twoFactor)
+  // Company directory (LDAP) first, when the space has it
+  const ldapLabel = session.tenant.ldapLabel
+  const [mode, setMode] = useState<'ldap' | 'email'>(ldapLabel ? 'ldap' : 'email')
 
   const oauthProviders = session.tenant.oauthProviders
   const oauthOnly = session.tenant.settings.loginOnlyWithOauth && oauthProviders.length > 0
@@ -65,7 +68,23 @@ export function LoginPage({
           {t('common.forms.auth.log_in')}
         </h1>
 
-        {oauthOnly ? (
+        {ldapLabel && mode === 'ldap' ? (
+          <div className="space-y-5">
+            <LdapForm label={ldapLabel} onSignedIn={goOn} onTwoFactor={() => setCodeStep(true)} />
+            {!oauthOnly && (
+              <p className="text-center text-sm">
+                <button
+                  type="button"
+                  className="text-muted-foreground hover:underline"
+                  onClick={() => setMode('email')}
+                >
+                  {t('common.forms.auth.log_in_with_email')}
+                </button>
+              </p>
+            )}
+            <OAuthButtons providers={oauthProviders} mode="login" showDivider redirect={redirect} />
+          </div>
+        ) : oauthOnly ? (
           <div className="space-y-5">
             <p className="text-center text-sm text-muted-foreground">
               {t('common.forms.auth.oauth_only_info')}
@@ -128,6 +147,17 @@ export function LoginPage({
                 {t('common.forms.auth.log_in')}
               </Button>
             </form>
+            {ldapLabel && (
+              <p className="text-center text-sm">
+                <button
+                  type="button"
+                  className="text-muted-foreground hover:underline"
+                  onClick={() => setMode('ldap')}
+                >
+                  {t('common.forms.auth.log_in_with', { o_auth: ldapLabel })}
+                </button>
+              </p>
+            )}
 
             <OAuthButtons providers={oauthProviders} mode="login" showDivider redirect={redirect} />
           </div>
@@ -214,5 +244,76 @@ function TwoFactorStep(props: { onSignedIn: () => void; onRestart: () => void })
         </div>
       </div>
     </div>
+  )
+}
+
+// Login with the company directory: login name (not necessarily an email) and password
+function LdapForm(props: { label: string; onSignedIn: () => void; onTwoFactor: () => void }) {
+  const { t } = useI18n()
+  const login = useLdapLogin()
+  const loginId = useId()
+  const passwordId = useId()
+  const rememberId = useId()
+  const [name, setName] = useState('')
+  const [password, setPassword] = useState('')
+  const [rememberMe, setRememberMe] = useState(false)
+
+  return (
+    <form
+      className="space-y-4"
+      onSubmit={(event) => {
+        event.preventDefault()
+        login.mutate(
+          { login: name.trim(), password, rememberMe },
+          {
+            onSuccess: (result) =>
+              'twoFactorRequired' in result ? props.onTwoFactor() : props.onSignedIn(),
+          },
+        )
+      }}
+    >
+      <p className="text-center text-sm text-muted-foreground">
+        {t('common.forms.auth.ldap_info', { label: props.label })}
+      </p>
+      <div className="space-y-1.5">
+        <label htmlFor={loginId} className="block text-sm font-medium">
+          {t('common.forms.auth.login_name')}
+        </label>
+        <Input
+          id={loginId}
+          required
+          autoComplete="username"
+          value={name}
+          onChange={(event) => setName(event.target.value)}
+        />
+      </div>
+      <div className="space-y-1.5">
+        <label htmlFor={passwordId} className="block text-sm font-medium">
+          {t('common.forms.auth.password')}
+        </label>
+        <Input
+          id={passwordId}
+          type="password"
+          required
+          autoComplete="current-password"
+          value={password}
+          onChange={(event) => setPassword(event.target.value)}
+        />
+      </div>
+      <div className="flex items-center gap-2">
+        <Checkbox
+          id={rememberId}
+          checked={rememberMe}
+          onCheckedChange={(checked) => setRememberMe(checked === true)}
+        />
+        <label htmlFor={rememberId} className="cursor-pointer text-sm text-foreground">
+          {t('common.forms.auth.remember_me')}
+        </label>
+      </div>
+      <FormError error={login.error} />
+      <Button type="submit" className="h-10 w-full" disabled={login.isPending}>
+        {t('common.forms.auth.log_in')}
+      </Button>
+    </form>
   )
 }

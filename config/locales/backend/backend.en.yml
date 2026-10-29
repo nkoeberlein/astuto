@@ -87,6 +87,20 @@ en:
         one: 'Webhook'
         other: 'Webhooks'
     attributes:
+      ldap_config:
+        enabled: 'Use LDAP login'
+        label: 'Name of the account on the login page'
+        host: 'Server'
+        port: 'Port'
+        encryption: 'Encryption'
+        verify_certificate: 'Check the server certificate'
+        base_dn: 'Base DN'
+        bind_dn: 'Service account (bind DN)'
+        bind_password: 'Password of the service account'
+        user_filter: 'User filter'
+        email_attribute: 'Attribute with the email address'
+        name_attribute: 'Attribute with the name'
+        auto_create_users: 'Create an account on the first login'
       saml_config:
         enabled: 'Use SAML single sign-on'
         label: 'Button text'
@@ -250,3 +264,6 @@ en:
     not_enabled: 'Two-factor authentication is off.'
   saml:
     metadata_invalid: 'This is not SAML identity provider metadata (XML with a SingleSignOnService).'
+  ldap:
+    invalid_login: 'Invalid login name or password for your %{label}.'
+    not_found: 'No unique entry found for this login name. Check the base DN and the user filter.'

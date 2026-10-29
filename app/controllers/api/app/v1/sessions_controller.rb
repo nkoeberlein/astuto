@@ -40,6 +40,30 @@ module Api::App::V1
       render json: serialize_session(user)
     end
 
+    # POST /api/app/v1/session/ldap { login, password, rememberMe }: login with the company
+    # directory (LDAP / Active Directory). Same answers as POST /session, including the
+    # two-factor step; wrong credentials get one generic message.
+    def ldap
+      config = LdapConfig.current
+      return render_not_found unless config.usable?
+
+      result = config.authenticate(params[:login], params[:password])
+      user = result && LdapSignInWorkflow.new(config: config, result: result).run
+      return render_error(:unauthorized, I18n.t('ldap.invalid_login', label: config.label)) unless user
+      return render_error(:unauthorized, I18n.t('devise.failure.locked')) if user.access_locked?
+      return render_error(:forbidden, user.inactive_message) unless user.active_for_authentication?
+
+      remember = ActiveModel::Type::Boolean.new.cast(params[:rememberMe])
+      if user.two_factor_enabled?
+        start_two_factor_login(user, remember: remember)
+        return render status: :accepted, json: { twoFactorRequired: true }
+      end
+
+      sign_in(:user, user)
+      remember_me(user) if remember
+      render json: serialize_session(user)
+    end
+
     # POST /api/app/v1/session/two_factor { code }: second step of a login with 2FA, after the
     # password (POST /session) or an OAuth provider. Wrong codes count as failed logins (Lockable).
     def two_factor

@@ -12,6 +12,7 @@ import {
   type BoardInput,
   type Comment,
   type GeneralSettings,
+  type LdapLoginInput,
   type OAuthInput,
   type Post,
   type PostPage,
@@ -22,6 +23,7 @@ import {
   type Session,
   setCsrfToken,
   type UpdateGeneralSettings,
+  type UpdateLdapSettings,
   type UpdateProfile,
   type UpdateSamlSettings,
   unwrap,
@@ -31,6 +33,7 @@ import {
   boardsQuery,
   commentsQuery,
   generalSettingsQuery,
+  ldapSettingsQuery,
   moderationPostsQuery,
   postQuery,
   postStatusesQuery,
@@ -348,6 +351,18 @@ export function useLogin() {
         }),
       ),
     // With two-factor authentication the password alone does not sign in yet
+    onSuccess: (result) => {
+      if (!('twoFactorRequired' in result)) applySession(queryClient, result)
+    },
+  })
+}
+
+// Login with the company directory (LDAP / Active Directory); may need the 2FA step too
+export function useLdapLogin() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (credentials: LdapLoginInput) =>
+      unwrap(api.POST('/api/app/v1/session/ldap', { body: credentials })),
     onSuccess: (result) => {
       if (!('twoFactorRequired' in result)) applySession(queryClient, result)
     },
@@ -697,6 +712,25 @@ export function useSamlMutations() {
     parseMetadata: useMutation({
       mutationFn: (xml: string) =>
         unwrap(api.POST('/api/app/v1/site_settings/saml/parse_metadata', { body: { xml } })),
+    }),
+  }
+}
+
+// Site settings › Authentication › LDAP / Active Directory
+export function useLdapMutations() {
+  const queryClient = useQueryClient()
+  return {
+    save: useMutation({
+      mutationFn: (changes: UpdateLdapSettings) =>
+        unwrap(api.PATCH('/api/app/v1/site_settings/ldap', { body: changes })),
+      onSuccess: (saved) => {
+        queryClient.setQueryData(ldapSettingsQuery.queryKey, saved)
+        void queryClient.invalidateQueries({ queryKey: sessionQuery.queryKey })
+      },
+    }),
+    test: useMutation({
+      mutationFn: (login: string) =>
+        unwrap(api.POST('/api/app/v1/site_settings/ldap/test', { body: { login } })),
     }),
   }
 }

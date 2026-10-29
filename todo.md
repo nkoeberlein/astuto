@@ -105,7 +105,7 @@ Issue-Nummern beziehen sich auf `astuto/astuto`. Phasen siehe [roadmap.md](roadm
 
 ### Mittelstand (roadmap.md, Abschnitt 7)
 - [x] SAML 2.0 (`docs/sso.md`, `ruby-saml` 1.18): SP-Metadaten, signierte Antworten, InResponseTo-Bindung, Nonce gegen Login-CSRF (ACS-POST kommt ohne Session-Cookie, Abschluss per kurzlebigem Token auf dem Start-Host), Konto bei erstem Login optional, 2FA danach; Metadaten-Import ohne URL-Abruf; im Browser mit Mock-IdP geprüft. „Nur per SSO“ über das bestehende „Login nur mit OAuth“ (#471)
-- [ ] LDAP/AD-Login (#8)
+- [x] LDAP/AD-Login (#8, `net-ldap`): Suche per Dienstkonto, Passwortprüfung per Bind (leeres Passwort vorab abgelehnt), Filter-Escaping (dabei gefunden: `gsub` mit Ersatz-String hätte `\\2a` als Rückverweis gelesen und das Escaping aufgehoben), StartTLS/LDAPS mit Zertifikatsprüfung, Test-Suche, Login-Seite mit Firmenkonto zuerst; gegen echtes OpenLDAP geprüft (`spec/fixtures/ldap`)
 - [x] 2FA (`docs/two-factor-authentication.md`): TOTP mit `rotp`, QR-Code als SVG (`rqrcode`, ohne JS), zehn Backup-Codes (nur Digests), Secret verschlüsselt; zweiter Login-Schritt nach Passwort und OAuth, Codes nur einmal gültig, Fehlversuche zählen für die Sperre; Pflicht für Staff per Site-Setting (App-API 403, Hinweis und Weiterleitung ins Profil). Umgehungen geschlossen: Devise-HTML-Login und `PUT /users/password` (meldeten ohne Code an), Passwort-Reset meldet 2FA-Konten nicht mehr an
 - [x] Audit-Log für Moderation und Einstellungen: Tabelle `audit_events` (Akteur, Aktion, Objekt mit Namens-Snapshot, geänderte Felder alt/neu, Quelle App/REST-API/MCP, IP; Secrets gefiltert), aufgezeichnet in App-API, REST-API und MCP; Seite Site settings › Protokoll mit Filter nach Bereich; Aufbewahrung `AUDIT_LOG_RETENTION_DAYS` (365)
 - [x] DSGVO (`docs/privacy.md`): Datenexport für die Person selbst (Profil › Meine Daten) und für Admins (Moderation › Nutzer), Löschen/Anonymisieren durch Admins (`User#anonymize!` entfernt jetzt auch IPs, OAuth-Token, gefolgte Posts), tägliche Löschung (`PurgeExpiredData`: unbestätigte Konten 30 Tage, IPs 90 Tage, Einladungen 180 Tage), Gravatar abschaltbar (Initialen statt Bilder)
@@ -226,7 +226,7 @@ Empfehlung (roadmap.md, Abschnitt 3): getrenntes Frontend mit React 19 + TS 7 + 
 - [ ] Custom Fields für Nutzer (#420), Standardkonfigurationen für OAuth und Webhooks (#419)
 - [ ] Nutzersegmente: Votes nach Kundengruppe filtern oder gewichten (setzt Besucher-Identifikation und Custom Fields voraus; Gewichtung im v3-Schema)
 - [ ] Verfallsregeln: Moderationsfilter „seit X Monaten ohne Aktivität“, automatisches Archivieren nur als Opt-in
-- [ ] LDAP/AD-Login (#8)
+- [x] LDAP/AD-Login (#8), siehe Mittelstand
 - [ ] GitHub-Integration (#365)
 - [ ] Custom JavaScript (#376), nur mit CSP und Admin-Warnung
 - [x] Mehrere Marken pro Instanz (#76): Multi-Tenancy mit Instanz-Verwaltung `/instance`

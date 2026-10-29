@@ -15,6 +15,8 @@ module Api::App::V1
           siteFavicon: tenant.site_favicon,
           locale: I18n.locale.to_s,
           oauthProviders: oauth_providers(oauth_start_url),
+          # Login with the company directory (POST /api/app/v1/session/ldap), when set up
+          ldapLabel: LdapConfig.find_by(enabled: true)&.then { |ldap| ldap.label if ldap.usable? },
           settings: settings(tenant_setting)
         }
       }

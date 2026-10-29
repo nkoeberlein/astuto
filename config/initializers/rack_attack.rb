@@ -23,15 +23,16 @@ class Rack::Attack
     end
 
     def login_request?(req)
-      req.post? && %w[/users/sign_in /api/app/v1/session /api/app/v1/session/two_factor].include?(req.path)
+      req.post? && %w[/users/sign_in /api/app/v1/session /api/app/v1/session/two_factor /api/app/v1/session/ldap].include?(req.path)
     end
 
-    # Devise forms send user[email], the app API sends email. Malformed bodies
+    # Devise forms send user[email], the app API sends email (LDAP: login). Malformed bodies
     # (e.g. "user" as a string) must not raise inside the middleware.
     def login_email(req)
       params = parsed_params(req)
       user_params = params['user']
-      raw_email = (user_params['email'] if user_params.is_a?(Hash)) || params['email']
+      # LDAP logins send a login name instead; it is throttled the same way
+      raw_email = (user_params['email'] if user_params.is_a?(Hash)) || params['email'] || params['login']
       return nil unless raw_email.is_a?(String)
 
       raw_email.downcase.gsub(/\s+/, '').presence

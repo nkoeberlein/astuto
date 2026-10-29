@@ -781,6 +781,173 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/app/v1/session/ldap": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Log in with the company directory (LDAP / Active Directory) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["LdapLoginInput"];
+                };
+            };
+            responses: {
+                /** @description signed in */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Session"];
+                    };
+                };
+                /** @description wrong login or password */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/site_settings/ldap": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** LDAP settings (admins) */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description settings */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["LdapSettings"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Change LDAP settings (admins) */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["UpdateLdapSettings"];
+                };
+            };
+            responses: {
+                /** @description saved */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["LdapSettings"];
+                    };
+                };
+                /** @description invalid filter */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/api/app/v1/site_settings/ldap/test": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Look up a login with the service account (admins) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["LdapTestInput"];
+                };
+            };
+            responses: {
+                /** @description found */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["LdapTestResult"];
+                    };
+                };
+                /** @description not found or no connection */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/app/v1/moderation/posts": {
         parameters: {
             query?: never;
@@ -1784,7 +1951,7 @@ export interface paths {
         get: {
             parameters: {
                 query?: {
-                    category?: "post" | "comment" | "user" | "board" | "post_status" | "site_settings" | "o_auth" | "saml" | "webhook" | "invitation" | "api_key";
+                    category?: "post" | "comment" | "user" | "board" | "post_status" | "site_settings" | "o_auth" | "saml" | "ldap" | "webhook" | "invitation" | "api_key";
                     /** @description nextBefore of the previous page */
                     before?: number;
                 };
@@ -3249,6 +3416,8 @@ export interface components {
             customCss: string | null;
         };
         Tenant: {
+            /** @description Name of the company account when LDAP login is on */
+            ldapLabel: string | null;
             siteName: string;
             siteLogo: string | null;
             siteFavicon: string | null;
@@ -3660,6 +3829,54 @@ export interface components {
         };
         SamlMetadataInput: {
             xml: string;
+        };
+        LdapSettings: {
+            enabled: boolean;
+            label: string;
+            host: string | null;
+            port: number;
+            /** @enum {string} */
+            encryption: "plain" | "start_tls" | "simple_tls";
+            verifyCertificate: boolean;
+            baseDn: string | null;
+            bindDn: string | null;
+            /** @description The password itself is never sent */
+            bindPasswordSet: boolean;
+            /** @description %{login} stands for the escaped login name */
+            userFilter: string;
+            emailAttribute: string;
+            nameAttribute: string;
+            autoCreateUsers: boolean;
+        };
+        UpdateLdapSettings: {
+            enabled?: boolean;
+            label?: string;
+            host?: string | null;
+            port?: number;
+            /** @enum {string} */
+            encryption?: "plain" | "start_tls" | "simple_tls";
+            verifyCertificate?: boolean;
+            baseDn?: string | null;
+            bindDn?: string | null;
+            /** @description Blank keeps the current one */
+            bindPassword?: string;
+            userFilter?: string;
+            emailAttribute?: string;
+            nameAttribute?: string;
+            autoCreateUsers?: boolean;
+        };
+        LdapTestInput: {
+            login: string;
+        };
+        LdapTestResult: {
+            dn: string;
+            email: string | null;
+            name: string | null;
+        };
+        LdapLoginInput: {
+            login: string;
+            password: string;
+            rememberMe?: boolean;
         };
         SamlIdpFields: {
             idpEntityId: string | null;

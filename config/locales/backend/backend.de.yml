@@ -87,6 +87,20 @@ de:
         one: 'Nutzer/in'
         other: 'Nutzer/innen'
     attributes:
+      ldap_config:
+        enabled: 'LDAP-Login nutzen'
+        label: 'Name des Kontos auf der Login-Seite'
+        host: 'Server'
+        port: 'Port'
+        encryption: 'Verschlüsselung'
+        verify_certificate: 'Serverzertifikat prüfen'
+        base_dn: 'Basis-DN'
+        bind_dn: 'Dienstkonto (Bind-DN)'
+        bind_password: 'Passwort des Dienstkontos'
+        user_filter: 'Benutzerfilter'
+        email_attribute: 'Attribut mit der E-Mail-Adresse'
+        name_attribute: 'Attribut mit dem Namen'
+        auto_create_users: 'Beim ersten Login ein Konto anlegen'
       saml_config:
         enabled: 'SAML Single Sign-on nutzen'
         label: 'Text der Schaltfläche'
@@ -250,3 +264,6 @@ de:
     not_enabled: 'Die Zwei-Faktor-Authentifizierung ist ausgeschaltet.'
   saml:
     metadata_invalid: 'Das sind keine SAML-Metadaten eines Identity Providers (XML mit SingleSignOnService).'
+  ldap:
+    invalid_login: 'Login-Name oder Passwort für dein %{label} ist falsch.'
+    not_found: 'Kein eindeutiger Eintrag für diesen Login-Namen gefunden. Basis-DN und Benutzerfilter prüfen.'

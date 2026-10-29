@@ -32,6 +32,7 @@ module Swagger
           allowAnonymousFeedback: BOOLEAN, isPrivate: BOOLEAN, hideUnusedStatusesInFilterByStatus: BOOLEAN, customCss: NULLABLE_STRING
         }),
         Tenant: object({
+          ldapLabel: NULLABLE_STRING.merge(description: 'Name of the company account when LDAP login is on'),
           siteName: STRING, siteLogo: NULLABLE_STRING, siteFavicon: NULLABLE_STRING, locale: STRING,
           oauthProviders: { type: :array, items: ref(:OAuthProvider) },
           settings: ref(:TenantSettings)
@@ -191,6 +192,22 @@ module Swagger
           emailAttribute: NULLABLE_STRING, nameAttribute: NULLABLE_STRING, autoCreateUsers: BOOLEAN
         }, required: []),
         SamlMetadataInput: object({ xml: STRING }),
+        LdapSettings: object({
+          enabled: BOOLEAN, label: STRING, host: NULLABLE_STRING, port: INTEGER,
+          encryption: { type: :string, enum: %w[plain start_tls simple_tls] }, verifyCertificate: BOOLEAN,
+          baseDn: NULLABLE_STRING, bindDn: NULLABLE_STRING, bindPasswordSet: BOOLEAN.merge(description: 'The password itself is never sent'),
+          userFilter: STRING.merge(description: '%{login} stands for the escaped login name'), emailAttribute: STRING, nameAttribute: STRING,
+          autoCreateUsers: BOOLEAN
+        }),
+        UpdateLdapSettings: object({
+          enabled: BOOLEAN, label: STRING, host: NULLABLE_STRING, port: INTEGER,
+          encryption: { type: :string, enum: %w[plain start_tls simple_tls] }, verifyCertificate: BOOLEAN,
+          baseDn: NULLABLE_STRING, bindDn: NULLABLE_STRING, bindPassword: STRING.merge(description: 'Blank keeps the current one'),
+          userFilter: STRING, emailAttribute: STRING, nameAttribute: STRING, autoCreateUsers: BOOLEAN
+        }, required: []),
+        LdapTestInput: object({ login: STRING }),
+        LdapTestResult: object({ dn: STRING, email: NULLABLE_STRING, name: NULLABLE_STRING }),
+        LdapLoginInput: object({ login: STRING, password: STRING, rememberMe: BOOLEAN }, required: %i[login password]),
         SamlIdpFields: object({ idpEntityId: NULLABLE_STRING, idpSsoUrl: STRING, idpCert: NULLABLE_STRING }),
         AuditChange: object({ field: STRING.merge(description: 'model.attribute, e.g. post.post_status_id'), from: { description: 'Any JSON value; "[filtered]" for secrets' }, to: { description: 'Any JSON value' } }),
         AuditEvent: object({

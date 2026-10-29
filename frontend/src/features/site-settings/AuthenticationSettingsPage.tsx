@@ -12,6 +12,7 @@ import { useI18n } from '@/lib/i18n'
 import { projectDocsUrl } from '@/lib/project'
 import { CheckboxField, SelectField, SettingsSection, TextField } from './fields'
 import { HeaderRows } from './HeaderRows'
+import { LdapSection } from './LdapSection'
 import { SamlSection } from './SamlSection'
 
 // Site settings › Authentication (legacy: /site_settings/authentication):
@@ -26,6 +27,7 @@ export function AuthenticationSettingsPage() {
       <EmailRegistrationSection />
       <OAuthSection />
       <SamlSection />
+      <LdapSection />
     </div>
   )
 }

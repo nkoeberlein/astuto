@@ -6,6 +6,7 @@ Besides email and password, people can sign in through:
   ...): Site settings › Authentication › OAuth
 - **SAML 2.0** (Microsoft Entra ID, Okta, Keycloak, ADFS, Google Workspace, ...): Site settings ›
   Authentication › SAML single sign-on, described below
+- **LDAP / Active Directory**: login name and password of the company directory, described below
 
 **Log in only with OAuth or SAML** (Site settings › General) hides the email and password form.
 Accounts with two-factor authentication still enter their code after the provider
@@ -67,3 +68,39 @@ response. Logins started on a custom domain finish there.
 
 Identity-provider-initiated logins (starting from the IdP's app portal) are not supported; the app
 link at the IdP should point to `https://feedback.example.com/saml/start`.
+
+## LDAP / Active Directory
+
+The login page then asks for the **login name and password of the company account** first (with a
+link to email and password, unless only SSO is allowed). Astuto connects to the directory, finds
+the person's entry with a service account and checks the password by binding as that entry. The
+password is never stored.
+
+Site settings › Authentication › LDAP / Active Directory:
+
+| Setting | Active Directory | OpenLDAP |
+|---|---|---|
+| Server, port | `dc1.corp.example.com`, 389 (StartTLS) or 636 (LDAPS) | `ldap.example.com`, 389 or 636 |
+| Base DN | `DC=corp,DC=example,DC=com` | `ou=people,dc=example,dc=com` |
+| Service account | `CN=astuto,OU=Service Accounts,DC=corp,DC=example,DC=com` | `cn=astuto,ou=services,dc=example,dc=com` |
+| User filter | `(&(objectClass=user)(sAMAccountName=%{login}))` | `(uid=%{login})` |
+| Email / name attribute | `mail` / `displayName` | `mail` / `displayName` (falls back to `cn`) |
+
+`%{login}` is replaced by what the person types, escaped, so characters like `*` or `)` cannot
+change the filter. The default filter accepts `uid`, `sAMAccountName` or the email address. A
+search that finds more than one entry is refused.
+
+- **Encryption:** StartTLS or LDAPS with certificate check by default. Unencrypted connections
+  send passwords in clear text; use them only inside a trusted network. A self-signed directory
+  certificate can be trusted through the CA certificates of the container (see
+  [reverse-proxy-and-smtp.md](reverse-proxy-and-smtp.md)) instead of switching the check off.
+- **Service account:** needs read access to the attributes above; its password is stored
+  encrypted and never sent to the browser. Without one, Astuto searches anonymously.
+- **Test with a login name** checks connection, service account and filter and shows the entry it
+  found.
+- **Accounts:** the email address from the directory identifies the account. On the first login an
+  account is created (or only existing accounts are admitted), and an unconfirmed account is
+  confirmed, since the directory vouches for the address. Wrong passwords and unknown logins get
+  the same answer; blocked accounts are refused. Logins are rate-limited like email logins.
+- Accounts with two-factor authentication enter their code after the directory password.
+
