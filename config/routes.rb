@@ -99,6 +99,7 @@ Rails.application.routes.draw do
           end
           resource :roadmap, only: [:show]
           resources :posts, only: [:show, :update, :destroy] do
+            post :merge, on: :member
             resources :comments, only: [:index, :create, :update, :destroy]
             resource :vote, only: [:create, :destroy]
             resource :follow, only: [:create, :destroy]

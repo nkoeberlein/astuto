@@ -128,6 +128,13 @@ en:
       empty: 'There are no posts'
       load_more: 'Load more'
   post:
+    merge:
+      button: 'Merge into another post'
+      search: 'Find the post to keep'
+      help: 'Votes, followers and comments move to the post you choose; this one then leads there. This cannot be undone.'
+      into_this: 'Merge here'
+      confirmation: 'Merge this post into "%{target}"? Votes, followers and comments move there. This cannot be undone.'
+      merged_from: 'Merged from:'
     source:
       title: 'Source'
       label: 'Source'
@@ -216,6 +223,7 @@ en:
         post_create_for_author: 'posted for:'
         post_update: 'changed the post'
         post_delete: 'deleted the post'
+        post_merge: 'merged:'
         comment_update: 'edited a comment'
         comment_delete: 'deleted a comment'
         user_create: 'created the user'

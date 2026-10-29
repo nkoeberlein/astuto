@@ -20,8 +20,14 @@ class Post < ApplicationRecord
   enum :approval_status, [
     :approved,
     :pending,
-    :rejected
-  ] 
+    :rejected,
+    # Merged into another post (merged_into), see MergePostsWorkflow
+    :merged
+  ]
+
+  belongs_to :merged_into, class_name: 'Post', foreign_key: :merged_into_post_id, optional: true
+  # Merged duplicates are empty shells that redirect here; they go with this post
+  has_many :merged_posts, class_name: 'Post', foreign_key: :merged_into_post_id, dependent: :destroy, inverse_of: :merged_into
 
   validates :title, presence: true, length: { in: 4..128 }
   validates :source_label, length: { maximum: 40 }

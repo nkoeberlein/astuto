@@ -734,3 +734,24 @@ export function useLdapMutations() {
     }),
   }
 }
+
+// Moderators merge a duplicate into another post (votes, followers and comments move there)
+export function useMergePost(sourceSlug: string) {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (targetId: number) =>
+      unwrap(
+        api.POST('/api/app/v1/posts/{id}/merge', {
+          params: { path: { id: sourceSlug } },
+          body: { targetId },
+        }),
+      ),
+    onSuccess: (target) => {
+      queryClient.setQueryData(postQuery(target.slug).queryKey, target)
+      queryClient.removeQueries({ queryKey: postQuery(sourceSlug).queryKey })
+      void queryClient.invalidateQueries(isBoardPostList)
+      void queryClient.invalidateQueries({ queryKey: ['roadmap'] })
+      void queryClient.invalidateQueries({ queryKey: commentsQuery(target.slug).queryKey })
+    },
+  })
+}

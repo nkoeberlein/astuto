@@ -1,0 +1,39 @@
+# Merges a duplicate into another post (moderators, app API and MCP): votes, followers and
+# comments move to the target (people who voted or followed both keep one), the duplicate gets
+# approval status "merged" and redirects to the target. Not reversible.
+class MergePostsWorkflow
+  class Error < StandardError; end
+
+  attr_reader :source, :target
+
+  def initialize(source:, target:, actor:)
+    @source = source
+    @target = target
+    @actor = actor
+  end
+
+  def run!
+    raise Error, I18n.t('post.merge.same_post') if source.id == target.id
+    raise Error, I18n.t('post.merge.already_merged') if source.merged? || target.merged?
+
+    ActiveRecord::Base.transaction do
+      move(source.likes, target.likes)
+      move(source.follows, target.follows)
+      source.comments.update_all(post_id: target.id, updated_at: Time.current)
+      # Posts merged into the duplicate earlier now point to the target directly
+      Post.where(merged_into_post_id: source.id).update_all(merged_into_post_id: target.id)
+      source.update!(approval_status: 'merged', merged_into: target)
+      target.touch
+    end
+    target
+  end
+
+  private
+
+    # Rows of the duplicate move to the target unless the same person already has one there
+    def move(from, to)
+      taken = to.pluck(:user_id)
+      from.where(user_id: taken).delete_all
+      from.update_all(post_id: target.id, updated_at: Time.current)
+    end
+end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_29_210000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_29_220000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -189,7 +189,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_29_210000) do
     t.integer "approval_status", default: 0, null: false
     t.string "source_url", limit: 500
     t.string "source_label", limit: 40
+    t.bigint "merged_into_post_id"
     t.index ["board_id"], name: "index_posts_on_board_id"
+    t.index ["merged_into_post_id"], name: "index_posts_on_merged_into_post_id"
     t.index ["post_status_id"], name: "index_posts_on_post_status_id"
     t.index ["slug", "tenant_id"], name: "index_posts_on_slug_and_tenant_id", unique: true
     t.index ["tenant_id"], name: "index_posts_on_tenant_id"
@@ -361,6 +363,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_29_210000) do
   add_foreign_key "post_statuses", "tenants"
   add_foreign_key "posts", "boards"
   add_foreign_key "posts", "post_statuses"
+  add_foreign_key "posts", "posts", column: "merged_into_post_id"
   add_foreign_key "posts", "tenants"
   add_foreign_key "posts", "users"
   add_foreign_key "saml_configs", "tenants"

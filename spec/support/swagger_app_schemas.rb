@@ -69,6 +69,7 @@ module Swagger
           approvalStatus: { type: :string, enum: %w[approved pending rejected] }, author: ref(:Author).merge(nullable: true),
           likesCount: INTEGER, commentsCount: INTEGER, liked: BOOLEAN, followed: BOOLEAN,
           source: object({ url: NULLABLE_STRING, label: NULLABLE_STRING }, nullable: true).merge(description: 'Where the feedback came from; moderators only'),
+          mergedPosts: { type: :array, items: object({ title: STRING }), description: 'Duplicates merged into this post' },
           createdAt: DATETIME, updatedAt: DATETIME
         }),
         ModerationPost: object({
@@ -263,6 +264,7 @@ module Swagger
           honeypot: { type: :string, description: 'Hidden form field, must stay empty' },
           formFillMs: { type: :integer, description: 'Milliseconds the form was open before it was sent (anti-spam)' }
         }, required: %i[title formFillMs]),
+        MergePostInput: object({ targetId: INTEGER.merge(description: 'Post that stays and takes over votes, followers and comments') }),
         UpdatePost: object({
           title: STRING, description: NULLABLE_STRING, boardId: INTEGER,
           postStatusId: NULLABLE_INTEGER, approvalStatus: { type: :string, enum: %w[approved pending rejected] },

@@ -267,3 +267,7 @@ en:
   ldap:
     invalid_login: 'Invalid login name or password for your %{label}.'
     not_found: 'No unique entry found for this login name. Check the base DN and the user filter.'
+  post:
+    merge:
+      same_post: 'A post cannot be merged into itself.'
+      already_merged: 'One of the posts has already been merged.'

@@ -40,6 +40,7 @@ module Api
         :slug,
         :source_url,
         :source_label,
+        :merged_into_post_id,
         :created_at,
         :updated_at
       ].freeze

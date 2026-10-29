@@ -127,6 +127,23 @@ module Api::App::V1
       render json: PostSerializer.detail(post, current_user: current_user)
     end
 
+    # POST /api/app/v1/posts/:id/merge { targetId } (moderators): merges this post into the
+    # target, which takes over votes, followers and comments; answers with the target
+    def merge
+      return render_error(:forbidden, I18n.t('errors.unauthorized')) unless current_user&.moderator?
+
+      require_two_factor_setup
+      return if performed?
+
+      source = Post.friendly.find(params[:id])
+      target = Post.find(params[:targetId])
+      MergePostsWorkflow.new(source: source, target: target, actor: current_user).run!
+      audit('post.merge', source, changes: { 'merged_into_post_id' => [nil, target.id] }, subject_label: "#{source.title} → #{target.title}")
+      render json: PostSerializer.detail(target.reload, current_user: current_user)
+    rescue MergePostsWorkflow::Error => e
+      render_error(:unprocessable_content, e.message)
+    end
+
     # DELETE /api/app/v1/posts/:id
     def destroy
       post = find_visible_post(params[:id])

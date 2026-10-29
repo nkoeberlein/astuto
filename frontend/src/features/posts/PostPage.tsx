@@ -33,6 +33,7 @@ import { CommentForm } from './CommentForm'
 import { CommentList } from './CommentList'
 import { CommentLoginHint } from './CommentLoginHint'
 import { FollowButton } from './FollowButton'
+import { MergePost } from './MergePost'
 import { StatusBadge } from './StatusBadge'
 import { VoteButton } from './VoteButton'
 
@@ -192,6 +193,12 @@ export function PostPage({ postSlug }: { postSlug: string }) {
                     <Markdown>{post.description}</Markdown>
                   </div>
                 )}
+                {post.mergedPosts.length > 0 && (
+                  <p className="text-sm text-muted-foreground">
+                    {t('post.merge.merged_from')}{' '}
+                    {post.mergedPosts.map((merged) => merged.title).join(' · ')}
+                  </p>
+                )}
               </>
             )}
           </div>
@@ -324,6 +331,7 @@ export function PostPage({ postSlug }: { postSlug: string }) {
             )}
             {!editing && <FormError error={updatePost.error} />}
             {session.aiEnabled && <AiSummary postSlug={post.slug} />}
+            {board && <MergePost post={post} boardSlug={board.slug} />}
           </section>
         )}
       </aside>

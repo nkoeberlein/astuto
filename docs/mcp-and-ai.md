@@ -22,6 +22,7 @@ The MCP endpoint is built on the official [MCP Ruby SDK](https://github.com/mode
 | `get_roadmap` | Yes | Returns all roadmap columns (`show_in_roadmap = true`) and their assigned posts ordered by votes. |
 | `create_post` | No | Creates a new approved feedback post in a board. Admins can name an existing user as author (`author_email`); `source_url` and `source_label` record where the feedback came from (shown to moderators only). |
 | `update_post_status` | No | Updates a post's workflow status (`post_status_id`), board (`board_id`), or moderation status (`approval_status`) and notifies followers. |
+| `merge_posts` | No | Merges a duplicate into another post: votes, followers and comments move to the target, the duplicate redirects there. Not reversible. |
 | `add_comment` | No | Adds a comment, threaded reply (`parent_id`), or official post update (`is_post_update: true`) and triggers follower notifications. |
 
 ### Configuration Examples

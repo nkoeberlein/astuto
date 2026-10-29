@@ -129,6 +129,13 @@ de:
       empty: 'Es existieren keine Beiträge'
       load_more: 'Mehr laden'
   post:
+    merge:
+      button: 'In anderen Post zusammenführen'
+      search: 'Post suchen, der bleiben soll'
+      help: 'Votes, Follower und Kommentare wandern zum gewählten Post; dieser führt dann dorthin. Das lässt sich nicht rückgängig machen.'
+      into_this: 'Hierhin'
+      confirmation: 'Diesen Post in „%{target}“ zusammenführen? Votes, Follower und Kommentare wandern dorthin. Das lässt sich nicht rückgängig machen.'
+      merged_from: 'Zusammengeführt aus:'
     source:
       title: 'Quelle'
       label: 'Quelle'
@@ -217,6 +224,7 @@ de:
         post_create_for_author: 'hat gepostet für:'
         post_update: 'hat den Post geändert:'
         post_delete: 'hat den Post gelöscht:'
+        post_merge: 'hat zusammengeführt:'
         comment_update: 'hat einen Kommentar bearbeitet:'
         comment_delete: 'hat einen Kommentar gelöscht:'
         user_create: 'hat den Nutzer angelegt:'

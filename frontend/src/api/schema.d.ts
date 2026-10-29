@@ -1405,6 +1405,61 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/app/v1/posts/{id}/merge": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Slug or id of the duplicate */
+                id: string;
+            };
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Merge a duplicate into another post (moderators); not reversible */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description Slug or id of the duplicate */
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["MergePostInput"];
+                };
+            };
+            responses: {
+                /** @description merged; the target with its new votes and comments */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Post"];
+                    };
+                };
+                /** @description same or already merged post */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/app/v1/posts/{id}": {
         parameters: {
             query?: never;
@@ -3538,6 +3593,10 @@ export interface components {
                 url: string | null;
                 label: string | null;
             } | null;
+            /** @description Duplicates merged into this post */
+            mergedPosts: {
+                title: string;
+            }[];
             /** Format: date-time */
             createdAt: string;
             /** Format: date-time */
@@ -4031,6 +4090,10 @@ export interface components {
             honeypot?: string;
             /** @description Milliseconds the form was open before it was sent (anti-spam) */
             formFillMs: number;
+        };
+        MergePostInput: {
+            /** @description Post that stays and takes over votes, followers and comments */
+            targetId: number;
         };
         UpdatePost: {
             title?: string;

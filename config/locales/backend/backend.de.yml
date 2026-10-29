@@ -267,3 +267,7 @@ de:
   ldap:
     invalid_login: 'Login-Name oder Passwort für dein %{label} ist falsch.'
     not_found: 'Kein eindeutiger Eintrag für diesen Login-Namen gefunden. Basis-DN und Benutzerfilter prüfen.'
+  post:
+    merge:
+      same_post: 'Ein Post kann nicht mit sich selbst zusammengeführt werden.'
+      already_merged: 'Einer der Posts wurde bereits zusammengeführt.'

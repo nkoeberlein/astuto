@@ -80,9 +80,11 @@ module Api
           Rails.logger.error { "[audit] #{action} not recorded: #{e.class}: #{e.message}" }
         end
 
-        # Posts that are not approved are only visible to moderators
+        # Posts that are not approved are only visible to moderators. A merged duplicate stands
+        # for the post it was merged into (old links, votes and comments keep working).
         def find_visible_post(id)
           post = Post.friendly.find(id)
+          5.times { post.merged? && post.merged_into ? post = post.merged_into : break }
           raise ActiveRecord::RecordNotFound unless post.approved? || current_user&.moderator?
 
           post

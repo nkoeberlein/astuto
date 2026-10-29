@@ -169,7 +169,7 @@ Empfehlung (roadmap.md, Abschnitt 3): getrenntes Frontend mit React 19 + TS 7 + 
 - [x] KI-Anbieter-Abstraktion: OpenAI-kompatibel (inkl. Ollama), Anthropic; alles opt-in per ENV (`AI_PROVIDER` und `AI_MODEL`, kein fest eingebautes Modell), ohne KI voll funktionsfähig (`Ai::Client`)
 - [ ] Optional semantische Duplikate mit pgvector und Embeddings
 - [x] Feedback aus anderen Quellen über MCP: `source_url`/`source_label` am Post (nur Moderatoren sehen sie: Post-Seite, REST-API, MCP; nur http(s)/mailto), `create_post` mit `author_email` (nur Admins, nur bestehende Konten, Audit-Eintrag), Rezept „Slack-Thread → Post“ in `docs/mcp-and-ai.md`
-- [ ] Duplikate zusammenführen (Merge): `merged_into_post_id` mit Umleitung, Votes und Kommentare konsolidieren (steht bisher nur im v3-Schema, roadmap §6; alle Wettbewerber mit Duplikaterkennung haben Merge)
+- [x] Duplikate zusammenführen: `merged_into_post_id` + Freigabestatus `merged` (fällt so aus allen Listen, die auf `approved` filtern), Votes/Follower/Kommentare wandern mit (eine Stimme pro Person), alter Link führt zum Ziel (App-API löst auf, Frontend leitet um), „Zusammengeführt aus“ am Ziel, MCP-Tool `merge_posts`, Audit-Eintrag; Löschen des Ziels löscht die Hüllen mit
 - [x] Zusammenfassung langer Diskussionen: Button im Moderationsbereich der Post-Seite (`/next`), `POST /api/app/v1/posts/:id/summary`, einen Tag gecacht
 - [ ] Vorschläge für Board und Tags (Methode in `Ai::Client` vorhanden; braucht Tags #171)
 - [ ] Changelog-Entwürfe aus erledigten Posts (Methode vorhanden; braucht die Changelog-Funktion)
