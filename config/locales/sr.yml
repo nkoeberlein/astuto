@@ -2,14 +2,9 @@ sr:
   common:
     words:
       or: 'ili'
-    errors:
-      unknown: 'Naišli smo na problem, pokušajte ponovo'
     validations:
-      required: '%{attribute} je obavezno'
       email: 'Neispravna elektronska pošta'
       url: 'Neispravan URL'
-      password: 'Lozinka mora imati najmanje %{n} karaktera'
-      password_mismatch: 'Password and password confirmation must match'
     forms:
       auth:
         email: 'Email'
@@ -24,7 +19,6 @@ sr:
         waiting_confirmation: 'Currently waiting confirmation for %{email}'
         no_password_set: 'You must set a password to update your profile'
         set_password: 'Set password'
-        password_leave_blank_help: "leave blank if you don't want to change your password"
         current_password_required_help: 'we need your current password to confirm your changes'
         remember_me: 'Remember me'
         log_in: 'Log in'
@@ -32,7 +26,6 @@ sr:
         log_in_with: 'Log in with %{o_auth}'
         sign_up_with: 'Sign up with %{o_auth}'
         profile_settings: 'Profile settings'
-        update_profile: 'Update profile'
         cancel_account: 'Cancel account'
         forgot_password: 'Forgot your password?'
         confirmation_instructions_not_received: "Didn't receive confirmation instructions?"
@@ -43,22 +36,14 @@ sr:
         change_password: 'Change password'
         password_help: '%{count} characters minimum'
         email_registration_not_allowed: 'Email registration not allowed'
-    comments_number:
-      one: '1 comment'
-      few: '%{count} comments'
-      other: '%{count} comments'
     no_status: 'No status'
-    select_no_options_available: 'No options available'
     select_placeholder: 'Select...'
     loading: 'Loading...'
     confirmation: 'Are you sure?'
     confirmation_board_delete: 'Warning: if there are feedback posts inside this board, then ALL these posts will be deleted as well. This action cannot be undone.'
     unsaved_changes: 'Unsaved changes will be lost if you leave the page.'
-    edited: 'Edited'
     enabled: 'Enabled'
-    disabled: 'Disabled'
     copied: 'Copied!'
-    user_staff: 'Staff'
     powered_by: 'Powered by'
     buttons:
       new: 'New'
@@ -67,46 +52,16 @@ sr:
       cancel: 'Cancel'
       create: 'Create'
       update: 'Save'
-      confirm: 'Confirm'
-      back: 'Back'
       test: 'Test'
-      clear: 'Clear'
       approve: 'Approve'
       reject: 'Reject'
       copy_to_clipboard: 'Copy to clipboard'
-    datetime:
-      now: 'just now'
-      minutes:
-        one: '1 minute ago'
-        few: '%{count} minutes ago'
-        other: '%{count} minutes ago'
-      hours:
-        one: '1 hour ago'
-        few: '%{count} hours ago'
-        other: '%{count} hours ago'
-      days:
-        one: '1 day ago'
-        few: '%{count} days ago'
-        other: '%{count} days ago'
-      months:
-        one: '1 month ago'
-        few: '%{count} months ago'
-        other: '%{count} months ago'
-      years:
-        one: '1 year ago'
-        few: '%{count} years ago'
-        other: '%{count} years ago'
   header:
     menu:
-      administration_header: 'Administration'
       site_settings: 'Site settings'
       moderation: 'Moderation'
       profile_header: 'Profile'
       profile_settings: 'Profile settings'
-      help_header: 'Help'
-      tour: 'Tour'
-      docs: 'Documentation'
-      support: 'Support'
       sign_out: 'Sign out'
     log_in: 'Log in / Sign up'
   roadmap:
@@ -124,7 +79,6 @@ sr:
       no_title: 'Title field is mandatory'
       anonymous_submission_help: 'You are posting anonymously'
       non_anonymous_submission_help: 'You are posting as %{name}'
-      submit_success: 'Feedback published! You will be redirected soon...'
       submit_pending: 'Your feedback has been submitted and is now pending moderator approval!'
     search_box:
       title: 'Search'
@@ -136,27 +90,16 @@ sr:
       newest: 'Newest'
       most_voted: 'Most voted'
       oldest: 'Oldest'
-    filter_by_date_box:
-      title: 'Filter by date'
-      from_label: 'From'
-      to_label: 'To'
     posts_list:
       empty: 'There are no posts'
   post:
-    edit_button: 'Edit'
     published_by: 'Published by'
     published_anonymously: 'Published anonymously'
     post_status_select:
       no_post_status: 'None'
-    updates_box:
-      title: 'Updates'
-      empty: 'There are no updates yet'
-      status_change: 'changed status to'
     likes_box:
       title: 'Likes'
-      empty: 'There are no likes yet'
     action_box:
-      title: 'Actions'
       follow_button: 'Follow post'
       following_description: "you're receiving notifications about new updates on this post"
       not_following_description: "you won't receive notifications about this post"
@@ -182,7 +125,6 @@ sr:
       appearance: 'Appearance'
     info_box:
       up_to_date: 'All changes saved'
-      error: 'An error occurred: %{message}'
       dirty: 'Changes not saved'
     general:
       title: 'General'
@@ -214,14 +156,12 @@ sr:
     boards:
       title: 'Boards'
       empty: 'There are no boards. Create one below!'
-      new: 'New'
       form:
         name: 'Board name'
         description: 'Board description (optional)'
     post_statuses:
       title: 'Statuses'
       empty: 'There are no statuses. Create one below!'
-      new: 'New'
       form:
         name: 'Status name'
     roadmap:
@@ -292,7 +232,6 @@ sr:
         invalid_configuration: 'This OAuth provider is NOT configured correctly.'
       form:
         title_new: 'New OAuth provider'
-        title_edit: 'Edit OAuth provider'
         subtitle_oauth_config: 'OAuth configuration'
         subtitle_user_profile_config: 'User profile configuration'
         client_secret_help: 'hidden for security purposes'
@@ -305,7 +244,6 @@ sr:
       anonymous_feedback_not_allowed: 'Anonymous feedback not allowed'
       change_feedback_moderation_settings: 'Change feedback moderation settings'
     users:
-      title: 'Users'
       block: 'Block'
       unblock: 'Unblock'
       block_confirmation: "%{name} won't be able to log in until it is unblocked. Are you sure?"

@@ -2,14 +2,9 @@ vi:
   common:
     words:
       or: 'or'
-    errors:
-      unknown: 'Đã xảy ra lỗi không xác định, vui lòng thử lại'
     validations:
-      required: '%{attribute} bắt buộc nhập'
       email: 'Email không hợp lệ'
       url: 'URL không hợp lệ'
-      password: 'Mật khẩu phải từ %{n} ký tự'
-      password_mismatch: 'Mật khẩu và xác nhận mật khẩu phải giống nhau'
     forms:
       auth:
         email: 'Email'
@@ -24,7 +19,6 @@ vi:
         waiting_confirmation: 'Currently waiting confirmation for %{email}'
         no_password_set: 'You must set a password to update your profile'
         set_password: 'Set password'
-        password_leave_blank_help: "leave blank if you don't want to change your password"
         current_password_required_help: 'we need your current password to confirm your changes'
         remember_me: 'Nhớ mật khẩu'
         log_in: 'Đăng nhập'
@@ -32,7 +26,6 @@ vi:
         log_in_with: 'Đăng nhập với %{o_auth}'
         sign_up_with: 'Đăng ký với %{o_auth}'
         profile_settings: 'Thông tin cá nhân'
-        update_profile: 'Cập nhật thông tin cá nhân'
         cancel_account: 'Hủy tài khoản'
         forgot_password: 'Quên mật khẩu?'
         confirmation_instructions_not_received: "Không nhận được hướng dẫn xác nhận?"
@@ -43,20 +36,14 @@ vi:
         change_password: 'Đổi mật khẩu'
         password_help: 'Ít nhất %{count} ký từ'
         email_registration_not_allowed: 'Email registration not allowed'
-    comments_number:
-      other: '%{count} bình luận'
     no_status: 'Không có trạng thái'
-    select_no_options_available: 'No options available'
     select_placeholder: 'Select...'
     loading: 'Đang tải...'
     confirmation: 'Bạn có chắc chắn?'
     confirmation_board_delete: 'Warning: if there are feedback posts inside this board, then ALL these posts will be deleted as well. This action cannot be undone.'
     unsaved_changes: 'Những thay đổi chưa được lưu sẽ bị mất nếu bạn rời khỏi trang.'
-    edited: 'Đã chỉnh sửa'
     enabled: 'Đã bật'
-    disabled: 'Đã tắt'
     copied: 'Đã sao chép!'
-    user_staff: 'Staff'
     powered_by: 'Powered by'
     buttons:
       new: 'Taọ mới'
@@ -65,36 +52,16 @@ vi:
       cancel: 'Huỷ bỏ'
       create: 'Tạo mới'
       update: 'Cập nhật'
-      confirm: 'Xác nhận'
-      back: 'Quay lại'
       test: 'Kiểm tra'
-      clear: 'Clear'
       approve: 'Approve'
       reject: 'Reject'
       copy_to_clipboard: 'Copy to clipboard'
-    datetime:
-      now: 'Vừa xong'
-      minutes:
-        other: '%{count} phút trước'
-      hours:
-        other: '%{count} giờ trước'
-      days:
-        other: '%{count} ngày trước'
-      months:
-        other: '%{count} months ago'
-      years:
-        other: '%{count} years ago'
   header:
     menu:
-      administration_header: 'Administration'
       site_settings: 'Cài đặt trang'
       moderation: 'Moderation'
       profile_header: 'Profile'
       profile_settings: 'Thông tin cá nhân'
-      help_header: 'Help'
-      tour: 'Tour'
-      docs: 'Documentation'
-      support: 'Support'
       sign_out: 'Đăng xuất'
     log_in: 'Đăng nhập / Đăng ký'
   roadmap:
@@ -112,7 +79,6 @@ vi:
       no_title: 'Tiêu đề là bắt buộc'
       anonymous_submission_help: 'You are posting anonymously'
       non_anonymous_submission_help: 'You are posting as %{name}'
-      submit_success: 'Phản hồi đã được gửi! Bạn sẽ được chuyển hướng sớm...'
       submit_pending: 'Your feedback has been submitted and is now pending moderator approval!'
     search_box:
       title: 'Tim kiếm'
@@ -124,27 +90,16 @@ vi:
       newest: 'Newest'
       most_voted: 'Most voted'
       oldest: 'Oldest'
-    filter_by_date_box:
-      title: 'Filter by date'
-      from_label: 'From'
-      to_label: 'To'
     posts_list:
       empty: 'Không có phản hồi nào'
   post:
-    edit_button: 'Chỉnh sửa'
     published_by: 'Đăng bởi'
     published_anonymously: 'Published anonymously'
     post_status_select:
       no_post_status: 'Không có trạng thái'
-    updates_box:
-      title: 'Cập nhật'
-      empty: 'Chưa có cập nhật'
-      status_change: 'chuyển trạng thái thành'
     likes_box:
       title: 'Thích'
-      empty: 'Chưa có lượt thích'
     action_box:
-      title: 'Hoạt động'
       follow_button: 'Theo dõi phản hồi'
       following_description: "you're receiving notifications about new updates on this post"
       not_following_description: "you won't receive notifications about this post"
@@ -170,7 +125,6 @@ vi:
       appearance: 'Appearance'
     info_box:
       up_to_date: 'Tất cả thay đổi đã được lưu'
-      error: 'Đã xảy ra lỗi: %{message}'
       dirty: 'Chưa lưu các thay đổi'
     general:
       title: 'Chung'
@@ -202,14 +156,12 @@ vi:
     boards:
       title: 'Bảng'
       empty: 'Không có bảng nào. Tạo mới dưới đây!'
-      new: 'Mới'
       form:
         name: 'Tên bảng'
         description: 'Mô tả bảng (tùy chọn)'
     post_statuses:
       title: 'Trạng thái'
       empty: 'Không có trạng thái nào. Tạo mới dưới đây!'
-      new: 'Mới'
       form:
         name: 'Tên trạng thái'
     roadmap:
@@ -278,7 +230,6 @@ vi:
         invalid_configuration: 'OAuth Provider này KHÔNG được cấu hình đúng.'
       form:
         title_new: 'OAuth Provider mới'
-        title_edit: 'Chỉnh sửa OAuth Provider'
         subtitle_oauth_config: 'Cấu hình OAuth'
         subtitle_user_profile_config: 'Cấu hình Thông tin người dùng'
         client_secret_help: 'đã ẩn vì mục đích bảo mật'
@@ -291,7 +242,6 @@ vi:
       anonymous_feedback_not_allowed: 'Anonymous feedback not allowed'
       change_feedback_moderation_settings: 'Change feedback moderation settings'
     users:
-      title: 'Users'
       block: 'Block'
       unblock: 'Unblock'
       block_confirmation: "%{name} won't be able to log in until it is unblocked. Are you sure?"

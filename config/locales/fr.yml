@@ -2,14 +2,9 @@ fr:
   common:
     words:
       or: 'ou'
-    errors:
-      unknown: 'Une erreur inconnue s''est produite, veuillez réessayer'
     validations:
-      required: '%{attribute} est obligatoire'
       email: 'Email invalide'
       url: 'URL invalide'
-      password: 'Le mot de passe doit contenir au minimum %{n} caractères'
-      password_mismatch: 'Le mot de passe et la confirmation du mot de passe doivent concorder'
     forms:
       auth:
         email: 'Email'
@@ -24,7 +19,6 @@ fr:
         waiting_confirmation: 'En attente de confirmation de : %{email}'
         no_password_set: 'Vous devez définir un mot de passe pour mettre à jour votre profil'
         set_password: 'Définir un mot de passe'
-        password_leave_blank_help: "laissez vide si vous ne souhaitez pas changer votre mot de passe"
         current_password_required_help: 'nous avons besoin de votre mot de passe actuel pour confirmer vos modifications'
         remember_me: 'Se souvenir de moi'
         log_in: 'Se connecter'
@@ -32,7 +26,6 @@ fr:
         log_in_with: 'Se connecter avec %{o_auth}'
         sign_up_with: 'S''inscrire avec %{o_auth}'
         profile_settings: 'Paramètres du profil'
-        update_profile: 'Mettre à jour le profil'
         cancel_account: 'Annuler le compte'
         forgot_password: 'Mot de passe oublié ?'
         confirmation_instructions_not_received: "Vous n'avez pas reçu le mail de confirmation ?"
@@ -43,21 +36,14 @@ fr:
         change_password: 'Changer le mot de passe'
         password_help: '%{count} caractères minimum'
         email_registration_not_allowed: 'Email registration not allowed'
-    comments_number:
-      one: '1 commentaire'
-      other: '%{count} commentaires'
     no_status: 'Pas de statut'
-    select_no_options_available: 'No options available'
     select_placeholder: 'Select...'
     loading: 'Chargement ...'
     confirmation: 'Vous êtes sûr ?'
     confirmation_board_delete: 'Attention : s''il y a des commentaires dans ce tableau, alors TOUS ces messages seront également supprimés. Cette action ne peut pas être annulée.'
     unsaved_changes: 'Les modifications apportées seront perdues si vous quittez cette page.'
-    edited: 'Modifié'
     enabled: 'Activé'
-    disabled: 'Désactivé'
     copied: 'Copié !'
-    user_staff: 'Équipe'
     powered_by: 'Propulsé par'
     buttons:
       new: 'Nouveau'
@@ -66,41 +52,16 @@ fr:
       cancel: 'Annuler'
       create: 'Créer'
       update: 'Sauvegarder'
-      confirm: 'Confirmer'
-      back: 'Revenir en arrière'
       test: 'Tester'
-      clear: 'Effacer'
       approve: 'Approuver'
       reject: 'Rejeter'
       copy_to_clipboard: 'Copy to clipboard'
-    datetime:
-      now: 'à l’instant'
-      minutes:
-        one: 'Il y a 1 minute'
-        other: 'Il y a %{count} minutes'
-      hours:
-        one: 'Il y a 1 heure'
-        other: 'Il y a %{count} heures'
-      days:
-        one: 'Il y a 1 jour'
-        other: 'il y a %{count} jours'
-      months:
-        one: 'Il y a 1 mois'
-        other: 'Il y a %{count} mois'
-      years:
-        one: 'Il y a 1 an'
-        other: 'Il y a %{count} ans'
   header:
     menu:
-      administration_header: 'Administration'
       site_settings: 'Paramètres du site'
       moderation: 'Modération'
       profile_header: 'Profil'
       profile_settings: 'Paramètres du profil'
-      help_header: 'Aide'
-      tour: 'Tutoriel'
-      docs: 'Documentation'
-      support: 'Support'
       sign_out: 'Déconnexion'
     log_in: 'Se connecter / S''inscrire'
   roadmap:
@@ -118,7 +79,6 @@ fr:
       no_title: 'Le champ Titre est obligatoire'
       anonymous_submission_help: 'Vous publiez anonymement'
       non_anonymous_submission_help: 'Vous publiez en tant que %{name}'
-      submit_success: 'Feedback publié ! Vous allez bientôt être redirigé ...'
       submit_pending: 'Votre avis a été soumis et est maintenant en attente d''approbation d''un modérateur!'
     search_box:
       title: 'Recherche'
@@ -130,27 +90,16 @@ fr:
       newest: 'Plus récent'
       most_voted: 'Les plus votés'
       oldest: 'Plus anciens'
-    filter_by_date_box:
-      title: 'Filtrer par date'
-      from_label: 'De'
-      to_label: 'À'
     posts_list:
       empty: 'Il n''y a pas de publications'
   post:
-    edit_button: 'Modifier'
     published_by: 'Publié par'
     published_anonymously: 'Publié anonymement'
     post_status_select:
       no_post_status: 'Aucun'
-    updates_box:
-      title: 'Mises à jour'
-      empty: 'Il n''y a pas encore de mise à jour'
-      status_change: 'a changé le statut en'
     likes_box:
       title: 'J''aime'
-      empty: 'Il n''y a pas encore de j''aime'
     action_box:
-      title: 'Options'
       follow_button: 'S''abonner à la publication'
       following_description: "vous recevez des notifications sur les nouvelles mises à jour de cette publication"
       not_following_description: "vous ne recevrez pas de notifications concernant cette publication"
@@ -176,7 +125,6 @@ fr:
       appearance: 'Apparence'
     info_box:
       up_to_date: 'Toutes les modifications ont été enregistrées'
-      error: 'Une erreur s''est produite : %{message}'
       dirty: 'Modifications non enregistrées'
     general:
       title: 'Général'
@@ -208,14 +156,12 @@ fr:
     boards:
       title: 'Tableaux'
       empty: 'Il n''y a pas de tableaux. Créez en un ci-dessous!'
-      new: 'Nouveau'
       form:
         name: 'Nom du tableau'
         description: 'Description de du tableau (facultatif)'
     post_statuses:
       title: 'Statuts'
       empty: 'Il n''y a pas de statuts. Créez en un ci-dessous!'
-      new: 'Nouveau'
       form:
         name: 'Nom du statut'
     roadmap:
@@ -285,7 +231,6 @@ fr:
         invalid_configuration: 'Ce fournisseur OAuth n''est PAS configuré correctement.'
       form:
         title_new: 'Nouveau fournisseur OAuth'
-        title_edit: 'Modifier le fournisseur OAuth'
         subtitle_oauth_config: 'Configuration OAuth'
         subtitle_user_profile_config: 'Configuration du profil utilisateur'
         client_secret_help: 'masqué pour des raisons de sécurité'
@@ -298,7 +243,6 @@ fr:
       anonymous_feedback_not_allowed: 'Commentaire anonyme non autorisé'
       change_feedback_moderation_settings: 'Modifier les paramètres de modération des commentaires'
     users:
-      title: 'Utilisateurs'
       block: 'Bloquer'
       unblock: 'Débloquer'
       block_confirmation: "%{name} ne pourra pas se connecter tant qu'il ne sera pas débloqué. Êtes-vous sûr(e) ?"

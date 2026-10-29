@@ -31,7 +31,7 @@ Issue-Nummern beziehen sich auf `astuto/astuto`. Phasen siehe [roadmap.md](roadm
 - [x] `load_defaults` 6.1 → 7.0 → 7.1 → 7.2 → 8.0 → 8.1, jeder Schritt mit voller Suite grün. Cookie-Rotation (SHA1 → SHA256) hält Sessions und Remember-me-Cookies gültig (geprüft mit echten alten Cookies), `allow_other_host` für Tenant-, OAuth- und Billing-Redirects, Active Storage abgeschaltet. Nebenbei: Testumgebung lud Code neu, sobald der Dev-Server Dateien schrieb (sporadisch `AssociationTypeMismatch`), jetzt `enable_reloading = false`
 - [x] Sidekiq 8.1.7 und `connection_pool` 3 ohne Pin: `react-rails` 3.3 hängt nicht mehr an connection_pool (npm `react_ujs` bleibt 2.6, weil 3.x React 18 mitbringt). `config/sidekiq.yml` mit allen Queues, vorher liefen Webhook-Jobs ohne `-q webhooks` nie. Mit Redis 8 geprüft
 - [x] Stripe-Gem 11 → 20 mit fixierter API-Version `2024-04-10` (der Webhook liest `price` an Rechnungspositionen, das ab 2025-03-31 fehlt). Höhere Version nur mit Test gegen ein Stripe-Testkonto
-- [ ] `i18n-js` 3 bleibt bis zur Ablösung des alten Frontends (4.x ist ein Umbau ohne Nutzen für v2)
+- [x] `i18n-js` entfernt (mit dem alten Frontend)
 - [x] `bundler-audit`, `brakeman` und `bin/ci` (Gem-Audit, Yarn-Audit, Brakeman, RSpec, Seeds), dieselben Checks im Test-Workflow. 6 indirekte Gems mit Sicherheitslücken aktualisiert (nokogiri, rails-html-sanitizer, loofah, crass, addressable, concurrent-ruby)
 - [x] Upgrade-Hinweis: Sidekiq 8 braucht Redis ≥ 7 (in `UPGRADING.md`)
 - [x] Node 20 → 24 LTS im Dockerfile (Builder)
@@ -100,7 +100,7 @@ Issue-Nummern beziehen sich auf `astuto/astuto`. Phasen siehe [roadmap.md](roadm
 - [x] Mailer-Standardabsender: `EMAIL_MAIL_FROM`, sonst `noreply@<Host aus BASE_URL>` (`Rails.application.default_mail_from`); Reply-To fällt auf den Absender zurück
 - [x] Tenants per Rake verwalten: `bin/rails tenants:create|list|block|unblock`
 - [ ] OAuth-Login auf Custom Domains: Callback läuft auf der Subdomain, der `token_state`-Cookie der Custom Domain kommt dort nicht an (#472). Lösung: Zustand signiert im `state`-Parameter statt im Cookie
-- [ ] Ungenutzte Übersetzungsschlüssel des alten Frontends aus `config/locales/*.yml` entfernen (gehen sonst mit `/api/app/v1/translations` an den Browser)
+- [x] Ungenutzte Übersetzungsschlüssel des alten Frontends entfernt (52 Schlüssel in allen 19 Sprachen, ca. 1.100 Zeilen; gingen mit `/api/app/v1/translations` an den Browser)
 - [x] Instanz-Admin-Oberfläche für Tenants (#76): `/instance` auf dem `BASE_URL`-Host, HTTP Basic mit `INSTANCE_ADMIN_PASSWORD` (Nutzer gehören je zu einem Tenant, ein Instanz-Konto gibt es nicht), serverseitig gerendert ohne JavaScript; anlegen (Passwort des Eigentümers wird einmal angezeigt), Name/Domain/Sprache ändern, sperren, löschen mit Bestätigung. Gemeinsame Logik mit dem Rake-Task in `CreateTenantWorkflow`
 
 ### Mittelstand (roadmap.md, Abschnitt 7)
@@ -145,9 +145,9 @@ Empfehlung (roadmap.md, Abschnitt 3): getrenntes Frontend mit React 19 + TS 7 + 
 - [x] Profil-Einstellungen (`/next/profile`, `GET/PATCH/DELETE /api/app/v1/profile`, `POST …/api_key`): Name, E-Mail, Passwort, Benachrichtigungen, Recap-Frequenz, API-Key (Moderatoren), Konto löschen; aktuelles Passwort nur noch für E-Mail, Passwort und Löschen; Owner kann sein Konto nicht löschen
 - [x] E2E-Tests mit Playwright (`frontend/e2e`, `npm run e2e`): öffentliche Seiten, Einbettung, Login, alle Settings-, Moderations- und Profilseiten, Admin-Ablauf (Board → Post → Vote → Kommentar) und anonymes Feedback über die Freigabe; in `run-tests.yml` gegen den Produktions-Container (in der CI noch nicht gelaufen). Capybara-System-Specs ließen sich in der Cloud-Session nicht lokal ausführen (Chromedriver passte nicht zum Browser)
 - [x] Altes Frontend entfernt: `app/javascript` (ca. 200 Dateien React 16/Redux), Sass/Bootstrap, Webpack, Sprockets, Gems `react-rails`, `i18n-js`, `turbolinks`, `jsbundling-rails`, `cssbundling-rails`, `sprockets-rails`, Capybara/Selenium; alte JSON-Controller (Boards, Posts, Kommentare, Likes, Follows, Statusverlauf, Nutzer, Webhooks, OAuth-CRUD, Tenants, Einladungen, API-Keys) samt Routen; Tenant-Signup; `yarn audit` in CI durch `npm audit` von `frontend/` ersetzt. Nebenbei: `GET /users/send_set_password_instructions` verschickte ungebremst Reset-Mails an beliebige Adressen (entfernt); `sign_in_from_oauth_token` stürzte bei ungültigem Token ab
-- [ ] `app/controllers` (22 Dateien) nach Bereichen gliedern (z. B. `api/app/v1/site_settings/`)
+- [x] `app/controllers` gegliedert: nach dem Entfernen des alten UI noch 13 Dateien oben (Devise, OAuth, SPA, MCP, Hinweisseiten), der Rest in `api/v1`, `api/app/v1` (mit `moderation/`, `site_settings/`) und `instance_admin/`
 - [ ] RuboCop einführen und in der CI ausführen
-- [ ] CI für `develop`: `run-tests.yml` (RSpec inkl. System-Specs, Brakeman, Drift-Check) läuft nur bei Pull Requests; Push-Trigger für `develop` ergänzen oder mit PRs gegen `main` arbeiten
+- [x] CI: es gibt keinen `develop`-Branch, gearbeitet wird mit PRs gegen `main`; `run-tests.yml` läuft bei PRs und jetzt auch bei Pushes auf `main`
 - [ ] TypeScript 7 auch für `openapi-typescript`, sobald unterstützt (läuft bis dahin per `npx` mit TS 5.9)
 
 ## P3 – v3: komplett TypeScript (nach 2.0)
@@ -202,7 +202,7 @@ Empfehlung (roadmap.md, Abschnitt 3): getrenntes Frontend mit React 19 + TS 7 + 
 ## P2 – Projekt und Community
 - [x] `SECURITY.md` mit Meldeweg (GitHub Private Vulnerability Reporting), Fristen und Scope
 - [ ] `CHANGELOG.md` und Release-Prozess (SemVer, Release Notes, Image-Tags): CHANGELOG und erstes Tag `v2.0.0-alpha.1` vorhanden; Version steht in `AstutoProject::VERSION` und `frontend/package.json`. Offen: Release-Checkliste, signierte Images
-- [ ] Doku aus `astuto/astuto-docs` übernehmen (Lizenz prüfen), Links in `config/initializers/project.rb` und `app/javascript/constants/project.ts` umstellen
+- [ ] Doku aus `astuto/astuto-docs` übernehmen (Lizenz prüfen), Links in `config/initializers/project.rb` und `frontend/src/lib/project.ts` umstellen
 - [ ] Übersetzungsplattform festlegen (z. B. Weblate)
 - [ ] Demo-Instanz, Einträge bei awesome-selfhosted und AlternativeTo
 - [ ] Entscheidung: GitHub-Repo in `astuto-evolution` umbenennen
@@ -228,7 +228,7 @@ Empfehlung (roadmap.md, Abschnitt 3): getrenntes Frontend mit React 19 + TS 7 + 
 - [ ] LDAP/AD-Login (#8)
 - [ ] GitHub-Integration (#365)
 - [ ] Custom JavaScript (#376), nur mit CSP und Admin-Warnung
-- [ ] Mehrere Marken pro Instanz (#76)
-- [ ] Automatischer Login nach Tenant-Signup (#263)
+- [x] Mehrere Marken pro Instanz (#76): Multi-Tenancy mit Instanz-Verwaltung `/instance`
+- [x] ~~Automatischer Login nach Tenant-Signup (#263)~~ entfällt, Tenant-Signup ist entfernt
 - [ ] Übersetzungen: Crowdin-PR #417 übernehmen, Polnisch (#450), Übersetzungsprozess festlegen (#121)
 - [ ] Bounties (#438), vorerst nicht vorgesehen

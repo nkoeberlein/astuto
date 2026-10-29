@@ -1,17 +1,12 @@
 de:
   common:
-    language_supported: '%{language} unterstützt'
     words:
       or: 'oder'
     errors:
-      unknown: 'Ein unbekannter Fehler ist aufgetreten, bitte versuchen Sie es erneut'
       not_found: 'Seite nicht gefunden'
     validations:
-      required: '%{attribute} ist erforderlich'
       email: 'Ungültige E-Mail-Adresse'
       url: 'Ungültige URL'
-      password: 'Das Passwort muss mindestens %{n} Zeichen lang sein'
-      password_mismatch: 'Passwort und Passwort-Bestätigung müssen übereinstimmen'
     forms:
       api_key:
         api_key_learn_more: 'So nutzt du die API'
@@ -25,7 +20,6 @@ de:
         recap_notification_frequency_monthly: 'Monatlich'
         recap_notification_frequency_weekly: 'Wöchentlich'
         recap_notification_frequency_daily: 'Täglich'
-        recap_notification_frequency_never: 'Nie'
         recap_notification_frequency_help: 'Zusammenfassungen informieren dich über neues Feedback und über Feedback, das auf deine Freigabe wartet'
         oauth_only_info: 'Melde dich mit einem der OAuth-Anbieter unten an oder registriere dich darüber. Die Anmeldung per E-Mail ist auf dieser Seite abgeschaltet.'
         notifications: 'Benachrichtigungen'
@@ -41,7 +35,6 @@ de:
         waiting_confirmation: 'Warte auf Bestätigung von: %{email}'
         no_password_set: 'Sie müssen ein Passwort festlegen, um Ihr Profil zu aktualisieren'
         set_password: 'Passwort festlegen'
-        password_leave_blank_help: "Lassen Sie das Feld leer, wenn Sie Ihr Passwort nicht ändern möchten"
         current_password_required_help: 'Wir benötigen Ihr aktuelles Passwort, um Ihre Änderungen zu bestätigen'
         remember_me: 'Eingeloggt bleiben'
         log_in: 'Einloggen'
@@ -49,7 +42,6 @@ de:
         log_in_with: 'Mit %{o_auth} anmelden'
         sign_up_with: 'Mit %{o_auth} anmelden'
         profile_settings: 'Profileinstellungen'
-        update_profile: 'Profil aktualisieren'
         cancel_account: 'Konto entfernen'
         forgot_password: 'Passwort vergessen?'
         confirmation_instructions_not_received: "Keine Anweisungen zur Bestätigung erhalten?"
@@ -60,21 +52,14 @@ de:
         change_password: 'Passwort ändern'
         password_help: 'Mindestens %{count} Zeichen'
         email_registration_not_allowed: 'Registrierung per E-Mail nicht möglich'
-    comments_number:
-      one: '1 Kommentar'
-      other: '%{count} Kommentare'
     no_status: 'Kein Status'
-    select_no_options_available: 'Keine Optionen verfügbar'
     select_placeholder: 'Auswählen …'
     loading: 'Lädt...'
     confirmation: 'Sicher?'
     confirmation_board_delete: 'Warnung: Wenn es in diesem Forum Feedback Beiträge gibt, werden ALLE diese Beiträge ebenfalls gelöscht. Diese Aktion kann nicht rückgängig gemacht werden.'
     unsaved_changes: 'Ungespeicherte Änderungen gehen verloren, wenn du die Seite verlässt.'
-    edited: 'Bearbeitet'
     enabled: 'Aktiviert'
-    disabled: 'Deaktiviert'
     copied: 'Kopiert!'
-    user_staff: 'Mitarbeiter'
     powered_by: 'Powered by'
     buttons:
       preview: 'Vorschau'
@@ -84,43 +69,18 @@ de:
       cancel: 'Abbrechen'
       create: 'Erstellen'
       update: 'Speichern'
-      confirm: 'Bestätigen'
-      back: 'Zurück'
       test: 'Testen'
-      clear: 'Zurücksetzen'
       approve: 'Freigeben'
       reject: 'Ablehnen'
       copy_to_clipboard: 'In die Zwischenablage kopieren'
       move_up: 'Nach oben'
       move_down: 'Nach unten'
-    datetime:
-      now: 'gerade eben'
-      minutes:
-        one: 'vor 1 Minute'
-        other: 'vor %{count} Minuten'
-      hours:
-        one: 'vor 1 Stunde'
-        other: 'vor %{count} Stunden'
-      days:
-        one: 'vor 1 Tag'
-        other: 'vor %{count} Tagen'
-      months:
-        one: 'Vor einem Monat'
-        other: 'Vor %{count} Monaten'
-      years:
-        one: 'Vor 1 Jahr'
-        other: 'Vor %{count} Jahren'
   header:
     menu:
-      administration_header: 'Verwaltung'
       site_settings: 'Seiteneinstellungen'
       moderation: 'Moderation'
       profile_header: 'Profil'
       profile_settings: 'Profileinstellungen'
-      help_header: 'Hilfe'
-      tour: 'Führung'
-      docs: 'Dokumentation'
-      support: 'Support'
       sign_out: 'Abmelden'
     log_in: 'Einloggen / Registrieren'
   roadmap:
@@ -147,7 +107,6 @@ de:
       no_title: 'Titelfeld ist obligatorisch'
       anonymous_submission_help: 'Sie posten anonym'
       non_anonymous_submission_help: 'Sie posten als %{name}'
-      submit_success: 'Feedback veröffentlicht! Du wirst gleich weitergeleitet...'
       submit_pending: 'Ihr Feedback wurde übermittelt und wartet nun auf die Freigabe eines Moderators!'
       similar_posts_title: 'Ähnliche Beiträge existieren bereits – lieber dort abstimmen?'
     search_box:
@@ -160,33 +119,22 @@ de:
       newest: 'Neueste'
       most_voted: 'Beliebteste'
       oldest: 'Am ältesten'
-    filter_by_date_box:
-      title: 'Nach Datum filtern'
-      from_label: 'Von'
-      to_label: 'Bis'
     posts_list:
       empty: 'Es existieren keine Beiträge'
       load_more: 'Mehr laden'
   post:
-    edit_button: 'Bearbeiten'
     published_by: 'Herausgegeben von'
     published_anonymously: 'Anonym veröffentlicht'
     post_status_select:
       no_post_status: 'Nichts'
-    updates_box:
-      title: 'Aktualisierungen'
-      empty: 'Es existieren noch keine Aktualisierungen'
-      status_change: 'Status geändert zu'
     likes_box:
       title: 'Stimmen'
-      empty: 'Es existieren noch keine Likes'
     ai_summary:
       title: 'KI-Zusammenfassung'
       button: 'Diskussion zusammenfassen'
       loading: 'Fasse zusammen…'
       hint: 'Titel, Beschreibung und Kommentare werden an den eingestellten KI-Anbieter gesendet.'
     action_box:
-      title: 'Aktionen'
       follow_button: 'Beitrag folgen'
       following_description: "Du erhältst Benachrichtigungen über neue Updates zu diesem Beitrag"
       not_following_description: "Du erhältst keine Benachrichtigungen zu diesem Beitrag"
@@ -203,11 +151,6 @@ de:
       not_logged_in: 'Du musst Dich anmelden, um Kommentare zu posten'
   site_settings:
     webhooks:
-      http_methods:
-        delete: 'DELETE'
-        patch: 'PATCH'
-        put: 'PUT'
-        post: 'POST'
       triggers:
         new_user: 'Neuer Nutzer'
         new_vote: 'Neue Stimme'
@@ -219,7 +162,6 @@ de:
       test_page:
         title: 'Testergebnis'
       form:
-        preview_error: 'Die Vorlage enthält einen Fehler'
         template_variables_selector_placeholder: 'Variable einfügen'
         header_n_value: 'Header %{n}: Wert'
         header_n_key: 'Header %{n}: Name'
@@ -254,7 +196,6 @@ de:
       appearance: 'Erscheinung'
     info_box:
       up_to_date: 'Alle Änderungen gespeichert'
-      error: 'Ein Fehler ist aufgetreten: %{message}'
       dirty: 'Änderungen nicht gespeichert'
     general:
       mail_logo_size_help: 'Größe des Logos in ausgehenden E-Mails, in Pixeln.'
@@ -296,7 +237,6 @@ de:
     boards:
       title: 'Boards'
       empty: 'Es existieren keine Boards. Erstelle unten eines!'
-      new: 'Neu'
       form:
         name: 'Boardname'
         description: 'Boardbeschreibung (optional)'
@@ -305,7 +245,6 @@ de:
     post_statuses:
       title: 'Status'
       empty: 'Es existiert kein Status. Erstelle unten eine!'
-      new: 'Neu'
       form:
         name: 'Statusname'
     roadmap:
@@ -380,7 +319,6 @@ de:
         invalid_configuration: 'Dieser OAuth-Anbieter ist NICHT korrekt konfiguriert.'
       form:
         title_new: 'Neuer OAuth-Anbieter'
-        title_edit: 'OAuth-Anbieter bearbeiten'
         subtitle_oauth_config: 'OAuth-Konfiguration'
         subtitle_user_profile_config: 'Profileinstellungen'
         profile_headers: 'Zusätzliche Header für den Profil-Abruf (optional)'
@@ -394,7 +332,6 @@ de:
       anonymous_feedback_not_allowed: 'Anonymes Feedback nicht erlaubt'
       change_feedback_moderation_settings: 'Feedback-Moderationseinstellungen ändern'
     users:
-      title: 'Benutzer'
       block: 'Sperren'
       unblock: 'Entsperren'
       block_confirmation: "%{name} kann sich nicht anmelden, bis die Blockierung aufgehoben wird. Bist du dir sicher?"

@@ -2,14 +2,9 @@ tr:
     common:
       words:
         or: 'veya'
-      errors:
-        unknown: 'Bir hata oluştu, lütfen daha sonra tekrar deneyiniz'
       validations:
-        required: '%{attribute} zorunludur'
         email: 'Geçersiz email'
         url: 'Geçersiz URL'
-        password: 'Şifre en az %{n} karakter olmalıdır'
-        password_mismatch: 'Şifre ve şifre tekrarı eşleşmiyor'
       forms:
         auth:
           email: 'Email'
@@ -24,7 +19,6 @@ tr:
           waiting_confirmation: 'Şu an %{email} adresine gönderilen onay isteğini bekliyorsunuz'
           no_password_set: 'Şifrenizi güncellemek için şifre belirlemeniz gerekiyor'
           set_password: 'Şifre belirle'
-          password_leave_blank_help: 'değiştirmek istemiyorsanız boş bırakın'
           current_password_required_help: 'değişikliklerinizi onaylamak için mevcut şifrenizi girmeniz gerekiyor'
           remember_me: 'Beni hatırla'
           log_in: 'Giriş yap'
@@ -32,7 +26,6 @@ tr:
           log_in_with: '%{o_auth} ile giriş yap'
           sign_up_with: '%{o_auth} ile kayıt ol'
           profile_settings: 'Profil ayarları'
-          update_profile: 'Profili güncelle'
           cancel_account: 'Hesabı sil'
           forgot_password: 'Şifrenizi mi unuttunuz?'
           confirmation_instructions_not_received: 'Onay emailini almadınız mı?'
@@ -43,21 +36,14 @@ tr:
           change_password: 'Şifreyi değiştir'
           password_help: '%{count} karakter minimum'
           email_registration_not_allowed: 'Email kayıt yapılamıyor'
-      comments_number:
-        one: '1 yorum'
-        other: '%{count} yorum'
       no_status: 'Durum yok'
-      select_no_options_available: 'Seçenek yok'
       select_placeholder: 'Seç...'
       loading: 'Yükleniyor...'
       confirmation: 'Emin misiniz?'
       confirmation_board_delete: 'Bu board içinde geri bildirim gönderileri varsa, tüm bu gönderiler de silinecektir. Bu işlem geri alınamaz.'
       unsaved_changes: 'Kaydedilmemiş değişiklikler sayfa çıkışında kaybolacaktır.'
-      edited: 'Düzenlendi'
       enabled: 'Etkin'
-      disabled: 'Devre dışı bırakıldı'
       copied: 'Kopyalandı!'
-      user_staff: 'Personel'
       powered_by: 'Powered by'
       buttons:
         new: 'Yeni'
@@ -66,41 +52,16 @@ tr:
         cancel: 'İptal'
         create: 'Oluştur'
         update: 'Kaydet'
-        confirm: 'Onayla'
-        back: 'Geri'
         test: 'Test'
-        clear: 'Temizle'
         approve: 'Onayla'
         reject: 'Reddet'
         copy_to_clipboard: 'Kopyala'
-      datetime:
-        now: 'şimdi'
-        minutes:
-          one: '1 dakika önce'
-          other: '%{count} dakika önce'
-        hours:
-          one: '1 saat önce'
-          other: '%{count} saat önce'
-        days:
-          one: '1 gün önce'
-          other: '%{count} gün önce'
-        months:
-          one: '1 ay önce'
-          other: '%{count} ay önce'
-        years:
-          one: '1 yıl önce'
-          other: '%{count} yıl önce'
     header:
       menu:
-        administration_header: 'Yönetim'
         site_settings: 'Site ayarları'
         moderation: 'Moderasyon'
         profile_header: 'Profil'
         profile_settings: 'Profil ayarları'
-        help_header: 'Yardım'
-        tour: 'Tur'
-        docs: 'Dökümantasyon'
-        support: 'Destek'
         sign_out: 'Çıkış yap'
       log_in: 'Giriş yap / Kayıt ol'
     roadmap:
@@ -120,7 +81,6 @@ tr:
         no_title: 'Başlık alanı zorunludur'
         anonymous_submission_help: 'Gizli gönderim yapıyorsunuz'
         non_anonymous_submission_help: 'Gönderiminiz %{name} adıyla yapılıyor'
-        submit_success: 'Geri bildirim gönderildi! Yönlendiriliyorsunuz...'
         submit_pending: 'Geri bildiriminiz onay bekliyor...'
       search_box:
         title: 'Ara'
@@ -132,27 +92,16 @@ tr:
         newest: 'Yeni'
         most_voted: 'En çok oylanan'
         oldest: 'En eski'
-      filter_by_date_box:
-        title: 'Tarihe göre filtrele'
-        from_label: 'Başlangıç'
-        to_label: 'Bitiş'
       posts_list:
         empty: 'Gönderi yok'
     post:
-      edit_button: 'Düzenle'
       published_by: 'Yayınlandı'
       published_anonymously: 'Gizli yayınlandı'
       post_status_select:
         no_post_status: 'Yok'
-      updates_box:
-        title: 'Güncellemeler'
-        empty: 'Henüz bir güncelleme yok'
-        status_change: 'durumunu değiştirdi'
       likes_box:
         title: 'Beğeniler'
-        empty: 'Henüz bir beğenme yok'
       action_box:
-        title: 'Eylemler'
         follow_button: 'Takip et'
         following_description: "bu gönderi hakkında yeni güncellemeler alıyorsunuz"
         not_following_description: "bu gönderi hakkında yeni güncellemeler almayacaksınız"
@@ -178,7 +127,6 @@ tr:
         appearance: 'Görünüm'
       info_box:
         up_to_date: 'Tüm değişiklikler kaydedildi'
-        error: 'Bir hata oluştu: %{message}'
         dirty: 'Değişiklikler kaydedilmedi'
       general:
         title: 'Genel'
@@ -210,14 +158,12 @@ tr:
       boards:
         title: 'Panolar'
         empty: 'Panolar yok. Aşağıda bir tane oluşturun!'
-        new: 'Yeni'
         form:
           name: 'Pano İsmi'
           description: 'Pano Açıklama (isteğe bağlı)'
       post_statuses:
         title: 'Durumlar'
         empty: 'Durum yok. Aşağıda bir tane oluşturun!'
-        new: 'Yeni'
         form:
           name: 'Durum İsmi'
       roadmap:
@@ -287,7 +233,6 @@ tr:
           invalid_configuration: 'Bu OAuth sağlayıcı doğru yapılandırılmadı.'
         form:
           title_new: 'Yeni OAuth sağlayıcı'
-          title_edit: 'OAuth sağlayıcıyı düzenle'
           subtitle_oauth_config: 'OAuth yapılandırma'
           subtitle_user_profile_config: 'Kullanıcı profili yapılandırma'
           client_secret_help: 'Gizli tutulması için gizli tutulur'
@@ -300,7 +245,6 @@ tr:
         anonymous_feedback_not_allowed: 'Gizli geri bildirim izni yok'
         change_feedback_moderation_settings: 'Geri bildirim moderasyon ayarlarını değiştir'
       users:
-        title: 'Kullanıcılar'
         block: 'Engelle'
         unblock: 'Engeli kaldır'
         block_confirmation: "%{name} engellenecektir. Emin misiniz?"

@@ -2,14 +2,9 @@ sv:
   common:
     words:
       or: 'eller'
-    errors:
-      unknown: 'An unknown error occurred, please try again'
     validations:
-      required: '%{attribute} is required'
       email: 'Ogiltig e-postadress'
       url: 'Ogiltig URL'
-      password: 'Lösenord måste innehålla minst %{n} tecken'
-      password_mismatch: 'Password and password confirmation must match'
     forms:
       auth:
         email: 'Email'
@@ -24,7 +19,6 @@ sv:
         waiting_confirmation: 'Currently waiting confirmation for %{email}'
         no_password_set: 'You must set a password to update your profile'
         set_password: 'Set password'
-        password_leave_blank_help: "leave blank if you don't want to change your password"
         current_password_required_help: 'we need your current password to confirm your changes'
         remember_me: 'Kom ihåg mig'
         log_in: 'Logga in'
@@ -32,7 +26,6 @@ sv:
         log_in_with: 'Logga in med %{o_auth}'
         sign_up_with: 'Registrera dig med %{o_auth}'
         profile_settings: 'Profilinställningar'
-        update_profile: 'Uppdatera profil'
         cancel_account: 'Cancel account'
         forgot_password: 'Glömt ditt lösenord?'
         confirmation_instructions_not_received: "Didn't receive confirmation instructions?"
@@ -43,21 +36,14 @@ sv:
         change_password: 'Ändra lösenord'
         password_help: '%{count} characters minimum'
         email_registration_not_allowed: 'Email registration not allowed'
-    comments_number:
-      one: '1 kommentar'
-      other: '%{count} kommentarer'
     no_status: 'No status'
-    select_no_options_available: 'No options available'
     select_placeholder: 'Select...'
     loading: 'Loading...'
     confirmation: 'Are you sure?'
     confirmation_board_delete: 'Warning: if there are feedback posts inside this board, then ALL these posts will be deleted as well. This action cannot be undone.'
     unsaved_changes: 'Unsaved changes will be lost if you leave the page.'
-    edited: 'Edited'
     enabled: 'Enabled'
-    disabled: 'Disabled'
     copied: 'Copied!'
-    user_staff: 'Staff'
     powered_by: 'Powered by'
     buttons:
       new: 'New'
@@ -66,41 +52,16 @@ sv:
       cancel: 'Avbryt'
       create: 'Skapa'
       update: 'Spara'
-      confirm: 'Bekräfta'
-      back: 'Tillbaka'
       test: 'Test'
-      clear: 'Rensa'
       approve: 'Approve'
       reject: 'Reject'
       copy_to_clipboard: 'Copy to clipboard'
-    datetime:
-      now: 'just nu'
-      minutes:
-        one: '1 minut sedan'
-        other: '%{count} minuter sedan'
-      hours:
-        one: '1 timme sedan'
-        other: '%{count} timmar sedan'
-      days:
-        one: '1 dag sedan'
-        other: '%{count} dagar sedan'
-      months:
-        one: '1 månad sedan'
-        other: '%{count} månader sedan'
-      years:
-        one: '1 år sedan'
-        other: '%{count} år sedan'
   header:
     menu:
-      administration_header: 'Administration'
       site_settings: 'Site settings'
       moderation: 'Moderation'
       profile_header: 'Profil'
       profile_settings: 'Profilinställningar'
-      help_header: 'Hjälp'
-      tour: 'Tour'
-      docs: 'Documentation'
-      support: 'Support'
       sign_out: 'Logga ut'
     log_in: 'Logga in/Registrera dig'
   roadmap:
@@ -118,7 +79,6 @@ sv:
       no_title: 'Title field is mandatory'
       anonymous_submission_help: 'You are posting anonymously'
       non_anonymous_submission_help: 'You are posting as %{name}'
-      submit_success: 'Feedback published! You will be redirected soon...'
       submit_pending: 'Your feedback has been submitted and is now pending moderator approval!'
     search_box:
       title: 'Sök'
@@ -130,27 +90,16 @@ sv:
       newest: 'Newest'
       most_voted: 'Most voted'
       oldest: 'Oldest'
-    filter_by_date_box:
-      title: 'Filter by date'
-      from_label: 'Från'
-      to_label: 'Till'
     posts_list:
       empty: 'There are no posts'
   post:
-    edit_button: 'Redigera'
     published_by: 'Published by'
     published_anonymously: 'Published anonymously'
     post_status_select:
       no_post_status: 'Ingen'
-    updates_box:
-      title: 'Updates'
-      empty: 'There are no updates yet'
-      status_change: 'changed status to'
     likes_box:
       title: 'Likes'
-      empty: 'There are no likes yet'
     action_box:
-      title: 'Actions'
       follow_button: 'Follow post'
       following_description: "you're receiving notifications about new updates on this post"
       not_following_description: "you won't receive notifications about this post"
@@ -176,7 +125,6 @@ sv:
       appearance: 'Utseende'
     info_box:
       up_to_date: 'All changes saved'
-      error: 'An error occurred: %{message}'
       dirty: 'Changes not saved'
     general:
       title: 'General'
@@ -208,14 +156,12 @@ sv:
     boards:
       title: 'Boards'
       empty: 'There are no boards. Create one below!'
-      new: 'New'
       form:
         name: 'Board name'
         description: 'Board description (optional)'
     post_statuses:
       title: 'Statuses'
       empty: 'There are no statuses. Create one below!'
-      new: 'New'
       form:
         name: 'Status name'
     roadmap:
@@ -285,7 +231,6 @@ sv:
         invalid_configuration: 'This OAuth provider is NOT configured correctly.'
       form:
         title_new: 'New OAuth provider'
-        title_edit: 'Edit OAuth provider'
         subtitle_oauth_config: 'OAuth configuration'
         subtitle_user_profile_config: 'User profile configuration'
         client_secret_help: 'hidden for security purposes'
@@ -298,7 +243,6 @@ sv:
       anonymous_feedback_not_allowed: 'Anonymous feedback not allowed'
       change_feedback_moderation_settings: 'Change feedback moderation settings'
     users:
-      title: 'Users'
       block: 'Block'
       unblock: 'Unblock'
       block_confirmation: "%{name} won't be able to log in until it is unblocked. Are you sure?"

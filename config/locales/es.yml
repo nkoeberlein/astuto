@@ -2,14 +2,9 @@ es:
   common:
     words:
       or: 'or'
-    errors:
-      unknown: 'Error no determinado, intente nuevamente'
     validations:
-      required: '%{attribute} es obligatorio'
       email: 'Email invalido'
       url: 'URL no válida'
-      password: 'La contraseña debe tener al menos %{n} caracteres'
-      password_mismatch: 'Las contraseñas no coinciden'
     forms:
       auth:
         email: 'Correo electrónico'
@@ -24,7 +19,6 @@ es:
         waiting_confirmation: 'Esperando confirmación de %{email}'
         no_password_set: 'Debe indicar una contraseña para actualizar su perfil'
         set_password: 'Configure contraseña'
-        password_leave_blank_help: "dejar en blanco si no desea cambiar la contraseña"
         current_password_required_help: 'necesitamos su contraseña actual para confirmar los cambios'
         remember_me: 'Recuérdame'
         log_in: 'Iniciar sesión'
@@ -32,7 +26,6 @@ es:
         log_in_with: 'Iniciar sesión con %{o_auth}'
         sign_up_with: 'Registrarse con %{o_auth}'
         profile_settings: 'Configuración de perfil'
-        update_profile: 'Actualizar perfil'
         cancel_account: 'Cancelar cuenta'
         forgot_password: '¿Olvidaste tu contraseña?'
         confirmation_instructions_not_received: "¿No recibiste instrucciones de confirmación?"
@@ -43,21 +36,14 @@ es:
         change_password: 'Cambiar contraseña'
         password_help: 'mínimo %{count} caracteres'
         email_registration_not_allowed: 'Email registration not allowed'
-    comments_number:
-      one: '1 comentario'
-      other: '%{count} comentarios'
     no_status: 'Sin estado'
-    select_no_options_available: 'No options available'
     select_placeholder: 'Select...'
     loading: 'Cargando...'
     confirmation: '¿Está seguro?'
     confirmation_board_delete: 'Advertencia: si hay mensajes de retroalimentación en este foro, entonces TODOS estos mensajes serán borrados también. Esta acción no se puede deshacer.'
     unsaved_changes: 'Los cambios se perderán si abandona esta página.'
-    edited: 'Editado'
     enabled: 'Habilitado'
-    disabled: 'Deshabilitado'
     copied: '¡Copiado!'
-    user_staff: 'Empleados'
     powered_by: 'Impulsado por'
     buttons:
       new: 'Nuevo'
@@ -66,41 +52,16 @@ es:
       cancel: 'Cancelar'
       create: 'Crear'
       update: 'Guardar'
-      confirm: 'Confirmar'
-      back: 'Atrás'
       test: 'Probar'
-      clear: 'Restablecer'
       approve: 'Approve'
       reject: 'Reject'
       copy_to_clipboard: 'Copy to clipboard'
-    datetime:
-      now: 'ahora mismo'
-      minutes:
-        one: 'Hace 1 minuto'
-        other: 'Hace %{count} minutos'
-      hours:
-        one: 'hace 1 hora'
-        other: 'Hace %{count} horas'
-      days:
-        one: 'Hace 1 día'
-        other: 'hace %{count} días'
-      months:
-        one: '1 month ago'
-        other: '%{count} months ago'
-      years:
-        one: '1 year ago'
-        other: '%{count} years ago'
   header:
     menu:
-      administration_header: 'Administración'
       site_settings: 'Configuración del sitio'
       moderation: 'Moderation'
       profile_header: 'Perfil'
       profile_settings: 'Configuración de perfil'
-      help_header: 'Ayuda'
-      tour: 'Guía'
-      docs: 'Documentación'
-      support: 'Soporte'
       sign_out: 'Cerrar sesión'
     log_in: 'Iniciar sesión / Registrarse'
   roadmap:
@@ -118,7 +79,6 @@ es:
       no_title: 'El campo Título es obligatorio'
       anonymous_submission_help: 'You are posting anonymously'
       non_anonymous_submission_help: 'You are posting as %{name}'
-      submit_success: '¡Comentarios publicados! Serás redirigido pronto...'
       submit_pending: 'Your feedback has been submitted and is now pending moderator approval!'
     search_box:
       title: 'Buscar'
@@ -130,27 +90,16 @@ es:
       newest: 'Más reciente'
       most_voted: 'Más votados'
       oldest: 'Más antiguo'
-    filter_by_date_box:
-      title: 'Filtrar por fecha'
-      from_label: 'Desde'
-      to_label: 'Hasta'
     posts_list:
       empty: 'Aún no hay publicaciones'
   post:
-    edit_button: 'Editar'
     published_by: 'Publicado por'
     published_anonymously: 'Published anonymously'
     post_status_select:
       no_post_status: 'Ninguno'
-    updates_box:
-      title: 'Actualizaciones'
-      empty: 'Aún no hay actualizaciones'
-      status_change: 'cambió el estado a'
     likes_box:
       title: 'Me gusta'
-      empty: 'Aún no hay "me gusta"'
     action_box:
-      title: 'Acciones'
       follow_button: 'Seguir publicación'
       following_description: "estás recibiendo notificaciones sobre nuevas actualizaciones en esta publicación"
       not_following_description: "no recibirás notificaciones sobre esta publicación"
@@ -176,7 +125,6 @@ es:
       appearance: 'Apariencia'
     info_box:
       up_to_date: 'Se han guardado todos los cambios'
-      error: 'Se ha producido un error: %{message}'
       dirty: 'No se han guardado los cambios'
     general:
       title: 'General'
@@ -208,14 +156,12 @@ es:
     boards:
       title: 'Tableros'
       empty: 'No hay tableros. ¡Crea uno abajo!'
-      new: 'Nuevo'
       form:
         name: 'Nombre del tablero'
         description: 'Descripción del tablero (opcional)'
     post_statuses:
       title: 'Estados'
       empty: 'No hay estados. ¡Crea uno a continuación!'
-      new: 'Nuevo'
       form:
         name: 'Nombre del estado'
     roadmap:
@@ -285,7 +231,6 @@ es:
         invalid_configuration: 'Este proveedor OAuth NO está configurado correctamente.'
       form:
         title_new: 'Nuevo proveedor OAuth'
-        title_edit: 'Editar proveedor OAuth'
         subtitle_oauth_config: 'Configuración OAuth'
         subtitle_user_profile_config: 'Configuración del perfil de usuario'
         client_secret_help: 'oculto por motivos de seguridad'
@@ -298,7 +243,6 @@ es:
       anonymous_feedback_not_allowed: 'Anonymous feedback not allowed'
       change_feedback_moderation_settings: 'Change feedback moderation settings'
     users:
-      title: 'Usuarios'
       block: 'Bloquear'
       unblock: 'Desbloquear'
       block_confirmation: "%{name} no podrá iniciar sesión hasta que sea desbloqueado. ¿Estás seguro?"

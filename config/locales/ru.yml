@@ -2,14 +2,9 @@ ru:
   common:
     words:
       or: 'или'
-    errors:
-      unknown: 'Произошла неизвестная ошибка, попробуйте еще раз'
     validations:
-      required: 'Необходимо заполнить %{attribute}'
       email: 'Неправильный адрес электронной почты'
       url: 'Неверный URL-адрес'
-      password: 'Пароль должен содержать не менее %{n} символов'
-      password_mismatch: 'Пароль и подтверждение пароля должны совпадать'
     forms:
       auth:
         email: 'Email'
@@ -24,7 +19,6 @@ ru:
         waiting_confirmation: 'Ожидаем подтверждения %{email}'
         no_password_set: 'Вы должны установить пароль, чтобы обновить профиль'
         set_password: 'Установить пароль'
-        password_leave_blank_help: "Оставьте пустым, если вы не хотите менять свой пароль"
         current_password_required_help: 'Нам нужен ваш текущий пароль, чтобы подтвердить изменения'
         remember_me: 'Запомнить'
         log_in: 'Войти'
@@ -32,7 +26,6 @@ ru:
         log_in_with: 'Войти с помощью %{o_auth}'
         sign_up_with: 'Регистрация с помощью %{o_auth}'
         profile_settings: 'Настройки профиля'
-        update_profile: 'Обновить профиль'
         cancel_account: 'Закрыть учетную запись'
         forgot_password: 'Забыли пароль?'
         confirmation_instructions_not_received: "Не получили подтверждение?"
@@ -43,23 +36,14 @@ ru:
         change_password: 'Изменить пароль'
         password_help: 'минимальное количство знаков %{count} '
         email_registration_not_allowed: 'Email registration not allowed'
-    comments_number:
-      one: '1 комментарий'
-      few: '%{count} комментариев'
-      many: '%{count} комментариев'
-      other: '%{count} комментариев'
     no_status: 'Нет статуса'
-    select_no_options_available: 'No options available'
     select_placeholder: 'Select...'
     loading: 'Загрузка...'
     confirmation: 'Вы уверены?'
     confirmation_board_delete: 'Внимание: если на этой достке есть сообщения с отзывами, то ВСЕ эти сообщения также будут удалены. Это действие не может быть отменено.'
     unsaved_changes: 'Несохраненные изменения будут потеряны, если вы сейчас покинете эту страницу.'
-    edited: 'Отредактировано'
     enabled: 'Включено'
-    disabled: 'Отключено'
     copied: 'Скопировано!'
-    user_staff: 'Staff'
     powered_by: 'Работает на'
     buttons:
       new: 'Новый'
@@ -68,51 +52,16 @@ ru:
       cancel: 'Отмена'
       create: 'Создать'
       update: 'Сохранить'
-      confirm: 'Подтвердить'
-      back: 'Назад'
       test: 'Тест'
-      clear: 'Очистить'
       approve: 'Утвердить'
       reject: 'Отклонить'
       copy_to_clipboard: 'Copy to clipboard'
-    datetime:
-      now: 'только что'
-      minutes:
-        one: '1 минута назад'
-        few: '%{count} минут назад'
-        many: '%{count} минут назад'
-        other: '%{count} минут назад'
-      hours:
-        one: '1 ч назад'
-        few: '%{count} часа назад'
-        many: '%{count} часа назад'
-        other: '%{count} часа назад'
-      days:
-        one: '1 день назад'
-        few: '%{count} д. назад'
-        many: '%{count} д. назад'
-        other: '%{count} д. назад'
-      months:
-        one: '1 месяц назад'
-        few: '%{count} месяцев ago'
-        many: '%{count} месяцев ago'
-        other: '%{count} месяцев ago'
-      years:
-        one: '1 год назад'
-        few: '%{count} года ago'
-        many: '%{count} лет ago'
-        other: '%{count} лет ago'
   header:
     menu:
-      administration_header: 'Администрирование'
       site_settings: 'Настройки сайта'
       moderation: 'Модерация'
       profile_header: 'Профиль'
       profile_settings: 'Настройки профиля'
-      help_header: 'Помощь'
-      tour: 'Тур по продукту'
-      docs: 'Документация'
-      support: 'Поддержка'
       sign_out: 'Выйти'
     log_in: 'Войти / Зарегистрироваться'
   roadmap:
@@ -130,7 +79,6 @@ ru:
       no_title: 'Поле обязательное для заполнения'
       anonymous_submission_help: 'Вы публикуете анонимно'
       non_anonymous_submission_help: 'Вы публикуете как  %{name}'
-      submit_success: 'Отзыв опубликован! Вы будете перенаправлены в ближайшее время...'
       submit_pending: 'Ваш отзыв отправлен и теперь ожидает одобрения модератора!'
     search_box:
       title: 'Поиск'
@@ -142,27 +90,16 @@ ru:
       newest: 'Новые'
       most_voted: 'Больше всего голосов'
       oldest: 'Старые'
-    filter_by_date_box:
-      title: 'Фильтровать по дате'
-      from_label: 'От'
-      to_label: 'До'
     posts_list:
       empty: 'Нет публикаций'
   post:
-    edit_button: 'Редактировать'
     published_by: 'Опубликован'
     published_anonymously: 'Опубликовано анонимно'
     post_status_select:
       no_post_status: 'Нет'
-    updates_box:
-      title: 'Обновления'
-      empty: 'Пока здесь пусто'
-      status_change: 'изменил статус на'
     likes_box:
       title: 'Нравится'
-      empty: 'Нет отметок "нравится"'
     action_box:
-      title: 'Действия'
       follow_button: 'Подписаться на пост'
       following_description: "вы получаете уведомления о новых обновлениях на этот пост"
       not_following_description: "Вы не подписаны на уведомления об активности в этом посте."
@@ -188,7 +125,6 @@ ru:
       appearance: 'Внешний вид'
     info_box:
       up_to_date: 'Все изменения сохранены'
-      error: 'Произошла ошибка: %{message}'
       dirty: 'Не удалось сохранить изменения'
     general:
       title: 'Общее'
@@ -220,14 +156,12 @@ ru:
     boards:
       title: 'Доски'
       empty: 'Доски отсутствуют. Создайте доску!'
-      new: 'Новый'
       form:
         name: 'Название доски'
         description: 'Описание доски (опционально)'
     post_statuses:
       title: 'Статусы'
       empty: 'Нет статусов. Создайте новую!'
-      new: 'Новый'
       form:
         name: 'Название статуса'
     roadmap:
@@ -299,7 +233,6 @@ ru:
         invalid_configuration: 'Этот OAuth провайдер неправильно настроен.'
       form:
         title_new: 'Новый поставщики OAuth'
-        title_edit: 'Редактировать OAuth провайдера'
         subtitle_oauth_config: 'Конфигурация OAuth'
         subtitle_user_profile_config: 'Настройка профиля пользователя'
         client_secret_help: 'скрытые в целях безопасности'
@@ -312,7 +245,6 @@ ru:
       anonymous_feedback_not_allowed: 'Анонимные отзывы не разрешены'
       change_feedback_moderation_settings: 'Изменить настройки модерации'
     users:
-      title: 'Пользователи'
       block: 'Заблокировать'
       unblock: 'Разблокировать'
       block_confirmation: "%{name} не сможет войти в систему, пока ее не разблокируют. Вы уверены?"
