@@ -6,6 +6,9 @@ Issue numbers refer to the archived [astuto/astuto](https://github.com/astuto/as
 ## [Unreleased]
 
 ### Removed
+- **The old user interface** (React 16, Redux, Bootstrap, Turbolinks, webpack, Sass and the asset pipeline) and its JSON endpoints (`/posts`, `/boards`, `/posts/:id/comments`, `/likes`, `/follows`, `/post_status_changes`, `/users`, `/webhooks`, `/o_auths` CRUD, `/tenants`, `/invitations`, `/api_keys`). Integrations should use the REST API (`/api/v1`, API key) or MCP. Node.js is only needed to build `frontend/`.
+- Self-service sign-up for new feedback spaces (it was switched off); see docs/multi-tenancy.md.
+- `GET /users/send_set_password_instructions`, which sent password reset emails to any address without rate limit.
 - **Billing.** Astuto Evolution has no paid plans: the Stripe billing of the former astuto.io hosting is gone (billing pages, trial period, read-only mode after the trial, trial and subscription emails, `stripe` gem, `STRIPE_*` and `TRIAL_PERIOD_DAYS` variables). The table `tenant_billings` is dropped. The Content Security Policy no longer allows Stripe.
 - The astuto.io promo banner and the call to the astuto.io certificate API when a custom domain is saved (`ASTUTO_CNAME_API_URL`, `ASTUTO_CNAME_API_KEY`).
 

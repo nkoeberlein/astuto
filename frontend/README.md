@@ -1,10 +1,10 @@
 # Astuto Evolution – v2 frontend
 
-The new web frontend that replaces the legacy React 16 / Redux / Bootstrap 4 UI in v2.
-It is a separate single-page app talking to Rails only through a JSON API, so it can
-move unchanged to the v3 TypeScript backend (TanStack Start + Drizzle).
+The web frontend of Astuto Evolution (since 2.0; it replaced the React 16 / Redux /
+Bootstrap 4 UI). It is a separate single-page app talking to Rails only through a JSON
+API, so it can move unchanged to the v3 TypeScript backend (TanStack Start + Drizzle).
 
-Until it covers every page it is served under **`/next`**; the legacy UI stays at `/`.
+Rails serves every page at `/` (`SpaController`); the built files live under `/next/assets`.
 
 ## Stack
 

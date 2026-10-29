@@ -2,24 +2,18 @@ require 'uri'
 
 class ApplicationController < ActionController::Base
   include ApplicationHelper
-  include HeaderHelper
   include Pundit::Authorization
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   before_action :configure_devise_permitted_parameters, if: :devise_controller?
-  before_action :check_tenant_is_private, if: :should_check_tenant_is_private?
   
   prepend_before_action :load_tenant_data
 
   # Override Devise after sign in path
   def after_sign_in_path_for(resource)
-    if resource.admin? && resource.sign_in_count == 1
-      root_path(tour: true)
-    else
-      safe_return_to_redirect(session[:return_to]) do
-        super
-      end
+    safe_return_to_redirect(session[:return_to]) do
+      super
     end
   end
 
@@ -78,23 +72,6 @@ class ApplicationController < ActionController::Base
         .order(created_at: :asc)
     end
 
-    # Comments, votes and status history of a post waiting for approval (or rejected) are as
-    # hidden as the post itself: only moderators see them
-    def hide_unless_post_visible
-      post = Post.friendly.find(params[:post_id])
-      return if post.approved? || current_user&.moderator?
-
-      render json: { error: t('errors.unauthorized') }, status: :not_found
-    end
-
-    def check_tenant_is_private
-      return unless Current.tenant.tenant_setting.is_private
-      return if user_signed_in?
-
-      flash[:alert] = t('errors.not_logged_in')
-      redirect_to new_user_session_path
-    end
-
   private
 
     def user_not_authorized
@@ -105,7 +82,4 @@ class ApplicationController < ActionController::Base
       }, status: :unauthorized
     end
 
-    def should_check_tenant_is_private?
-      %w[posts boards comments likes post_status_changes].include?(controller_name)
-    end
 end

@@ -22,7 +22,7 @@ services:
       - "${ASTUTO_PORT:-3000}:3000"
     depends_on:
       - db
-  # v2 frontend dev server (Vite), open http://localhost:5173/next/
+  # Frontend dev server (Vite), open http://localhost:5173/
   frontend:
     image: node:26-trixie-slim
     working_dir: /astuto/frontend

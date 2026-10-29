@@ -5,7 +5,6 @@
 # only active moderators and admins get access. Tools: app/services/mcp/tools.
 class McpController < ApplicationController
   skip_before_action :verify_authenticity_token
-  skip_before_action :check_tenant_is_private
   skip_before_action :load_tenant_data
 
   prepend_before_action :set_current_tenant

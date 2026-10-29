@@ -37,12 +37,6 @@ jobs:
           docker compose exec web bundle config set deployment false --local
           docker compose exec web bundle install
 
-      - name: Install Google Chrome
-        run: |
-          docker compose exec web wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-          docker compose exec web dpkg -i google-chrome-stable_current_amd64.deb || true
-          docker compose exec web apt-get -fy install
-        
       # The container's entrypoint only prepares its own database
       - name: Prepare test database
         run: docker compose exec -e RAILS_ENV=test web bundle exec rails db:create db:schema:load
@@ -90,9 +84,8 @@ jobs:
           path: frontend/playwright-report
           retention-days: 7
 
-      - name: Security checks (gems, legacy npm packages, Brakeman)
+      - name: Security checks (gems, frontend packages, Brakeman)
         run: |
           docker compose exec web bin/bundler-audit check --update
           docker compose exec web bin/brakeman --quiet --no-pager --exit-on-warn --exit-on-error
-          # yarn is not in the production image; the runner has Ruby and yarn
-          bin/yarn-audit-critical
+          cd frontend && npm audit --audit-level=critical

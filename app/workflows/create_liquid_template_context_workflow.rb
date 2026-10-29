@@ -8,7 +8,7 @@ class CreateLiquidTemplateContextWorkflow
   COMMENT_ATTRIBUTES = [:id, :body, :user_id, :post_id, :created_at, :updated_at].freeze
 
   # Variables each trigger offers in templates: context key => attributes
-  # (the legacy UI keeps its own copy in TemplateVariablesSelector.tsx)
+  # (the frontend reads them from /api/app/v1/site_settings/webhooks/variables)
   POST_VARIABLES = POST_ATTRIBUTES + POST_VIRTUAL_ATTRIBUTES
   TEMPLATE_VARIABLES = {
     'new_post' => { post: POST_VARIABLES, post_author: USER_ATTRIBUTES, board: BOARD_ATTRIBUTES },
@@ -135,7 +135,7 @@ class CreateLiquidTemplateContextWorkflow
     context['tenant'] = tenant.as_json(only: TENANT_ATTRIBUTES)
 
     # Add context variables specific to the webhook trigger
-    # To keep in sync with app/javascript/components/SiteSettings/Webhooks/TemplateVariablesSelector.tsx
+    # Must match TEMPLATE_VARIABLES above
     case webhook_trigger
     when 'new_post'
       context['post'] = @entities[:post].as_json(only: POST_ATTRIBUTES, methods: POST_VIRTUAL_ATTRIBUTES)

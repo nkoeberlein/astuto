@@ -1,10 +1,10 @@
 # Local CI for the Rails app: `docker compose exec web bin/ci`
-# System specs need Chrome or Chromium (see AGENTS.md). The v2 frontend has its own
-# checks (`npm run lint|typecheck|test` in frontend/, .github/workflows/frontend.yml).
+# The frontend has its own checks (`npm run lint|typecheck|test|e2e` in frontend/,
+# .github/workflows/frontend.yml and run-tests.yml).
 
 CI.run do
   step "Security: Gem audit", "bin/bundler-audit check --update"
-  step "Security: Yarn audit (legacy UI, critical only)", "bin/yarn-audit-critical"
+  step "Security: npm audit (frontend, critical only)", "cd frontend && npm audit --audit-level=critical"
   step "Security: Brakeman code analysis", "bin/brakeman --quiet --no-pager --exit-on-warn --exit-on-error"
   step "Tests: RSpec", "bundle exec rspec"
   # Seeds must load cleanly; truncate afterwards so the next RSpec run starts from an empty test DB

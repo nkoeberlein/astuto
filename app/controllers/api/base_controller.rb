@@ -11,7 +11,6 @@ module Api
     rescue_from Api::V1::Helpers::ImpersonationError, with: :impersonation_error
     
     skip_before_action :verify_authenticity_token
-    skip_before_action :check_tenant_is_private
     skip_before_action :load_tenant_data
 
     before_action :authenticate_with_api_key

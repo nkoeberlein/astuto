@@ -103,7 +103,7 @@ Astuto Evolution führt das archivierte [astuto/astuto](https://github.com/astut
 ### Phase 2 – Betrieb und Bugfixes · P1
 Die häufigsten Probleme aus den Upstream-Issues: HTTPS hinter Reverse Proxy (#478, #201), OAuth-Cookie (#472), SMTP (#330 u. a.), Webhook-Fehler sichtbar machen (#458), konfigurierbare DB (#326, #207), Standard-Admin-Passwort, unsicherer SMTP-Standard. Details in todo.md.
 
-### Phase 3 – Altes Frontend ersetzen · P1 (Kern von v2, begonnen)
+### Phase 3 – Altes Frontend ersetzen · P1 (Kern von v2) ✅
 1. ✅ Entscheidung: v3 wird **TanStack Start + Drizzle + Tailwind** → v2 bekommt ein getrenntes React-Frontend
 2. ✅ `frontend/` mit Vite 8, React 19, **TypeScript 7**, TanStack Router/Query, Tailwind 4, shadcn/ui, **Biome** (statt ESLint/Prettier), Vitest; eigener CI-Workflow; Build ins Image, ausgeliefert unter `/next`
 3. ✅ App-API `/api/app/v1` (lesend: Session, Übersetzungen, Boards, Status, Posts, Kommentare), OpenAPI per rswag, generierte TS-Typen
@@ -113,7 +113,7 @@ Die häufigsten Probleme aus den Upstream-Issues: HTTPS hinter Reverse Proxy (#4
 7. ✅ Auth-Seiten (Login, Registrierung, Passwort, OAuth) und eingebettete Roadmap
 8. ✅ Moderation (Feedback-Queue, Nutzer), Site Settings (alle Bereiche) und Profil-Einstellungen
 9. ✅ Umstieg: das neue Frontend liefert alle Seiten unter `/` aus (`/next/*` leitet um)
-10. Altes Frontend und dessen Gems/Pakete entfernen (`react-rails`, `i18n-js`, Webpack, Bootstrap); dabei fällt der abgeschaltete Tenant-Signup weg (Billing ist bereits entfernt)
+10. ✅ Altes Frontend entfernt: React 16, Redux, Bootstrap, jQuery, Turbolinks, Webpack, Sass, Sprockets, `react-rails`, `i18n-js`, die alten JSON-Endpunkte und der abgeschaltete Tenant-Signup. Node.js braucht nur noch der Build von `frontend/`
 
 ### Phase 4 – KI und MCP · P1 (MCP in 2.0, Rest 2.x)
 - ✅ **MCP-Server** (Streamable HTTP unter `/mcp` auf dem offiziellen `mcp`-Gem, Auth per API-Key, später OAuth). Tools: Posts suchen, lesen, anlegen, Status ändern, kommentieren, Votes und Trends abfragen, Roadmap lesen. Damit triagieren Claude, Cursor und andere Assistenten Feedback direkt. Unter den Self-Hosted-Tools hat das sonst nur Quackback.

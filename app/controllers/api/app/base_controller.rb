@@ -5,7 +5,6 @@ module Api
     # (token comes from GET /api/app/v1/session).
     class BaseController < ApplicationController
       skip_before_action :load_tenant_data
-      skip_before_action :check_tenant_is_private
 
       prepend_before_action :set_tenant
 

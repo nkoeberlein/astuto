@@ -2,7 +2,8 @@
 
 require 'rails_helper'
 
-RSpec.describe SendNotificationForCommentWorkflow do
+# type: :job sets up the Rails test hooks ActiveJob::TestHelper relies on (tagged logging)
+RSpec.describe SendNotificationForCommentWorkflow, type: :job do
   include ActiveJob::TestHelper
 
   let(:tenant) { Tenant.first || FactoryBot.create(:tenant) }

@@ -7,13 +7,6 @@ Rails.application.routes.draw do
     constraints subdomain: 'api' do
       mount Rswag::Api::Engine => '/api-docs'
     end
-
-    constraints subdomain: 'login' do
-      get '/signup', to: 'tenants#new'
-      get '/is_available', to: 'tenants#is_available'
-      
-      resource :tenants, only: [:create]
-    end
   end
 
   # Instance admin (multi-tenancy, INSTANCE_ADMIN_PASSWORD, BASE_URL host only; docs/multi-tenancy.md)
@@ -33,8 +26,8 @@ Rails.application.routes.draw do
     root to: 'spa#show'
     get '/roadmap', to: 'spa#show', as: :roadmap
     get '/embedded_roadmap', to: 'spa#show', as: :embedded_roadmap
-    get '/boards/:id', to: 'spa#show', format: false
-    get '/posts/:id', to: 'spa#show', format: false
+    get '/boards/:id', to: 'spa#show', format: false, as: :board
+    get '/posts/:id', to: 'spa#show', format: false, as: :post
     get '/login', to: 'spa#show', as: :spa_login
     get '/register', to: 'spa#show', as: :spa_register
     get '/password/forgot', to: 'spa#show', as: :spa_password_forgot
@@ -64,47 +57,11 @@ Rails.application.routes.draw do
       :confirmations => 'confirmations',
       :unlocks => 'unlocks'
     }
-
-    devise_scope :user do
-      get '/users/send_set_password_instructions', to: 'registrations#send_set_password_instructions', as: :send_set_password_instructions
-    end
     
-    resources :tenants, only: [:show, :update]
-    resources :users, only: [:index, :update]
-    resources :webhooks, only: [:index, :create, :update, :destroy]
-    put '/webhooks_preview', to: 'webhooks#preview'
-    put '/webhooks/:id/test', to: 'webhooks#test'
-    resources :o_auths, only: [:index, :create, :update, :destroy] do
-      resource :tenant_default_o_auths, only: [:create, :destroy]
-    end
     get '/o_auths/:id/start', to: 'o_auths#start', as: :o_auth_start
     get '/o_auths/:id/callback', to: 'o_auths#callback', as: :o_auth_callback
     get '/o_auths/sign_in_from_oauth_token', to: 'o_auths#sign_in_from_oauth_token', as: :o_auth_sign_in_from_oauth_token
-  
-    resources :posts, only: [:index, :create, :update, :destroy] do
-      resource :follows, only: [:create, :destroy]
-      resources :follows, only: [:index]
-      resource :likes, only: [:create, :destroy]
-      resources :likes, only: [:index]
-      resources :comments, only: [:index, :create, :update, :destroy]
-      resources :post_status_changes, only: [:index]
 
-      get '/moderation', on: :collection, to: 'posts#moderation'
-    end
-    
-    resources :boards, only: [:index, :create, :update, :destroy] do
-      patch 'update_order', on: :collection
-    end
-  
-    resources :post_statuses, only: [:index, :create, :update, :destroy] do
-      patch 'update_order', on: :collection
-    end
-
-    resources :invitations, only: [:create]
-    post '/invitations/test', to: 'invitations#test', as: :invitation_test
-
-    resources :api_keys, only: [:create]
-  
     # API routes
     # JSON API for the v2 frontend (frontend/), session cookie + CSRF header
     namespace :api do

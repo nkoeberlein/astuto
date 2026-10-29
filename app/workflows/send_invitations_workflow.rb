@@ -1,4 +1,4 @@
-# Sends invitation emails (Site settings › Invitations, legacy UI and app API).
+# Sends invitation emails (Site settings › Invitations, app API).
 # The body must contain %link%, which becomes the personal sign-up link.
 # Skips addresses that are invalid, already registered or already accepted.
 class SendInvitationsWorkflow

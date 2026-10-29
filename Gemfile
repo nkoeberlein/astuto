@@ -7,9 +7,6 @@ gem 'rake', '13.4.2'
 
 gem 'rails', '8.1.4'
 
-# Asset pipeline (no longer bundled with Rails 7)
-gem 'sprockets-rails', '3.5.2'
-
 # Default gems that are no longer part of Ruby's standard library (Ruby >= 3.4)
 gem 'base64'
 gem 'bigdecimal'
@@ -22,17 +19,9 @@ gem 'pg', '1.7.0'
 
 gem 'puma', '8.0.2'
 
-gem 'turbolinks', '5.2.1'
-
 gem 'jbuilder', '2.15.1'
 
 gem 'bootsnap', '1.26.0', require: false
-
-# CSS
-gem "cssbundling-rails", '1.1.2'
-
-# JavaScript
-gem 'jsbundling-rails', '1.3.1'
 
 # HTTP requests
 gem 'httparty', '0.24.3'
@@ -45,12 +34,6 @@ gem 'devise', '5.0.4'
 
 # Authorization
 gem 'pundit', '2.5.2'
-
-# I18n (forward locales to JS)
-gem 'i18n-js', '3.9.2'
-
-# React (legacy UI; the npm package react_ujs stays on 2.6 because 3.x requires React 18)
-gem 'react-rails', '3.3.1'
 
 # Pagination
 gem 'kaminari', '1.3.0'
@@ -68,7 +51,6 @@ gem 'rswag-api', '2.17.0'
 # We need those gems here, so we can Swaggerize in production
 gem 'rswag-specs', '2.17.0'
 gem 'rspec-rails', '8.0.4'
-gem 'capybara', '3.40.0'
 
 # CORS policy
 gem 'rack-cors', '3.0.0'
@@ -96,14 +78,7 @@ group :development do
   gem 'web-console', '>= 3.3.0'
 end
 
-group :test do
-  gem 'selenium-webdriver', '4.51.0'
-
-  # Retry flaky Capybara tests
-  gem 'rspec-retry', '0.6.2'
-end
-
-# If not bundled, webpack compilation in production fails
+# File watcher for code reloading in development
 gem 'listen', '3.10.1'
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

@@ -147,11 +147,6 @@ class Rack::Attack
     client_ip(req) if req.path == '/instance' || req.path.start_with?('/instance/')
   end
 
-  # Throttle POST requests to /tenants by IP address
-  throttle('tenant_signups/ip', limit: 5, period: 20.seconds) do |req|
-    client_ip(req) if req.path == '/tenants' && req.post?
-  end
-
   # Throttle POST requests to /posts and /api/app/v1/boards/:board_id/posts by IP address using anti-spam measures
   throttle('posts/ip', limit: 1, period: 1.hour) do |req|
     if post_creation_request?(req)

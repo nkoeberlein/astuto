@@ -8,13 +8,12 @@ Astuto Evolution: community continuation of Astuto, a self-hosted customer feedb
 - `app/serializers/api/app/v1` – camelCase JSON for the app API (never expose author emails); `app/queries` – query objects (e.g. `BoardPostsQuery`)
 - `frontend/` – v2 frontend (React 19, TS 7, TanStack Router/Query, Tailwind 4, shadcn/ui, Biome), serves every page at `/` (`SpaController`; built files under `/next/assets`, old `/next/*` URLs redirect); see `frontend/README.md`
 - `app/policies` – Pundit authorization (one policy per model)
-- `app/workflows` – service objects for multi-step logic (OAuth exchange, sign-in, custom domain); `CreatePostWorkflow` is the only way to create posts with follow and initial status (legacy UI, app API, MCP)
+- `app/workflows` – service objects for multi-step logic (OAuth exchange, sign-in, tenant creation); `CreatePostWorkflow` is the only way to create posts with follow and initial status (app API, REST API, MCP)
 - `app/services/mcp` – MCP server on the official `mcp` gem: `server.rb` builds it, one class per tool in `tools/` (inherit `Mcp::Tools::Base`, implement `self.run(user:, **args)`), shared queries in `post_data.rb`; endpoint `McpController` (`/mcp`, API key of a moderator)
 - `app/services/ai/client.rb` – opt-in AI provider (OpenAI-compatible, Ollama, Anthropic; needs `AI_PROVIDER` and `AI_MODEL`); used by `Api::App::V1::SummariesController`
 - `app/lib` – small helpers (`SafeUrl` for admin-entered link URLs, `SafeUrl.local_path?` for return targets after sign-in, `ApiToken` reads API keys for MCP and Rack::Attack, `PostSpamCheck` honeypot/fill-time checks, Liquid filters)
 - `app/jobs` – ActiveJob (`RunWebhook`, recap emails); backend is async or Sidekiq via `ACTIVE_JOB_BACKEND`
-- `app/javascript` – legacy React 16 + Redux frontend (being replaced by `frontend/`), mounted via react-rails
-- `config/locales` – backend i18n; `app/javascript/translations` – frontend i18n (i18n-js, Crowdin)
+- `config/locales` – i18n for backend and frontend (Crowdin); `en.yml` top-level keys plus `activerecord` and `devise` go to the frontend via `/api/app/v1/translations/:locale`
 - `spec/` – RSpec: models, policies, requests, API (rswag); about 630 examples. Browser tests are Playwright in `frontend/e2e`. Spec files must end in `_spec.rb`, or RSpec skips them
 
 ## Commands
@@ -22,7 +21,7 @@ Astuto Evolution: community continuation of Astuto, a self-hosted customer feedb
 - Tests: `docker compose exec web bundle exec rspec`
 - API docs: `RSWAG_SWAGGERIZE=true RAILS_ENV=test bundle exec rake rswag:specs:swaggerize` (writes `swagger/v1/swagger.yaml` and `swagger/app/v1/openapi.yaml`)
 - Frontend: `docker compose up` → http://localhost:5173/; in `frontend/`: `npm run lint|typecheck|test|build`, `npm run api:types` after API changes; `npm run e2e` (Playwright) against a running instance, also in CI (`run-tests.yml`)
-- Local CI: `docker compose exec web bin/ci` (bundler-audit, yarn audit for critical advisories, Brakeman, RSpec, seeds)
+- Local CI: `docker compose exec web bin/ci` (bundler-audit, npm audit of frontend/ for critical advisories, Brakeman, RSpec, seeds)
 - Prod image: `docker build --build-arg ENVIRONMENT=production --target prod .`
 
 ## Patterns
@@ -33,7 +32,7 @@ Astuto Evolution: community continuation of Astuto, a self-hosted customer feedb
 - Keep the schema portable for the v3 TypeScript rewrite: no `serialize`/`store` columns (use `jsonb`), no polymorphic associations, no Active Storage, no Ruby-specific formats (Marshal) in the database.
 
 ## Gotchas
-- Backend is on Ruby 4.0 / Rails 8.1 / Devise 5 / Sidekiq 8.1 (`load_defaults` 8.1). The React 16/Redux/Bootstrap 4 frontend will be replaced in v2, not migrated: do not invest in it beyond fixes. v3 plans a full TypeScript rewrite (see `roadmap.md`).
+- Backend is on Ruby 4.0 / Rails 8.1 / Devise 5 / Sidekiq 8.1 (`load_defaults` 8.1). The React 16/Redux/Bootstrap 4 frontend, webpack, Sass, Sprockets and react-rails are gone; `frontend/` is the only UI. v3 plans a full TypeScript rewrite (see `roadmap.md`).
 - The test env never reloads code (`enable_reloading = false`): a dev server in the same container writes files on boot, which used to reload classes mid-run.
 - `config/initializers/cookie_rotator.rb` keeps cookies signed with pre-7.0 SHA1 keys valid; it can go in 2027.
 - New ActiveJob queues (`queue_as`) must be added to `config/sidekiq.yml`, or Sidekiq never runs them.
@@ -43,11 +42,10 @@ Astuto Evolution: community continuation of Astuto, a self-hosted customer feedb
 - OAuth `token_state` cookie uses `domain: ".#{request.domain}"`, which breaks on multi-part TLDs and IPs (upstream #472).
 - Webhook bodies are Liquid templates that must render valid JSON; use the `escape_json` filter.
 - Content Security Policy (`config/initializers/content_security_policy.rb`): no inline `<script>` without `javascript_tag nonce: true`, no inline event handlers (`onclick=` etc.), no `eval`. `spec/system/content_security_policy_spec.rb` fails on browser console violations.
-- Legacy JSON must not expose other users' emails: build author fields with `Legacy::AuthorFields` (email only for moderators and the person themselves, Gravatar hash for everyone).
 - `public/**/index.html` is never served for bare directories (`public_file_server.index_name`), so `/next/` reaches the redirect to `/`.
 - Pages of the v2 frontend are listed in `config/routes.rb` (`spa#show`); a new frontend route needs a Rails route too. Named routes (`post_url`, `roadmap_url`, `moderation_feedback_url`, ...) keep mail links working.
-- Devise's HTML pages (`/users/sign_in`, `/users/sign_up`, `/users/password/new|edit`, `/users/edit`) redirect to the v2 pages and keep the flash; `SpaController` hands it to the frontend in `<meta name="astuto-flash">`. Confirmation and unlock links from emails (`/users/confirmation`, `/users/unlock`) redirect to the v2 pages `/confirmation/new` and `/unlock/new` on errors. Plain Rails views without JS (`layouts/plain`): pending/blocked notices, OAuth test page, instance admin. Only the disabled tenant signup still uses the legacy bundle.
+- Devise's HTML pages (`/users/sign_in`, `/users/sign_up`, `/users/password/new|edit`, `/users/edit`) redirect to the v2 pages and keep the flash; `SpaController` hands it to the frontend in `<meta name="astuto-flash">`. Confirmation and unlock links from emails (`/users/confirmation`, `/users/unlock`) redirect to the v2 pages `/confirmation/new` and `/unlock/new` on errors. Plain Rails views without JS (`layouts/plain`): pending/blocked notices, OAuth test page, instance admin. There is no tenant self-signup.
 - Admin-entered URLs that end up in an `href` (header links, logo link) must pass `SafeUrl.safe?`; render via `TenantSetting#safe_custom_links` / `#safe_logo_custom_url`.
-- Password reset emails have two templates: `reset_password_instructions` (legacy UI) and `reset_password_instructions_next` (v2, sent by `User#send_next_reset_password_instructions` from the app API).
+- Password reset emails have two templates: `reset_password_instructions` (Devise default, links to `/users/password/edit`, which redirects to v2) and `reset_password_instructions_next` (v2, sent by `User#send_next_reset_password_instructions` from the app API).
 - v2 login links pass `?redirect=<path>` (`useLoginRedirect`); OAuth carries it as `return_to` in the `oauth_return_to` cookie, because the callback may run on another host.
 - `gh` defaults to the archived upstream repo: pass `-R nkoeberlein/astuto-evo`.

@@ -19,10 +19,9 @@ Rails.application.configure do
     policy.report_uri  ENV['CSP_REPORT_URI'] if ENV['CSP_REPORT_URI'].present?
   end
 
-  # A fresh nonce per response. (A session-based nonce is empty for visitors
-  # without a session yet.) The only inline script, the locale in the layout,
-  # carries data-turbolinks-eval="false", so Turbolinks doesn't re-run it with
-  # an outdated nonce when it swaps pages.
+  # A fresh nonce per response (a session-based nonce is empty for visitors
+  # without a session yet). No page has inline scripts today; one added later
+  # needs `javascript_tag nonce: true`.
   config.content_security_policy_nonce_generator = ->(_request) { SecureRandom.base64(16) }
   # Only scripts: a nonce in style-src would make browsers ignore 'unsafe-inline'
   config.content_security_policy_nonce_directives = %w[script-src]
