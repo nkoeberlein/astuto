@@ -2,7 +2,7 @@ de:
   errors:
     unknown: 'Ein unbekannter Fehler ist aufgetreten'
     unauthorized: 'Du bist nicht autorisiert'
-    email_domain_not_allowed: 'You cannot register with the provided email address'
+    email_domain_not_allowed: 'Mit dieser E-Mail-Adresse ist keine Registrierung möglich'
     not_logged_in: 'Du musst angemeldet sein, um auf diese Seite zugreifen zu können'
     not_enough_privileges: 'Du hast nicht die Berechtigung, auf diese Seite zuzugreifen'
     user_blocked_or_deleted: 'Du kannst nicht auf dein Konto zugreifen, da es gesperrt oder gelöscht wurde.'
@@ -37,6 +37,11 @@ de:
         body3: "Dein Passwort ändert sich erst, wenn du auf den obigen Link zugreifst und ein neues erstellst."
         action: 'Mein Passwort ändern'
     user:
+      recap:
+        pending_posts_count_html: 'Neues Feedback, das auf Freigabe wartet: %{count}'
+        published_posts_count_html: 'Neu veröffentlichtes Feedback: %{count}'
+        body_html: 'Hier ist die Zusammenfassung (%{frequency}) der Aktivität in deinem Feedback-Bereich'
+        subject: '[%{site_name}] Zusammenfassung der Aktivität (%{frequency})'
       opening_greeting: 'Hallo %{name}!'
       closing_greeting: 'Habe einen schönen Tag!'
       learn_more: 'Klick hier um mehr zu erfahren'
@@ -57,6 +62,9 @@ de:
         body_html: 'Es gibt eine Statusaktualisierung für den Beitrag, dem Sie folgen <b>%{post}</b>'
   activerecord:
     models:
+      webhook:
+        other: 'Webhooks'
+        one: 'Webhook'
       board:
         one: 'Board'
         other: 'Boards'
@@ -68,7 +76,7 @@ de:
         other: 'Stimmen'
       o_auth:
         one: 'OAuth'
-        other: 'OAuths'
+        other: 'OAuth-Anbieter'
       post_status:
         one: 'Status'
         other: 'Status'
@@ -79,12 +87,21 @@ de:
         one: 'Nutzer/in'
         other: 'Nutzer/innen'
     attributes:
+      webhook:
+        http_body: 'HTTP-Body'
+        http_headers: 'HTTP-Header'
+        http_method: 'HTTP-Methode'
+        url: 'URL'
+        trigger: 'Auslöser'
+        is_enabled: 'Aktiv'
+        description: 'Beschreibung'
+        name: 'Name'
       board:
         name: 'Name'
         description: 'Beschreibung'
         order: 'Sortierung'
       comment:
-        body: 'Body'
+        body: 'Text'
         is_post_update: 'Beitragsdatum'
         user_id: 'Autor'
         post_id: 'Beitrag'
@@ -123,30 +140,37 @@ de:
         user_id: 'Beitragsautor'
         post_status_id: 'Beitragsstatus'
       tenant:
+        site_favicon: 'Favicon-URL'
         site_name: 'Seitenname'
         site_logo: 'Seitenlogo'
         subdomain: 'Subdomain'
         locale: 'Sprache'
         custom_domain: 'Benutzerdefinierte Domain'
       tenant_setting:
+        mail_logo_size: 'Logo-Größe in E-Mails'
+        login_only_with_oauth: 'Nur OAuth-Anmeldung anzeigen'
+        custom_links: 'Eigene Links im Header'
+        default_post_sorting: 'Standard-Sortierung'
+        roadmap_enabled: 'Roadmap aktivieren'
         brand_display: 'Anzeige'
-        use_browser_locale: 'Use browser language'
-        is_private: 'Private site'
-        email_registration_policy: 'Email registration policy'
-        allowed_email_domains: 'Allowed email domains'
+        use_browser_locale: 'Sprache des Browsers verwenden'
+        is_private: 'Privater Bereich'
+        email_registration_policy: 'Registrierung per E-Mail'
+        allowed_email_domains: 'Erlaubte E-Mail-Domains'
         allow_anonymous_feedback: 'Anonymes Feedback erlauben'
         feedback_approval_policy: 'Feedback-Freigaberichtlinie'
         show_vote_count: 'Stimmenanzahl für Nutzer*innen anzeigen'
         show_vote_button_in_board: 'Zeige Abstimm-Buttons auf der Übersichtsseite an'
-        hide_unused_statuses_in_filter_by_status: 'Hide unused statuses in filter by status'
+        hide_unused_statuses_in_filter_by_status: 'Ungenutzte Status im Statusfilter ausblenden'
         show_powered_by: '"Powered by Astuto" anzeigen'
         root_board_id: 'Root-Page'
-        logo_links_to: 'Logo links to'
-        logo_custom_url: 'Logo custom URL'
+        logo_links_to: 'Logo verlinkt auf'
+        logo_custom_url: 'Eigene URL des Logos'
         show_roadmap_in_header: 'Zeige den Übersichts-Link in der Kopfzeile an'
         collapse_boards_in_header: 'Stelle die Board-Übersicht in der Kopfzeile untereinander dar'
         custom_css: 'Benutzerdefiniertes CSS'
       user:
+        recap_notification_frequency: 'Häufigkeit der Zusammenfassung'
         email: 'E-Mail'
         full_name: 'Voller Name'
         password: 'Passwort'

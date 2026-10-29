@@ -35,6 +35,8 @@ Issue numbers refer to the archived [astuto/astuto](https://github.com/astuto/as
 - v2 frontend: embeddable roadmap at `/next/embedded_roadmap` for an iframe on another site, without header and footer; posts open in a new tab. It takes the legacy embed parameters (`show_boards`, `show_statuses`, `show_board_filter=false`, `show_status_filter=false`), so existing embed codes keep working after the switch from `/next` to `/`. Only this page may be framed by other sites, and only while the roadmap is enabled.
 
 ### Fixes
+- German: every text of the new interface is translated now (about 100 entries were English or missing), including invitation emails and recap subjects (#466).
+- The reply field under a comment was labelled with its raw translation key for screen readers.
 - The general settings page counted as changed right after loading when the header links came back from the database with their keys in another order.
 - Webhooks set to PUT, PATCH or DELETE were always sent as POST.
 - After saving a webhook, the legacy UI got its URL and headers back encrypted.

@@ -90,7 +90,7 @@ Issue-Nummern beziehen sich auf `astuto/astuto`. Phasen siehe [roadmap.md](roadm
 - [x] Zähler für ausstehende Posts aktualisiert sich nicht beim Freigeben oder Ablehnen (#445) (`FeedbackModerationP.tsx`)
 - [x] Kommentarzähler falsch nach dem Löschen eines Kommentars mit Antworten (#220) (`commentsReducer.ts`)
 - [x] Custom CSS: Sonderzeichen werden HTML-escaped (#468) (`app/views/layouts/application.html.erb`)
-- [ ] Fehlende Übersetzungstexte (#466)
+- [x] Fehlende Übersetzungstexte (#466): Spec `spec/i18n/frontend_translation_keys_spec.rb` prüft jeden statischen `t('...')`-Schlüssel des Frontends gegen Englisch (fand `post.new_comment.placeholder`); Deutsch vollständig (ca. 100 englische oder fehlende Einträge übersetzt). Andere Sprachen fallen weiter auf Englisch zurück, bis die Übersetzungsplattform steht
 - [ ] System-Spec „Post bearbeiten/löschen“ reparieren (#210)
 
 ### Multi-Tenancy und SaaS-Teile (entschieden: Multi-Tenancy bleibt)

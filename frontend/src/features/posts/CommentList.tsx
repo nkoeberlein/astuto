@@ -81,7 +81,7 @@ function CommentItem({ comment, postSlug, currentUser }: { comment: Comment } & 
               onChange={(event) => setDraftBody(event.target.value)}
               rows={3}
               required
-              aria-label={t('post.new_comment.placeholder')}
+              aria-label={t('post.new_comment.body_placeholder')}
             />
             {canModerate && (
               <div className="flex items-center gap-2">
