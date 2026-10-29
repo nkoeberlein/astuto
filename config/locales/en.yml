@@ -145,6 +145,12 @@ en:
       no_post_status: 'None'
     likes_box:
       title: 'Likes'
+    ai_translation:
+      button: 'Translate'
+      loading: 'Translating…'
+      hide: 'Hide translation'
+      label: 'AI translation'
+      hint: 'The text is sent to the configured AI provider.'
     ai_summary:
       title: 'AI summary'
       button: 'Summarize discussion'

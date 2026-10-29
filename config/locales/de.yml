@@ -146,6 +146,12 @@ de:
       no_post_status: 'Nichts'
     likes_box:
       title: 'Stimmen'
+    ai_translation:
+      button: 'Übersetzen'
+      loading: 'Übersetze…'
+      hide: 'Übersetzung ausblenden'
+      label: 'KI-Übersetzung'
+      hint: 'Der Text wird an den eingestellten KI-Anbieter gesendet.'
     ai_summary:
       title: 'KI-Zusammenfassung'
       button: 'Diskussion zusammenfassen'

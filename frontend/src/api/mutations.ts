@@ -341,6 +341,29 @@ export function useSummarizePost(postSlug: string) {
   })
 }
 
+// AI translations into the interface language (moderators, only when the server has AI enabled)
+export function useTranslatePost(postSlug: string) {
+  return useMutation({
+    mutationFn: () =>
+      unwrap(
+        api.POST('/api/app/v1/posts/{post_id}/translation', {
+          params: { path: { post_id: postSlug } },
+        }),
+      ),
+  })
+}
+
+export function useTranslateComment(postSlug: string, commentId: number) {
+  return useMutation({
+    mutationFn: () =>
+      unwrap(
+        api.POST('/api/app/v1/posts/{post_id}/comments/{comment_id}/translation', {
+          params: { path: { post_id: postSlug, comment_id: commentId } },
+        }),
+      ),
+  })
+}
+
 export function useLogin() {
   const queryClient = useQueryClient()
   return useMutation({

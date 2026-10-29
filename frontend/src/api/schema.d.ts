@@ -537,6 +537,137 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/app/v1/posts/{post_id}/translation": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Post id or slug */
+                post_id: string;
+            };
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** AI translation of a post into the interface language (moderators, needs AI_PROVIDER and AI_MODEL) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description Post id or slug */
+                    post_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description translated title and description */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PostTranslation"];
+                    };
+                };
+                /** @description not a moderator */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description AI is not configured */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description AI provider failed */
+                502: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/posts/{post_id}/comments/{comment_id}/translation": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Post id or slug */
+                post_id: string;
+                comment_id: number;
+            };
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** AI translation of a comment into the interface language (moderators, needs AI_PROVIDER and AI_MODEL) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description Post id or slug */
+                    post_id: string;
+                    comment_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description translated comment */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CommentTranslation"];
+                    };
+                };
+                /** @description not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description comment of another post */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/app/v1/posts/{post_id}/vote": {
         parameters: {
             query?: never;
@@ -4080,6 +4211,15 @@ export interface components {
         };
         Summary: {
             summary: string;
+        };
+        PostTranslation: {
+            title: string;
+            description: string | null;
+            locale: string;
+        };
+        CommentTranslation: {
+            body: string;
+            locale: string;
         };
         NewPost: {
             title: string;

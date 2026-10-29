@@ -173,7 +173,7 @@ Empfehlung (roadmap.md, Abschnitt 3): getrenntes Frontend mit React 19 + TS 7 + 
 - [x] Zusammenfassung langer Diskussionen: Button im Moderationsbereich der Post-Seite (`/next`), `POST /api/app/v1/posts/:id/summary`, einen Tag gecacht
 - [ ] Vorschläge für Board und Tags (Methode in `Ai::Client` vorhanden; braucht Tags #171)
 - [ ] Changelog-Entwürfe aus erledigten Posts (Methode vorhanden; braucht die Changelog-Funktion)
-- [ ] Übersetzung von Feedback (Methode vorhanden, nicht angebunden)
+- [x] Übersetzung von Feedback: Link „Übersetzen“ unter Beschreibung und Kommentaren (nur Moderatoren, nur mit KI-Anbieter), übersetzt in die Sprache der Oberfläche, Ergebnis neben dem Original als „KI-Übersetzung“, nichts in der DB, Cache pro Text eine Woche; `POST /api/app/v1/posts/:id/translation` und `…/comments/:id/translation`
 - [x] Datenschutzhinweis: welche Daten an den KI-Anbieter gehen (`Ai::Client.privacy_disclosure`, [docs/mcp-and-ai.md](docs/mcp-and-ai.md))
 
 ## P2 – Quick Wins

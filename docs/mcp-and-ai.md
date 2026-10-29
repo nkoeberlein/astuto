@@ -108,17 +108,17 @@ AI features in Astuto Evolution are **100% opt-in**. When `AI_PROVIDER` or `AI_M
 
 | Feature | Where | Status |
 |---|---|---|
-| Discussion summary | Post page in the v2 frontend (`/next`), moderator panel, button "Summarize discussion"; API `POST /api/app/v1/posts/:id/summary` | available (moderators only). Results are cached per post content for one day. |
+| Discussion summary | Post page, moderator panel, button "Summarize discussion"; API `POST /api/app/v1/posts/:id/summary` | available (moderators only). Results are cached per post content for one day. |
 | Board and tag suggestions | — | planned; needs tags (#171) |
 | Changelog drafts | — | planned; needs the changelog feature |
-| Translation of feedback | — | planned |
+| Translation of feedback | Post page, link "Translate" under the description and under each comment; API `POST /api/app/v1/posts/:id/translation` and `POST /api/app/v1/posts/:id/comments/:comment_id/translation` | available (moderators only). Translates into the language of the interface and shows the result next to the original, marked as AI translation; nothing is stored in the database. Results are cached per text for a week. |
 
 `Ai::Client` already contains the helpers for the planned features; they are not wired to the UI yet.
 
 ### Privacy & Data Protection Notice (Datenschutzhinweis)
 
 - **Opt-in only:** Without `AI_PROVIDER` and `AI_MODEL` configured, zero data leaves your Astuto instance.
-- **Data minimization:** Data is only sent when a moderator explicitly asks for it (today: the discussion summary). Then **only** the following fields are transmitted to the configured `AI_BASE_URL`:
+- **Data minimization:** Data is only sent when a moderator explicitly asks for it (today: the discussion summary and translations; a translation sends only the text being translated). Then **only** the following fields are transmitted to the configured `AI_BASE_URL`:
   - Post title (`post_title`) and description (`post_description`)
   - Comment text bodies (`comment_bodies`) for thread summarization
   - Board names and descriptions (`board_names`) for board/tag classification

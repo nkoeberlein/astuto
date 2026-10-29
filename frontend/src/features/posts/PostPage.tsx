@@ -29,6 +29,7 @@ import { formatRelativeTime } from '@/lib/format'
 import { useI18n } from '@/lib/i18n'
 import { isModerator } from '@/lib/roles'
 import { AiSummary } from './AiSummary'
+import { PostTranslation } from './AiTranslation'
 import { CommentForm } from './CommentForm'
 import { CommentList } from './CommentList'
 import { CommentLoginHint } from './CommentLoginHint'
@@ -193,6 +194,7 @@ export function PostPage({ postSlug }: { postSlug: string }) {
                     <Markdown>{post.description}</Markdown>
                   </div>
                 )}
+                {session.aiEnabled && <PostTranslation postSlug={post.slug} />}
                 {post.mergedPosts.length > 0 && (
                   <p className="text-sm text-muted-foreground">
                     {t('post.merge.merged_from')}{' '}
@@ -217,6 +219,7 @@ export function PostPage({ postSlug }: { postSlug: string }) {
             comments={comments}
             postSlug={user ? post.slug : undefined}
             currentUser={user}
+            canTranslate={session.aiEnabled}
           />
           {user ? (
             <CommentForm postSlug={post.slug} canMarkAsUpdate={canModerate} />

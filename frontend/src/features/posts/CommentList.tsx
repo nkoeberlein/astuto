@@ -13,6 +13,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { formatRelativeTime } from '@/lib/format'
 import { useI18n } from '@/lib/i18n'
 import { isModerator } from '@/lib/roles'
+import { useCommentTranslation } from './AiTranslation'
 import { CommentForm } from './CommentForm'
 
 // Top-level comments with their replies (one level deep, like the legacy UI)
@@ -28,12 +29,19 @@ export function groupComments(comments: Comment[]) {
 }
 
 // postSlug enables reply/edit/delete (signed-in users only)
+// canTranslate: AI translation button (moderators, when the server has AI enabled)
 type ReplyProps = {
   postSlug?: string
   currentUser?: Session['user']
+  canTranslate?: boolean
 }
 
-function CommentItem({ comment, postSlug, currentUser }: { comment: Comment } & ReplyProps) {
+function CommentItem({
+  comment,
+  postSlug,
+  currentUser,
+  canTranslate = false,
+}: { comment: Comment } & ReplyProps) {
   const { t, locale } = useI18n()
   const [replying, setReplying] = useState(false)
   const [editing, setEditing] = useState(false)
@@ -41,6 +49,7 @@ function CommentItem({ comment, postSlug, currentUser }: { comment: Comment } & 
   const [draftUpdate, setDraftUpdate] = useState(comment.isPostUpdate)
   const updateComment = useUpdateComment(postSlug ?? '')
   const deleteComment = useDeleteComment(postSlug ?? '')
+  const translation = useCommentTranslation(postSlug ?? '', comment.id)
 
   const name = comment.author?.fullName ?? t('post.published_anonymously')
   const canModerate = isModerator(currentUser)
@@ -118,6 +127,7 @@ function CommentItem({ comment, postSlug, currentUser }: { comment: Comment } & 
         ) : (
           <Markdown>{comment.body}</Markdown>
         )}
+        {canTranslate && postSlug && !editing && translation.result}
 
         <div className="flex flex-wrap items-center gap-3 pt-0.5">
           {postSlug && comment.parentId === null && !replying && !editing && (
@@ -130,6 +140,7 @@ function CommentItem({ comment, postSlug, currentUser }: { comment: Comment } & 
               {t('post.comments.reply_button')}
             </Button>
           )}
+          {canTranslate && postSlug && !editing && translation.button}
           {canManage && !editing && (
             <>
               <Button
@@ -179,6 +190,7 @@ export function CommentList({
   comments,
   postSlug,
   currentUser,
+  canTranslate,
 }: { comments: Comment[] } & ReplyProps) {
   const { t } = useI18n()
   if (comments.length === 0) {
@@ -188,12 +200,22 @@ export function CommentList({
     <ul className="space-y-6">
       {groupComments(comments).map(({ comment, replies }) => (
         <li key={comment.id} className="space-y-4">
-          <CommentItem comment={comment} postSlug={postSlug} currentUser={currentUser} />
+          <CommentItem
+            comment={comment}
+            postSlug={postSlug}
+            currentUser={currentUser}
+            canTranslate={canTranslate}
+          />
           {replies.length > 0 && (
             <ul className="ms-10 space-y-4 border-s ps-4">
               {replies.map((reply) => (
                 <li key={reply.id}>
-                  <CommentItem comment={reply} postSlug={postSlug} currentUser={currentUser} />
+                  <CommentItem
+                    comment={reply}
+                    postSlug={postSlug}
+                    currentUser={currentUser}
+                    canTranslate={canTranslate}
+                  />
                 </li>
               ))}
             </ul>

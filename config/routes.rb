@@ -100,10 +100,13 @@ Rails.application.routes.draw do
           resource :roadmap, only: [:show]
           resources :posts, only: [:show, :update, :destroy] do
             post :merge, on: :member
-            resources :comments, only: [:index, :create, :update, :destroy]
+            resources :comments, only: [:index, :create, :update, :destroy] do
+              post :translation, to: 'feedback_translations#translate_comment'
+            end
             resource :vote, only: [:create, :destroy]
             resource :follow, only: [:create, :destroy]
             resource :summary, only: [:create]
+            post :translation, to: 'feedback_translations#translate_post'
           end
           namespace :moderation do
             resources :posts, only: [:index]

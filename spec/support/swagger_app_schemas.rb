@@ -259,6 +259,8 @@ module Swagger
         VoteState: object({ liked: BOOLEAN, likesCount: INTEGER }),
         FollowState: object({ followed: BOOLEAN }),
         Summary: object({ summary: STRING }),
+        PostTranslation: object({ title: STRING, description: NULLABLE_STRING, locale: STRING }),
+        CommentTranslation: object({ body: STRING, locale: STRING }),
         NewPost: object({
           title: STRING, description: NULLABLE_STRING, isAnonymous: BOOLEAN, postStatusId: NULLABLE_INTEGER,
           honeypot: { type: :string, description: 'Hidden form field, must stay empty' },
