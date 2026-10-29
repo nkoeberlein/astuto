@@ -11,6 +11,7 @@ const SECTIONS = [
   'authentication',
   'appearance',
   'webhooks',
+  'widget',
   'invitations',
   'audit_log',
 ] as const

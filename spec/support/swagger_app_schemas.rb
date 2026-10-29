@@ -289,6 +289,14 @@ module Swagger
         LinkablePost: object({ id: INTEGER, title: STRING, slug: STRING, postStatusId: NULLABLE_INTEGER }),
         ChangelogDraftInput: object({ postIds: { type: :array, items: INTEGER } }),
         ChangelogDraft: object({ body: STRING }),
+        WidgetSessionInput: object({ token: STRING.merge(description: 'Visitor token: HS256 JWT signed with the widget secret (claims email, name, id, exp)') }),
+        WidgetSession: object({ accessToken: STRING.merge(description: 'Send as Authorization: Bearer'), expiresAt: DATETIME }),
+        WidgetSettings: object({
+          enabled: BOOLEAN, secret: STRING.merge(description: 'Signs visitor tokens; keep it on your server'),
+          allowedOrigins: STRING.merge(description: 'Sites that may show the widget, one origin per line (empty: any)'),
+          autoCreateUsers: BOOLEAN
+        }),
+        UpdateWidgetSettings: object({ enabled: BOOLEAN, allowedOrigins: STRING, autoCreateUsers: BOOLEAN }, required: []),
         PostTranslation: object({ title: STRING, description: NULLABLE_STRING, locale: STRING }),
         CommentTranslation: object({ body: STRING, locale: STRING }),
         NewPost: object({

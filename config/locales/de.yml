@@ -125,6 +125,15 @@ de:
       ai_draft: 'Text mit KI entwerfen'
       ai_draft_loading: 'Schreibe…'
       ai_draft_hint: 'Titel und Beschreibungen der umgesetzten Beiträge werden an den eingestellten KI-Anbieter gesendet.'
+  widget:
+    tabs:
+      feedback: 'Feedback'
+      roadmap: 'Roadmap'
+      changelog: 'Changelog'
+    close: 'Schließen'
+    board: 'Board'
+    signed_in_as: 'Angemeldet als %{name}'
+    open_site: 'Feedback-Seite öffnen'
   roadmap:
     title: 'Roadmap'
     empty: 'Die Roadmap ist leer.'
@@ -235,6 +244,20 @@ de:
       one: 'Eingeschaltet. Noch 1 Backup-Code.'
       other: 'Eingeschaltet. Noch %{count} Backup-Codes.'
   site_settings:
+    widget:
+      title: 'Widget'
+      intro: 'Ein Feedback-Knopf für die eigene Website oder App. Er öffnet Boards, Roadmap und Changelog in einem Panel. Angemeldete Besucher deiner App stimmen und schreiben unter ihrem eigenen Konto: dein Server signiert dafür ein kurzes Besucher-Token mit dem Geheimnis unten.'
+      enabled: 'Widget einschalten'
+      allowed_origins: 'Websites, die das Widget zeigen dürfen'
+      allowed_origins_help: 'Ein Origin pro Zeile, z. B. https://app.example.com. Leer: jede Website.'
+      auto_create_users: 'Für neue Besucher ein Konto anlegen'
+      auto_create_users_help: 'Sonst werden nur Personen angemeldet, die schon ein Konto haben (gleiche E-Mail). Moderatoren und Admins werden nie über das Widget angemeldet.'
+      install_title: 'Einbau'
+      install_intro: 'In die Seiten der eigenen Website einfügen; VISITOR_TOKEN durch ein Token vom eigenen Server ersetzen oder data-token für anonyme Besucher weglassen.'
+      token_intro: 'Dein Server signiert das Besucher-Token mit diesem Geheimnis. Es gehört auf den Server, nie in den Browser.'
+      rotate: 'Neues Geheimnis'
+      rotate_confirm: 'Neues Geheimnis erzeugen? Mit dem bisherigen signierte Tokens gelten dann nicht mehr.'
+      token_rules: 'Claims: email (Pflicht), name, id (deine Nutzer-ID, verknüpft das Konto auch bei geänderter E-Mail). Nur HS256; das Token muss innerhalb eines Tages ablaufen.'
     audit_log:
       description: 'Änderungen durch Admins und Moderatoren: Moderation, Nutzer, Boards, Status, Einstellungen, Anmeldedienste, Webhooks, Einladungen und API-Keys. Einträge bleiben ein Jahr erhalten.'
       filter: 'Nach Bereich filtern'
@@ -259,6 +282,7 @@ de:
         o_auth: 'Anmeldedienste'
         saml: 'SAML'
         ldap: 'LDAP'
+        widget: 'Widget'
         webhook: 'Webhooks'
         invitation: 'Einladungen'
         api_key: 'API-Keys'
@@ -296,6 +320,8 @@ de:
         o_auth_delete: 'hat den Anmeldedienst entfernt:'
         saml_update: 'hat das SAML Single Sign-on geändert:'
         ldap_update: 'hat den LDAP-Login geändert:'
+        widget_update: 'hat die Widget-Einstellungen geändert'
+        widget_rotate_secret: 'hat ein neues Widget-Geheimnis erzeugt'
         webhook_create: 'hat den Webhook angelegt:'
         webhook_update: 'hat den Webhook geändert:'
         webhook_delete: 'hat den Webhook gelöscht:'
@@ -340,6 +366,7 @@ de:
         rotate: 'Neues Geheimnis'
         rotate_confirmation: 'Empfänger, die die Signatur prüfen, brauchen sofort das neue Geheimnis. Fortfahren?'
     menu:
+      widget: 'Widget'
       webhooks: 'Webhooks'
       title: 'Seiteneinstellungen'
       general: 'Generell'

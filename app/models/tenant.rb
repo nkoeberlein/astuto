@@ -3,6 +3,7 @@ class Tenant < ApplicationRecord
   has_many :audit_events, dependent: :delete_all
   has_one :saml_config, dependent: :destroy
   has_one :ldap_config, dependent: :destroy
+  has_one :widget_config, dependent: :destroy
   has_one :tenant_setting, dependent: :destroy
   has_many :changelog_entries, dependent: :delete_all
   has_many :boards, dependent: :destroy

@@ -35,6 +35,7 @@ Astuto Evolution helps you collect, manage and prioritize feedback from your cus
 - **Simple Sign In:** let users log in with email or any OAuth2 provider
 - **Webhooks:** integrate with your existing tools (e.g. Jira, Trello, Slack)
 - **API:** programmatically manage your feedback space with the REST API
+- **Feedback widget:** a button for your own site or app; visitors signed in there vote and post under their account (signed token)
 - **Changelog:** release notes linked to the delivered feedback, with RSS and an email to followers
 - **Moderation Queue:** decide whether to show new feedback immediately or request approval (always, for anonymous feedback, or for the first posts of each account)
 - **Anonymous Feedback:** enable unregistered users to publish feedback
@@ -99,6 +100,7 @@ Guides in this repository:
 - [Operations: health checks, metrics, background jobs, backups, Kubernetes](docs/operations.md)
 - [Multi-tenancy: several feedback spaces, custom domains, instance admin](docs/multi-tenancy.md)
 - [Webhooks: templates, signatures, delivery log](docs/webhooks.md)
+- [Feedback widget for your own site, with visitor sign-in](docs/widget.md)
 - [MCP server and AI features](docs/mcp-and-ai.md)
 - [Single sign-on: OAuth and SAML](docs/sso.md)
 - [Account lockout](docs/account-lockout.md) and [two-factor authentication](docs/two-factor-authentication.md)

@@ -22,11 +22,13 @@ import {
   type Profile,
   type Schemas,
   type Session,
+  setBearerToken,
   setCsrfToken,
   type UpdateGeneralSettings,
   type UpdateLdapSettings,
   type UpdateProfile,
   type UpdateSamlSettings,
+  type UpdateWidgetSettings,
   unwrap,
   type WebhookInput,
 } from './client'
@@ -41,6 +43,7 @@ import {
   profileQuery,
   samlSettingsQuery,
   sessionQuery,
+  widgetSettingsQuery,
 } from './queries'
 
 type VoteState = Schemas['VoteState']
@@ -819,4 +822,44 @@ export function useDraftChangelog() {
     mutationFn: (postIds: number[]) =>
       unwrap(api.POST('/api/app/v1/changelog_entries/draft', { body: { postIds } })),
   })
+}
+
+// Site settings › Widget (admins)
+export function useWidgetMutations() {
+  const queryClient = useQueryClient()
+  const store = (saved: Schemas['WidgetSettings']) =>
+    queryClient.setQueryData(widgetSettingsQuery.queryKey, saved)
+  return {
+    save: useMutation({
+      mutationFn: (changes: UpdateWidgetSettings) =>
+        unwrap(api.PATCH('/api/app/v1/site_settings/widget', { body: changes })),
+      onSuccess: store,
+    }),
+    rotate: useMutation({
+      mutationFn: () => unwrap(api.POST('/api/app/v1/site_settings/widget/rotate_secret')),
+      onSuccess: store,
+    }),
+  }
+}
+
+// The widget trades the visitor token from the embedding site for an access token; every
+// query is refetched as that visitor (votes, session)
+export function useWidgetSignIn() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (token: string) =>
+      unwrap(api.POST('/api/app/v1/widget/session', { body: { token } })),
+    onSuccess: ({ accessToken }) => {
+      setBearerToken(accessToken)
+      void queryClient.invalidateQueries()
+    },
+  })
+}
+
+export function useWidgetSignOut() {
+  const queryClient = useQueryClient()
+  return () => {
+    setBearerToken(undefined)
+    void queryClient.invalidateQueries()
+  }
 }

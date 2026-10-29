@@ -109,6 +109,7 @@ class User < ApplicationRecord
       self.current_sign_in_ip = nil
       self.last_sign_in_ip = nil
       self.oauth_token = nil
+      self.widget_external_id = nil
       self.notifications_enabled = false
       skip_confirmation
       skip_reconfirmation!
@@ -130,6 +131,7 @@ class User < ApplicationRecord
         createdAt: created_at&.iso8601, confirmedAt: confirmed_at&.iso8601, signInCount: sign_in_count,
         currentSignInAt: current_sign_in_at&.iso8601, lastSignInAt: last_sign_in_at&.iso8601,
         currentSignInIp: current_sign_in_ip, lastSignInIp: last_sign_in_ip,
+        widgetExternalId: widget_external_id,
         twoFactorEnabled: two_factor_enabled?
       },
       posts: posts.includes(:board, :post_status).order(:created_at).map do |post|

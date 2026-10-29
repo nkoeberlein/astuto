@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_30_000000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_30_010000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -325,9 +325,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_30_000000) do
     t.datetime "otp_enabled_at"
     t.bigint "otp_last_used_at"
     t.jsonb "otp_backup_code_digests", default: [], null: false
+    t.string "widget_external_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email", "tenant_id"], name: "index_users_on_email_and_tenant_id", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["tenant_id", "widget_external_id"], name: "index_users_on_tenant_id_and_widget_external_id", unique: true, where: "(widget_external_id IS NOT NULL)"
     t.index ["tenant_id"], name: "index_users_on_tenant_id"
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
@@ -363,6 +365,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_30_000000) do
     t.string "signing_secret"
     t.index ["name", "tenant_id"], name: "index_webhooks_on_name_and_tenant_id", unique: true
     t.index ["tenant_id"], name: "index_webhooks_on_tenant_id"
+  end
+
+  create_table "widget_configs", force: :cascade do |t|
+    t.bigint "tenant_id", null: false
+    t.boolean "enabled", default: false, null: false
+    t.text "secret_ciphertext"
+    t.text "allowed_origins", default: "", null: false
+    t.boolean "auto_create_users", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tenant_id"], name: "index_widget_configs_on_tenant_id", unique: true
   end
 
   add_foreign_key "api_keys", "tenants"
@@ -406,4 +419,5 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_30_000000) do
   add_foreign_key "webhook_deliveries", "tenants"
   add_foreign_key "webhook_deliveries", "webhooks", on_delete: :cascade
   add_foreign_key "webhooks", "tenants"
+  add_foreign_key "widget_configs", "tenants"
 end

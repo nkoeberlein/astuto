@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ChangelogRouteImport } from './routes/changelog'
+import { Route as EmbedRouteImport } from './routes/embed'
 import { Route as Embedded_roadmapRouteImport } from './routes/embedded_roadmap'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as MyFeedbackRouteImport } from './routes/my-feedback'
@@ -33,6 +34,7 @@ import { Route as Site_settingsInvitationsRouteImport } from './routes/site_sett
 import { Route as Site_settingsPost_statusesRouteImport } from './routes/site_settings.post_statuses'
 import { Route as Site_settingsRoadmapRouteImport } from './routes/site_settings.roadmap'
 import { Route as Site_settingsWebhooksRouteImport } from './routes/site_settings.webhooks'
+import { Route as Site_settingsWidgetRouteImport } from './routes/site_settings.widget'
 import { Route as UnlockNewRouteImport } from './routes/unlock.new'
 
 const IndexRoute = IndexRouteImport.update({
@@ -43,6 +45,11 @@ const IndexRoute = IndexRouteImport.update({
 const ChangelogRoute = ChangelogRouteImport.update({
   id: '/changelog',
   path: '/changelog',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EmbedRoute = EmbedRouteImport.update({
+  id: '/embed',
+  path: '/embed',
   getParentRoute: () => rootRouteImport,
 } as any)
 const Embedded_roadmapRoute = Embedded_roadmapRouteImport.update({
@@ -158,6 +165,11 @@ const Site_settingsWebhooksRoute = Site_settingsWebhooksRouteImport.update({
   path: '/site_settings/webhooks',
   getParentRoute: () => rootRouteImport,
 } as any)
+const Site_settingsWidgetRoute = Site_settingsWidgetRouteImport.update({
+  id: '/site_settings/widget',
+  path: '/site_settings/widget',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const UnlockNewRoute = UnlockNewRouteImport.update({
   id: '/unlock/new',
   path: '/unlock/new',
@@ -167,6 +179,7 @@ const UnlockNewRoute = UnlockNewRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/changelog': typeof ChangelogRoute
+  '/embed': typeof EmbedRoute
   '/embedded_roadmap': typeof Embedded_roadmapRoute
   '/login': typeof LoginRoute
   '/my-feedback': typeof MyFeedbackRoute
@@ -189,11 +202,13 @@ export interface FileRoutesByFullPath {
   '/site_settings/post_statuses': typeof Site_settingsPost_statusesRoute
   '/site_settings/roadmap': typeof Site_settingsRoadmapRoute
   '/site_settings/webhooks': typeof Site_settingsWebhooksRoute
+  '/site_settings/widget': typeof Site_settingsWidgetRoute
   '/unlock/new': typeof UnlockNewRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/changelog': typeof ChangelogRoute
+  '/embed': typeof EmbedRoute
   '/embedded_roadmap': typeof Embedded_roadmapRoute
   '/login': typeof LoginRoute
   '/my-feedback': typeof MyFeedbackRoute
@@ -216,12 +231,14 @@ export interface FileRoutesByTo {
   '/site_settings/post_statuses': typeof Site_settingsPost_statusesRoute
   '/site_settings/roadmap': typeof Site_settingsRoadmapRoute
   '/site_settings/webhooks': typeof Site_settingsWebhooksRoute
+  '/site_settings/widget': typeof Site_settingsWidgetRoute
   '/unlock/new': typeof UnlockNewRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/changelog': typeof ChangelogRoute
+  '/embed': typeof EmbedRoute
   '/embedded_roadmap': typeof Embedded_roadmapRoute
   '/login': typeof LoginRoute
   '/my-feedback': typeof MyFeedbackRoute
@@ -244,6 +261,7 @@ export interface FileRoutesById {
   '/site_settings/post_statuses': typeof Site_settingsPost_statusesRoute
   '/site_settings/roadmap': typeof Site_settingsRoadmapRoute
   '/site_settings/webhooks': typeof Site_settingsWebhooksRoute
+  '/site_settings/widget': typeof Site_settingsWidgetRoute
   '/unlock/new': typeof UnlockNewRoute
 }
 export interface FileRouteTypes {
@@ -251,6 +269,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/changelog'
+    | '/embed'
     | '/embedded_roadmap'
     | '/login'
     | '/my-feedback'
@@ -273,11 +292,13 @@ export interface FileRouteTypes {
     | '/site_settings/post_statuses'
     | '/site_settings/roadmap'
     | '/site_settings/webhooks'
+    | '/site_settings/widget'
     | '/unlock/new'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/changelog'
+    | '/embed'
     | '/embedded_roadmap'
     | '/login'
     | '/my-feedback'
@@ -300,11 +321,13 @@ export interface FileRouteTypes {
     | '/site_settings/post_statuses'
     | '/site_settings/roadmap'
     | '/site_settings/webhooks'
+    | '/site_settings/widget'
     | '/unlock/new'
   id:
     | '__root__'
     | '/'
     | '/changelog'
+    | '/embed'
     | '/embedded_roadmap'
     | '/login'
     | '/my-feedback'
@@ -327,12 +350,14 @@ export interface FileRouteTypes {
     | '/site_settings/post_statuses'
     | '/site_settings/roadmap'
     | '/site_settings/webhooks'
+    | '/site_settings/widget'
     | '/unlock/new'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ChangelogRoute: typeof ChangelogRoute
+  EmbedRoute: typeof EmbedRoute
   Embedded_roadmapRoute: typeof Embedded_roadmapRoute
   LoginRoute: typeof LoginRoute
   MyFeedbackRoute: typeof MyFeedbackRoute
@@ -355,6 +380,7 @@ export interface RootRouteChildren {
   Site_settingsPost_statusesRoute: typeof Site_settingsPost_statusesRoute
   Site_settingsRoadmapRoute: typeof Site_settingsRoadmapRoute
   Site_settingsWebhooksRoute: typeof Site_settingsWebhooksRoute
+  Site_settingsWidgetRoute: typeof Site_settingsWidgetRoute
   UnlockNewRoute: typeof UnlockNewRoute
 }
 
@@ -372,6 +398,13 @@ declare module '@tanstack/react-router' {
       path: '/changelog'
       fullPath: '/changelog'
       preLoaderRoute: typeof ChangelogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/embed': {
+      id: '/embed'
+      path: '/embed'
+      fullPath: '/embed'
+      preLoaderRoute: typeof EmbedRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/embedded_roadmap': {
@@ -528,6 +561,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Site_settingsWebhooksRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/site_settings/widget': {
+      id: '/site_settings/widget'
+      path: '/site_settings/widget'
+      fullPath: '/site_settings/widget'
+      preLoaderRoute: typeof Site_settingsWidgetRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/unlock/new': {
       id: '/unlock/new'
       path: '/unlock/new'
@@ -541,6 +581,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ChangelogRoute: ChangelogRoute,
+  EmbedRoute: EmbedRoute,
   Embedded_roadmapRoute: Embedded_roadmapRoute,
   LoginRoute: LoginRoute,
   MyFeedbackRoute: MyFeedbackRoute,
@@ -563,6 +604,7 @@ const rootRouteChildren: RootRouteChildren = {
   Site_settingsPost_statusesRoute: Site_settingsPost_statusesRoute,
   Site_settingsRoadmapRoute: Site_settingsRoadmapRoute,
   Site_settingsWebhooksRoute: Site_settingsWebhooksRoute,
+  Site_settingsWidgetRoute: Site_settingsWidgetRoute,
   UnlockNewRoute: UnlockNewRoute,
 }
 export const routeTree = rootRouteImport

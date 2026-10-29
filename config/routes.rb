@@ -26,6 +26,7 @@ Rails.application.routes.draw do
     root to: 'spa#show'
     get '/roadmap', to: 'spa#show', as: :roadmap
     get '/embedded_roadmap', to: 'spa#show', as: :embedded_roadmap
+    get '/embed', to: 'spa#show', as: :embed
     get '/boards/:id', to: 'spa#show', format: false, as: :board
     get '/boards/:id/feed', to: 'feeds#board', format: false, as: :board_feed
     get '/changelog', to: 'spa#show', as: :changelog
@@ -44,7 +45,7 @@ Rails.application.routes.draw do
     %w[feedback users].each do |section|
       get "/moderation/#{section}", to: 'spa#show', as: "moderation_#{section}"
     end
-    %w[general authentication boards post_statuses roadmap webhooks invitations appearance audit_log].each do |section|
+    %w[general authentication boards post_statuses roadmap webhooks widget invitations appearance audit_log].each do |section|
       get "/site_settings/#{section}", to: 'spa#show', as: "site_settings_#{section}"
     end
     # The v2 frontend lived under /next until 2.0; old links and embed codes keep working
@@ -105,6 +106,7 @@ Rails.application.routes.draw do
           end
           resource :roadmap, only: [:show]
           resources :my_posts, only: [:index]
+          post 'widget/session', to: 'widget_sessions#create'
           resources :changelog_entries, only: [:index, :create, :update, :destroy] do
             get :linkable_posts, on: :collection
             post :draft, on: :collection
@@ -148,6 +150,9 @@ Rails.application.routes.draw do
             end
             resource :ldap, only: [:show, :update], controller: 'ldap' do
               post :test
+            end
+            resource :widget, only: [:show, :update], controller: 'widget' do
+              post :rotate_secret
             end
           end
         end

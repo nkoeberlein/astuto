@@ -10,6 +10,8 @@ export type PostListItem = Schemas['PostListItem']
 export type PostPage = Schemas['PostPage']
 export type MyPost = Schemas['MyPost']
 export type ChangelogEntry = Schemas['ChangelogEntry']
+export type WidgetSettings = Schemas['WidgetSettings']
+export type UpdateWidgetSettings = Schemas['UpdateWidgetSettings']
 export type ChangelogEntryInput = Schemas['ChangelogEntryInput']
 export type Post = Schemas['Post']
 export type Comment = Schemas['Comment']
@@ -63,10 +65,19 @@ export function setCsrfToken(token: string) {
   csrfToken = token
 }
 
+// The widget (/embed) signs in with an access token instead of the session cookie, which
+// browsers drop in iframes on other sites (see Api::App::BaseController)
+let bearerToken: string | undefined
+
+export function setBearerToken(token: string | undefined) {
+  bearerToken = token
+}
+
 const headers: Middleware = {
   onRequest({ request }) {
     request.headers.set('Accept', 'application/json')
     if (request.method !== 'GET' && csrfToken) request.headers.set('X-CSRF-Token', csrfToken)
+    if (bearerToken) request.headers.set('Authorization', `Bearer ${bearerToken}`)
     return request
   },
 }

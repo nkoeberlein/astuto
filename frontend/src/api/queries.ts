@@ -261,6 +261,7 @@ export const AUDIT_CATEGORIES = [
   'o_auth',
   'saml',
   'ldap',
+  'widget',
   'webhook',
   'invitation',
   'api_key',
@@ -283,6 +284,11 @@ export const auditEventsQuery = (category: AuditCategory | null) =>
 export const samlSettingsQuery = queryOptions({
   queryKey: ['siteSettings', 'saml'],
   queryFn: () => unwrap(api.GET('/api/app/v1/site_settings/saml')),
+})
+
+export const widgetSettingsQuery = queryOptions({
+  queryKey: ['siteSettings', 'widget'],
+  queryFn: () => unwrap(api.GET('/api/app/v1/site_settings/widget')),
 })
 
 export const ldapSettingsQuery = queryOptions({

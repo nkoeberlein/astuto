@@ -1,4 +1,12 @@
 en:
+  widget:
+    errors:
+      disabled: 'The widget is not turned on.'
+      invalid_token: 'The visitor token is invalid or expired.'
+      linked_elsewhere: 'This email address belongs to another account.'
+      no_account: 'There is no account for this visitor.'
+      staff_account: 'Moderators and admins sign in on the feedback site, not through the widget.'
+      blocked: 'This account is blocked.'
   webhook_templates:
     new_post: 'New feedback in %{board}: %{post}'
     new_post_pending_approval: 'Feedback waiting for approval in %{board}: %{post}'

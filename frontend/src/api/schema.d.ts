@@ -2417,7 +2417,7 @@ export interface paths {
         get: {
             parameters: {
                 query?: {
-                    category?: "post" | "comment" | "user" | "board" | "post_status" | "changelog" | "site_settings" | "o_auth" | "saml" | "ldap" | "webhook" | "invitation" | "api_key";
+                    category?: "post" | "comment" | "user" | "board" | "post_status" | "changelog" | "site_settings" | "o_auth" | "saml" | "ldap" | "widget" | "webhook" | "invitation" | "api_key";
                     /** @description nextBefore of the previous page */
                     before?: number;
                 };
@@ -3861,6 +3861,160 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/app/v1/widget/session": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Trade a visitor token from your app for a widget access token */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["WidgetSessionInput"];
+                };
+            };
+            responses: {
+                /** @description access token */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["WidgetSession"];
+                    };
+                };
+                /** @description invalid or expired visitor token */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/site_settings/widget": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Widget settings with the secret (admins) */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description settings */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["WidgetSettings"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Change widget settings (admins) */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["UpdateWidgetSettings"];
+                };
+            };
+            responses: {
+                /** @description saved */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["WidgetSettings"];
+                    };
+                };
+                /** @description invalid origin */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/api/app/v1/site_settings/widget/rotate_secret": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** New widget secret; tokens signed with the old one stop working (admins) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description new secret */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["WidgetSettings"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -4623,6 +4777,29 @@ export interface components {
         };
         ChangelogDraft: {
             body: string;
+        };
+        WidgetSessionInput: {
+            /** @description Visitor token: HS256 JWT signed with the widget secret (claims email, name, id, exp) */
+            token: string;
+        };
+        WidgetSession: {
+            /** @description Send as Authorization: Bearer */
+            accessToken: string;
+            /** Format: date-time */
+            expiresAt: string;
+        };
+        WidgetSettings: {
+            enabled: boolean;
+            /** @description Signs visitor tokens; keep it on your server */
+            secret: string;
+            /** @description Sites that may show the widget, one origin per line (empty: any) */
+            allowedOrigins: string;
+            autoCreateUsers: boolean;
+        };
+        UpdateWidgetSettings: {
+            enabled?: boolean;
+            allowedOrigins?: string;
+            autoCreateUsers?: boolean;
         };
         PostTranslation: {
             title: string;

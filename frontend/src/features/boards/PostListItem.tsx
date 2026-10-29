@@ -24,6 +24,8 @@ export function PostListItem(props: {
   signedIn: boolean
   // Extra details in the bottom row (board, approval state)
   meta?: ReactNode
+  // The widget opens posts on the full site
+  newTab?: boolean
 }) {
   const { t } = useI18n()
   const { post } = props
@@ -41,6 +43,7 @@ export function PostListItem(props: {
           to="/posts/$postSlug"
           params={{ postSlug: post.slug }}
           className="font-medium hover:underline"
+          {...(props.newTab ? { target: '_blank', rel: 'noopener' } : {})}
         >
           {post.title}
         </Link>

@@ -11,6 +11,7 @@ Everything is in the PostgreSQL database of the instance; there are no uploaded 
 | Data | Purpose | Kept |
 |---|---|---|
 | Name, email, encrypted password, role, notification settings | account | until the account is deleted |
+| User id from your own app (`widget_external_id`), when the person came through the [widget](widget.md) | linking the account | until the account is deleted; part of the data export |
 | Posts, comments, votes, followed posts | the feedback itself | with the account; after deletion posts and comments stay without a name |
 | Sign-in count, times and IP addresses of the current and last sign-in (Devise) | security | IPs: `IP_RETENTION_DAYS` (90) after the last sign-in |
 | Unconfirmed sign-ups | confirmation link | `UNCONFIRMED_ACCOUNT_RETENTION_DAYS` (30) if nothing was posted |

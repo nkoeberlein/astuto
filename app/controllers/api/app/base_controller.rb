@@ -3,6 +3,10 @@ module Api
     # Base controller for the JSON API used by the v2 frontend (frontend/).
     # Authentication: Devise session cookie. Writes need the X-CSRF-Token header
     # (token comes from GET /api/app/v1/session).
+    # The embeddable widget sends "Authorization: Bearer <access token>" instead
+    # (Api::App::V1::WidgetSessionsController), because browsers drop cookies in iframes on
+    # other sites. Such requests act only as that visitor and need no CSRF token: browsers
+    # never add the header on their own.
     class BaseController < ApplicationController
       include TwoFactorLogin
       skip_before_action :load_tenant_data
@@ -12,7 +16,44 @@ module Api
       rescue_from ActiveRecord::RecordNotFound, with: :render_not_found
       rescue_from ActionController::InvalidAuthenticityToken, with: :render_invalid_csrf_token
 
+      WIDGET_TOKEN_LIFETIME = 12.hours
+
+      def self.widget_access_token(user)
+        Rails.application.message_verifier(:widget_session).generate(
+          { 'user_id' => user.id, 'tenant_id' => user.tenant_id }, purpose: :widget_session, expires_in: WIDGET_TOKEN_LIFETIME
+        )
+      end
+
+      def current_user
+        return widget_visitor if widget_bearer?
+
+        super
+      end
+
+      def user_signed_in?
+        current_user.present?
+      end
+
       protected
+
+        def verified_request?
+          (widget_bearer? && widget_visitor.present?) || super
+        end
+
+        def widget_bearer?
+          request.authorization.to_s.start_with?('Bearer ')
+        end
+
+        # nil for invalid or expired tokens, other feedback spaces, and accounts that became staff
+        # or were blocked since
+        def widget_visitor
+          return @widget_visitor if defined?(@widget_visitor)
+
+          payload = Rails.application.message_verifier(:widget_session)
+            .verified(request.authorization.to_s.delete_prefix('Bearer ').strip, purpose: :widget_session)
+          user = payload.is_a?(Hash) && Current.tenant && payload['tenant_id'] == Current.tenant.id && User.find_by(id: payload['user_id'])
+          @widget_visitor = user && user.active_for_authentication? && !user.moderator? ? user : nil
+        end
 
         def set_tenant
           tenant = get_tenant_from_request(request)

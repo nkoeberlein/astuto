@@ -133,6 +133,11 @@ class Rack::Attack
     login_email(req) if login_request?(req)
   end
 
+  # Widget visitor tokens (POST /api/app/v1/widget/session), each opening of the widget sends one
+  throttle('widget/ip', limit: 30, period: 1.minute) do |req|
+    client_ip(req) if req.post? && req.path == '/api/app/v1/widget/session'
+  end
+
   # Throttle registration attempts (including invitation tokens) by IP address
   throttle('registrations/ip', limit: 5, period: 1.minute) do |req|
     client_ip(req) if registration_request?(req)

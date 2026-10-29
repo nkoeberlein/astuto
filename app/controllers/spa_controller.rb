@@ -19,6 +19,7 @@ class SpaController < ActionController::Base
       html = tenant ? inject_meta_tags(INDEX.read, tenant) : INDEX.read
       html = inject_flash(html)
       allow_iframe_embedding if tenant && embedded_roadmap?
+      allow_widget_embedding if tenant && page_path == 'embed'
       render html: html.html_safe, layout: false, content_type: 'text/html'
     else
       render plain: 'The v2 frontend is not built. Run `npm run build` in frontend/ or use the Vite dev server (port 5173).', status: :not_found
@@ -49,6 +50,19 @@ class SpaController < ActionController::Base
 
     def allow_iframe_embedding
       response.headers.delete('X-Frame-Options')
+    end
+
+    # The widget (/embed) may be framed while it is on, by the allowed origins only when set
+    def allow_widget_embedding
+      config = WidgetConfig.find_by(enabled: true)
+      return unless config
+
+      allow_iframe_embedding
+      return if config.origins.empty?
+
+      policy = request.content_security_policy&.clone || ActionDispatch::ContentSecurityPolicy.new
+      policy.frame_ancestors(*config.origins)
+      request.content_security_policy = policy
     end
 
     # Also sets Current.tenant and the locale for the rest of the request
