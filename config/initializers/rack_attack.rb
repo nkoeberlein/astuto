@@ -142,6 +142,11 @@ class Rack::Attack
     client_ip(req) if password_request?(req)
   end
 
+  # Instance admin pages: HTTP Basic auth, so every request is a password guess
+  throttle('instance_admin/ip', limit: 30, period: 1.minute) do |req|
+    client_ip(req) if req.path == '/instance' || req.path.start_with?('/instance/')
+  end
+
   # Throttle POST requests to /tenants by IP address
   throttle('tenant_signups/ip', limit: 5, period: 20.seconds) do |req|
     client_ip(req) if req.path == '/tenants' && req.post?

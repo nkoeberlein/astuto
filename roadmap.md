@@ -83,7 +83,7 @@ Astuto Evolution führt das archivierte [astuto/astuto](https://github.com/astut
 
 **Anforderungen an die neue UI:** Mobile first, Dark Mode, WCAG 2.2 AA, Branding über CSS-Variablen, ein Komponentensatz auch für das einbettbare Widget, Übersetzungen aus den bestehenden YAML-Dateien (als JSON exportiert), RTL-fähig (CSS-Logical-Properties, `dir` aus der Locale; RTL-Übersetzungen, sobald jemand sie beisteuert).
 
-**Multi-Tenancy bleibt (entschieden).** Mehrere Feedback-Portale pro Instanz sind für Unternehmen mit mehreren Produkten oder Marken und für Agenturen wichtig (#76) und die Grundlage einer möglichen gehosteten Variante. **Kein Billing (entschieden):** Stripe-Billing und Trial des eingestellten astuto.io-Angebots sind entfernt. Custom Domains bleiben (TLS per Caddy On-Demand-TLS, siehe `docs/multi-tenancy.md`); der abgeschaltete Tenant-Signup fällt mit dem alten Frontend weg, Tenants entstehen per Rake-Task und später in der Instanz-Admin-Oberfläche (#76).
+**Multi-Tenancy bleibt (entschieden).** Mehrere Feedback-Portale pro Instanz sind für Unternehmen mit mehreren Produkten oder Marken und für Agenturen wichtig (#76) und die Grundlage einer möglichen gehosteten Variante. **Kein Billing (entschieden):** Stripe-Billing und Trial des eingestellten astuto.io-Angebots sind entfernt. Custom Domains bleiben (TLS per Caddy On-Demand-TLS, siehe `docs/multi-tenancy.md`); der abgeschaltete Tenant-Signup fällt mit dem alten Frontend weg, Tenants entstehen in der Instanz-Verwaltung `/instance` oder per Rake-Task (#76).
 
 ## 4. Phasen
 
@@ -189,7 +189,7 @@ Die häufigsten Probleme aus den Upstream-Issues: HTTPS hinter Reverse Proxy (#4
 
 **Was diese Zielgruppe erwartet** (fließt in die Prioritäten der todo.md ein):
 - **Identität:** SSO über OIDC (vorhanden: beliebige OAuth2-Anbieter), zusätzlich **SAML** und **LDAP/AD** (#8), Login nur über SSO (#471), automatische Rollen über Gruppen, **2FA/MFA für Admins und Moderatoren**
-- **Mandanten:** mehrere Portale pro Instanz mit eigener Domain und eigenem Branding (vorhanden, testen und dokumentieren), Verwaltung über eine Instanz-Admin-Oberfläche
+- **Mandanten:** mehrere Portale pro Instanz mit eigener Domain und eigenem Branding (vorhanden, getestet und dokumentiert), Verwaltung über die Instanz-Verwaltung `/instance`
 - **Compliance:** Audit-Log (wer hat was geändert), DSGVO-Funktionen (Export und Löschung pro Person, Aufbewahrungsfristen), Datenverarbeitung ohne Drittanbieter, KI nur opt-in mit eigenem Modell
 - **Betrieb:** Backup/Restore-Anleitung, mehrere Web-Instanzen hinter Load Balancer, Health-Check-Endpunkt, Prometheus-Metriken, Helm-Chart, signierte Images mit SBOM
 - **Vertrauen:** `SECURITY.md` mit Meldeweg, Sicherheitsupdates mit Fristen, dokumentierte Versionen mit Supportzeitraum (LTS)

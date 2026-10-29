@@ -62,9 +62,28 @@ Caddy sends `X-Forwarded-Proto` and `Host` on its own; for nginx or Traefik see
 
 ## Feedback spaces
 
-There is no self-service sign-up for new feedback spaces. Until the instance admin UI exists
-(upstream #76), manage them with rake tasks (in Docker:
-`docker compose exec web bin/rails tenants:list`):
+There is no self-service sign-up for new feedback spaces. The operator creates them on the
+instance admin page or with rake tasks.
+
+### Instance admin page
+
+Set a password and open `/instance` on the `BASE_URL` host (`https://feedback.example.com/instance`);
+the user name is `admin`:
+
+```env
+INSTANCE_ADMIN_PASSWORD=<long random password>
+```
+
+The page lists all feedback spaces with their address, status and numbers of users and posts, and
+creates, edits (name, custom domain, language), blocks, unblocks and deletes them. Deleting asks
+for the subdomain as confirmation and removes all data of the feedback space. Without
+`INSTANCE_ADMIN_PASSWORD`, on feedback space hosts and without multi-tenancy, `/instance` does not
+exist (404). Requests are rate-limited per IP; serve the instance over HTTPS, because HTTP Basic
+auth sends the password with every request.
+
+### Rake tasks
+
+In Docker, prefix them with `docker compose exec web`:
 
 ```bash
 bin/rails tenants:create SUBDOMAIN=acme NAME="Acme" OWNER_EMAIL=owner@acme.example LOCALE=de
@@ -82,14 +101,15 @@ bin/rails tenants:block SUBDOMAIN=acme
 bin/rails tenants:unblock SUBDOMAIN=acme
 ```
 
-`tenants:create` creates the feedback space with the welcome boards and an owner account with a
-confirmed email address, and prints a random password for it. The owner should change it after
-the first login. A blocked feedback space shows a "blocked" page; its data stays.
+`tenants:create` (like the admin page) creates the feedback space with the welcome boards and an
+owner account with a confirmed email address, and prints a random password for it. The owner
+should change it after the first login. A blocked feedback space shows a "blocked" page; its data stays.
 
 ## Custom domains
 
-The owner or an admin enters the domain in Site settings › General › Custom domain, after adding a
-CNAME record that points the domain at the instance (for example at `acme.feedback.example.com`).
+The owner or an admin enters the domain in Site settings › General › Custom domain (or the
+operator on the instance admin page), after adding a CNAME record that points the domain at the
+instance (for example at `acme.feedback.example.com`).
 The page then works under both addresses. Rails' host check allows the custom domain as soon as it
 is saved, and Caddy's on-demand TLS gets a certificate on the first request. With another proxy,
 add the domain and a certificate there.

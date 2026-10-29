@@ -4,7 +4,7 @@
 Astuto Evolution: community continuation of Astuto, a self-hosted customer feedback tool (boards, roadmap, votes, comments, moderation, OAuth2, webhooks, REST API). Upstream `astuto/astuto` is archived (EOL 01/2026). Project name and links live in `config/initializers/project.rb` and `app/javascript/constants/project.ts`. Plan: `roadmap.md`, tasks: `todo.md`, competitor analysis: `konkurrenz.md`.
 
 ## Structure
-- `app/controllers` – Rails controllers; `app/controllers/api/v1` – public REST API (API keys); `app/controllers/api/app/v1` – JSON API for the v2 frontend (session + CSRF)
+- `app/controllers` – Rails controllers; `app/controllers/api/v1` – public REST API (API keys); `app/controllers/api/app/v1` – JSON API for the v2 frontend (session + CSRF); `app/controllers/instance_admin` – operator pages at `/instance` (multi-tenancy, HTTP Basic with `INSTANCE_ADMIN_PASSWORD`, plain ERB without JS)
 - `app/serializers/api/app/v1` – camelCase JSON for the app API (never expose author emails); `app/queries` – query objects (e.g. `BoardPostsQuery`)
 - `frontend/` – v2 frontend (React 19, TS 7, TanStack Router/Query, Tailwind 4, shadcn/ui, Biome), serves every page at `/` (`SpaController`; built files under `/next/assets`, old `/next/*` URLs redirect); see `frontend/README.md`
 - `app/policies` – Pundit authorization (one policy per model)

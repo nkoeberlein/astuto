@@ -20,6 +20,17 @@ Rails.application.routes.draw do
     end
   end
 
+  # Instance admin (multi-tenancy, INSTANCE_ADMIN_PASSWORD, BASE_URL host only; docs/multi-tenancy.md)
+  namespace :instance_admin, path: 'instance' do
+    root to: redirect('/instance/tenants')
+    resources :tenants, except: [:show] do
+      member do
+        put :block
+        put :unblock
+      end
+    end
+  end
+
   constraints subdomain: /.*/ do
     # Pages of the v2 frontend (frontend/ → public/next), served by SpaController.
     # Named routes keep URL helpers in mails and workflows (root_url, roadmap_url, post_url, ...).

@@ -98,11 +98,10 @@ Issue-Nummern beziehen sich auf `astuto/astuto`. Phasen siehe [roadmap.md](roadm
 - [x] Entscheidung: **kein Billing.** Stripe-Billing, Trial, Billing-Mails (`TenantMailer`), Tabelle `tenant_billings` und `stripe`-Gem entfernt
 - [x] astuto.io-spezifische Teile entfernt: Promo-Banner, Zertifikats-API `ASTUTO_CNAME_API_*` (ersetzt durch `/custom_domain_check` für Caddys On-Demand-TLS), CNAME-Hinweis auf `cname.astuto.io`, Kontaktadresse auf der Seite „E-Mail bestätigen“
 - [x] Mailer-Standardabsender: `EMAIL_MAIL_FROM`, sonst `noreply@<Host aus BASE_URL>` (`Rails.application.default_mail_from`); Reply-To fällt auf den Absender zurück
-- [x] Tenants per Rake verwalten: `bin/rails tenants:create|list|block|unblock` (Übergang bis zur Instanz-Admin-Oberfläche)
+- [x] Tenants per Rake verwalten: `bin/rails tenants:create|list|block|unblock`
 - [ ] OAuth-Login auf Custom Domains: Callback läuft auf der Subdomain, der `token_state`-Cookie der Custom Domain kommt dort nicht an (#472). Lösung: Zustand signiert im `state`-Parameter statt im Cookie
-- [ ] `Tenant#destroy` scheitert am Fremdschlüssel von `tenant_settings` (Default-Scope ohne `Current.tenant`); nötig für „Tenant löschen“ in der Admin-Oberfläche
 - [ ] Tenant-Signup (`login.`-Subdomain, `TenantsController#new/create`, OAuth-Grund `tenantsignup`, altes React) ist abgeschaltet und wird mit dem alten Frontend entfernt
-- [ ] Instanz-Admin-Oberfläche für Tenants (anlegen, sperren, Domains) (#76)
+- [x] Instanz-Admin-Oberfläche für Tenants (#76): `/instance` auf dem `BASE_URL`-Host, HTTP Basic mit `INSTANCE_ADMIN_PASSWORD` (Nutzer gehören je zu einem Tenant, ein Instanz-Konto gibt es nicht), serverseitig gerendert ohne JavaScript; anlegen (Passwort des Eigentümers wird einmal angezeigt), Name/Domain/Sprache ändern, sperren, löschen mit Bestätigung. Gemeinsame Logik mit dem Rake-Task in `CreateTenantWorkflow`
 
 ### Mittelstand (roadmap.md, Abschnitt 7)
 - [ ] SAML-Login und LDAP/AD (#8), Login nur per SSO (#471)

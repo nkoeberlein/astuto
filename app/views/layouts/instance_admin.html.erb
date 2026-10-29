@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="<%= I18n.locale %>" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex">
+    <title><%= t('instance_admin.title') %></title>
+    <%= csrf_meta_tags %>
+    <style>
+      :root { color-scheme: light dark; --fg: #1f2328; --muted: #59636e; --bg: #fff; --line: #d1d9e0; --accent: #0969da; --danger: #cf222e; --ok: #1a7f37; }
+      @media (prefers-color-scheme: dark) { :root { --fg: #e6edf3; --muted: #9198a1; --bg: #0d1117; --line: #3d444d; --accent: #4493f8; --danger: #f85149; --ok: #3fb950; } }
+      * { box-sizing: border-box; }
+      body { margin: 0; font: 15px/1.5 system-ui, sans-serif; color: var(--fg); background: var(--bg); }
+      main { max-width: 64rem; margin: 0 auto; padding: 1.5rem 1rem 4rem; }
+      h1 { font-size: 1.4rem; margin: 0 0 1rem; }
+      h2 { font-size: 1.1rem; margin: 2rem 0 .75rem; }
+      a { color: var(--accent); }
+      table { width: 100%; border-collapse: collapse; }
+      th, td { text-align: start; padding: .5rem; border-block-end: 1px solid var(--line); vertical-align: top; }
+      th { color: var(--muted); font-weight: 600; font-size: .85rem; }
+      .table-wrap { overflow-x: auto; }
+      .muted { color: var(--muted); }
+      .status-active { color: var(--ok); }
+      .status-blocked { color: var(--danger); }
+      .actions { display: flex; gap: .5rem; flex-wrap: wrap; align-items: center; }
+      form.inline { display: inline; margin: 0; }
+      label { display: block; font-weight: 600; margin-block: 1rem .25rem; }
+      .hint { color: var(--muted); font-size: .85rem; margin: .25rem 0 0; }
+      input, select { width: 100%; max-width: 28rem; padding: .45rem .6rem; font: inherit; color: inherit; background: var(--bg); border: 1px solid var(--line); border-radius: 6px; }
+      button, .button { display: inline-block; padding: .4rem .9rem; font: inherit; border-radius: 6px; border: 1px solid var(--line); background: transparent; color: var(--fg); cursor: pointer; text-decoration: none; }
+      .primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+      .danger { color: var(--danger); border-color: var(--danger); }
+      .flash { padding: .6rem .9rem; border-radius: 6px; border: 1px solid var(--line); margin-block-end: 1rem; }
+      .flash.alert { border-color: var(--danger); color: var(--danger); }
+      .secret { font-family: ui-monospace, monospace; font-size: 1.05rem; padding: .5rem .75rem; border: 1px dashed var(--line); border-radius: 6px; display: inline-block; user-select: all; }
+      .danger-zone { margin-block-start: 3rem; padding: 1rem; border: 1px solid var(--danger); border-radius: 6px; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p class="muted"><a href="<%= instance_admin_tenants_path %>"><%= t('instance_admin.title') %></a> · <%= Rails.application.base_url_host %></p>
+      <% if notice %><p class="flash" role="status"><%= notice %></p><% end %>
+      <% if alert %><p class="flash alert" role="alert"><%= alert %></p><% end %>
+      <%= yield %>
+    </main>
+  </body>
+</html>
