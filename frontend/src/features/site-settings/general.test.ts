@@ -15,6 +15,7 @@ const settings: GeneralSettings = {
   customLinks: [{ label: 'Docs', url: 'https://example.com/docs' }],
   isPrivate: false,
   useGravatar: true,
+  requireTwoFactorForStaff: false,
   allowAnonymousFeedback: true,
   feedbackApprovalPolicy: 'anonymous_require_approval',
   loginOnlyWithOauth: false,

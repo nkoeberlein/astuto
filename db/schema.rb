@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_29_170000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_29_180000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -210,6 +210,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_29_170000) do
     t.boolean "login_only_with_oauth", default: false, null: false
     t.integer "mail_logo_size", default: 64, null: false
     t.boolean "use_gravatar", default: true, null: false
+    t.boolean "require_two_factor_for_staff", default: false, null: false
     t.index ["tenant_id"], name: "index_tenant_settings_on_tenant_id"
   end
 
@@ -254,6 +255,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_29_170000) do
     t.integer "failed_attempts", default: 0, null: false
     t.string "unlock_token"
     t.datetime "locked_at"
+    t.string "otp_secret_ciphertext"
+    t.datetime "otp_enabled_at"
+    t.bigint "otp_last_used_at"
+    t.jsonb "otp_backup_code_digests", default: [], null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email", "tenant_id"], name: "index_users_on_email_and_tenant_id", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

@@ -16,6 +16,7 @@ import {
 } from '@/features/site-settings/fields'
 import { useI18n } from '@/lib/i18n'
 import { projectDocsUrl } from '@/lib/project'
+import { TwoFactorSection } from './TwoFactorSection'
 
 // Profile settings (legacy: /users/edit)
 export function ProfilePage() {
@@ -31,6 +32,7 @@ export function ProfilePage() {
       <AccountSection key={`account-${profile.email}-${profile.fullName}`} profile={profile} />
       <NotificationsSection profile={profile} />
       {profile.hasSetPassword && <PasswordSection />}
+      <TwoFactorSection profile={profile} />
       {profile.canHaveApiKey && <ApiKeySection current={profile.apiKey} />}
       <DataExportSection />
       {profile.canDeleteAccount && <DeleteAccountSection needsPassword={profile.hasSetPassword} />}

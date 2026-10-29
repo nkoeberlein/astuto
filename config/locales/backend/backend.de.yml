@@ -156,6 +156,7 @@ de:
         use_browser_locale: 'Sprache des Browsers verwenden'
         is_private: 'Privater Bereich'
         use_gravatar: 'Avatare von Gravatar anzeigen'
+        require_two_factor_for_staff: 'Zwei-Faktor-Authentifizierung für Admins und Moderatoren verlangen'
         email_registration_policy: 'Registrierung per E-Mail'
         allowed_email_domains: 'Erlaubte E-Mail-Domains'
         allow_anonymous_feedback: 'Anonymes Feedback erlauben'
@@ -232,3 +233,9 @@ de:
     title: 'E-Mail-Adresse bestätigen'
     body: 'Bitte im Posteingang (und im Spam-Ordner) nachsehen und den Aktivierungslink anklicken.'
     help: 'Hilfe nötig? Bitte an die Verwaltung dieser Instanz wenden.'
+  two_factor:
+    invalid_code: 'Der Code ist ungültig. Nutze den aktuellen Code aus deiner Authenticator-App oder einen unbenutzten Backup-Code.'
+    login_expired: 'Die Anmeldung hat zu lange gedauert. Bitte E-Mail und Passwort erneut eingeben.'
+    setup_required: 'Dieser Feedback-Bereich verlangt Zwei-Faktor-Authentifizierung für Admins und Moderatoren. Richte sie zuerst in deinen Profileinstellungen ein.'
+    already_enabled: 'Die Zwei-Faktor-Authentifizierung ist bereits eingeschaltet.'
+    not_enabled: 'Die Zwei-Faktor-Authentifizierung ist ausgeschaltet.'

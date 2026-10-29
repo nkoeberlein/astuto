@@ -142,6 +142,7 @@ en:
         use_browser_locale: 'Use browser language'
         is_private: 'Private site'
         use_gravatar: 'Show avatars from Gravatar'
+        require_two_factor_for_staff: 'Require two-factor authentication for admins and moderators'
         email_registration_policy: 'Email registration policy'
         allowed_email_domains: 'Allowed email domains'
         allow_anonymous_feedback: 'Allow anonymous feedback'
@@ -232,3 +233,9 @@ en:
     title: 'Verify your email address'
     body: 'Please check your email inbox (and your spam folder) and click the activation link.'
     help: 'Need help? Contact the administrator of this instance.'
+  two_factor:
+    invalid_code: 'The code is not valid. Use the current code from your authenticator app or an unused backup code.'
+    login_expired: 'The login took too long. Please enter your email and password again.'
+    setup_required: 'This feedback space requires two-factor authentication for admins and moderators. Set it up in your profile settings first.'
+    already_enabled: 'Two-factor authentication is already on.'
+    not_enabled: 'Two-factor authentication is off.'

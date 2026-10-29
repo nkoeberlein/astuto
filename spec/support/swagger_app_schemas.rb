@@ -20,7 +20,7 @@ module Swagger
       {
         Error: object({ error: STRING }),
         Author: object({ id: INTEGER, fullName: STRING, avatarUrl: NULLABLE_STRING.merge(description: 'null when Gravatar is switched off') }),
-        CurrentUser: object({ id: INTEGER, email: STRING, fullName: STRING, role: { type: :string, enum: %w[user moderator admin owner] }, avatarUrl: NULLABLE_STRING }),
+        CurrentUser: object({ id: INTEGER, email: STRING, fullName: STRING, role: { type: :string, enum: %w[user moderator admin owner] }, avatarUrl: NULLABLE_STRING, twoFactorSetupRequired: BOOLEAN.merge(description: 'Staff must set up 2FA before moderating (TenantSetting require_two_factor_for_staff)') }),
         OAuthProvider: object({ id: INTEGER, name: STRING, logo: NULLABLE_STRING, startUrl: STRING }),
         TenantSettings: object({
           brandDisplay: { type: :string, enum: %w[name_and_logo name_only logo_only no_name_no_logo] },
@@ -103,7 +103,7 @@ module Swagger
           useBrowserLocale: BOOLEAN, rootBoardId: INTEGER.merge(description: '0 shows the roadmap (or the first board) on the home page'),
           defaultPostSorting: { type: :string, enum: %w[trending newest most_voted oldest] },
           customLinks: { type: :array, items: ref(:CustomLink) },
-          isPrivate: BOOLEAN, useGravatar: BOOLEAN.merge(description: 'Avatars from gravatar.com (sends the email hash there)'), allowAnonymousFeedback: BOOLEAN,
+          isPrivate: BOOLEAN, useGravatar: BOOLEAN.merge(description: 'Avatars from gravatar.com (sends the email hash there)'), requireTwoFactorForStaff: BOOLEAN, allowAnonymousFeedback: BOOLEAN,
           feedbackApprovalPolicy: { type: :string, enum: %w[anonymous_require_approval never_require_approval always_require_approval] },
           loginOnlyWithOauth: BOOLEAN,
           logoLinksTo: { type: :string, enum: %w[root_page custom_url nothing] }, logoCustomUrl: NULLABLE_STRING,
@@ -122,7 +122,7 @@ module Swagger
           useBrowserLocale: BOOLEAN, rootBoardId: INTEGER,
           defaultPostSorting: { type: :string, enum: %w[trending newest most_voted oldest] },
           customLinks: { type: :array, items: ref(:CustomLink) },
-          isPrivate: BOOLEAN, useGravatar: BOOLEAN.merge(description: 'Avatars from gravatar.com (sends the email hash there)'), allowAnonymousFeedback: BOOLEAN,
+          isPrivate: BOOLEAN, useGravatar: BOOLEAN.merge(description: 'Avatars from gravatar.com (sends the email hash there)'), requireTwoFactorForStaff: BOOLEAN, allowAnonymousFeedback: BOOLEAN,
           feedbackApprovalPolicy: { type: :string, enum: %w[anonymous_require_approval never_require_approval always_require_approval] },
           loginOnlyWithOauth: BOOLEAN,
           logoLinksTo: { type: :string, enum: %w[root_page custom_url nothing] }, logoCustomUrl: NULLABLE_STRING,
@@ -206,8 +206,15 @@ module Swagger
           recapNotificationFrequency: { type: :string, enum: %w[never daily weekly monthly] },
           recapAvailable: BOOLEAN.merge(description: 'Recap emails need Sidekiq'),
           canHaveApiKey: BOOLEAN, apiKey: NULLABLE_STRING.merge(description: 'Masked prefix of the current API key'),
-          canDeleteAccount: BOOLEAN.merge(description: 'False for the owner')
+          canDeleteAccount: BOOLEAN.merge(description: 'False for the owner'),
+          twoFactorEnabled: BOOLEAN, twoFactorRequired: BOOLEAN.merge(description: 'Required for this staff member by the site settings'),
+          backupCodesLeft: INTEGER
         }),
+        TwoFactorRequired: object({ twoFactorRequired: BOOLEAN }),
+        TwoFactorCodeInput: object({ code: STRING.merge(description: '6-digit code from the app or a backup code') }),
+        TwoFactorSetup: object({ secret: STRING.merge(description: 'For manual entry, in groups of four'), otpauthUri: STRING, qrCode: STRING.merge(description: 'data: URI of an SVG QR code') }),
+        TwoFactorBackupCodes: object({ backupCodes: { type: :array, items: STRING } }),
+        TwoFactorDisableInput: object({ currentPassword: STRING, code: STRING }, required: []),
         UpdateProfile: object({
           fullName: STRING, notificationsEnabled: BOOLEAN,
           recapNotificationFrequency: { type: :string, enum: %w[never daily weekly monthly] },

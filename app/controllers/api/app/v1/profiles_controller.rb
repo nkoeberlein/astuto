@@ -80,6 +80,7 @@ module Api::App::V1
     # POST /api/app/v1/profile/api_key: a new API key (moderators); the old one stops working
     def api_key
       return render_error(:forbidden, I18n.t('errors.unauthorized')) unless current_user.moderator?
+      return render_error(:forbidden, I18n.t('two_factor.setup_required')) if current_user.two_factor_setup_required?
 
       key = ActiveRecord::Base.transaction do
         current_user.api_key&.destroy!
@@ -105,6 +106,9 @@ module Api::App::V1
           recapNotificationFrequency: user.recap_notification_frequency,
           recapAvailable: Rails.application.sidekiq_enabled?,
           canHaveApiKey: user.moderator?,
+          twoFactorEnabled: user.two_factor_enabled?,
+          twoFactorRequired: user.moderator? && tenant_setting.require_two_factor_for_staff,
+          backupCodesLeft: user.two_factor_enabled? ? user.backup_codes_left : 0,
           apiKey: user.moderator? && user.api_key ? token_mask(user.api_key.token_prefix) : nil,
           canDeleteAccount: !user.owner?
         }

@@ -1,7 +1,7 @@
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { Link, useNavigate } from '@tanstack/react-router'
 import { type FormEvent, useId, useState } from 'react'
-import { useLogin } from '@/api/mutations'
+import { useLogin, useTwoFactorLogin } from '@/api/mutations'
 import { sessionQuery } from '@/api/queries'
 import { FormError } from '@/components/FormError'
 import { Button } from '@/components/ui/button'
@@ -10,7 +10,13 @@ import { Input } from '@/components/ui/input'
 import { useI18n } from '@/lib/i18n'
 import { OAuthButtons } from './OAuthButtons'
 
-export function LoginPage({ redirect }: { redirect?: string }) {
+export function LoginPage({
+  redirect,
+  twoFactor = false,
+}: {
+  redirect?: string
+  twoFactor?: boolean
+}) {
   const { data: session } = useSuspenseQuery(sessionQuery)
   const { t } = useI18n()
   const navigate = useNavigate()
@@ -23,6 +29,8 @@ export function LoginPage({ redirect }: { redirect?: string }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [rememberMe, setRememberMe] = useState(false)
+  // Second step for accounts with two-factor authentication
+  const [codeStep, setCodeStep] = useState(twoFactor)
 
   const oauthProviders = session.tenant.oauthProviders
   const oauthOnly = session.tenant.settings.loginOnlyWithOauth && oauthProviders.length > 0
@@ -36,12 +44,19 @@ export function LoginPage({ redirect }: { redirect?: string }) {
     login.mutate(
       { email: email.trim(), password, rememberMe },
       {
-        onSuccess: () => {
-          void (redirect ? navigate({ href: redirect }) : navigate({ to: '/' }))
+        onSuccess: (result) => {
+          if ('twoFactorRequired' in result) return setCodeStep(true)
+          goOn()
         },
       },
     )
   }
+
+  const goOn = () => {
+    void (redirect ? navigate({ href: redirect }) : navigate({ to: '/' }))
+  }
+
+  if (codeStep) return <TwoFactorStep onSignedIn={goOn} onRestart={() => setCodeStep(false)} />
 
   return (
     <div className="mx-auto w-full max-w-md py-8">
@@ -140,6 +155,62 @@ export function LoginPage({ redirect }: { redirect?: string }) {
               {t('common.forms.auth.unlock_instructions_not_received')}
             </Link>
           </p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function TwoFactorStep(props: { onSignedIn: () => void; onRestart: () => void }) {
+  const { t } = useI18n()
+  const verify = useTwoFactorLogin()
+  const codeId = useId()
+  const [code, setCode] = useState('')
+
+  return (
+    <div className="mx-auto w-full max-w-md py-8">
+      <div className="rounded-xl border border-border/80 bg-card p-6 shadow-xs sm:p-8">
+        <h1 className="mb-2 text-center text-2xl font-bold tracking-tight">
+          {t('two_factor.login_title')}
+        </h1>
+        <p className="mb-6 text-center text-sm text-muted-foreground">
+          {t('two_factor.login_help')}
+        </p>
+        <form
+          className="space-y-4"
+          onSubmit={(event) => {
+            event.preventDefault()
+            verify.mutate(code.trim(), { onSuccess: props.onSignedIn })
+          }}
+        >
+          <div className="space-y-1.5">
+            <label htmlFor={codeId} className="block text-sm font-medium">
+              {t('two_factor.code')}
+            </label>
+            <Input
+              id={codeId}
+              required
+              autoFocus
+              autoComplete="one-time-code"
+              inputMode="text"
+              spellCheck={false}
+              value={code}
+              onChange={(event) => setCode(event.target.value)}
+            />
+          </div>
+          <FormError error={verify.error} />
+          <Button type="submit" className="h-10 w-full" disabled={verify.isPending}>
+            {t('two_factor.verify')}
+          </Button>
+        </form>
+        <div className="mt-6 border-t border-border/70 pt-4 text-center text-sm">
+          <button
+            type="button"
+            className="text-muted-foreground hover:underline"
+            onClick={props.onRestart}
+          >
+            {t('two_factor.start_over')}
+          </button>
         </div>
       </div>
     </div>

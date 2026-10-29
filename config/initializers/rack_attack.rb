@@ -23,7 +23,7 @@ class Rack::Attack
     end
 
     def login_request?(req)
-      req.post? && (req.path == '/users/sign_in' || req.path == '/api/app/v1/session')
+      req.post? && %w[/users/sign_in /api/app/v1/session /api/app/v1/session/two_factor].include?(req.path)
     end
 
     # Devise forms send user[email], the app API sends email. Malformed bodies

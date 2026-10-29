@@ -7,11 +7,14 @@ import { ErrorView } from '@/features/layout/ErrorView'
 type LoginSearch = {
   // Page to return to after sign-in (a local path)
   redirect?: string
+  // After an OAuth login of an account with two-factor authentication: ask for the code
+  two_factor?: 1
 }
 
 export const Route = createFileRoute('/login')({
   validateSearch: (search: Record<string, unknown>): LoginSearch => ({
     redirect: safeRedirect(search.redirect),
+    two_factor: search.two_factor === 1 || search.two_factor === '1' ? 1 : undefined,
   }),
   beforeLoad: async ({ context: { queryClient }, search }) => {
     const session = await queryClient.ensureQueryData(sessionQuery)
@@ -24,6 +27,6 @@ export const Route = createFileRoute('/login')({
 })
 
 function LoginRoute() {
-  const { redirect: redirectTo } = Route.useSearch()
-  return <LoginPage redirect={redirectTo} />
+  const { redirect: redirectTo, two_factor: twoFactor } = Route.useSearch()
+  return <LoginPage redirect={redirectTo} twoFactor={twoFactor === 1} />
 }

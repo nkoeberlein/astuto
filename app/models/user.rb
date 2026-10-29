@@ -1,5 +1,6 @@
 class User < ApplicationRecord
   include TenantOwnable
+  include User::TwoFactor
   
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :confirmable,
@@ -113,6 +114,7 @@ class User < ApplicationRecord
       save!
       api_key&.destroy!
       follows.destroy_all
+      disable_two_factor! if otp_secret_ciphertext.present?
     end
   end
 
@@ -126,7 +128,8 @@ class User < ApplicationRecord
         notificationsEnabled: notifications_enabled, recapNotificationFrequency: recap_notification_frequency,
         createdAt: created_at&.iso8601, confirmedAt: confirmed_at&.iso8601, signInCount: sign_in_count,
         currentSignInAt: current_sign_in_at&.iso8601, lastSignInAt: last_sign_in_at&.iso8601,
-        currentSignInIp: current_sign_in_ip, lastSignInIp: last_sign_in_ip
+        currentSignInIp: current_sign_in_ip, lastSignInIp: last_sign_in_ip,
+        twoFactorEnabled: two_factor_enabled?
       },
       posts: posts.includes(:board, :post_status).order(:created_at).map do |post|
         { id: post.id, title: post.title, description: post.description, board: post.board&.name,

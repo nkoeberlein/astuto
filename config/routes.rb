@@ -67,7 +67,9 @@ Rails.application.routes.draw do
     namespace :api do
       namespace :app do
         namespace :v1 do
-          resource :session, only: [:show, :create, :destroy]
+          resource :session, only: [:show, :create, :destroy] do
+            post :two_factor
+          end
           resource :registration, only: [:create]
           resource :password, only: [:create, :update]
           resource :confirmation, only: [:create]
@@ -75,6 +77,10 @@ Rails.application.routes.draw do
           resource :profile, only: [:show, :update, :destroy] do
             post :api_key
             get :export
+            resource :two_factor, only: [:create, :destroy], controller: 'two_factors' do
+              post :confirm
+              post :backup_codes
+            end
           end
           resources :translations, only: [:show], param: :locale, constraints: { locale: /[A-Za-z-]+/ }
           resources :boards, only: [:index, :show, :create, :update, :destroy] do

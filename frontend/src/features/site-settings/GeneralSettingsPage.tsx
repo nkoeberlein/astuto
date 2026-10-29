@@ -159,6 +159,12 @@ function GeneralForm(props: {
           onChange={(value) => set('useGravatar', value)}
           help={help('use_gravatar_help')}
         />
+        <CheckboxField
+          label={label('tenant_setting', 'require_two_factor_for_staff')}
+          checked={draft.requireTwoFactorForStaff}
+          onChange={(value) => set('requireTwoFactorForStaff', value)}
+          help={help('require_two_factor_for_staff_help')}
+        />
       </SettingsSection>
 
       <SettingsSection title={help('subtitle_moderation')}>

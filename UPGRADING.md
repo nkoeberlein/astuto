@@ -20,6 +20,9 @@ settings depend on it.
   `ASTUTO_CNAME_API_*` from your environment; the `notify_tenants_trial_period` rake task no
   longer exists. Multi-tenant setups: see docs/multi-tenancy.md.
 - The image no longer contains Node.js; Astuto does not need it at runtime.
+- **Logins only through the new login page.** `POST /users/sign_in` no longer accepts
+  passwords (it would skip two-factor authentication). Scripts should use the REST API with
+  an API key.
 - **Old JSON endpoints are gone** (`/posts.json`, `/boards`, `/posts/:id/comments`, ...,
   used by the old interface). Scripts that called them need the REST API (`/api/v1`
   with an API key, see `/api-docs`) or the MCP server.

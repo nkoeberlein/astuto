@@ -32,6 +32,10 @@ gem 'mcp', '1.8.1'
 # Authentication
 gem 'devise', '5.0.4'
 
+# Two-factor authentication (TOTP) and its QR code
+gem 'rotp', '6.3.0'
+gem 'rqrcode', '3.2.0'
+
 # Authorization
 gem 'pundit', '2.5.2'
 

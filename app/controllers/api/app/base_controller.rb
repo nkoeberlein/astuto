@@ -4,6 +4,7 @@ module Api
     # Authentication: Devise session cookie. Writes need the X-CSRF-Token header
     # (token comes from GET /api/app/v1/session).
     class BaseController < ApplicationController
+      include TwoFactorLogin
       skip_before_action :load_tenant_data
 
       prepend_before_action :set_tenant
@@ -40,14 +41,21 @@ module Api
 
         def require_moderator
           return render_error(:unauthorized, I18n.t('errors.not_logged_in')) unless user_signed_in?
+          return render_error(:forbidden, I18n.t('errors.unauthorized')) unless current_user.moderator?
 
-          render_error(:forbidden, I18n.t('errors.unauthorized')) unless current_user.moderator?
+          require_two_factor_setup
         end
 
         def require_admin
           return render_error(:unauthorized, I18n.t('errors.not_logged_in')) unless user_signed_in?
+          return render_error(:forbidden, I18n.t('errors.unauthorized')) unless current_user.admin?
 
-          render_error(:forbidden, I18n.t('errors.unauthorized')) unless current_user.admin?
+          require_two_factor_setup
+        end
+
+        # Staff of a space that requires 2FA work only after setting it up (Profile settings)
+        def require_two_factor_setup
+          render_error(:forbidden, I18n.t('two_factor.setup_required')) if current_user.two_factor_setup_required?
         end
 
         # Sets the "order" column of an Orderable model from a full list of ids (first = 0).

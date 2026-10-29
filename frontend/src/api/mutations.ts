@@ -345,8 +345,51 @@ export function useLogin() {
           body: credentials,
         }),
       ),
+    // With two-factor authentication the password alone does not sign in yet
+    onSuccess: (result) => {
+      if (!('twoFactorRequired' in result)) applySession(queryClient, result)
+    },
+  })
+}
+
+// Second login step: code from the authenticator app or a backup code
+export function useTwoFactorLogin() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (code: string) =>
+      unwrap(api.POST('/api/app/v1/session/two_factor', { body: { code } })),
     onSuccess: (session) => applySession(queryClient, session),
   })
+}
+
+// Profile › Two-factor authentication
+export function useTwoFactorMutations() {
+  const queryClient = useQueryClient()
+  const refresh = () => {
+    void queryClient.invalidateQueries({ queryKey: profileQuery.queryKey })
+    void queryClient.invalidateQueries({ queryKey: sessionQuery.queryKey })
+  }
+  return {
+    start: useMutation({
+      mutationFn: (currentPassword: string) =>
+        unwrap(api.POST('/api/app/v1/profile/two_factor', { body: { currentPassword } })),
+    }),
+    confirm: useMutation({
+      mutationFn: (code: string) =>
+        unwrap(api.POST('/api/app/v1/profile/two_factor/confirm', { body: { code } })),
+      onSuccess: refresh,
+    }),
+    regenerate: useMutation({
+      mutationFn: (code: string) =>
+        unwrap(api.POST('/api/app/v1/profile/two_factor/backup_codes', { body: { code } })),
+      onSuccess: refresh,
+    }),
+    disable: useMutation({
+      mutationFn: (input: { currentPassword?: string; code?: string }) =>
+        unwrap(api.DELETE('/api/app/v1/profile/two_factor', { body: input })),
+      onSuccess: refresh,
+    }),
+  }
 }
 
 export function useLogout() {

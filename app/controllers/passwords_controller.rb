@@ -17,15 +17,8 @@ class PasswordsController < Devise::PasswordsController
     redirect_to spa_password_reset_path(reset_password_token: params[:reset_password_token])
   end
 
+  # The v2 reset page uses /api/app/v1/password; an old form posting here lands there
   def update
-    super
-
-    if resource.errors.empty?
-      resource.update!(has_set_password: true) unless resource.has_set_password?
-
-      # See: https://stackoverflow.com/a/22110985/1857435
-      sign_out(resource_name)
-      sign_in(resource_name, resource)
-    end
+    redirect_to spa_password_reset_path
   end
 end

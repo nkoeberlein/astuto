@@ -3,6 +3,7 @@ class OAuthsController < ApplicationController
   include OAuthsHelper
   include ApplicationHelper
   include Devise::Controllers::Rememberable
+  include TwoFactorLogin
 
   TOKEN_STATE_SEPARATOR = ','
 
@@ -119,7 +120,13 @@ class OAuthsController < ApplicationController
 
     user = User.find(params[:user_id])
 
-    if user.oauth_token == params[:token]
+    if user.oauth_token == params[:token] && user.two_factor_enabled?
+      # The provider vouched for the account; the code still has to come from the person
+      user.invalidate_oauth_token
+      start_two_factor_login(user, remember: true)
+      target = SafeUrl.local_path?(params[:return_to]) ? params[:return_to] : nil
+      redirect_to spa_login_path({ two_factor: 1, redirect: target }.compact)
+    elsif user.oauth_token == params[:token]
       sign_in user
       remember_me user
       user.invalidate_oauth_token

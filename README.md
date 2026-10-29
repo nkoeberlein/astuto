@@ -99,7 +99,7 @@ Guides in this repository:
 - [Multi-tenancy: several feedback spaces, custom domains, instance admin](docs/multi-tenancy.md)
 - [Webhooks: templates, signatures, delivery log](docs/webhooks.md)
 - [MCP server and AI features](docs/mcp-and-ai.md)
-- [Account lockout](docs/account-lockout.md)
+- [Account lockout](docs/account-lockout.md) and [two-factor authentication](docs/two-factor-authentication.md)
 - [Privacy and GDPR: stored data, export, deletion, retention](docs/privacy.md)
 - [AGPL in companies: FAQ](docs/agpl-faq.md)
 

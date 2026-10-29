@@ -59,6 +59,15 @@ export interface paths {
                         "application/json": components["schemas"]["Session"];
                     };
                 };
+                /** @description password correct, two-factor code needed (POST /api/app/v1/session/two_factor) */
+                202: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["TwoFactorRequired"];
+                    };
+                };
                 /** @description account is locked (too many failed attempts) */
                 401: {
                     headers: {
@@ -2865,6 +2874,206 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/app/v1/session/two_factor": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Second login step: code from the authenticator app or a backup code */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["TwoFactorCodeInput"];
+                };
+            };
+            responses: {
+                /** @description signed in */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Session"];
+                    };
+                };
+                /** @description wrong code or no login in progress */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/profile/two_factor": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Start setting up 2FA: new secret and QR code (not active until confirmed) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["DeleteProfile"];
+                };
+            };
+            responses: {
+                /** @description secret */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["TwoFactorSetup"];
+                    };
+                };
+            };
+        };
+        /** Turn 2FA off (password, or a code for accounts without password) */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["TwoFactorDisableInput"];
+                };
+            };
+            responses: {
+                /** @description off */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/profile/two_factor/confirm": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Turn 2FA on with a code from the app; returns the backup codes once */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["TwoFactorCodeInput"];
+                };
+            };
+            responses: {
+                /** @description on */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["TwoFactorBackupCodes"];
+                    };
+                };
+                /** @description wrong code */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/profile/two_factor/backup_codes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** New backup codes (the old ones stop working) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["TwoFactorCodeInput"];
+                };
+            };
+            responses: {
+                /** @description new codes */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["TwoFactorBackupCodes"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -2885,6 +3094,8 @@ export interface components {
             /** @enum {string} */
             role: "user" | "moderator" | "admin" | "owner";
             avatarUrl: string | null;
+            /** @description Staff must set up 2FA before moderating (TenantSetting require_two_factor_for_staff) */
+            twoFactorSetupRequired: boolean;
         };
         OAuthProvider: {
             id: number;
@@ -3121,6 +3332,7 @@ export interface components {
             isPrivate: boolean;
             /** @description Avatars from gravatar.com (sends the email hash there) */
             useGravatar: boolean;
+            requireTwoFactorForStaff: boolean;
             allowAnonymousFeedback: boolean;
             /** @enum {string} */
             feedbackApprovalPolicy: "anonymous_require_approval" | "never_require_approval" | "always_require_approval";
@@ -3162,6 +3374,7 @@ export interface components {
             isPrivate?: boolean;
             /** @description Avatars from gravatar.com (sends the email hash there) */
             useGravatar?: boolean;
+            requireTwoFactorForStaff?: boolean;
             allowAnonymousFeedback?: boolean;
             /** @enum {string} */
             feedbackApprovalPolicy?: "anonymous_require_approval" | "never_require_approval" | "always_require_approval";
@@ -3375,6 +3588,31 @@ export interface components {
             apiKey: string | null;
             /** @description False for the owner */
             canDeleteAccount: boolean;
+            twoFactorEnabled: boolean;
+            /** @description Required for this staff member by the site settings */
+            twoFactorRequired: boolean;
+            backupCodesLeft: number;
+        };
+        TwoFactorRequired: {
+            twoFactorRequired: boolean;
+        };
+        TwoFactorCodeInput: {
+            /** @description 6-digit code from the app or a backup code */
+            code: string;
+        };
+        TwoFactorSetup: {
+            /** @description For manual entry, in groups of four */
+            secret: string;
+            otpauthUri: string;
+            /** @description data: URI of an SVG QR code */
+            qrCode: string;
+        };
+        TwoFactorBackupCodes: {
+            backupCodes: string[];
+        };
+        TwoFactorDisableInput: {
+            currentPassword?: string;
+            code?: string;
         };
         UpdateProfile: {
             fullName?: string;

@@ -6,6 +6,7 @@ Issue numbers refer to the archived [astuto/astuto](https://github.com/astuto/as
 ## [Unreleased]
 
 ### Removed
+- Password logins through the old Devise form (`POST /users/sign_in`) and password changes through `PUT /users/password`; they redirect to the new pages. Logins go through the login page (`POST /api/app/v1/session`), which knows two-factor authentication.
 - **The old user interface** (React 16, Redux, Bootstrap, Turbolinks, webpack, Sass and the asset pipeline) and its JSON endpoints (`/posts`, `/boards`, `/posts/:id/comments`, `/likes`, `/follows`, `/post_status_changes`, `/users`, `/webhooks`, `/o_auths` CRUD, `/tenants`, `/invitations`, `/api_keys`). Integrations should use the REST API (`/api/v1`, API key) or MCP. Node.js is only needed to build `frontend/`.
 - Self-service sign-up for new feedback spaces (it was switched off); see docs/multi-tenancy.md.
 - `GET /users/send_set_password_instructions`, which sent password reset emails to any address without rate limit.
@@ -23,6 +24,7 @@ Issue numbers refer to the archived [astuto/astuto](https://github.com/astuto/as
 - Legacy webhook endpoints `PUT /webhooks/:id/test` and `PUT /webhooks_preview` checked no permissions: anyone, even without an account, could fire a feedback space's webhooks with test data and read the target's response. Both now require an admin.
 
 ### Features
+- **Two-factor authentication** (docs/two-factor-authentication.md): authenticator app codes (TOTP) with ten one-time backup codes, set up in Profile settings; asked after the password and after OAuth logins. Site settings › General can require it for admins and moderators. Wrong codes count towards the account lockout.
 - **GDPR tools** (docs/privacy.md): people download their data in Profile settings › My data; admins download or delete (anonymize) any account in Moderation › Users. A daily job removes unconfirmed sign-ups after 30 days, sign-in IPs after 90 days and unaccepted invitations after 180 days (`*_RETENTION_DAYS`; `bin/rails astuto:purge_expired_data` without Sidekiq). Gravatar avatars can be switched off in Site settings › General (they send a hash of the email address to gravatar.com); initials show instead.
 - **Audit log** (Site settings › Audit log, admins): who changed what in moderation (posts, comments, users), boards, statuses, site settings, sign-in providers, webhooks, invitations and API keys, with old and new values, source (UI, REST API, MCP) and IP. Secrets are never stored. Entries are kept for `AUDIT_LOG_RETENTION_DAYS` (default 365). `GET /api/app/v1/site_settings/audit_events`.
 - Operations (docs/operations.md): `/health/live` and `/health/ready` probes, Prometheus metrics at `/metrics` (with `METRICS_TOKEN`), a backup and restore guide, and a Helm chart (`deploy/helm/astuto-evolution`) with an optional Sidekiq worker. The production image runs a command you pass (`bundle exec sidekiq` for a worker) after preparing the database, and containers starting at the same time prepare it one after another.

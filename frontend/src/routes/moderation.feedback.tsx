@@ -14,6 +14,7 @@ export const Route = createFileRoute('/moderation/feedback')({
     const session = await queryClient.ensureQueryData(sessionQuery)
     if (!session.user) throw redirect({ to: '/login', search: { redirect: location.href } })
 
+    if (session.user.twoFactorSetupRequired) throw redirect({ to: '/profile' })
     // Non-moderators get a 403 from the API, shown by the error view
     await Promise.all([
       queryClient.ensureQueryData(moderationPostsQuery),

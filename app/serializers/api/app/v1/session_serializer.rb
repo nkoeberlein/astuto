@@ -33,7 +33,10 @@ module Api::App::V1
     end
 
     def self.current_user(user)
-      { id: user.id, email: user.email, fullName: user.full_name_or_email, role: user.role, avatarUrl: user.avatar_url }
+      {
+        id: user.id, email: user.email, fullName: user.full_name_or_email, role: user.role, avatarUrl: user.avatar_url,
+        twoFactorSetupRequired: user.two_factor_setup_required?
+      }
     end
 
     def self.settings(s)

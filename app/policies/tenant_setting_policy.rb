@@ -7,6 +7,7 @@ class TenantSettingPolicy < ApplicationPolicy
         :root_board_id,
         :is_private,
         :use_gravatar,
+        :require_two_factor_for_staff,
         :email_registration_policy,
         :allowed_email_domains,
         :allow_anonymous_feedback,

@@ -1,3 +1,4 @@
+import { createHmac } from 'node:crypto'
 import type { Page } from '@playwright/test'
 
 // Credentials of an admin of the instance under test (development seeds by default)
@@ -24,4 +25,20 @@ export async function logIn(page: Page, redirect = '/') {
 // Accepts every confirm() dialog of the page
 export function acceptDialogs(page: Page) {
   page.on('dialog', (dialog) => dialog.accept())
+}
+
+// Current TOTP code (RFC 6238, SHA-1, 30 s, 6 digits) for a base32 secret, like an authenticator app
+export function totp(secret: string, at = Date.now()): string {
+  const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567'
+  let bits = ''
+  for (const char of secret.replace(/\s|=/g, '').toUpperCase()) {
+    bits += alphabet.indexOf(char).toString(2).padStart(5, '0')
+  }
+  const key = Buffer.from(bits.match(/.{8}/g)?.map((byte) => Number.parseInt(byte, 2)) ?? [])
+  const counter = Buffer.alloc(8)
+  counter.writeBigUInt64BE(BigInt(Math.floor(at / 1000 / 30)))
+  const hmac = createHmac('sha1', key).update(counter).digest()
+  const offset = (hmac.at(-1) ?? 0) & 0xf
+  const code = (hmac.readUInt32BE(offset) & 0x7fffffff) % 1_000_000
+  return code.toString().padStart(6, '0')
 }
