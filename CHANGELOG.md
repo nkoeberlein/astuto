@@ -61,6 +61,7 @@ Issue numbers refer to the archived [astuto/astuto](https://github.com/astuto/as
 - v2 frontend: embeddable roadmap at `/next/embedded_roadmap` for an iframe on another site, without header and footer; posts open in a new tab. It takes the legacy embed parameters (`show_boards`, `show_statuses`, `show_board_filter=false`, `show_status_filter=false`), so existing embed codes keep working after the switch from `/next` to `/`. Only this page may be framed by other sites, and only while the roadmap is enabled.
 
 ### Fixes
+- Rate limits counted every request twice (Rack::Attack was added as middleware by the gem and again in `config/application.rb`), so visitors hit them at half the configured numbers, e.g. after two or three login attempts instead of five.
 - `REDIS_PASSWORD` was inserted into `REDIS_URL` at a fixed position, which broke `rediss://` URLs and passwords with special characters.
 - OAuth login on a custom domain failed silently, because the provider calls back on the subdomain where the browser has no login state cookie (#472). The callback now continues on the custom domain. The cookie no longer uses the parent domain of the request (which broke on hosts like `feedback.example.co.uk`), and a callback with an unknown state shows the login page with an error instead of crashing.
 - The pages for pending and blocked feedback spaces crashed (500); they now render without the old interface.

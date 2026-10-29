@@ -41,8 +41,9 @@ module App
     # Probes and scrapers call the container by IP; RAILS_HOSTS must not block them
     config.host_authorization = { exclude: ->(request) { request.path.start_with?('/health', '/metrics') } }
 
+    # Rack::Attack adds its middleware itself (Railtie, after RemoteIp); adding it here too
+    # counted every request twice and halved all limits
     # If configured, add trusted proxy to the list of trusted proxies
-    config.middleware.insert_after ActionDispatch::RemoteIp, Rack::Attack
     if ENV["TRUSTED_PROXY"]
       config.action_dispatch.trusted_proxies = ActionDispatch::RemoteIp::TRUSTED_PROXIES + [IPAddr.new(ENV["TRUSTED_PROXY"])]
     end
