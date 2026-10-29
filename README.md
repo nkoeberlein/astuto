@@ -57,11 +57,11 @@ Upgrading an existing Astuto installation: see [UPGRADING.md](UPGRADING.md).
 
 ### In v2 (towards 2.0)
 
-- **New UI** (React 19 + TanStack) for every page: boards, posts, roadmap, embedding, login / sign-up / password with OAuth, moderation, all site settings, profile. Next: remove the legacy React 16 code
+- **New UI** (React 19 + TanStack) for every page: boards, posts, roadmap, embedding, login / sign-up / password with OAuth, moderation, all site settings, profile. The legacy React 16 / Redux / Bootstrap 4 frontend and its gems and packages are gone
 - **Design system:** branding over CSS variables (reusing your current site colors), dark mode, WCAG 2.2 AA, mobile first
 - **AI-native features:** MCP server under `/mcp` with API-key auth (already part of the alpha) so assistants like Claude, Cursor and others can search, read, create and triage feedback; duplicate detection while posting (Postgres full-text search, optionally semantic with pgvector); discussion summaries and tag/board suggestions, all strictly opt-in per site settings
 - **Operations:** webhook error visibility (delivery log per webhook), "send test mail" for site settings, configurable favicon and header links, roadmap can be disabled, instance-wide default sort order, OAuth-only login option
-- **Cleanup:** the legacy React 16 / Redux / Bootstrap 4 frontend and its gems and packages are removed once every page is rebuilt
+- **Several feedback spaces per instance** (multi-tenancy) with subdomains, custom domains with automatic TLS and an instance admin page, for companies with several products or brands
 
 ### In v3 (major upgrade, fully TypeScript)
 
@@ -92,7 +92,16 @@ To run it from source:
 
 ## Documentation
 
-The original documentation still applies and lives in the archived [astuto/astuto-docs](https://github.com/astuto/astuto-docs) repository. It will move into this repository over time.
+Guides in this repository:
+
+- [Reverse proxy, HTTPS, database and SMTP](docs/reverse-proxy-and-smtp.md)
+- [Multi-tenancy: several feedback spaces, custom domains, instance admin](docs/multi-tenancy.md)
+- [Webhooks: templates, signatures, delivery log](docs/webhooks.md)
+- [MCP server and AI features](docs/mcp-and-ai.md)
+- [Account lockout](docs/account-lockout.md)
+- [AGPL in companies: FAQ](docs/agpl-faq.md)
+
+The original documentation of Astuto 1.x lives in the archived [astuto/astuto-docs](https://github.com/astuto/astuto-docs) repository and will move here over time.
 
 ## Contributing
 

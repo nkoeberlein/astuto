@@ -196,7 +196,7 @@ Die häufigsten Probleme aus den Upstream-Issues: HTTPS hinter Reverse Proxy (#4
 - **Integration:** Jira, Azure DevOps, Teams, Slack (Webhook-Vorlagen zuerst), REST-API und MCP
 
 **Lizenz und Mittelstand:** Die AGPL-3.0 erlaubt kommerzielle Nutzung ohne Einschränkung. Pflichten entstehen erst, wenn jemand den Code *ändert* und Nutzern über das Netz anbietet: Dann muss er die Änderungen veröffentlichen. Manche Rechtsabteilungen lehnen AGPL trotzdem grundsätzlich ab. Optionen:
-- **v2:** Eine zusätzliche kommerzielle Lizenz ist nicht möglich, weil der Upstream-Code von Dritten unter AGPL steht. Abhilfe: eine kurze FAQ „AGPL im Unternehmen“ (unveränderter Betrieb verpflichtet zu nichts).
+- **v2:** Eine zusätzliche kommerzielle Lizenz ist nicht möglich, weil der Upstream-Code von Dritten unter AGPL steht. Abhilfe: die FAQ [„AGPL im Unternehmen“](docs/agpl-faq.md) (unveränderter Betrieb verpflichtet zu nichts).
 - **v3 (Neuentwicklung):** Duale Lizenzierung (AGPL + kommerzielle Lizenz) wird möglich, aber nur mit einer **CLA** für alle Beiträge ab Beginn von v3 und ohne übernommene Upstream-Inhalte (Übersetzungen, Logo). Die Lizenz ist entschieden: **v3 bleibt AGPL-3.0** (Abschnitt 6).
 
 **Mögliche Einnahmen ohne Paywall** (Entscheidung offen):

@@ -109,7 +109,7 @@ Issue-Nummern beziehen sich auf `astuto/astuto`. Phasen siehe [roadmap.md](roadm
 - [ ] Audit-Log für Moderation und Einstellungen
 - [ ] DSGVO: Datenexport und Löschung pro Person, Aufbewahrungsfristen
 - [ ] Health-Check-Endpunkt, Prometheus-Metriken, Backup/Restore-Anleitung, Helm-Chart
-- [ ] FAQ „AGPL im Unternehmen“
+- [x] FAQ „AGPL im Unternehmen“ (`docs/agpl-faq.md`, verlinkt im README)
 
 ## P1 – Altes Frontend ersetzen (Kern von v2)
 
