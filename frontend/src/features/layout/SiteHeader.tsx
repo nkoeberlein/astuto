@@ -63,6 +63,17 @@ export function SiteHeader({ session, boards }: { session: Session; boards: Boar
               {t('roadmap.title')}
             </Link>
           )}
+          {(tenant.hasChangelog || isModerator(user)) && (
+            <Link
+              to="/changelog"
+              className="whitespace-nowrap rounded-lg px-3 py-1.5 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+              activeProps={{
+                className: 'bg-primary/10 text-primary font-semibold ring-1 ring-primary/20',
+              }}
+            >
+              {t('changelog.title')}
+            </Link>
+          )}
           {boards.map((board) => (
             <Link
               key={board.id}

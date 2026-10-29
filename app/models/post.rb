@@ -13,6 +13,8 @@ class Post < ApplicationRecord
   has_many :followers, through: :follows, source: :user
   has_many :comments, dependent: :destroy
   has_many :post_status_changes, dependent: :destroy
+  has_many :changelog_entry_posts, dependent: :delete_all
+  has_many :changelog_entries, through: :changelog_entry_posts
 
   after_create :run_new_post_webhooks
   after_destroy :run_delete_post_webhooks

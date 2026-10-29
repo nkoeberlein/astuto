@@ -110,7 +110,7 @@ AI features in Astuto Evolution are **100% opt-in**. When `AI_PROVIDER` or `AI_M
 |---|---|---|
 | Discussion summary | Post page, moderator panel, button "Summarize discussion"; API `POST /api/app/v1/posts/:id/summary` | available (moderators only). Results are cached per post content for one day. |
 | Board and tag suggestions | — | planned; needs tags (#171) |
-| Changelog drafts | — | planned; needs the changelog feature |
+| Changelog drafts | Changelog page, entry form, button "Draft text with AI" (needs linked posts); API `POST /api/app/v1/changelog_entries/draft` | available (moderators only). Writes the text from titles and descriptions of the linked posts, in the interface language; the moderator edits it before publishing. |
 | Translation of feedback | Post page, link "Translate" under the description and under each comment; API `POST /api/app/v1/posts/:id/translation` and `POST /api/app/v1/posts/:id/comments/:comment_id/translation` | available (moderators only). Translates into the language of the interface and shows the result next to the original, marked as AI translation; nothing is stored in the database. Results are cached per text for a week. |
 
 `Ai::Client` already contains the helpers for the planned features; they are not wired to the UI yet.
@@ -118,7 +118,7 @@ AI features in Astuto Evolution are **100% opt-in**. When `AI_PROVIDER` or `AI_M
 ### Privacy & Data Protection Notice (Datenschutzhinweis)
 
 - **Opt-in only:** Without `AI_PROVIDER` and `AI_MODEL` configured, zero data leaves your Astuto instance.
-- **Data minimization:** Data is only sent when a moderator explicitly asks for it (today: the discussion summary and translations; a translation sends only the text being translated). Then **only** the following fields are transmitted to the configured `AI_BASE_URL`:
+- **Data minimization:** Data is only sent when a moderator explicitly asks for it (today: the discussion summary, translations and changelog drafts; a translation sends only the text being translated, a changelog draft the titles and descriptions of the linked posts). Then **only** the following fields are transmitted to the configured `AI_BASE_URL`:
   - Post title (`post_title`) and description (`post_description`)
   - Comment text bodies (`comment_bodies`) for thread summarization
   - Board names and descriptions (`board_names`) for board/tag classification

@@ -28,6 +28,8 @@ Rails.application.routes.draw do
     get '/embedded_roadmap', to: 'spa#show', as: :embedded_roadmap
     get '/boards/:id', to: 'spa#show', format: false, as: :board
     get '/boards/:id/feed', to: 'feeds#board', format: false, as: :board_feed
+    get '/changelog', to: 'spa#show', as: :changelog
+    get '/changelog/feed', to: 'feeds#changelog', format: false, as: :changelog_feed
     get '/robots.txt', to: 'seo#robots', format: false, as: :robots
     get '/sitemap.xml', to: 'seo#sitemap', format: false, as: :sitemap
     get '/posts/:id', to: 'spa#show', format: false, as: :post
@@ -103,6 +105,10 @@ Rails.application.routes.draw do
           end
           resource :roadmap, only: [:show]
           resources :my_posts, only: [:index]
+          resources :changelog_entries, only: [:index, :create, :update, :destroy] do
+            get :linkable_posts, on: :collection
+            post :draft, on: :collection
+          end
           resources :posts, only: [:show, :update, :destroy] do
             post :merge, on: :member
             resources :comments, only: [:index, :create, :update, :destroy] do

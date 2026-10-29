@@ -195,6 +195,23 @@ export function PostPage({ postSlug }: { postSlug: string }) {
                   </div>
                 )}
                 {session.aiEnabled && <PostTranslation postSlug={post.slug} />}
+                {post.changelogEntries.length > 0 && (
+                  <p className="text-sm text-muted-foreground">
+                    {t('post.in_changelog')}{' '}
+                    {post.changelogEntries.map((entry, index) => (
+                      <span key={entry.id}>
+                        {index > 0 && ' · '}
+                        <Link
+                          to="/changelog"
+                          hash={`entry-${entry.id}`}
+                          className="text-primary hover:underline"
+                        >
+                          {entry.title}
+                        </Link>
+                      </span>
+                    ))}
+                  </p>
+                )}
                 {post.mergedPosts.length > 0 && (
                   <p className="text-sm text-muted-foreground">
                     {t('post.merge.merged_from')}{' '}

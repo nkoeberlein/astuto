@@ -17,6 +17,7 @@ class SeoController < ApplicationController
     @board_updates = Post.where(approval_status: 'approved').group(:board_id).maximum(:updated_at)
     @posts = Post.where(approval_status: 'approved').order(updated_at: :desc).limit(MAX_POSTS).select(:id, :slug, :updated_at)
     @roadmap = @tenant_setting.roadmap_enabled
+    @changelog = ChangelogEntry.published.maximum(:published_at)
 
     expires_in 1.hour, public: true
     render formats: :xml

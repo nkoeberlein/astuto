@@ -10,6 +10,7 @@ import {
   api,
   type Board,
   type BoardInput,
+  type ChangelogEntryInput,
   type Comment,
   type GeneralSettings,
   type LdapLoginInput,
@@ -776,5 +777,46 @@ export function useMergePost(sourceSlug: string) {
       void queryClient.invalidateQueries({ queryKey: ['roadmap'] })
       void queryClient.invalidateQueries({ queryKey: commentsQuery(target.slug).queryKey })
     },
+  })
+}
+
+// Changelog (moderators). The session knows whether a published entry exists (header link),
+// and post pages list the entries that deliver them.
+function invalidateChangelog(queryClient: QueryClient) {
+  void queryClient.invalidateQueries({ queryKey: ['changelog'] })
+  void queryClient.invalidateQueries({ queryKey: sessionQuery.queryKey })
+  void queryClient.invalidateQueries({ queryKey: ['posts'] })
+}
+
+export function useSaveChangelogEntry() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, changes }: { id?: number; changes: ChangelogEntryInput }) =>
+      unwrap(
+        id
+          ? api.PATCH('/api/app/v1/changelog_entries/{id}', {
+              params: { path: { id } },
+              body: changes,
+            })
+          : api.POST('/api/app/v1/changelog_entries', { body: changes }),
+      ),
+    onSuccess: () => invalidateChangelog(queryClient),
+  })
+}
+
+export function useDeleteChangelogEntry() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (id: number) =>
+      unwrap(api.DELETE('/api/app/v1/changelog_entries/{id}', { params: { path: { id } } })),
+    onSuccess: () => invalidateChangelog(queryClient),
+  })
+}
+
+// AI draft of the entry text from the linked posts
+export function useDraftChangelog() {
+  return useMutation({
+    mutationFn: (postIds: number[]) =>
+      unwrap(api.POST('/api/app/v1/changelog_entries/draft', { body: { postIds } })),
   })
 }

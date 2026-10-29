@@ -17,6 +17,7 @@ module Api::App::V1
           oauthProviders: oauth_providers(oauth_start_url),
           # Login with the company directory (POST /api/app/v1/session/ldap), when set up
           ldapLabel: LdapConfig.find_by(enabled: true)&.then { |ldap| ldap.label if ldap.usable? },
+          hasChangelog: ChangelogEntry.published.exists?,
           settings: settings(tenant_setting)
         }
       }

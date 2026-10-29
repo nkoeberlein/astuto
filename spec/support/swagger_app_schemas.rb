@@ -33,6 +33,7 @@ module Swagger
         }),
         Tenant: object({
           ldapLabel: NULLABLE_STRING.merge(description: 'Name of the company account when LDAP login is on'),
+          hasChangelog: BOOLEAN.merge(description: 'At least one published changelog entry (header link)'),
           siteName: STRING, siteLogo: NULLABLE_STRING, siteFavicon: NULLABLE_STRING, locale: STRING,
           oauthProviders: { type: :array, items: ref(:OAuthProvider) },
           settings: ref(:TenantSettings)
@@ -81,6 +82,7 @@ module Swagger
           likesCount: INTEGER, commentsCount: INTEGER, liked: BOOLEAN, followed: BOOLEAN,
           source: object({ url: NULLABLE_STRING, label: NULLABLE_STRING }, nullable: true).merge(description: 'Where the feedback came from; moderators only'),
           mergedPosts: { type: :array, items: object({ title: STRING }), description: 'Duplicates merged into this post' },
+          changelogEntries: { type: :array, items: object({ id: INTEGER, title: STRING }), description: 'Published changelog entries that deliver this post' },
           createdAt: DATETIME, updatedAt: DATETIME
         }),
         ModerationPost: object({
@@ -272,6 +274,18 @@ module Swagger
         VoteState: object({ liked: BOOLEAN, likesCount: INTEGER }),
         FollowState: object({ followed: BOOLEAN }),
         Summary: object({ summary: STRING }),
+        ChangelogEntry: object({
+          id: INTEGER, title: STRING, body: STRING, publishedAt: { type: :string, format: 'date-time', nullable: true, description: 'null for drafts' },
+          posts: { type: :array, items: object({ id: INTEGER, title: STRING, slug: STRING }) }
+        }),
+        ChangelogEntryPage: object({ entries: { type: :array, items: ref(:ChangelogEntry) }, page: INTEGER, hasMore: BOOLEAN }),
+        ChangelogEntryInput: object({
+          title: STRING, body: STRING, postIds: { type: :array, items: INTEGER },
+          published: BOOLEAN.merge(description: 'true publishes a draft (first time: emails the followers of the linked posts), false turns it back into a draft')
+        }, required: []),
+        LinkablePost: object({ id: INTEGER, title: STRING, slug: STRING, postStatusId: NULLABLE_INTEGER }),
+        ChangelogDraftInput: object({ postIds: { type: :array, items: INTEGER } }),
+        ChangelogDraft: object({ body: STRING }),
         PostTranslation: object({ title: STRING, description: NULLABLE_STRING, locale: STRING }),
         CommentTranslation: object({ body: STRING, locale: STRING }),
         NewPost: object({

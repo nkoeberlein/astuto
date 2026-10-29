@@ -13,6 +13,7 @@ class User < ApplicationRecord
   has_many :comments, dependent: :destroy
   has_one :api_key, dependent: :destroy
   has_many :follows, dependent: :destroy
+  has_many :changelog_entries, dependent: :nullify
 
   enum :role, [:user, :moderator, :admin, :owner]
   enum :status, [:active, :blocked, :deleted]

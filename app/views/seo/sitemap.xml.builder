@@ -2,6 +2,12 @@ xml.instruct! :xml, version: '1.0', encoding: 'UTF-8'
 xml.urlset xmlns: 'http://www.sitemaps.org/schemas/sitemap/0.9' do
   xml.url { xml.loc root_url }
   xml.url { xml.loc roadmap_url } if @roadmap
+  if @changelog
+    xml.url do
+      xml.loc changelog_url
+      xml.lastmod @changelog.iso8601
+    end
+  end
 
   @boards.each do |board|
     xml.url do

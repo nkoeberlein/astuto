@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ChangelogRouteImport } from './routes/changelog'
 import { Route as Embedded_roadmapRouteImport } from './routes/embedded_roadmap'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as MyFeedbackRouteImport } from './routes/my-feedback'
@@ -37,6 +38,11 @@ import { Route as UnlockNewRouteImport } from './routes/unlock.new'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ChangelogRoute = ChangelogRouteImport.update({
+  id: '/changelog',
+  path: '/changelog',
   getParentRoute: () => rootRouteImport,
 } as any)
 const Embedded_roadmapRoute = Embedded_roadmapRouteImport.update({
@@ -160,6 +166,7 @@ const UnlockNewRoute = UnlockNewRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/changelog': typeof ChangelogRoute
   '/embedded_roadmap': typeof Embedded_roadmapRoute
   '/login': typeof LoginRoute
   '/my-feedback': typeof MyFeedbackRoute
@@ -186,6 +193,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/changelog': typeof ChangelogRoute
   '/embedded_roadmap': typeof Embedded_roadmapRoute
   '/login': typeof LoginRoute
   '/my-feedback': typeof MyFeedbackRoute
@@ -213,6 +221,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/changelog': typeof ChangelogRoute
   '/embedded_roadmap': typeof Embedded_roadmapRoute
   '/login': typeof LoginRoute
   '/my-feedback': typeof MyFeedbackRoute
@@ -241,6 +250,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/changelog'
     | '/embedded_roadmap'
     | '/login'
     | '/my-feedback'
@@ -267,6 +277,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/changelog'
     | '/embedded_roadmap'
     | '/login'
     | '/my-feedback'
@@ -293,6 +304,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/changelog'
     | '/embedded_roadmap'
     | '/login'
     | '/my-feedback'
@@ -320,6 +332,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ChangelogRoute: typeof ChangelogRoute
   Embedded_roadmapRoute: typeof Embedded_roadmapRoute
   LoginRoute: typeof LoginRoute
   MyFeedbackRoute: typeof MyFeedbackRoute
@@ -352,6 +365,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/changelog': {
+      id: '/changelog'
+      path: '/changelog'
+      fullPath: '/changelog'
+      preLoaderRoute: typeof ChangelogRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/embedded_roadmap': {
@@ -520,6 +540,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ChangelogRoute: ChangelogRoute,
   Embedded_roadmapRoute: Embedded_roadmapRoute,
   LoginRoute: LoginRoute,
   MyFeedbackRoute: MyFeedbackRoute,

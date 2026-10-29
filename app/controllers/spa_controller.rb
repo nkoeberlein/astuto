@@ -117,6 +117,8 @@ class SpaController < ActionController::Base
         ["#{I18n.t('header.menu.moderation', default: 'Moderation')} · #{site_name}", site_name]
       when %r{\Asite_settings/}
         ["#{I18n.t('header.menu.site_settings', default: 'Site settings')} · #{site_name}", site_name]
+      when 'changelog'
+        ["#{I18n.t('changelog.title', default: 'Changelog')} · #{site_name}", site_name]
       when 'my-feedback'
         ["#{I18n.t('my_feedback.title', default: 'My feedback')} · #{site_name}", site_name]
       when 'profile'
@@ -138,9 +140,14 @@ class SpaController < ActionController::Base
       end
     end
 
-    # Lets browsers and feed readers find the board feed (FeedsController)
+    # Lets browsers and feed readers find the board or changelog feed (FeedsController)
     def feed_link(setting)
       return if setting.is_private
+
+      if page_path == 'changelog'
+        title = ERB::Util.html_escape(I18n.t('changelog.title', default: 'Changelog'))
+        return %(<link rel="alternate" type="application/rss+xml" title="#{title}" href="#{changelog_feed_path}" />)
+      end
 
       slug = page_path[%r{\Aboards/([^/]+)\z}, 1]
       return unless slug

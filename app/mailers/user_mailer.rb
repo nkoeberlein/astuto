@@ -43,6 +43,19 @@ class UserMailer < ApplicationMailer
     )
   end
 
+  # A changelog entry delivers posts the person follows (SaveChangelogEntryWorkflow)
+  def notify_follower_of_changelog_entry(user:, entry:)
+    Current.tenant = user.tenant
+    @user = user
+    @entry = entry
+    @posts = entry.posts.where(approval_status: 'approved', id: user.follows.select(:post_id)).order(:title).to_a
+
+    mail(
+      to: user.email,
+      subject: t('mailers.user.notify_follower_of_changelog_entry.subject', site_name: site_name, title: entry.title)
+    )
+  end
+
   # frequency: "daily", "weekly" or "monthly"; from/to: the period (see SendRecapEmails)
   def recap(user:, frequency:, from:, to:)
     Current.tenant = user.tenant

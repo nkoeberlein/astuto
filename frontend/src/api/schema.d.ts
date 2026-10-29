@@ -439,6 +439,237 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/app/v1/changelog_entries": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Changelog entries, newest first (moderators also see drafts, which come first) */
+        get: {
+            parameters: {
+                query?: {
+                    page?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description published entries */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ChangelogEntryPage"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        /** Write a changelog entry (moderators) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["ChangelogEntryInput"];
+                };
+            };
+            responses: {
+                /** @description created */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ChangelogEntry"];
+                    };
+                };
+                /** @description not a moderator */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description invalid */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/changelog_entries/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete a changelog entry (moderators) */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description deleted */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /** Change, publish or unpublish a changelog entry (moderators) */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["ChangelogEntryInput"];
+                };
+            };
+            responses: {
+                /** @description saved */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ChangelogEntry"];
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/api/app/v1/changelog_entries/linkable_posts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Approved posts to link to an entry, posts with a status first (moderators) */
+        get: {
+            parameters: {
+                query?: {
+                    search?: string;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description posts */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["LinkablePost"][];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/changelog_entries/draft": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** AI draft of the text from the linked posts (moderators, needs AI_PROVIDER and AI_MODEL) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["ChangelogDraftInput"];
+                };
+            };
+            responses: {
+                /** @description draft */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ChangelogDraft"];
+                    };
+                };
+                /** @description AI is not configured */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/app/v1/confirmation": {
         parameters: {
             query?: never;
@@ -2186,7 +2417,7 @@ export interface paths {
         get: {
             parameters: {
                 query?: {
-                    category?: "post" | "comment" | "user" | "board" | "post_status" | "site_settings" | "o_auth" | "saml" | "ldap" | "webhook" | "invitation" | "api_key";
+                    category?: "post" | "comment" | "user" | "board" | "post_status" | "changelog" | "site_settings" | "o_auth" | "saml" | "ldap" | "webhook" | "invitation" | "api_key";
                     /** @description nextBefore of the previous page */
                     before?: number;
                 };
@@ -3653,6 +3884,8 @@ export interface components {
         Tenant: {
             /** @description Name of the company account when LDAP login is on */
             ldapLabel: string | null;
+            /** @description At least one published changelog entry (header link) */
+            hasChangelog: boolean;
             siteName: string;
             siteLogo: string | null;
             siteFavicon: string | null;
@@ -3807,6 +4040,11 @@ export interface components {
             } | null;
             /** @description Duplicates merged into this post */
             mergedPosts: {
+                title: string;
+            }[];
+            /** @description Published changelog entries that deliver this post */
+            changelogEntries: {
+                id: number;
                 title: string;
             }[];
             /** Format: date-time */
@@ -4296,6 +4534,45 @@ export interface components {
         };
         Summary: {
             summary: string;
+        };
+        ChangelogEntry: {
+            id: number;
+            title: string;
+            body: string;
+            /**
+             * Format: date-time
+             * @description null for drafts
+             */
+            publishedAt: string | null;
+            posts: {
+                id: number;
+                title: string;
+                slug: string;
+            }[];
+        };
+        ChangelogEntryPage: {
+            entries: components["schemas"]["ChangelogEntry"][];
+            page: number;
+            hasMore: boolean;
+        };
+        ChangelogEntryInput: {
+            title?: string;
+            body?: string;
+            postIds?: number[];
+            /** @description true publishes a draft (first time: emails the followers of the linked posts), false turns it back into a draft */
+            published?: boolean;
+        };
+        LinkablePost: {
+            id: number;
+            title: string;
+            slug: string;
+            postStatusId: number | null;
+        };
+        ChangelogDraftInput: {
+            postIds: number[];
+        };
+        ChangelogDraft: {
+            body: string;
         };
         PostTranslation: {
             title: string;

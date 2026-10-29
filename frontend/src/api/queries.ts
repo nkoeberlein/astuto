@@ -96,6 +96,26 @@ export const myPostsQuery = (filter: MyPostsFilter) =>
     staleTime: 0,
   })
 
+export const changelogQuery = infiniteQueryOptions({
+  queryKey: ['changelog'],
+  queryFn: ({ pageParam }) =>
+    unwrap(api.GET('/api/app/v1/changelog_entries', { params: { query: { page: pageParam } } })),
+  initialPageParam: 1,
+  getNextPageParam: (lastPage) => (lastPage.hasMore ? lastPage.page + 1 : undefined),
+})
+
+// Moderators: approved posts to link to a changelog entry
+export const linkablePostsQuery = (search: string) =>
+  queryOptions({
+    queryKey: ['changelog', 'linkablePosts', search],
+    queryFn: () =>
+      unwrap(
+        api.GET('/api/app/v1/changelog_entries/linkable_posts', {
+          params: { query: { search: search || undefined } },
+        }),
+      ),
+  })
+
 export const ROADMAP_SORT_OPTIONS = ['most_voted', 'recently_updated'] as const
 export type RoadmapSortBy = (typeof ROADMAP_SORT_OPTIONS)[number]
 
@@ -229,6 +249,7 @@ export const AUDIT_CATEGORIES = [
   'user',
   'board',
   'post_status',
+  'changelog',
   'site_settings',
   'o_auth',
   'saml',

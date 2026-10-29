@@ -70,6 +70,7 @@ module Api::App::V1
         source: current_user&.moderator? && (post.source_url.present? || post.source_label.present?) ? { url: post.source_url, label: post.source_label } : nil,
         # Duplicates merged into this post (their links lead here)
         mergedPosts: post.merged_posts.order(:created_at).map { |merged| { title: merged.title } },
+        changelogEntries: post.changelog_entries.published.newest_first.map { |entry| { id: entry.id, title: entry.title } },
         createdAt: post.created_at.iso8601,
         updatedAt: post.updated_at.iso8601
       }

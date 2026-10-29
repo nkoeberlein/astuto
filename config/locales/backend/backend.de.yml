@@ -37,6 +37,10 @@ de:
         body3: "Dein Passwort ändert sich erst, wenn du auf den obigen Link zugreifst und ein neues erstellst."
         action: 'Mein Passwort ändern'
     user:
+      notify_follower_of_changelog_entry:
+        subject: '[%{site_name}] Neu im Changelog: %{title}'
+        body_html: 'Im Changelog gibt es einen neuen Eintrag, <strong>%{title}</strong>. Er setzt Feedback um, dem du folgst'
+        read_entry: 'Zum Changelog'
       recap:
         pending_posts_count_html: 'Neues Feedback, das auf Freigabe wartet: %{count}'
         published_posts_count_html: 'Neu veröffentlichtes Feedback: %{count}'

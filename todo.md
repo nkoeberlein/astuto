@@ -172,7 +172,7 @@ Empfehlung (roadmap.md, Abschnitt 3): getrenntes Frontend mit React 19 + TS 7 + 
 - [x] Duplikate zusammenführen: `merged_into_post_id` + Freigabestatus `merged` (fällt so aus allen Listen, die auf `approved` filtern), Votes/Follower/Kommentare wandern mit (eine Stimme pro Person), alter Link führt zum Ziel (App-API löst auf, Frontend leitet um), „Zusammengeführt aus“ am Ziel, MCP-Tool `merge_posts`, Audit-Eintrag; Löschen des Ziels löscht die Hüllen mit
 - [x] Zusammenfassung langer Diskussionen: Button im Moderationsbereich der Post-Seite (`/next`), `POST /api/app/v1/posts/:id/summary`, einen Tag gecacht
 - [ ] Vorschläge für Board und Tags (Methode in `Ai::Client` vorhanden; braucht Tags #171)
-- [ ] Changelog-Entwürfe aus erledigten Posts (Methode vorhanden; braucht die Changelog-Funktion)
+- [x] Changelog-Entwürfe aus erledigten Posts: Button „Text mit KI entwerfen“ im Eintragsformular (aus den verknüpften Posts, in der Sprache der Oberfläche), `POST /api/app/v1/changelog_entries/draft`
 - [x] Übersetzung von Feedback: Link „Übersetzen“ unter Beschreibung und Kommentaren (nur Moderatoren, nur mit KI-Anbieter), übersetzt in die Sprache der Oberfläche, Ergebnis neben dem Original als „KI-Übersetzung“, nichts in der DB, Cache pro Text eine Woche; `POST /api/app/v1/posts/:id/translation` und `…/comments/:id/translation`
 - [x] Datenschutzhinweis: welche Daten an den KI-Anbieter gehen (`Ai::Client.privacy_disclosure`, [docs/mcp-and-ai.md](docs/mcp-and-ai.md))
 
@@ -196,7 +196,7 @@ Empfehlung (roadmap.md, Abschnitt 3): getrenntes Frontend mit React 19 + TS 7 + 
 - [x] Datenbank-Transaktionen in Workflows (#169): Post-Update/-Create jeweils atomar mit Follow bzw. Statuswechsel-Eintrag; Mails werden nach dem Commit versendet; gleiche Sicherung im öffentlichen API v1. Anlegen läuft für altes UI, App-API und MCP über `CreatePostWorkflow` (`create!` in der Transaktion, vorher rollten fehlgeschlagene Follows nicht zurück)
 
 ### Lücken zur Konkurrenz (siehe konkurrenz.md)
-- [ ] Changelog: Einträge mit erledigten Posts verknüpfen, RSS-Feed, E-Mail an Follower
+- [x] Changelog: `/changelog` (Header-Link, sobald ein Eintrag veröffentlicht ist; Moderatoren immer), Einträge mit Markdown-Text und verknüpften Posts (Suche, Posts mit Status zuerst), Entwürfe, Veröffentlichen/zurückziehen, Post-Seite verlinkt „Im Changelog“; E-Mail an die Follower der verknüpften Posts beim ersten Veröffentlichen (je Person einmal); RSS `/changelog/feed`, Sitemap; Audit-Kategorie `changelog`; Merge nimmt Verknüpfungen mit
 - [ ] Webhook-Vorlagen für Slack, Discord und Teams (#419)
 - [ ] Einbettbares Widget (Feedback, Roadmap, Changelog) **mit Besucher-Identifikation**: die eigene App signiert ein JWT mit einem Geheimnis pro Tenant, Astuto ordnet Votes und Posts dem echten Nutzer zu (anlegen oder per E-Mail/externer ID verknüpfen). Ohne das bleiben Widget-Votes anonym. Von P3 hochgezogen
 
