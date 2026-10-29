@@ -7,6 +7,6 @@ export const PROJECT_REPOSITORY_URL = 'https://github.com/nkoeberlein/astuto-evo
 // the root; only its built files stay under /next/assets (vite.config.ts `base`).
 export const APP_BASEPATH = ''
 
-// Documentation still lives in the archived upstream docs repository (config/initializers/project.rb)
-export const PROJECT_DOCS_URL = 'https://github.com/astuto/astuto-docs'
-export const projectDocsUrl = (path: string) => `${PROJECT_DOCS_URL}/blob/main/docs/${path}`
+// Guides in docs/ of this repository (config/initializers/project.rb)
+export const PROJECT_DOCS_URL = `${PROJECT_REPOSITORY_URL}/blob/main/docs`
+export const projectDocsUrl = (path: string) => `${PROJECT_DOCS_URL}/${path}`

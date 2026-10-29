@@ -59,7 +59,7 @@ export function AppearanceSettingsPage() {
           onChange={(event) => setCss(event.target.value)}
           spellCheck={false}
           className="font-mono text-sm"
-          placeholder=".post-card { border-radius: 0; }"
+          placeholder=":root { --primary: oklch(0.55 0.2 260); }"
         />
       </div>
 

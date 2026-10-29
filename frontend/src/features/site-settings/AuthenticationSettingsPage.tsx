@@ -114,7 +114,7 @@ function OAuthSection() {
   return (
     <SettingsSection title={t('site_settings.authentication.oauth_subtitle')}>
       <a
-        href={projectDocsUrl('oauth.md')}
+        href={projectDocsUrl('sso.md')}
         target="_blank"
         rel="noopener"
         className="inline-flex items-center gap-1.5 text-sm text-primary underline-offset-4 hover:underline"
