@@ -27,7 +27,8 @@ Astuto Evolution: community continuation of Astuto, a self-hosted customer feedb
 ## Patterns
 - Multi-tenancy via `Current.tenant` (subdomain = labels in front of the `BASE_URL` host, or a custom domain, when `MULTI_TENANCY=true`); every model is tenant-scoped. No billing: feedback spaces come from `bin/rails tenants:create` (docs/multi-tenancy.md).
 - All configuration via ENV (SMTP `EMAIL_*`, `POSTGRES_*`, `BASE_URL`, `TRUSTED_PROXY`).
-- The DB is migrated automatically by `docker-entrypoint.sh` on container start.
+- The DB is prepared on container start by `docker-entrypoint.sh` → `rake astuto:prepare_db` (schema + seeds when fresh, else migrations; Postgres advisory lock, so several containers can start at once). `docker-entrypoint-prod.sh` runs a passed command afterwards (worker: `bundle exec sidekiq`).
+- Probes `/health/live`, `/health/ready`, metrics `/metrics` (`METRICS_TOKEN`) are exempt from `RAILS_HOSTS` and `FORCE_SSL`; Helm chart in `deploy/helm/astuto-evolution` (CI: `helm.yml`).
 - v2 frontend is RTL-ready: use CSS logical properties only (`ms-`/`me-`, `ps-`/`pe-`, `start`/`end`), never `left`/`right` utilities.
 - Keep the schema portable for the v3 TypeScript rewrite: no `serialize`/`store` columns (use `jsonb`), no polymorphic associations, no Active Storage, no Ruby-specific formats (Marshal) in the database.
 

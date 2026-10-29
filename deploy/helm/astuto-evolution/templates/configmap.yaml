@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "astuto.fullname" . }}
+  labels:
+    {{- include "astuto.labels" . | nindent 4 }}
+data:
+  BASE_URL: {{ required "baseUrl is required, e.g. https://feedback.example.com" .Values.baseUrl | quote }}
+  MULTI_TENANCY: {{ .Values.multiTenancy | quote }}
+  {{- $host := (urlParse .Values.baseUrl).host | splitList ":" | first }}
+  RAILS_HOSTS: {{ ternary (printf ".%s" $host) $host .Values.multiTenancy | quote }}
+  ASSUME_SSL: {{ hasPrefix "https://" .Values.baseUrl | quote }}
+  RAILS_LOG_TO_STDOUT: "true"
+  POSTGRES_HOST: {{ required "database.host is required" .Values.database.host | quote }}
+  POSTGRES_PORT: {{ .Values.database.port | quote }}
+  POSTGRES_USER: {{ .Values.database.user | quote }}
+  POSTGRES_DB: {{ .Values.database.name | quote }}
+  {{- if .Values.worker.enabled }}
+  ACTIVE_JOB_BACKEND: "sidekiq"
+  REDIS_URL: {{ required "worker.redisUrl is required when the worker is enabled" .Values.worker.redisUrl | quote }}
+  {{- end }}
+  {{- range $key, $value := .Values.config }}
+  {{ $key }}: {{ $value | quote }}
+  {{- end }}

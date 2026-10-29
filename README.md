@@ -95,6 +95,7 @@ To run it from source:
 Guides in this repository:
 
 - [Reverse proxy, HTTPS, database and SMTP](docs/reverse-proxy-and-smtp.md)
+- [Operations: health checks, metrics, background jobs, backups, Kubernetes](docs/operations.md)
 - [Multi-tenancy: several feedback spaces, custom domains, instance admin](docs/multi-tenancy.md)
 - [Webhooks: templates, signatures, delivery log](docs/webhooks.md)
 - [MCP server and AI features](docs/mcp-and-ai.md)

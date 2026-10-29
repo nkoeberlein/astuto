@@ -154,9 +154,9 @@ Rails.application.routes.draw do
   # Caddy on-demand TLS asks here before it requests a certificate (docs/multi-tenancy.md)
   get '/custom_domain_check', to: 'custom_domain_checks#show'
 
-  # Healthcheck endpoint
-  get '/health', to: proc {
-    Tenant.first # to make sure db works
-    [200, {}, ['success']]
-  }
+  # Probes and metrics (docs/operations.md)
+  get '/health', to: 'health#show'
+  get '/health/live', to: 'health#live'
+  get '/health/ready', to: 'health#ready'
+  get '/metrics', to: 'metrics#show'
 end

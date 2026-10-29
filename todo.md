@@ -108,7 +108,7 @@ Issue-Nummern beziehen sich auf `astuto/astuto`. Phasen siehe [roadmap.md](roadm
 - [ ] 2FA/MFA für Admins und Moderatoren (v2: Devise-TOTP, v3: Better Auth); bei kommerziellem Einsatz bzw. Audits erwartet
 - [ ] Audit-Log für Moderation und Einstellungen
 - [ ] DSGVO: Datenexport und Löschung pro Person, Aufbewahrungsfristen
-- [ ] Health-Check-Endpunkt, Prometheus-Metriken, Backup/Restore-Anleitung, Helm-Chart
+- [x] Betrieb (`docs/operations.md`): `/health/live` und `/health/ready` (DB, Migrationen, Redis; 503 mit den fehlerhaften Checks), Prometheus-Endpunkt `/metrics` mit `METRICS_TOKEN` (Zählwerte je Tenant, Webhook-Fehler, Sidekiq-Queues), Backup/Restore-Anleitung, Helm-Chart `deploy/helm/astuto-evolution` (Web, optionaler Sidekiq-Worker, Ingress, ServiceMonitor; in der CI mit `helm lint`, `helm template` und kubeconform geprüft). Dazu: DB-Vorbereitung beim Start mit Advisory Lock (mehrere Container gleichzeitig), Prod-Entrypoint führt übergebene Befehle aus (`bundle exec sidekiq`), `REDIS_PASSWORD` wurde an fester Position in die URL gespleißt (kaputt bei `rediss://` und Sonderzeichen)
 - [x] FAQ „AGPL im Unternehmen“ (`docs/agpl-faq.md`, verlinkt im README)
 
 ## P1 – Altes Frontend ersetzen (Kern von v2)

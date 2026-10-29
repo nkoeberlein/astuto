@@ -38,6 +38,9 @@ module App
     # BASE_URL host: feedback.example.co.uk gives a tld_length of 3, localhost 0
     config.action_dispatch.tld_length = [URI.parse(ENV['BASE_URL'].to_s).host.to_s.split('.').size - 1, 0].max rescue 1
 
+    # Probes and scrapers call the container by IP; RAILS_HOSTS must not block them
+    config.host_authorization = { exclude: ->(request) { request.path.start_with?('/health', '/metrics') } }
+
     # If configured, add trusted proxy to the list of trusted proxies
     config.middleware.insert_after ActionDispatch::RemoteIp, Rack::Attack
     if ENV["TRUSTED_PROXY"]
