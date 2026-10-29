@@ -347,6 +347,19 @@ en:
         profile_headers: 'Extra headers for the profile request (optional)'
         client_secret_help: 'hidden for security purposes'
     webhooks:
+      deliveries:
+        title: 'Recent deliveries'
+        show: 'Deliveries'
+        empty: 'No deliveries yet.'
+        success: 'Delivered'
+        failure: 'Failed'
+        test: 'Test'
+        last: 'Last delivery: %{status} %{when}'
+      signing:
+        title: 'Signature'
+        help: 'Every request carries X-Astuto-Signature: sha256=HMAC-SHA256(secret, "<X-Astuto-Timestamp>.<body>"). Check it on the receiving side to make sure the request comes from this feedback space.'
+        rotate: 'New secret'
+        rotate_confirmation: 'Receivers that check the signature need the new secret right away. Continue?'
       title: 'Webhooks'
       learn_more: 'Learn how to configure and use webhooks'
       empty: 'There are no webhooks.'

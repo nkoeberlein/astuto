@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_29_130122) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_29_131031) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -256,6 +256,22 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_29_130122) do
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
+  create_table "webhook_deliveries", force: :cascade do |t|
+    t.bigint "webhook_id", null: false
+    t.bigint "tenant_id", null: false
+    t.string "trigger", null: false
+    t.boolean "is_test", default: false, null: false
+    t.boolean "success", default: false, null: false
+    t.integer "http_status"
+    t.integer "duration_ms"
+    t.text "error"
+    t.text "response_body"
+    t.datetime "created_at", null: false
+    t.index ["tenant_id"], name: "index_webhook_deliveries_on_tenant_id"
+    t.index ["webhook_id", "created_at"], name: "index_webhook_deliveries_on_webhook_id_and_created_at"
+    t.index ["webhook_id"], name: "index_webhook_deliveries_on_webhook_id"
+  end
+
   create_table "webhooks", force: :cascade do |t|
     t.string "name", null: false
     t.string "description"
@@ -268,6 +284,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_29_130122) do
     t.bigint "tenant_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "signing_secret"
     t.index ["name", "tenant_id"], name: "index_webhooks_on_name_and_tenant_id", unique: true
     t.index ["tenant_id"], name: "index_webhooks_on_tenant_id"
   end
@@ -301,5 +318,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_29_130122) do
   add_foreign_key "tenant_default_o_auths", "tenants"
   add_foreign_key "tenant_settings", "tenants"
   add_foreign_key "users", "tenants"
+  add_foreign_key "webhook_deliveries", "tenants"
+  add_foreign_key "webhook_deliveries", "webhooks", on_delete: :cascade
   add_foreign_key "webhooks", "tenants"
 end

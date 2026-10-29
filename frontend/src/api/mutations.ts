@@ -541,6 +541,17 @@ export function useWebhookMutations() {
         unwrap(
           api.POST('/api/app/v1/site_settings/webhooks/{id}/test', { params: { path: { id } } }),
         ),
+      // Last delivery and the delivery log change with every test, also a failed one
+      onSettled,
+    }),
+    rotateSecret: useMutation({
+      mutationFn: (id: number) =>
+        unwrap(
+          api.POST('/api/app/v1/site_settings/webhooks/{id}/rotate_secret', {
+            params: { path: { id } },
+          }),
+        ),
+      onSettled,
     }),
     preview: useMutation({
       mutationFn: (input: { trigger: string; url: string; httpBody: string | null }) =>

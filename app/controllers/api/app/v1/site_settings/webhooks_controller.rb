@@ -27,6 +27,19 @@ module Api::App::V1::SiteSettings
       render status: :created, json: serialize(webhook)
     end
 
+    # GET /api/app/v1/site_settings/webhooks/:id/deliveries: the newest runs (#458)
+    def deliveries
+      webhook = Webhook.find(params[:id])
+      render json: webhook.deliveries.order(created_at: :desc, id: :desc).limit(WebhookDelivery::KEEP).map { |delivery| serialize_delivery(delivery) }
+    end
+
+    # POST /api/app/v1/site_settings/webhooks/:id/rotate_secret: a new signing secret
+    def rotate_secret
+      webhook = Webhook.find(params[:id])
+      webhook.regenerate_signing_secret!
+      render json: serialize(webhook)
+    end
+
     # PATCH /api/app/v1/site_settings/webhooks/:id
     def update
       webhook = Webhook.find(params[:id])
@@ -66,9 +79,12 @@ module Api::App::V1::SiteSettings
       response = RunWebhook.perform_now(webhook_id: webhook.id, current_tenant_id: Current.tenant.id, is_test: true)
 
       render json: { status: response.code, body: response.body.to_s.truncate(4000) }
+    rescue ActiveRecord::RecordNotFound
+      raise
     rescue JSON::ParserError => e
       render_error(:unprocessable_content, "#{JSON_ERROR}: #{e.message}")
-    rescue Liquid::Error, SocketError, SystemCallError, Timeout::Error, OpenSSL::SSL::SSLError, HTTParty::Error => e
+    rescue StandardError => e
+      # Template, network or TLS problem; RunWebhook logged it as a failed delivery
       render_error(:unprocessable_content, e.message)
     end
 
@@ -124,7 +140,17 @@ module Api::App::V1::SiteSettings
           httpMethod: webhook.http_method.delete_prefix('http_'),
           url: webhook.url,
           httpBody: webhook.http_body,
-          httpHeaders: headers.map { |header| { key: header['key'], value: header['value'] } }
+          httpHeaders: headers.map { |header| { key: header['key'], value: header['value'] } },
+          signingSecret: webhook.signing_secret,
+          lastDelivery: (last = webhook.deliveries.order(created_at: :desc, id: :desc).first) && serialize_delivery(last)
+        }
+      end
+
+      def serialize_delivery(delivery)
+        {
+          id: delivery.id, success: delivery.success, isTest: delivery.is_test, httpStatus: delivery.http_status,
+          durationMs: delivery.duration_ms, error: delivery.error, responseBody: delivery.response_body,
+          createdAt: delivery.created_at.iso8601
         }
       end
   end

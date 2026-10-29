@@ -2464,6 +2464,86 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/app/v1/site_settings/webhooks/{id}/deliveries": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        /** Recent deliveries of a webhook (admins) */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description newest first */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["WebhookDelivery"][];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/site_settings/webhooks/{id}/rotate_secret": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** New signing secret (admins) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description rotated */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Webhook"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/app/v1/posts/{post_id}/summary": {
         parameters: {
             query?: never;
@@ -2908,6 +2988,20 @@ export interface components {
             /** @description Liquid template that renders JSON */
             httpBody: string | null;
             httpHeaders: components["schemas"]["WebhookHeader"][];
+            /** @description Key of the X-Astuto-Signature HMAC */
+            signingSecret: string;
+            lastDelivery: components["schemas"]["WebhookDelivery"];
+        };
+        WebhookDelivery: {
+            id: number;
+            success: boolean;
+            isTest: boolean;
+            httpStatus: number | null;
+            durationMs: number | null;
+            error: string | null;
+            responseBody: string | null;
+            /** Format: date-time */
+            createdAt: string;
         };
         WebhookInput: {
             name?: string;

@@ -16,6 +16,8 @@ Issue numbers refer to the archived [astuto/astuto](https://github.com/astuto/as
 - Legacy webhook endpoints `PUT /webhooks/:id/test` and `PUT /webhooks_preview` checked no permissions: anyone, even without an account, could fire a feedback space's webhooks with test data and read the target's response. Both now require an admin.
 
 ### Features
+- Webhooks are signed: every request carries `X-Astuto-Signature` (HMAC-SHA256 of timestamp and body with a per-webhook secret), `X-Astuto-Timestamp` and `X-Astuto-Event`. Existing webhooks got a secret during the update; receivers can start checking whenever they like. See docs/webhooks.md.
+- Webhook delivery log (#458): the newest 50 runs per webhook with status, HTTP code, duration and the template, JSON or network error, under Site settings › Webhooks › Deliveries. Requests time out after 15 seconds.
 - Site settings › General › Emails: **Send test email** checks the email configuration and shows the server's error (e.g. SMTP authentication) right away, even with `EMAIL_RAISE_DELIVERY_ERRORS=false`.
 - OAuth providers can send extra headers with the profile request, e.g. the `User-Agent` GitHub requires or a `Client-Id` (#485). An own `Authorization` header replaces the default bearer token. Set them in Site settings › Authentication.
 - v2 frontend is ready for right-to-left languages: `lang` and `dir` come from the feedback space's language (also in the server-rendered HTML, so the page never flips after loading), the last left/right utilities became logical ones, and directional icons mirror.

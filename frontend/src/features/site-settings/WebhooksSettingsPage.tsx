@@ -1,9 +1,10 @@
 import { useSuspenseQuery } from '@tanstack/react-query'
-import { BookOpen, Eye, FlaskConical, Pencil, Plus, Trash2 } from 'lucide-react'
+import { BookOpen, Eye, FlaskConical, History, KeyRound, Pencil, Plus, Trash2 } from 'lucide-react'
 import { type FormEvent, useRef, useState } from 'react'
-import type { Webhook, WebhookInput } from '@/api/client'
+import type { Webhook, WebhookDelivery, WebhookInput } from '@/api/client'
 import { useWebhookMutations } from '@/api/mutations'
 import { webhooksQuery, webhookVariablesQuery } from '@/api/queries'
+import { CopyButton } from '@/components/CopyButton'
 import { FormError } from '@/components/FormError'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -13,6 +14,7 @@ import { useI18n } from '@/lib/i18n'
 import { projectDocsUrl } from '@/lib/project'
 import { CheckboxField, SelectField, SettingsSection, TextField } from './fields'
 import { HeaderRows } from './HeaderRows'
+import { DeliveryStatus, WebhookDeliveries } from './WebhookDeliveries'
 
 const TRIGGERS: Webhook['trigger'][] = [
   'new_post',
@@ -31,6 +33,7 @@ export function WebhooksSettingsPage() {
   const { data: webhooks } = useSuspenseQuery(webhooksQuery)
   const { create, update, remove, test } = useWebhookMutations()
   const [editing, setEditing] = useState<number | 'new' | null>(null)
+  const [logFor, setLogFor] = useState<number | null>(null)
   const error = create.error ?? update.error ?? remove.error
 
   const open = (id: number | 'new' | null) => {
@@ -80,6 +83,9 @@ export function WebhooksSettingsPage() {
                     <span className="font-mono">{webhook.httpMethod.toUpperCase()}</span>
                     {webhook.description && ` · ${webhook.description}`}
                   </p>
+                  {webhook.lastDelivery && (
+                    <DeliveryStatus delivery={webhook.lastDelivery as WebhookDelivery} />
+                  )}
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="flex items-center gap-2 text-sm">
@@ -101,6 +107,16 @@ export function WebhooksSettingsPage() {
                   >
                     <FlaskConical className="size-4" aria-hidden />
                     {t('common.buttons.test')}
+                  </Button>
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="ghost"
+                    aria-expanded={logFor === webhook.id}
+                    onClick={() => setLogFor(logFor === webhook.id ? null : webhook.id)}
+                  >
+                    <History className="size-4" aria-hidden />
+                    {t('site_settings.webhooks.deliveries.show')}
                   </Button>
                   <Button
                     type="button"
@@ -131,6 +147,7 @@ export function WebhooksSettingsPage() {
               {test.variables === webhook.id && (test.data || test.error) && (
                 <TestResult status={test.data?.status} body={test.data?.body} error={test.error} />
               )}
+              {logFor === webhook.id && <WebhookDeliveries webhookId={webhook.id} />}
             </li>
           ),
         )}
@@ -304,6 +321,8 @@ function WebhookForm(props: {
         </fieldset>
       </div>
 
+      {w && <SigningSecret webhook={w} />}
+
       <SettingsSection title={t('common.buttons.preview')}>
         <Button
           type="button"
@@ -355,4 +374,36 @@ function prettyJson(text: string): string {
   } catch {
     return text
   }
+}
+
+// HMAC secret of the X-Astuto-Signature header: shown to admins, copied, or replaced
+function SigningSecret({ webhook }: { webhook: Webhook }) {
+  const { t } = useI18n()
+  const { rotateSecret } = useWebhookMutations()
+  const secret = rotateSecret.data?.signingSecret ?? webhook.signingSecret
+
+  return (
+    <SettingsSection title={t('site_settings.webhooks.signing.title')}>
+      <code className="block break-all rounded bg-muted p-2 font-mono text-xs">{secret}</code>
+      <div className="flex flex-wrap gap-2">
+        <CopyButton text={secret} />
+        <Button
+          type="button"
+          size="sm"
+          variant="outline"
+          disabled={rotateSecret.isPending}
+          onClick={() => {
+            if (window.confirm(t('site_settings.webhooks.signing.rotate_confirmation'))) {
+              rotateSecret.mutate(webhook.id)
+            }
+          }}
+        >
+          <KeyRound className="size-4" aria-hidden />
+          {t('site_settings.webhooks.signing.rotate')}
+        </Button>
+      </div>
+      <p className="text-sm text-muted-foreground">{t('site_settings.webhooks.signing.help')}</p>
+      <FormError error={rotateSecret.error} />
+    </SettingsSection>
+  )
 }

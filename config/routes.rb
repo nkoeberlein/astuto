@@ -145,6 +145,8 @@ Rails.application.routes.draw do
               get :variables, on: :collection
               post :preview, on: :collection
               post :test, on: :member
+              get :deliveries, on: :member
+              post :rotate_secret, on: :member
             end
             resources :invitations, only: [:index, :create] do
               post :test, on: :collection

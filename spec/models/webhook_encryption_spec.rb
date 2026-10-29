@@ -31,6 +31,18 @@ RSpec.describe Webhook, 'encryption', type: :model do
     expect(Webhook.find(webhook.id).url).to eq('https://example.com/hook')
   end
 
+  it 'gets an encrypted signing secret that can be rotated' do
+    webhook = FactoryBot.create(:webhook)
+    secret = webhook.signing_secret
+
+    expect(secret).to start_with('whsec_')
+    expect(Webhook.where(id: webhook.id).pick(:signing_secret)).not_to include(secret)
+    expect(Webhook.find(webhook.id).signing_secret).to eq(secret)
+
+    webhook.regenerate_signing_secret!
+    expect(Webhook.find(webhook.id).signing_secret).not_to eq(secret)
+  end
+
   it 'still reads values written with Marshal by older versions' do
     webhook = FactoryBot.create(:webhook)
     webhook.update_columns(url: marshal.encrypt_and_sign('https://old.example.com'), http_headers: marshal.encrypt_and_sign('[]'))

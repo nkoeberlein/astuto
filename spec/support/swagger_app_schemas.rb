@@ -158,7 +158,13 @@ module Swagger
           trigger: { type: :string, enum: %w[new_post new_post_pending_approval delete_post post_status_change new_comment new_vote new_user] },
           httpMethod: { type: :string, enum: %w[post put patch delete] },
           url: STRING.merge(description: 'Liquid template'), httpBody: NULLABLE_STRING.merge(description: 'Liquid template that renders JSON'),
-          httpHeaders: { type: :array, items: ref(:WebhookHeader) }
+          httpHeaders: { type: :array, items: ref(:WebhookHeader) },
+          signingSecret: STRING.merge(description: 'Key of the X-Astuto-Signature HMAC'),
+          lastDelivery: ref(:WebhookDelivery).merge(nullable: true)
+        }),
+        WebhookDelivery: object({
+          id: INTEGER, success: BOOLEAN, isTest: BOOLEAN, httpStatus: NULLABLE_INTEGER, durationMs: NULLABLE_INTEGER,
+          error: NULLABLE_STRING, responseBody: NULLABLE_STRING, createdAt: DATETIME
         }),
         WebhookInput: object({
           name: STRING, description: NULLABLE_STRING, isEnabled: BOOLEAN,

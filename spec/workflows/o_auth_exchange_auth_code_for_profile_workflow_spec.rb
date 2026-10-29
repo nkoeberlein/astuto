@@ -5,8 +5,6 @@ RSpec.describe OAuthExchangeAuthCodeForProfileWorkflow do
   let(:token_response) { { 'access_token' => 'tok' } }
 
   before do
-    # Routes (and their URL helpers) load lazily on the first request in the test env
-    allow(o_auth).to receive(:callback_url).and_return('https://feedback.example/o_auths/x/callback')
     allow(HTTParty).to receive(:post).and_return(token_response)
     allow(HTTParty).to receive(:get).and_return(instance_double(HTTParty::Response, parsed_response: { 'email' => 'a@b.c' }))
   end

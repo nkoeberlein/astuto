@@ -196,3 +196,14 @@ export const profileQuery = queryOptions({
   queryKey: ['profile'],
   queryFn: () => unwrap(api.GET('/api/app/v1/profile')),
 })
+
+export const webhookDeliveriesQuery = (webhookId: number) =>
+  queryOptions({
+    queryKey: ['siteSettings', 'webhooks', webhookId, 'deliveries'],
+    queryFn: () =>
+      unwrap(
+        api.GET('/api/app/v1/site_settings/webhooks/{id}/deliveries', {
+          params: { path: { id: webhookId } },
+        }),
+      ),
+  })

@@ -185,6 +185,20 @@ de:
       user_notification: 'Benutzer, die diesem Beitrag folgen, werden benachrichtigt'
       not_logged_in: 'Du musst Dich anmelden, um Kommentare zu posten'
   site_settings:
+    webhooks:
+      deliveries:
+        title: 'Letzte Auslieferungen'
+        show: 'Auslieferungen'
+        empty: 'Noch keine Auslieferungen.'
+        success: 'Zugestellt'
+        failure: 'Fehlgeschlagen'
+        test: 'Test'
+        last: 'Letzte Auslieferung: %{status} %{when}'
+      signing:
+        title: 'Signatur'
+        help: 'Jede Anfrage trägt X-Astuto-Signature: sha256=HMAC-SHA256(Geheimnis, "<X-Astuto-Timestamp>.<Body>"). Prüfe sie beim Empfänger, um sicherzugehen, dass die Anfrage aus diesem Feedback-Space kommt.'
+        rotate: 'Neues Geheimnis'
+        rotate_confirmation: 'Empfänger, die die Signatur prüfen, brauchen sofort das neue Geheimnis. Fortfahren?'
     menu:
       title: 'Seiteneinstellungen'
       general: 'Generell'

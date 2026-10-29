@@ -173,7 +173,54 @@ RSpec.describe 'api/app/v1/site_settings/webhooks', type: :request, openapi_spec
 
         run_test! do |response|
           expect(JSON.parse(response.body)).to eq('status' => 202, 'body' => 'accepted')
-          expect(HTTParty).to have_received(:put).with('https://hooks.example/abc', hash_including(headers: { 'Authorization' => 'Bearer secret' }))
+          expect(HTTParty).to have_received(:put).with('https://hooks.example/abc', hash_including(headers: hash_including('Authorization' => 'Bearer secret', 'X-Astuto-Event' => 'new_post')))
+        end
+      end
+    end
+  end
+
+  path '/api/app/v1/site_settings/webhooks/{id}/deliveries' do
+    parameter name: :id, in: :path, type: :integer
+
+    get('Recent deliveries of a webhook (admins)') do
+      tags 'Site settings'
+      produces 'application/json'
+
+      response(200, 'newest first') do
+        schema type: :array, items: { '$ref' => '#/components/schemas/WebhookDelivery' }
+        let(:id) { webhook.id }
+        before do
+          WebhookDelivery.record!(webhook: webhook, trigger: 'new_post', is_test: false, success: true, duration_ms: 12, http_status: 200)
+          WebhookDelivery.record!(webhook: webhook, trigger: 'new_post', is_test: true, success: false, duration_ms: 3, error: 'SocketError: nope')
+          sign_in admin
+        end
+
+        run_test! do |response|
+          body = JSON.parse(response.body)
+          expect(body.map { |d| d['success'] }).to eq([false, true])
+          expect(body.first).to include('error' => 'SocketError: nope', 'isTest' => true)
+        end
+      end
+    end
+  end
+
+  path '/api/app/v1/site_settings/webhooks/{id}/rotate_secret' do
+    parameter name: :id, in: :path, type: :integer
+
+    post('New signing secret (admins)') do
+      tags 'Site settings'
+      produces 'application/json'
+
+      response(200, 'rotated') do
+        schema '$ref' => '#/components/schemas/Webhook'
+        let(:id) { webhook.id }
+        let!(:old_secret) { webhook.signing_secret }
+        before { sign_in admin }
+
+        run_test! do |response|
+          secret = JSON.parse(response.body)['signingSecret']
+          expect(secret).to start_with('whsec_')
+          expect(secret).not_to eq(old_secret)
         end
       end
     end

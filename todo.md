@@ -77,8 +77,8 @@ Issue-Nummern beziehen sich auf `astuto/astuto`. Phasen siehe [roadmap.md](roadm
 - [x] Devise-Mails über ActiveJob/Sidekiq verschicken (#444) (`User#send_devise_notification`)
 
 ### Webhooks
-- [ ] Webhooks mit HMAC signieren (Signature-Header), damit Empfänger den Absender verifizieren können (Quackback signiert; Voraussetzung für die Vorlagen-Integrationen)
-- [ ] Liquid- und JSON-Fehler beim Ausführen speichern und im UI anzeigen (Delivery-Log pro Webhook) (#458)
+- [x] Webhooks mit HMAC signiert: `X-Astuto-Signature: sha256=HMAC(secret, "<timestamp>.<body>")`, `X-Astuto-Timestamp`, `X-Astuto-Event`; Geheimnis pro Webhook (verschlüsselt, rotierbar), bestehende Webhooks per Migration; Prüfanleitung in [docs/webhooks.md](docs/webhooks.md)
+- [x] Delivery-Log pro Webhook (#458): `webhook_deliveries` (letzte 50), Status, HTTP-Code, Dauer, Liquid-/JSON-/Netzwerkfehler oder Antwortanfang; im UI unter Webhooks › Auslieferungen; Timeout 15 s
 - [x] Template beim Speichern bzw. Testen validieren, Hinweis auf `escape_json` (`WebhooksController#preview/test`, `RunWebhook`)
 - [x] Kommentar-Benachrichtigungen reparieren (#431) (`config/initializers/global_id.rb`, `SendNotificationForCommentWorkflow`)
 
