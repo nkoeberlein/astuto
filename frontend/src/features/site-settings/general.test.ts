@@ -44,6 +44,13 @@ describe('general settings form', () => {
   it('sends only changed fields', () => {
     const original = draftFromSettings(settings)
     expect(changedFields(original, { ...original })).toEqual({})
+    // Same links with the keys in another order are no change
+    expect(
+      changedFields(original, {
+        ...original,
+        customLinks: [{ url: 'https://example.com/docs', label: 'Docs' }],
+      }),
+    ).toEqual({})
     expect(
       changedFields(original, {
         ...original,

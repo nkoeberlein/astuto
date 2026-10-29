@@ -2143,6 +2143,60 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/app/v1/site_settings/test_email": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Send a test email to oneself (admins) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description sent at once */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["TestEmailResult"];
+                    };
+                };
+                /** @description moderators are not admins */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description delivery error, even with delivery errors switched off */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/app/v1/site_settings/webhooks": {
         parameters: {
             query?: never;
@@ -2950,6 +3004,11 @@ export interface components {
             /** @description Shown only once */
             apiKey: string;
             masked: string;
+        };
+        TestEmailResult: {
+            sentTo: string;
+            deliveryMethod: string;
+            from: string;
         };
         VoteState: {
             liked: boolean;

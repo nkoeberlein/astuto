@@ -6,6 +6,7 @@ Issue numbers refer to the archived [astuto/astuto](https://github.com/astuto/as
 ## [Unreleased]
 
 ### Changed
+- Emails are sent from `EMAIL_MAIL_FROM` or, without it, `noreply@<host of BASE_URL>` (before: `noreply@astuto.io`, the discontinued hosted service). `EMAIL_MAIL_REPLY_TO` defaults to the sender.
 - **The new user interface replaces the old one at `/`.** Every page – boards, posts, roadmap, embedded roadmap, login, sign-up, password reset, profile, moderation and site settings – comes from the v2 frontend. `/next/...` redirects to `/...` (301), and the Devise pages `/users/sign_in`, `/users/sign_up`, `/users/password/new|edit` and `/users/edit` redirect to the new pages, keeping their notices (e.g. after confirming an email). See UPGRADING.md for custom CSS.
 - The Capybara system specs of the old UI are gone; Playwright end-to-end tests cover the new pages, including a Content Security Policy check in the browser console.
 
@@ -15,6 +16,7 @@ Issue numbers refer to the archived [astuto/astuto](https://github.com/astuto/as
 - Legacy webhook endpoints `PUT /webhooks/:id/test` and `PUT /webhooks_preview` checked no permissions: anyone, even without an account, could fire a feedback space's webhooks with test data and read the target's response. Both now require an admin.
 
 ### Features
+- Site settings › General › Emails: **Send test email** checks the email configuration and shows the server's error (e.g. SMTP authentication) right away, even with `EMAIL_RAISE_DELIVERY_ERRORS=false`.
 - OAuth providers can send extra headers with the profile request, e.g. the `User-Agent` GitHub requires or a `Client-Id` (#485). An own `Authorization` header replaces the default bearer token. Set them in Site settings › Authentication.
 - v2 frontend is ready for right-to-left languages: `lang` and `dir` come from the feedback space's language (also in the server-rendered HTML, so the page never flips after loading), the last left/right utilities became logical ones, and directional icons mirror.
 - End-to-end tests for the v2 frontend with Playwright (`frontend/e2e`, `npm run e2e`): public pages, embedding, login, settings, moderation and profile pages, the admin journey from a new board to a comment, and anonymous feedback through the approval queue. They run in CI against the production container.
@@ -31,6 +33,7 @@ Issue numbers refer to the archived [astuto/astuto](https://github.com/astuto/as
 - v2 frontend: embeddable roadmap at `/next/embedded_roadmap` for an iframe on another site, without header and footer; posts open in a new tab. It takes the legacy embed parameters (`show_boards`, `show_statuses`, `show_board_filter=false`, `show_status_filter=false`), so existing embed codes keep working after the switch from `/next` to `/`. Only this page may be framed by other sites, and only while the roadmap is enabled.
 
 ### Fixes
+- The general settings page counted as changed right after loading when the header links came back from the database with their keys in another order.
 - Webhooks set to PUT, PATCH or DELETE were always sent as POST.
 - After saving a webhook, the legacy UI got its URL and headers back encrypted.
 

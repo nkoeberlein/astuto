@@ -15,6 +15,11 @@ en:
     user_full_name: 'Anonymous User'
     deleted_user_full_name: 'Deleted User'
   mailers:
+    admin:
+      test_email:
+        subject: '[%{site_name}] Test email'
+        body: 'This test email from %{site_name} arrived, so sending emails works.'
+        details: 'Sent with %{delivery_method} from %{from}.'
     devise:
       welcome_greeting: 'Welcome to %{site_name}, %{email}!'
       opening_greeting: 'Hello %{email}!'

@@ -1,9 +1,10 @@
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { useBlocker } from '@tanstack/react-router'
+import { Mail } from 'lucide-react'
 import { useState } from 'react'
 import type { GeneralSettings } from '@/api/client'
-import { useUpdateGeneralSettings } from '@/api/mutations'
-import { boardsQuery, generalSettingsQuery, SORT_OPTIONS } from '@/api/queries'
+import { useSendTestEmail, useUpdateGeneralSettings } from '@/api/mutations'
+import { boardsQuery, generalSettingsQuery, SORT_OPTIONS, sessionQuery } from '@/api/queries'
 import { FormError } from '@/components/FormError'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
@@ -248,6 +249,7 @@ function GeneralForm(props: {
           onChange={(value) => set('mailLogoSize', Number(value))}
           help={help('mail_logo_size_help')}
         />
+        <TestEmailButton />
       </SettingsSection>
 
       <SettingsSection title={help('subtitle_visibility')}>
@@ -293,5 +295,41 @@ function GeneralForm(props: {
         <FormError error={save.error} />
       </div>
     </form>
+  )
+}
+
+// Checks the email configuration without saving anything; outside the form, so it never submits it
+function TestEmailButton() {
+  const { t } = useI18n()
+  const { data: session } = useSuspenseQuery(sessionQuery)
+  const send = useSendTestEmail()
+  const email = session.user?.email ?? ''
+
+  return (
+    <div className="space-y-2">
+      <div className="flex flex-wrap items-center gap-3">
+        <Button
+          type="button"
+          variant="outline"
+          disabled={send.isPending}
+          onClick={() => send.mutate()}
+        >
+          <Mail className="size-4" aria-hidden />
+          {t('site_settings.general.test_email')}
+        </Button>
+        <p className="text-sm text-muted-foreground">
+          {t('site_settings.general.test_email_help', { email })}
+        </p>
+      </div>
+      <p className="text-sm" aria-live="polite">
+        {send.data &&
+          t('site_settings.general.test_email_sent', {
+            email: send.data.sentTo,
+            method: send.data.deliveryMethod,
+            from: send.data.from,
+          })}
+      </p>
+      <FormError error={send.error} />
+    </div>
   )
 }

@@ -107,6 +107,10 @@ DATABASE_URL=postgresql://astuto_user:supersecret@db.internal.example.com:5432/a
 
 > **Important:** Most SMTP providers require `EMAIL_SMTP_AUTH=login` (or `plain`). Starting with Astuto Evolution 2.0, `EMAIL_SMTP_OPENSSL_VERIFY_MODE` defaults to `peer` for TLS security, and all delivery errors are logged even when `EMAIL_RAISE_DELIVERY_ERRORS=false`.
 
+**Sender:** `EMAIL_MAIL_FROM`; without it, emails come from `noreply@<host of BASE_URL>`. `EMAIL_MAIL_REPLY_TO` defaults to the sender. Many providers only accept a sender of a verified domain.
+
+**Check the setup:** Site settings › General › Emails › *Send test email* sends a message to you at once and shows the server's error message if it fails (wrong password, blocked port, unverified sender).
+
 ### Amazon SES (STARTTLS on Port 587)
 
 ```env

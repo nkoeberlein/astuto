@@ -218,6 +218,9 @@ en:
       error: 'An error occurred: %{message}'
       dirty: 'Changes not saved'
     general:
+      test_email: 'Send test email'
+      test_email_help: 'Sends an email to %{email} to check the email settings (EMAIL_* environment variables).'
+      test_email_sent: 'Test email sent to %{email} (%{method}, from %{from}). Check the inbox and the spam folder.'
       title: 'General'
       brand_setting_both: 'Both name and logo'
       brand_setting_name: 'Name only'

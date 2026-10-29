@@ -592,3 +592,10 @@ export function useProfileMutations() {
     }),
   }
 }
+
+// Site settings › General: a test email to the signed-in admin
+export function useSendTestEmail() {
+  return useMutation({
+    mutationFn: () => unwrap(api.POST('/api/app/v1/site_settings/test_email')),
+  })
+}

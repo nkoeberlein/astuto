@@ -33,9 +33,18 @@ export function draftFromSettings(settings: GeneralSettings): GeneralDraft {
 export function changedFields(original: GeneralDraft, draft: GeneralDraft): UpdateGeneralSettings {
   const changes: Record<string, unknown> = {}
   for (const key of Object.keys(draft) as (keyof GeneralDraft)[]) {
-    if (JSON.stringify(draft[key]) !== JSON.stringify(original[key])) changes[key] = draft[key]
+    if (stableJson(draft[key]) !== stableJson(original[key])) changes[key] = draft[key]
   }
   return changes as UpdateGeneralSettings
+}
+
+// JSON with sorted object keys: the database may return {url, label} for {label, url}
+function stableJson(value: unknown): string {
+  return JSON.stringify(value, (_key, inner: unknown) =>
+    inner && typeof inner === 'object' && !Array.isArray(inner)
+      ? Object.fromEntries(Object.entries(inner).sort(([a], [b]) => a.localeCompare(b)))
+      : inner,
+  )
 }
 
 // Header links as text, one per line: "Label|URL" (the legacy format)

@@ -198,6 +198,7 @@ module Swagger
         }, required: []),
         DeleteProfile: object({ currentPassword: STRING }, required: []),
         NewApiKey: object({ apiKey: STRING.merge(description: 'Shown only once'), masked: STRING }),
+        TestEmailResult: object({ sentTo: STRING, deliveryMethod: STRING, from: STRING }),
         VoteState: object({ liked: BOOLEAN, likesCount: INTEGER }),
         FollowState: object({ followed: BOOLEAN }),
         Summary: object({ summary: STRING }),

@@ -199,6 +199,9 @@ de:
       error: 'Ein Fehler ist aufgetreten: %{message}'
       dirty: 'Änderungen nicht gespeichert'
     general:
+      test_email: 'Testmail senden'
+      test_email_help: 'Schickt eine Mail an %{email}, um die Mail-Einstellungen zu prüfen (Umgebungsvariablen EMAIL_*).'
+      test_email_sent: 'Testmail an %{email} gesendet (%{method}, von %{from}). Bitte Posteingang und Spam-Ordner prüfen.'
       title: 'Generell'
       brand_setting_both: 'Sowohl Name als auch Logo'
       brand_setting_name: 'Nur Name'

@@ -44,6 +44,22 @@ module App
       ENV["BASE_URL"]
     end
 
+    # Sender of all emails: EMAIL_MAIL_FROM, otherwise noreply@<host of BASE_URL>
+    # (no longer the addresses of the discontinued astuto.io service)
+    def default_mail_from
+      ENV['EMAIL_MAIL_FROM'].presence || "noreply@#{base_url_host}"
+    end
+
+    def default_mail_reply_to
+      ENV['EMAIL_MAIL_REPLY_TO'].presence || default_mail_from
+    end
+
+    def base_url_host
+      URI.parse(base_url.to_s).host.presence || 'localhost'
+    rescue URI::InvalidURIError
+      'localhost'
+    end
+
     def multi_tenancy?
       ENV["MULTI_TENANCY"] == "true"
     end

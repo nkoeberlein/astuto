@@ -70,7 +70,7 @@ Issue-Nummern beziehen sich auf `astuto/astuto`. Phasen siehe [roadmap.md](roadm
 - [x] Konfigurierbare Header für den Profil-API-Aufruf (#485): `o_auths.profile_headers` (jsonb), eigener `Authorization`-Header ersetzt den Bearer-Token, Header-Zeilen im OAuth-Formular (`HeaderRows`, auch für Webhooks)
 
 ### E-Mail
-- [ ] „Testmail senden“ in den Site Settings
+- [x] „Testmail senden“ (Site Settings › General › E-Mails, `POST /api/app/v1/site_settings/test_email`): sofortiger Versand an den Admin, meldet SMTP-Fehler direkt, auch bei `EMAIL_RAISE_DELIVERY_ERRORS=false`
 - [x] Zustellfehler immer loggen, auch wenn `EMAIL_RAISE_DELIVERY_ERRORS=false` (`config/initializers/mailer_logging.rb`)
 - [x] SMTP-Doku mit funktionierenden Beispielen (SES, Brevo, SMTP2GO, Exchange; Hinweis auf `EMAIL_SMTP_AUTH=login`) (#330, #446, #294, #385) in [docs/reverse-proxy-and-smtp.md](docs/reverse-proxy-and-smtp.md)
 - [x] E-Mail-Änderung bei fehlerhaftem SMTP darf den Nutzer nicht aussperren (#476) (`skip_reconfirmation!` ohne konfiguriertes SMTP in Production)
@@ -97,7 +97,7 @@ Issue-Nummern beziehen sich auf `astuto/astuto`. Phasen siehe [roadmap.md](roadm
 - [ ] Multi-Tenancy-Modus (`MULTI_TENANCY=true`) mit Subdomains und Custom Domains testen, Doku schreiben; App-API und neues Frontend im Multi-Tenancy-Modus prüfen
 - [ ] Entscheidung Geschäftsmodell (roadmap.md, Abschnitt 7): Stripe-Billing modernisieren (gehostete Variante) oder entfernen
 - [ ] astuto.io-spezifische Teile entfernen bzw. konfigurierbar machen: Promo-Banner, `ASTUTO_CNAME_API_*`, Mails mit astuto.io-Links
-- [ ] Mailer-Standardabsender `noreply@astuto.io` / `notifications@astuto.io` durch Adresse aus `BASE_URL` bzw. Pflicht-ENV ersetzen
+- [x] Mailer-Standardabsender: `EMAIL_MAIL_FROM`, sonst `noreply@<Host aus BASE_URL>` (`Rails.application.default_mail_from`); Reply-To fällt auf den Absender zurück. Offen: `TenantMailer` (Billing-Mails mit astuto.io-Adressen) hängt an der Geschäftsmodell-Entscheidung
 - [ ] Instanz-Admin-Oberfläche für Tenants (anlegen, sperren, Domains) (#76)
 
 ### Mittelstand (roadmap.md, Abschnitt 7)

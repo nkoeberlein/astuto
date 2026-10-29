@@ -72,6 +72,8 @@ test.describe('admin journey', () => {
   test('saving general settings shows up in the header', async ({ page }) => {
     await page.goto('/site_settings/general')
     const siteName = page.getByLabel('Site name')
+    // Nothing changed yet: saving is not possible
+    await expect(page.getByRole('button', { name: 'Save' })).toBeDisabled()
     const original = await siteName.inputValue()
     const changed = unique('E2E Site')
 

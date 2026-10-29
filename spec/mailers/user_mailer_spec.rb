@@ -9,7 +9,8 @@ RSpec.describe UserMailer, type: :mailer do
 
     it "renders the headers" do
       expect(mail.to).to eq([user.email])
-      expect(mail.from).to eq(["notifications@astuto.io"])
+      # BASE_URL of the test env is http://localhost:3000; without EMAIL_MAIL_FROM the sender is noreply@<host>
+      expect(mail.from).to eq([Rails.application.default_mail_from])
     end
 
     it "renders the post title, replier name and comment body" do
