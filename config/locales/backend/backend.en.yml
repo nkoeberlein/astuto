@@ -87,6 +87,15 @@ en:
         one: 'Webhook'
         other: 'Webhooks'
     attributes:
+      saml_config:
+        enabled: 'Use SAML single sign-on'
+        label: 'Button text'
+        idp_entity_id: 'Identity provider entity ID (issuer)'
+        idp_sso_url: 'Single sign-on URL of the identity provider'
+        idp_cert: 'Signing certificate of the identity provider'
+        email_attribute: 'Attribute with the email address'
+        name_attribute: 'Attribute with the name'
+        auto_create_users: 'Create an account on the first login'
       board:
         name: 'Name'
         description: 'Description'
@@ -239,3 +248,5 @@ en:
     setup_required: 'This feedback space requires two-factor authentication for admins and moderators. Set it up in your profile settings first.'
     already_enabled: 'Two-factor authentication is already on.'
     not_enabled: 'Two-factor authentication is off.'
+  saml:
+    metadata_invalid: 'This is not SAML identity provider metadata (XML with a SingleSignOnService).'

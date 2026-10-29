@@ -217,6 +217,7 @@ export const AUDIT_CATEGORIES = [
   'post_status',
   'site_settings',
   'o_auth',
+  'saml',
   'webhook',
   'invitation',
   'api_key',
@@ -235,3 +236,8 @@ export const auditEventsQuery = (category: AuditCategory | null) =>
     initialPageParam: undefined as number | undefined,
     getNextPageParam: (lastPage) => lastPage.nextBefore ?? undefined,
   })
+
+export const samlSettingsQuery = queryOptions({
+  queryKey: ['siteSettings', 'saml'],
+  queryFn: () => unwrap(api.GET('/api/app/v1/site_settings/saml')),
+})

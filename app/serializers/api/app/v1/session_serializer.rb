@@ -21,8 +21,9 @@ module Api::App::V1
     end
 
     # oauth_start_url: callable that returns the absolute start URL for an OAuth provider
+    # SAML single sign-on shows up as one more provider (id 0), started on the current host
     def self.oauth_providers(oauth_start_url)
-      OAuth.include_defaults.where(is_enabled: true).order(created_at: :asc).map do |o_auth|
+      providers = OAuth.include_defaults.where(is_enabled: true).order(created_at: :asc).map do |o_auth|
         {
           id: o_auth.id,
           name: o_auth.name,
@@ -30,6 +31,9 @@ module Api::App::V1
           startUrl: oauth_start_url.call(o_auth)
         }
       end
+      saml = SamlConfig.find_by(enabled: true)
+      providers.unshift({ id: 0, name: saml.label, logo: nil, startUrl: '/saml/start' }) if saml&.usable?
+      providers
     end
 
     def self.current_user(user)

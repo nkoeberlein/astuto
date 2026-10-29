@@ -1784,7 +1784,7 @@ export interface paths {
         get: {
             parameters: {
                 query?: {
-                    category?: "post" | "comment" | "user" | "board" | "post_status" | "site_settings" | "o_auth" | "webhook" | "invitation" | "api_key";
+                    category?: "post" | "comment" | "user" | "board" | "post_status" | "site_settings" | "o_auth" | "saml" | "webhook" | "invitation" | "api_key";
                     /** @description nextBefore of the previous page */
                     before?: number;
                 };
@@ -2398,6 +2398,124 @@ export interface paths {
             };
         };
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/site_settings/saml": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** SAML single sign-on settings (admins) */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description settings */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["SamlSettings"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Change SAML settings (admins) */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["UpdateSamlSettings"];
+                };
+            };
+            responses: {
+                /** @description saved */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["SamlSettings"];
+                    };
+                };
+                /** @description switched on without a valid certificate */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/api/app/v1/site_settings/saml/parse_metadata": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Read entity ID, SSO URL and certificate from IdP metadata (not saved) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["SamlMetadataInput"];
+                };
+            };
+            responses: {
+                /** @description fields */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["SamlIdpFields"];
+                    };
+                };
+                /** @description not metadata */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
         delete?: never;
         options?: never;
         head?: never;
@@ -3513,6 +3631,40 @@ export interface components {
         /** @description Template variables per trigger, e.g. post.title */
         WebhookVariables: {
             [key: string]: string[];
+        };
+        SamlSettings: {
+            enabled: boolean;
+            /** @description Text of the login button */
+            label: string;
+            idpEntityId: string | null;
+            idpSsoUrl: string | null;
+            /** @description PEM certificate the IdP signs with */
+            idpCert: string | null;
+            /** @description Blank: common attribute names, then the NameID */
+            emailAttribute: string | null;
+            nameAttribute: string | null;
+            autoCreateUsers: boolean;
+            /** @description Entity ID (and metadata URL) of Astuto for the IdP */
+            spEntityId: string;
+            acsUrl: string;
+        };
+        UpdateSamlSettings: {
+            enabled?: boolean;
+            label?: string;
+            idpEntityId?: string | null;
+            idpSsoUrl?: string | null;
+            idpCert?: string | null;
+            emailAttribute?: string | null;
+            nameAttribute?: string | null;
+            autoCreateUsers?: boolean;
+        };
+        SamlMetadataInput: {
+            xml: string;
+        };
+        SamlIdpFields: {
+            idpEntityId: string | null;
+            idpSsoUrl: string;
+            idpCert: string | null;
         };
         AuditChange: {
             /** @description model.attribute, e.g. post.post_status_id */

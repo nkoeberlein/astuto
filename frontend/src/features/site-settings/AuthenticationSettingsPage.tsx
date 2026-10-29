@@ -12,6 +12,7 @@ import { useI18n } from '@/lib/i18n'
 import { projectDocsUrl } from '@/lib/project'
 import { CheckboxField, SelectField, SettingsSection, TextField } from './fields'
 import { HeaderRows } from './HeaderRows'
+import { SamlSection } from './SamlSection'
 
 // Site settings › Authentication (legacy: /site_settings/authentication):
 // email registration rules and OAuth providers
@@ -24,6 +25,7 @@ export function AuthenticationSettingsPage() {
       </h2>
       <EmailRegistrationSection />
       <OAuthSection />
+      <SamlSection />
     </div>
   )
 }

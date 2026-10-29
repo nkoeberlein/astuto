@@ -36,6 +36,10 @@ gem 'devise', '5.0.4'
 gem 'rotp', '6.3.0'
 gem 'rqrcode', '3.2.0'
 
+# Single sign-on: SAML 2.0 and LDAP / Active Directory
+gem 'ruby-saml', '1.18.1'
+gem 'net-ldap', '0.21.0'
+
 # Authorization
 gem 'pundit', '2.5.2'
 

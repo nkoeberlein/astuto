@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_29_180000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_29_190000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -174,6 +174,21 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_29_180000) do
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
+  create_table "saml_configs", force: :cascade do |t|
+    t.bigint "tenant_id", null: false
+    t.boolean "enabled", default: false, null: false
+    t.string "label", default: "Single sign-on", null: false
+    t.string "idp_entity_id"
+    t.string "idp_sso_url"
+    t.text "idp_cert"
+    t.string "email_attribute"
+    t.string "name_attribute"
+    t.boolean "auto_create_users", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tenant_id"], name: "index_saml_configs_on_tenant_id", unique: true
+  end
+
   create_table "tenant_default_o_auths", force: :cascade do |t|
     t.bigint "tenant_id", null: false
     t.bigint "o_auth_id", null: false
@@ -325,6 +340,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_29_180000) do
   add_foreign_key "posts", "post_statuses"
   add_foreign_key "posts", "tenants"
   add_foreign_key "posts", "users"
+  add_foreign_key "saml_configs", "tenants"
   add_foreign_key "tenant_default_o_auths", "o_auths"
   add_foreign_key "tenant_default_o_auths", "tenants"
   add_foreign_key "tenant_settings", "tenants"

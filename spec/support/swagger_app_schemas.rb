@@ -180,6 +180,18 @@ module Swagger
         WebhookPreview: object({ url: STRING, body: STRING }),
         WebhookTestResult: object({ status: INTEGER, body: STRING.merge(description: 'Response body, at most 4000 characters') }),
         WebhookVariables: { type: :object, additionalProperties: { type: :array, items: STRING }, description: 'Template variables per trigger, e.g. post.title' },
+        SamlSettings: object({
+          enabled: BOOLEAN, label: STRING.merge(description: 'Text of the login button'),
+          idpEntityId: NULLABLE_STRING, idpSsoUrl: NULLABLE_STRING, idpCert: NULLABLE_STRING.merge(description: 'PEM certificate the IdP signs with'),
+          emailAttribute: NULLABLE_STRING.merge(description: 'Blank: common attribute names, then the NameID'), nameAttribute: NULLABLE_STRING,
+          autoCreateUsers: BOOLEAN, spEntityId: STRING.merge(description: 'Entity ID (and metadata URL) of Astuto for the IdP'), acsUrl: STRING
+        }),
+        UpdateSamlSettings: object({
+          enabled: BOOLEAN, label: STRING, idpEntityId: NULLABLE_STRING, idpSsoUrl: NULLABLE_STRING, idpCert: NULLABLE_STRING,
+          emailAttribute: NULLABLE_STRING, nameAttribute: NULLABLE_STRING, autoCreateUsers: BOOLEAN
+        }, required: []),
+        SamlMetadataInput: object({ xml: STRING }),
+        SamlIdpFields: object({ idpEntityId: NULLABLE_STRING, idpSsoUrl: STRING, idpCert: NULLABLE_STRING }),
         AuditChange: object({ field: STRING.merge(description: 'model.attribute, e.g. post.post_status_id'), from: { description: 'Any JSON value; "[filtered]" for secrets' }, to: { description: 'Any JSON value' } }),
         AuditEvent: object({
           id: INTEGER, createdAt: DATETIME, action: STRING.merge(description: 'category.verb, e.g. post.update, webhook.rotate_secret'),

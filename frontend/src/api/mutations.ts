@@ -23,6 +23,7 @@ import {
   setCsrfToken,
   type UpdateGeneralSettings,
   type UpdateProfile,
+  type UpdateSamlSettings,
   unwrap,
   type WebhookInput,
 } from './client'
@@ -34,6 +35,7 @@ import {
   postQuery,
   postStatusesQuery,
   profileQuery,
+  samlSettingsQuery,
   sessionQuery,
 } from './queries'
 
@@ -678,4 +680,23 @@ export function useSendTestEmail() {
   return useMutation({
     mutationFn: () => unwrap(api.POST('/api/app/v1/site_settings/test_email')),
   })
+}
+
+// Site settings › Authentication › SAML single sign-on
+export function useSamlMutations() {
+  const queryClient = useQueryClient()
+  return {
+    save: useMutation({
+      mutationFn: (changes: UpdateSamlSettings) =>
+        unwrap(api.PATCH('/api/app/v1/site_settings/saml', { body: changes })),
+      onSuccess: (saved) => {
+        queryClient.setQueryData(samlSettingsQuery.queryKey, saved)
+        void queryClient.invalidateQueries({ queryKey: sessionQuery.queryKey })
+      },
+    }),
+    parseMetadata: useMutation({
+      mutationFn: (xml: string) =>
+        unwrap(api.POST('/api/app/v1/site_settings/saml/parse_metadata', { body: { xml } })),
+    }),
+  }
 }

@@ -58,6 +58,12 @@ Rails.application.routes.draw do
       :unlocks => 'unlocks'
     }
     
+    # SAML single sign-on (docs/sso.md)
+    get '/saml/metadata', to: 'saml#metadata', as: :saml_metadata
+    get '/saml/start', to: 'saml#start', as: :saml_start
+    post '/saml/acs', to: 'saml#acs', as: :saml_acs
+    get '/saml/finish', to: 'saml#finish', as: :saml_finish
+
     get '/o_auths/:id/start', to: 'o_auths#start', as: :o_auth_start
     get '/o_auths/:id/callback', to: 'o_auths#callback', as: :o_auth_callback
     get '/o_auths/sign_in_from_oauth_token', to: 'o_auths#sign_in_from_oauth_token', as: :o_auth_sign_in_from_oauth_token
@@ -120,6 +126,9 @@ Rails.application.routes.draw do
               post :test, on: :collection
             end
             resources :audit_events, only: [:index]
+            resource :saml, only: [:show, :update], controller: 'saml' do
+              post :parse_metadata
+            end
           end
         end
       end

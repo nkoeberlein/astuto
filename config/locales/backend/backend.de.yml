@@ -87,6 +87,15 @@ de:
         one: 'Nutzer/in'
         other: 'Nutzer/innen'
     attributes:
+      saml_config:
+        enabled: 'SAML Single Sign-on nutzen'
+        label: 'Text der Schaltfläche'
+        idp_entity_id: 'Entity ID des Identity Providers (Issuer)'
+        idp_sso_url: 'Single-Sign-on-URL des Identity Providers'
+        idp_cert: 'Signaturzertifikat des Identity Providers'
+        email_attribute: 'Attribut mit der E-Mail-Adresse'
+        name_attribute: 'Attribut mit dem Namen'
+        auto_create_users: 'Beim ersten Login ein Konto anlegen'
       webhook:
         http_body: 'HTTP-Body'
         http_headers: 'HTTP-Header'
@@ -239,3 +248,5 @@ de:
     setup_required: 'Dieser Feedback-Bereich verlangt Zwei-Faktor-Authentifizierung für Admins und Moderatoren. Richte sie zuerst in deinen Profileinstellungen ein.'
     already_enabled: 'Die Zwei-Faktor-Authentifizierung ist bereits eingeschaltet.'
     not_enabled: 'Die Zwei-Faktor-Authentifizierung ist ausgeschaltet.'
+  saml:
+    metadata_invalid: 'Das sind keine SAML-Metadaten eines Identity Providers (XML mit SingleSignOnService).'
