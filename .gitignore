@@ -43,3 +43,6 @@
 /frontend/playwright-report
 /frontend/test-results
 /frontend/e2e/.auth
+
+# Local Redis dumps
+dump.rdb
