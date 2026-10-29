@@ -202,7 +202,7 @@ Empfehlung (roadmap.md, Abschnitt 3): getrenntes Frontend mit React 19 + TS 7 + 
 
 ## P2 – Projekt und Community
 - [x] `SECURITY.md` mit Meldeweg (GitHub Private Vulnerability Reporting), Fristen und Scope
-- [ ] `CHANGELOG.md` und Release-Prozess (SemVer, Release Notes, Image-Tags): CHANGELOG und erstes Tag `v2.0.0-alpha.1` vorhanden; Version steht in `AstutoProject::VERSION` und `frontend/package.json`. Offen: Release-Checkliste, signierte Images
+- [x] `CHANGELOG.md` und Release-Prozess (SemVer, Release Notes, Image-Tags): CHANGELOG und erstes Tag `v2.0.0-alpha.1` vorhanden; Version steht in `AstutoProject::VERSION` und `frontend/package.json`. Release-Checkliste in [docs/releasing.md](docs/releasing.md); Images werden keyless mit cosign signiert und bekommen Provenance und SBOM (`push-to-registry.yml`). Offen: erster Lauf der Signatur in der CI (hier nicht testbar)
 - [ ] Doku aus `astuto/astuto-docs` übernehmen (Lizenz prüfen), Links in `config/initializers/project.rb` und `frontend/src/lib/project.ts` umstellen
 - [ ] Übersetzungsplattform festlegen (z. B. Weblate)
 - [ ] Demo-Instanz, Einträge bei awesome-selfhosted und AlternativeTo

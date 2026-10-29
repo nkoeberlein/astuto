@@ -106,6 +106,7 @@ Guides in this repository:
 - [Account lockout](docs/account-lockout.md) and [two-factor authentication](docs/two-factor-authentication.md)
 - [Privacy and GDPR: stored data, export, deletion, retention](docs/privacy.md)
 - [AGPL in companies: FAQ](docs/agpl-faq.md)
+- [Releasing and verifying signed images](docs/releasing.md)
 
 The original documentation of Astuto 1.x lives in the archived [astuto/astuto-docs](https://github.com/astuto/astuto-docs) repository and will move here over time.
 

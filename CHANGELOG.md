@@ -20,6 +20,7 @@ Issue numbers refer to the archived [astuto/astuto](https://github.com/astuto/as
 - The Capybara system specs of the old UI are gone; Playwright end-to-end tests cover the new pages, including a Content Security Policy check in the browser console.
 
 ### Security
+- Container images are signed with cosign (keyless, GitHub identity) and carry build provenance and an SBOM; how to verify them is in [docs/releasing.md](docs/releasing.md), together with the release checklist.
 - Private feedback spaces: votes (`/posts/:id/likes`), status history (`/posts/:id/post_status_changes`) and the embedded roadmap (`/embedded_roadmap`) were readable without logging in. They now require a login like the rest of the space.
 - Comments, votes and status history of posts waiting for approval or rejected were readable by everyone; like the post itself, they are now visible to moderators only.
 - Legacy webhook endpoints `PUT /webhooks/:id/test` and `PUT /webhooks_preview` checked no permissions: anyone, even without an account, could fire a feedback space's webhooks with test data and read the target's response. Both now require an admin.
