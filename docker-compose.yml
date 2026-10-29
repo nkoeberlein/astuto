@@ -18,6 +18,7 @@ services:
       <<: *db-env
       BASE_URL: http://localhost:3000
       SECRET_KEY_BASE: secretkeybasehere
+      RATE_LIMIT_REQUESTS: ${RATE_LIMIT_REQUESTS:-300}
     ports:
       - "${ASTUTO_PORT:-3000}:3000"
     depends_on:

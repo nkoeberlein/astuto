@@ -102,7 +102,9 @@ services:
 The web container keeps no state: sessions live in signed cookies and everything else in
 PostgreSQL. Run as many instances as you like behind a load balancer; no sticky sessions are
 needed. Every instance needs the same `SECRET_KEY_BASE`. Rate limiting (Rack::Attack) counts per
-instance, so the effective limits grow with the number of instances. With several instances,
+instance, so the effective limits grow with the number of instances. The general limit is 300
+requests per 5 minutes per IP address; `RATE_LIMIT_REQUESTS` raises it when many people share one
+address (e.g. an office behind NAT). With several instances,
 use Sidekiq, so jobs survive restarts.
 
 ## Backup and restore

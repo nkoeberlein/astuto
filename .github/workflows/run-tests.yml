@@ -26,7 +26,10 @@ jobs:
 
       # Only web and db: the Vite "frontend" service would create a root-owned
       # frontend/node_modules in the checkout and break npm ci below
+      # The end-to-end tests send more than the default 300 requests per 5 minutes from one IP
       - name: Run Docker containers
+        env:
+          RATE_LIMIT_REQUESTS: '5000'
         run: docker compose -f docker-compose.yml -f docker-compose-prod.yml up --detach web
 
       - name: Install required packages

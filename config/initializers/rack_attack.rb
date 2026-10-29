@@ -83,10 +83,12 @@ class Rack::Attack
   # counted by rack-attack and this throttle may be activated too
   # quickly. If so, enable the condition to exclude them from tracking.
 
-  # Throttle all requests by IP (60rpm) except API and MCP endpoints
+  # Throttle all requests by IP (default 300 per 5 minutes) except API and MCP endpoints.
+  # RATE_LIMIT_REQUESTS raises it, e.g. when many people share one IP address (an office
+  # behind NAT) or for the end-to-end tests in CI.
   #
   # Key: "rack::attack:#{Time.now.to_i/:period}:req/ip:#{req.ip}"
-  throttle('req/ip', limit: 300, period: 5.minutes) do |req|
+  throttle('req/ip', limit: ENV.fetch('RATE_LIMIT_REQUESTS', '300').to_i.clamp(1, 1_000_000), period: 5.minutes) do |req|
     client_ip(req) unless req.path.start_with?('/api/v1/') || req.path == '/mcp'
   end
 
