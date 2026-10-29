@@ -3832,7 +3832,7 @@ export interface components {
             pendingCount: number;
             allowAnonymousFeedback: boolean;
             /** @enum {string} */
-            feedbackApprovalPolicy: "anonymous_require_approval" | "never_require_approval" | "always_require_approval";
+            feedbackApprovalPolicy: "anonymous_require_approval" | "never_require_approval" | "always_require_approval" | "new_users_require_approval";
         };
         ModerationUser: {
             id: number;
@@ -3898,7 +3898,9 @@ export interface components {
             requireTwoFactorForStaff: boolean;
             allowAnonymousFeedback: boolean;
             /** @enum {string} */
-            feedbackApprovalPolicy: "anonymous_require_approval" | "never_require_approval" | "always_require_approval";
+            feedbackApprovalPolicy: "anonymous_require_approval" | "never_require_approval" | "always_require_approval" | "new_users_require_approval";
+            /** @description Approved posts after which an account is trusted (policy new_users_require_approval) */
+            trustedAfterPosts: number;
             loginOnlyWithOauth: boolean;
             /** @enum {string} */
             logoLinksTo: "root_page" | "custom_url" | "nothing";
@@ -3940,7 +3942,9 @@ export interface components {
             requireTwoFactorForStaff?: boolean;
             allowAnonymousFeedback?: boolean;
             /** @enum {string} */
-            feedbackApprovalPolicy?: "anonymous_require_approval" | "never_require_approval" | "always_require_approval";
+            feedbackApprovalPolicy?: "anonymous_require_approval" | "never_require_approval" | "always_require_approval" | "new_users_require_approval";
+            /** @description Approved posts after which an account is trusted (policy new_users_require_approval) */
+            trustedAfterPosts?: number;
             loginOnlyWithOauth?: boolean;
             /** @enum {string} */
             logoLinksTo?: "root_page" | "custom_url" | "nothing";

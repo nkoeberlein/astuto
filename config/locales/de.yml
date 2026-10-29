@@ -348,6 +348,8 @@ de:
       feedback_approval_policy_anonymous_require_approval: 'Nur für anonymes Feedback Freigabe erforderlich'
       feedback_approval_policy_never_require_approval: 'Freigabe ist nie erforderlich'
       feedback_approval_policy_always_require_approval: 'Freigabe immer erforderlich'
+      feedback_approval_policy_new_users_require_approval: 'Freigabe für anonymes Feedback und die ersten Beiträge jedes Kontos erforderlich'
+      trusted_after_posts_help: 'Nach so vielen freigegebenen Beiträgen werden neue Beiträge des Kontos automatisch freigegeben. Abgelehnte Beiträge zählen nicht.'
       feedback_approval_policy_help: 'Wenn eine Freigabe benötigt wird, bleibt das eingereichte Feedback so lange verborgen, bis ein Moderator oder Administrator es freigibt. Von Moderatoren oder Administratoren eingereichtes Feedback wird immer automatisch freigegeben.'
       subtitle_header: 'Kopfzeile'
       logo_links_to_root_page: 'Startseite'

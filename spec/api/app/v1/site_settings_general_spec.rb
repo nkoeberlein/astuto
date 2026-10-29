@@ -46,7 +46,7 @@ RSpec.describe 'api/app/v1/site_settings/general', type: :request, openapi_spec:
         let(:changes) do
           {
             siteName: 'Acme Feedback', locale: 'de', siteFavicon: '',
-            isPrivate: true, feedbackApprovalPolicy: 'always_require_approval', mailLogoSize: 48,
+            isPrivate: true, feedbackApprovalPolicy: 'new_users_require_approval', trustedAfterPosts: 5, mailLogoSize: 48,
             customLinks: [{ label: 'Docs', url: 'https://example.com/docs' }],
             customCss: '.post { color: red }'
           }
@@ -57,7 +57,7 @@ RSpec.describe 'api/app/v1/site_settings/general', type: :request, openapi_spec:
           body = JSON.parse(response.body)
           expect(body).to include('siteName' => 'Acme Feedback', 'locale' => 'de', 'siteFavicon' => nil, 'isPrivate' => true)
           expect(body['customLinks']).to eq([{ 'label' => 'Docs', 'url' => 'https://example.com/docs' }])
-          expect(setting.reload).to have_attributes(feedback_approval_policy: 'always_require_approval', mail_logo_size: 48, roadmap_enabled: true, custom_css: '.post { color: red }')
+          expect(setting.reload).to have_attributes(feedback_approval_policy: 'new_users_require_approval', trusted_after_posts: 5, mail_logo_size: 48, roadmap_enabled: true, custom_css: '.post { color: red }')
         end
       end
 

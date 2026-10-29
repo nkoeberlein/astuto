@@ -183,10 +183,20 @@ function GeneralForm(props: {
               'anonymous_require_approval',
               'never_require_approval',
               'always_require_approval',
+              'new_users_require_approval',
             ] as const
           ).map((policy) => ({ value: policy, label: help(`feedback_approval_policy_${policy}`) }))}
           help={help('feedback_approval_policy_help')}
         />
+        {draft.feedbackApprovalPolicy === 'new_users_require_approval' && (
+          <TextField
+            label={label('tenant_setting', 'trusted_after_posts')}
+            type="number"
+            value={String(draft.trustedAfterPosts)}
+            onChange={(value) => set('trustedAfterPosts', Number(value))}
+            help={help('trusted_after_posts_help')}
+          />
+        )}
       </SettingsSection>
 
       <SettingsSection title={help('subtitle_authentication')}>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_29_220000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_29_230000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -250,6 +250,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_29_220000) do
     t.integer "mail_logo_size", default: 64, null: false
     t.boolean "use_gravatar", default: true, null: false
     t.boolean "require_two_factor_for_staff", default: false, null: false
+    t.integer "trusted_after_posts", default: 3, null: false
     t.index ["tenant_id"], name: "index_tenant_settings_on_tenant_id"
   end
 

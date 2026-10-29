@@ -308,6 +308,8 @@ en:
       feedback_approval_policy_anonymous_require_approval: 'Require approval for anonymous feedback only'
       feedback_approval_policy_never_require_approval: 'Never require approval'
       feedback_approval_policy_always_require_approval: 'Always require approval'
+      feedback_approval_policy_new_users_require_approval: 'Require approval for anonymous feedback and the first posts of each account'
+      trusted_after_posts_help: 'After this many approved posts, new posts of the account are approved automatically. Rejected posts do not count.'
       feedback_approval_policy_help: 'If you require approval, submitted feedback will remain hidden from the public until a moderator or administrator approves it. Feedback submitted by moderators and administrators is always approved automatically.'
       subtitle_header: 'Header'
       logo_links_to_root_page: 'Root page'

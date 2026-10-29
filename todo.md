@@ -188,7 +188,7 @@ Empfehlung (roadmap.md, Abschnitt 3): getrenntes Frontend mit React 19 + TS 7 + 
 - [x] Combobox für den Status im Post-Formular (#119): Moderatoren wählen beim Erstellen einen Status; App-API nimmt `postStatusId` (nur Moderatoren), Timeline-Eintrag wird mitgedeckt
 - [x] Roadmap zeigt Votes und Kommentare, Sortierung nach „zuletzt aktualisiert“ (#484), im neuen Frontend; nur freigegebene Posts (das alte UI zeigt auch ausstehende)
 - [x] Übersicht „Mein Feedback“ (#429): `/my-feedback` (Icon im Header) mit Reitern Erstellt / Abgestimmt / Gefolgt und Zählern, zuletzt aktualisierte zuerst; eigene Posts auch ausstehend, abgelehnt oder zusammengeführt (mit Hinweis), Votes und Follows nur auf sichtbaren Posts; `GET /api/app/v1/my_posts`, `MyPostsQuery`
-- [ ] Vertrauensstufen: neue Freigaberegel „die ersten N Posts eines Kontos prüfen, danach automatisch freigeben“ (#362-Familie)
+- [x] Vertrauensstufen: Freigaberegel `new_users_require_approval` („anonymes Feedback und die ersten N Posts eines Kontos prüfen“), `trusted_after_posts` (Standard 3, 1–100) in Site Settings › General; nur freigegebene Posts zählen, abgelehnte nicht
 - [ ] RSS-Feed pro Board (neueste Posts), gemeinsam mit dem Changelog-RSS bauen
 - [ ] Digest für Nutzer: `SendRecapEmailsJob` verschickt bisher nur an Moderatoren; Opt-in für alle Nutzer (Top-Requests, Statuswechsel gefolgter Posts)
 - [ ] Sitemap.xml für öffentliche Boards, Posts und Roadmap (SEO: Feedback-Portale leben von der Indexierung, Fider verkauft sie hinter Paywall; `robots.txt` ist statisch)

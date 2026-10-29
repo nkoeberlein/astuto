@@ -91,7 +91,7 @@ module Swagger
           posts: { type: :array, items: ref(:ModerationPost), description: 'Newest first, at most 100' },
           pendingCount: INTEGER,
           allowAnonymousFeedback: BOOLEAN,
-          feedbackApprovalPolicy: { type: :string, enum: %w[anonymous_require_approval never_require_approval always_require_approval] }
+          feedbackApprovalPolicy: { type: :string, enum: TenantSetting.feedback_approval_policies.keys }
         }),
         ModerationUser: object({
           id: INTEGER, email: STRING, fullName: STRING, avatarUrl: NULLABLE_STRING,
@@ -119,7 +119,8 @@ module Swagger
           defaultPostSorting: { type: :string, enum: %w[trending newest most_voted oldest] },
           customLinks: { type: :array, items: ref(:CustomLink) },
           isPrivate: BOOLEAN, useGravatar: BOOLEAN.merge(description: 'Avatars from gravatar.com (sends the email hash there)'), requireTwoFactorForStaff: BOOLEAN, allowAnonymousFeedback: BOOLEAN,
-          feedbackApprovalPolicy: { type: :string, enum: %w[anonymous_require_approval never_require_approval always_require_approval] },
+          feedbackApprovalPolicy: { type: :string, enum: TenantSetting.feedback_approval_policies.keys },
+          trustedAfterPosts: INTEGER.merge(description: 'Approved posts after which an account is trusted (policy new_users_require_approval)'),
           loginOnlyWithOauth: BOOLEAN,
           logoLinksTo: { type: :string, enum: %w[root_page custom_url nothing] }, logoCustomUrl: NULLABLE_STRING,
           roadmapEnabled: BOOLEAN, showRoadmapInHeader: BOOLEAN,
@@ -138,7 +139,8 @@ module Swagger
           defaultPostSorting: { type: :string, enum: %w[trending newest most_voted oldest] },
           customLinks: { type: :array, items: ref(:CustomLink) },
           isPrivate: BOOLEAN, useGravatar: BOOLEAN.merge(description: 'Avatars from gravatar.com (sends the email hash there)'), requireTwoFactorForStaff: BOOLEAN, allowAnonymousFeedback: BOOLEAN,
-          feedbackApprovalPolicy: { type: :string, enum: %w[anonymous_require_approval never_require_approval always_require_approval] },
+          feedbackApprovalPolicy: { type: :string, enum: TenantSetting.feedback_approval_policies.keys },
+          trustedAfterPosts: INTEGER.merge(description: 'Approved posts after which an account is trusted (policy new_users_require_approval)'),
           loginOnlyWithOauth: BOOLEAN,
           logoLinksTo: { type: :string, enum: %w[root_page custom_url nothing] }, logoCustomUrl: NULLABLE_STRING,
           roadmapEnabled: BOOLEAN, showRoadmapInHeader: BOOLEAN,

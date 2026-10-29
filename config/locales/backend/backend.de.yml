@@ -184,6 +184,7 @@ de:
         allowed_email_domains: 'Erlaubte E-Mail-Domains'
         allow_anonymous_feedback: 'Anonymes Feedback erlauben'
         feedback_approval_policy: 'Feedback-Freigaberichtlinie'
+        trusted_after_posts: 'Vertrauenswürdig nach freigegebenen Beiträgen'
         show_vote_count: 'Stimmenanzahl für Nutzer*innen anzeigen'
         show_vote_button_in_board: 'Zeige Abstimm-Buttons auf der Übersichtsseite an'
         hide_unused_statuses_in_filter_by_status: 'Ungenutzte Status im Statusfilter ausblenden'

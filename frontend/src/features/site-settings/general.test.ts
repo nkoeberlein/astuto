@@ -18,6 +18,7 @@ const settings: GeneralSettings = {
   requireTwoFactorForStaff: false,
   allowAnonymousFeedback: true,
   feedbackApprovalPolicy: 'anonymous_require_approval',
+  trustedAfterPosts: 3,
   loginOnlyWithOauth: false,
   logoLinksTo: 'root_page',
   logoCustomUrl: null,
