@@ -161,4 +161,45 @@ RSpec.describe 'api/app/v1/moderation/users', type: :request, openapi_spec: 'app
       end
     end
   end
+
+  path '/api/app/v1/moderation/users/{id}' do
+    parameter name: :id, in: :path, type: :integer
+
+    delete('Delete (anonymize) an account (admins, GDPR)') do
+      tags 'Moderation'
+      produces 'application/json'
+
+      response(204, 'deleted') do
+        let(:id) { ada.id }
+        before { sign_in admin }
+
+        run_test! { expect(ada.reload).to be_deleted }
+      end
+
+      response(403, 'moderators cannot delete accounts') do
+        schema '$ref' => '#/components/schemas/Error'
+        let(:id) { ada.id }
+        before { sign_in moderator }
+
+        run_test! { expect(ada.reload).to be_active }
+      end
+    end
+  end
+
+  path '/api/app/v1/moderation/users/{id}/export' do
+    parameter name: :id, in: :path, type: :integer
+
+    get('Everything stored about a person, as a JSON download (admins, GDPR)') do
+      tags 'Moderation'
+      produces 'application/json'
+
+      response(200, 'data') do
+        schema '$ref' => '#/components/schemas/UserDataExport'
+        let(:id) { ada.id }
+        before { sign_in admin }
+
+        run_test! { |response| expect(JSON.parse(response.body).dig('profile', 'email')).to eq('ada@example.com') }
+      end
+    end
+  end
 end

@@ -155,6 +155,7 @@ de:
         brand_display: 'Anzeige'
         use_browser_locale: 'Sprache des Browsers verwenden'
         is_private: 'Privater Bereich'
+        use_gravatar: 'Avatare von Gravatar anzeigen'
         email_registration_policy: 'Registrierung per E-Mail'
         allowed_email_domains: 'Erlaubte E-Mail-Domains'
         allow_anonymous_feedback: 'Anonymes Feedback erlauben'

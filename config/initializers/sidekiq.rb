@@ -22,6 +22,11 @@ if ENV['ACTIVE_JOB_BACKEND'] == 'sidekiq'
         cron: ENV.fetch('SEND_RECAP_EMAIL_CRON') { '0 15 * * *' }, # defaults to every day at 15:00
         class: 'SendRecapEmails'
       )
+      Sidekiq::Cron::Job.create(
+        name: 'PurgeExpiredData Job',
+        cron: ENV.fetch('PURGE_EXPIRED_DATA_CRON') { '30 3 * * *' }, # daily at 03:30
+        class: 'PurgeExpiredData'
+      )
 
       config.cron_poll_interval = Rails.env.production? ? 30 : 15
       config.cron_history_size = 50

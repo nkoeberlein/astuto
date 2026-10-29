@@ -141,6 +141,7 @@ en:
         brand_display: 'Display'
         use_browser_locale: 'Use browser language'
         is_private: 'Private site'
+        use_gravatar: 'Show avatars from Gravatar'
         email_registration_policy: 'Email registration policy'
         allowed_email_domains: 'Allowed email domains'
         allow_anonymous_feedback: 'Allow anonymous feedback'

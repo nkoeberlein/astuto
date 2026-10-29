@@ -908,7 +908,36 @@ export interface paths {
         get?: never;
         put?: never;
         post?: never;
-        delete?: never;
+        /** Delete (anonymize) an account (admins, GDPR) */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description deleted */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description moderators cannot delete accounts */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
         options?: never;
         head?: never;
         /** Block, unblock or change the role of a user */
@@ -956,6 +985,46 @@ export interface paths {
                 };
             };
         };
+        trace?: never;
+    };
+    "/api/app/v1/moderation/users/{id}/export": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        /** Everything stored about a person, as a JSON download (admins, GDPR) */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description data */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["UserDataExport"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
         trace?: never;
     };
     "/api/app/v1/password": {
@@ -1541,6 +1610,42 @@ export interface paths {
                 };
             };
         };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/profile/export": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Everything stored about the signed-in person, as a JSON download (GDPR) */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description data */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["UserDataExport"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -2770,7 +2875,8 @@ export interface components {
         Author: {
             id: number;
             fullName: string;
-            avatarUrl: string;
+            /** @description null when Gravatar is switched off */
+            avatarUrl: string | null;
         };
         CurrentUser: {
             id: number;
@@ -2778,7 +2884,7 @@ export interface components {
             fullName: string;
             /** @enum {string} */
             role: "user" | "moderator" | "admin" | "owner";
-            avatarUrl: string;
+            avatarUrl: string | null;
         };
         OAuthProvider: {
             id: number;
@@ -2958,7 +3064,7 @@ export interface components {
             id: number;
             email: string;
             fullName: string;
-            avatarUrl: string;
+            avatarUrl: string | null;
             /** @enum {string} */
             role: "user" | "moderator" | "admin" | "owner";
             /** @enum {string} */
@@ -2969,6 +3075,14 @@ export interface components {
             canChangeStatus: boolean;
             /** @description The current user (an admin) may change the role */
             canChangeRole: boolean;
+            /** @description Admins may download the stored data */
+            canExport: boolean;
+            /** @description The current user (an admin) may delete the account */
+            canDelete: boolean;
+        };
+        /** @description Everything stored about a person: profile, posts, comments, votes, follows */
+        UserDataExport: {
+            [key: string]: unknown;
         };
         ModerationUserPage: {
             users: components["schemas"]["ModerationUser"][];
@@ -3005,6 +3119,8 @@ export interface components {
             defaultPostSorting: "trending" | "newest" | "most_voted" | "oldest";
             customLinks: components["schemas"]["CustomLink"][];
             isPrivate: boolean;
+            /** @description Avatars from gravatar.com (sends the email hash there) */
+            useGravatar: boolean;
             allowAnonymousFeedback: boolean;
             /** @enum {string} */
             feedbackApprovalPolicy: "anonymous_require_approval" | "never_require_approval" | "always_require_approval";
@@ -3044,6 +3160,8 @@ export interface components {
             defaultPostSorting?: "trending" | "newest" | "most_voted" | "oldest";
             customLinks?: components["schemas"]["CustomLink"][];
             isPrivate?: boolean;
+            /** @description Avatars from gravatar.com (sends the email hash there) */
+            useGravatar?: boolean;
             allowAnonymousFeedback?: boolean;
             /** @enum {string} */
             feedbackApprovalPolicy?: "anonymous_require_approval" | "never_require_approval" | "always_require_approval";

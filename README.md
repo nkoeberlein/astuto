@@ -100,6 +100,7 @@ Guides in this repository:
 - [Webhooks: templates, signatures, delivery log](docs/webhooks.md)
 - [MCP server and AI features](docs/mcp-and-ai.md)
 - [Account lockout](docs/account-lockout.md)
+- [Privacy and GDPR: stored data, export, deletion, retention](docs/privacy.md)
 - [AGPL in companies: FAQ](docs/agpl-faq.md)
 
 The original documentation of Astuto 1.x lives in the archived [astuto/astuto-docs](https://github.com/astuto/astuto-docs) repository and will move here over time.

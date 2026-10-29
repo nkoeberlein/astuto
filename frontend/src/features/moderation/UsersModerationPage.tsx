@@ -1,8 +1,12 @@
 import { useSuspenseInfiniteQuery } from '@tanstack/react-query'
-import { Ban, LockOpen } from 'lucide-react'
+import { Ban, Download, LockOpen, Trash2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import type { ModerationUser, UserRole, UserStatus } from '@/api/client'
-import { type UpdateModerationUser, useUpdateModerationUser } from '@/api/mutations'
+import {
+  type UpdateModerationUser,
+  useDeleteModerationUser,
+  useUpdateModerationUser,
+} from '@/api/mutations'
 import { moderationUsersQuery, type UserFilters } from '@/api/queries'
 import { FormError } from '@/components/FormError'
 import { UserAvatar } from '@/components/UserAvatar'
@@ -241,7 +245,44 @@ function UserRow(props: {
             {blocked ? t('moderation.users.unblock') : t('moderation.users.block')}
           </Button>
         )}
+        {user.canExport && (
+          <Button asChild size="icon" variant="ghost">
+            <a
+              href={`/api/app/v1/moderation/users/${user.id}/export`}
+              download
+              aria-label={`${user.fullName}: ${t('moderation.users.export_data')}`}
+              title={t('moderation.users.export_data')}
+            >
+              <Download className="size-4" aria-hidden />
+            </a>
+          </Button>
+        )}
+        {user.canDelete && <DeleteUserButton user={user} />}
       </div>
     </li>
+  )
+}
+
+function DeleteUserButton({ user }: { user: ModerationUser }) {
+  const { t } = useI18n()
+  const remove = useDeleteModerationUser()
+  return (
+    <Button
+      type="button"
+      size="icon"
+      variant="ghost"
+      className="text-destructive hover:text-destructive"
+      disabled={remove.isPending}
+      aria-label={`${user.fullName}: ${t('moderation.users.delete_account')}`}
+      title={t('moderation.users.delete_account')}
+      onClick={() => {
+        if (
+          window.confirm(t('moderation.users.delete_account_confirmation', { name: user.fullName }))
+        )
+          remove.mutate(user.id)
+      }}
+    >
+      <Trash2 className="size-4" aria-hidden />
+    </Button>
   )
 }

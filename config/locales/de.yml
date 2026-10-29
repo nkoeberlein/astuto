@@ -43,6 +43,9 @@ de:
         sign_up_with: 'Mit %{o_auth} anmelden'
         profile_settings: 'Profileinstellungen'
         cancel_account: 'Konto entfernen'
+        my_data: 'Meine Daten'
+        my_data_help: 'Lade alles herunter, was dieser Feedback-Bereich über dich speichert: Profil, Posts, Kommentare, Votes und gefolgte Posts (JSON).'
+        download_my_data: 'Meine Daten herunterladen'
         forgot_password: 'Passwort vergessen?'
         confirmation_instructions_not_received: "Keine Anweisungen zur Bestätigung erhalten?"
         unlock_instructions_not_received: "Keine Anweisungen zum Entsperren erhalten?"
@@ -184,6 +187,8 @@ de:
         comment_delete: 'hat einen Kommentar gelöscht:'
         user_create: 'hat den Nutzer angelegt:'
         user_update: 'hat den Nutzer geändert:'
+        user_export: 'hat die Daten heruntergeladen von:'
+        user_delete: 'hat das Konto gelöscht von:'
         board_create: 'hat das Board angelegt:'
         board_update: 'hat das Board geändert:'
         board_delete: 'hat das Board gelöscht:'
@@ -269,6 +274,7 @@ de:
       use_browser_locale_help: 'Ist das aktiviert, erscheint der Feedback-Bereich in der bevorzugten Sprache des Browsers. Gibt es diese Sprache nicht, gilt die Standardsprache.'
       subtitle_privacy: 'Privatsphäre'
       is_private_help: 'Ist das aktiviert, sehen nur angemeldete Nutzer die Inhalte des Feedback-Bereichs.'
+      use_gravatar_help: 'Profilbilder kommen von gravatar.com: Der Browser jedes Besuchers fragt dort jedes Bild ab, mit einem Hash der E-Mail-Adresse. Ausschalten zeigt stattdessen Initialen und schickt nichts an Dritte.'
       subtitle_moderation: 'Moderation'
       allow_anonymous_feedback_help: 'Nicht registrierte Benutzer können Feedback einreichen.'
       feedback_approval_policy_anonymous_require_approval: 'Nur für anonymes Feedback Freigabe erforderlich'
@@ -387,6 +393,9 @@ de:
     users:
       block: 'Sperren'
       unblock: 'Entsperren'
+      export_data: 'Daten herunterladen (DSGVO)'
+      delete_account: 'Konto löschen'
+      delete_account_confirmation: 'Konto von %{name} löschen? Posts und Kommentare bleiben und zeigen „Gelöschter Nutzer“. Das lässt sich nicht rückgängig machen.'
       block_confirmation: "%{name} kann sich nicht anmelden, bis die Blockierung aufgehoben wird. Bist du dir sicher?"
       unblock_confirmation: "%{name} kann sich anmelden und Feedback senden. Bist du dir sicher?"
       role_to_moderator_confirmation: "%{name} wird Posts und Nutzer*innen verwalten können. Fahre nur fort, wenn du dieser Person vertraust. Bist du dir sicher?"

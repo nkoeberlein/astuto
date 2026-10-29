@@ -153,6 +153,12 @@ function GeneralForm(props: {
           onChange={(value) => set('isPrivate', value)}
           help={help('is_private_help')}
         />
+        <CheckboxField
+          label={label('tenant_setting', 'use_gravatar')}
+          checked={draft.useGravatar}
+          onChange={(value) => set('useGravatar', value)}
+          help={help('use_gravatar_help')}
+        />
       </SettingsSection>
 
       <SettingsSection title={help('subtitle_moderation')}>

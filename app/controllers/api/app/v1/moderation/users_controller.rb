@@ -58,6 +58,29 @@ module Api::App::V1::Moderation
       render json: serialize(user)
     end
 
+    # GET /api/app/v1/moderation/users/:id/export (admins): everything stored about the person,
+    # e.g. to answer a GDPR access request
+    def export
+      return user_not_authorized unless current_user.admin?
+
+      user = User.find(params[:id])
+      audit('user.export', user)
+      send_data JSON.pretty_generate(user.export_data), type: 'application/json',
+        filename: "astuto-user-#{user.id}.json", disposition: 'attachment'
+    end
+
+    # DELETE /api/app/v1/moderation/users/:id (admins): deletes the account like the person
+    # could do themselves (posts and comments stay, shown as "Deleted user")
+    def destroy
+      user = User.find(params[:id])
+      return user_not_authorized unless current_user.admin? && manageable?(user)
+
+      label = user.full_name
+      user.anonymize!
+      audit('user.delete', user, subject_label: label)
+      head :no_content
+    end
+
     private
 
       # Nobody changes themselves or the owner; deleted accounts stay as they are
@@ -71,12 +94,14 @@ module Api::App::V1::Moderation
           id: user.id,
           email: user.email,
           fullName: user.full_name_or_email,
-          avatarUrl: user.gravatar_url,
+          avatarUrl: user.avatar_url,
           role: user.role,
           status: user.status,
           createdAt: user.created_at.iso8601,
           canChangeStatus: manageable,
-          canChangeRole: manageable && current_user.admin? && user.active?
+          canChangeRole: manageable && current_user.admin? && user.active?,
+          canExport: current_user.admin?,
+          canDelete: manageable && current_user.admin?
         }
       end
   end

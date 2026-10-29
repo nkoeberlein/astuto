@@ -73,6 +73,7 @@ test.describe('admin journey', () => {
       ['/site_settings/appearance', 'Appearance'],
       ['/site_settings/webhooks', 'Webhooks'],
       ['/site_settings/invitations', 'Invitations'],
+      ['/site_settings/audit_log', 'Audit log'],
       ['/moderation/feedback', 'Moderation'],
       ['/moderation/users', 'Moderation'],
       ['/profile', 'Profile settings'],
@@ -80,6 +81,11 @@ test.describe('admin journey', () => {
       await page.goto(path)
       await expect(page.getByRole('heading', { name: heading }).first()).toBeVisible()
     }
+
+    // GDPR: the own data as a download
+    const download = page.waitForEvent('download')
+    await page.getByRole('link', { name: 'Download my data' }).click()
+    expect((await download).suggestedFilename()).toBe('astuto-my-data.json')
   })
 
   test('saving general settings shows up in the header', async ({ page }) => {

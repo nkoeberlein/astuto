@@ -143,4 +143,18 @@ RSpec.describe 'api/app/v1/profile', type: :request, openapi_spec: 'app/v1/opena
       end
     end
   end
+
+  path '/api/app/v1/profile/export' do
+    get('Everything stored about the signed-in person, as a JSON download (GDPR)') do
+      tags 'Profile'
+      produces 'application/json'
+
+      response(200, 'data') do
+        schema '$ref' => '#/components/schemas/UserDataExport'
+        before { sign_in user }
+
+        run_test! { |response| expect(JSON.parse(response.body)['profile']).to include('email' => user.email) }
+      end
+    end
+  end
 end

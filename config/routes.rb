@@ -74,6 +74,7 @@ Rails.application.routes.draw do
           resource :unlock, only: [:create]
           resource :profile, only: [:show, :update, :destroy] do
             post :api_key
+            get :export
           end
           resources :translations, only: [:show], param: :locale, constraints: { locale: /[A-Za-z-]+/ }
           resources :boards, only: [:index, :show, :create, :update, :destroy] do
@@ -92,7 +93,9 @@ Rails.application.routes.draw do
           end
           namespace :moderation do
             resources :posts, only: [:index]
-            resources :users, only: [:index, :update]
+            resources :users, only: [:index, :update, :destroy] do
+              get :export, on: :member
+            end
           end
           namespace :site_settings do
             resource :general, only: [:show, :update], controller: 'general'

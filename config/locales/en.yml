@@ -33,6 +33,9 @@ en:
         sign_up_with: 'Sign up with %{o_auth}'
         profile_settings: 'Profile settings'
         cancel_account: 'Cancel account'
+        my_data: 'My data'
+        my_data_help: 'Download everything this feedback space stores about you: profile, posts, comments, votes and followed posts (JSON).'
+        download_my_data: 'Download my data'
         forgot_password: 'Forgot your password?'
         confirmation_instructions_not_received: "Didn't receive confirmation instructions?"
         unlock_instructions_not_received: "Didn't receive unlock instructions?"
@@ -183,6 +186,8 @@ en:
         comment_delete: 'deleted a comment'
         user_create: 'created the user'
         user_update: 'changed the user'
+        user_export: 'downloaded the data of'
+        user_delete: 'deleted the account of'
         board_create: 'created the board'
         board_update: 'changed the board'
         board_delete: 'deleted the board'
@@ -227,6 +232,7 @@ en:
       use_browser_locale_help: "If you enable this setting, the feedback space will be displayed in the user's browser preferred language. If the language is not available, the default language will be used."
       subtitle_privacy: 'Privacy'
       is_private_help: 'If you enable this setting, only logged in users will be able to see the content of the feedback space.'
+      use_gravatar_help: 'Profile pictures come from gravatar.com: the browser of every visitor asks gravatar.com for each picture, with a hash of the email address. Switch it off to show initials instead and send nothing to third parties.'
       subtitle_moderation: 'Moderation'
       subtitle_authentication: 'Authentication'
       subtitle_mail: 'Emails'
@@ -386,6 +392,9 @@ en:
     users:
       block: 'Block'
       unblock: 'Unblock'
+      export_data: 'Download data (GDPR)'
+      delete_account: 'Delete account'
+      delete_account_confirmation: 'Delete the account of %{name}? Posts and comments stay and show "Deleted user". This cannot be undone.'
       block_confirmation: "%{name} won't be able to log in until it is unblocked. Are you sure?"
       unblock_confirmation: "%{name} will be able to log in and submit feedback. Are you sure?"
       role_to_moderator_confirmation: "%{name} will be able to manage posts and users. Proceed only if you trust this person. Are you sure?"

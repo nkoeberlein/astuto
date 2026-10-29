@@ -6,6 +6,7 @@ class TenantSettingPolicy < ApplicationPolicy
         :use_browser_locale,
         :root_board_id,
         :is_private,
+        :use_gravatar,
         :email_registration_policy,
         :allowed_email_domains,
         :allow_anonymous_feedback,

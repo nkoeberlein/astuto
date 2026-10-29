@@ -65,16 +65,16 @@ module Api::App::V1
       end
       return render_error(:forbidden, I18n.t('errors.unauthorized')) if user.owner?
 
-      user.status = 'deleted'
-      user.email = "#{SecureRandom.alphanumeric(16)}@deleted.com"
-      user.full_name = I18n.t('defaults.deleted_user_full_name')
-      user.skip_confirmation
-      user.skip_reconfirmation!
-      user.save!
-      user.api_key&.destroy
+      user.anonymize!
       sign_out(user)
 
       render json: serialize_session(nil)
+    end
+
+    # GET /api/app/v1/profile/export: everything stored about the signed-in person (GDPR)
+    def export
+      send_data JSON.pretty_generate(current_user.export_data), type: 'application/json',
+        filename: 'astuto-my-data.json', disposition: 'attachment'
     end
 
     # POST /api/app/v1/profile/api_key: a new API key (moderators); the old one stops working

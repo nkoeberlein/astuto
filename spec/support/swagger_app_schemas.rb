@@ -19,8 +19,8 @@ module Swagger
     def self.all
       {
         Error: object({ error: STRING }),
-        Author: object({ id: INTEGER, fullName: STRING, avatarUrl: STRING }),
-        CurrentUser: object({ id: INTEGER, email: STRING, fullName: STRING, role: { type: :string, enum: %w[user moderator admin owner] }, avatarUrl: STRING }),
+        Author: object({ id: INTEGER, fullName: STRING, avatarUrl: NULLABLE_STRING.merge(description: 'null when Gravatar is switched off') }),
+        CurrentUser: object({ id: INTEGER, email: STRING, fullName: STRING, role: { type: :string, enum: %w[user moderator admin owner] }, avatarUrl: NULLABLE_STRING }),
         OAuthProvider: object({ id: INTEGER, name: STRING, logo: NULLABLE_STRING, startUrl: STRING }),
         TenantSettings: object({
           brandDisplay: { type: :string, enum: %w[name_and_logo name_only logo_only no_name_no_logo] },
@@ -79,13 +79,16 @@ module Swagger
           feedbackApprovalPolicy: { type: :string, enum: %w[anonymous_require_approval never_require_approval always_require_approval] }
         }),
         ModerationUser: object({
-          id: INTEGER, email: STRING, fullName: STRING, avatarUrl: STRING,
+          id: INTEGER, email: STRING, fullName: STRING, avatarUrl: NULLABLE_STRING,
           role: { type: :string, enum: %w[user moderator admin owner] },
           status: { type: :string, enum: %w[active blocked deleted] },
           createdAt: DATETIME,
           canChangeStatus: BOOLEAN.merge(description: 'The current user may block or unblock this user'),
-          canChangeRole: BOOLEAN.merge(description: 'The current user (an admin) may change the role')
+          canChangeRole: BOOLEAN.merge(description: 'The current user (an admin) may change the role'),
+          canExport: BOOLEAN.merge(description: 'Admins may download the stored data'),
+          canDelete: BOOLEAN.merge(description: 'The current user (an admin) may delete the account')
         }),
+        UserDataExport: { type: :object, description: 'Everything stored about a person: profile, posts, comments, votes, follows', additionalProperties: true },
         ModerationUserPage: object({
           users: { type: :array, items: ref(:ModerationUser) }, page: INTEGER, hasMore: BOOLEAN,
           counts: object({ total: INTEGER, active: INTEGER, blocked: INTEGER, deleted: INTEGER })
@@ -100,7 +103,7 @@ module Swagger
           useBrowserLocale: BOOLEAN, rootBoardId: INTEGER.merge(description: '0 shows the roadmap (or the first board) on the home page'),
           defaultPostSorting: { type: :string, enum: %w[trending newest most_voted oldest] },
           customLinks: { type: :array, items: ref(:CustomLink) },
-          isPrivate: BOOLEAN, allowAnonymousFeedback: BOOLEAN,
+          isPrivate: BOOLEAN, useGravatar: BOOLEAN.merge(description: 'Avatars from gravatar.com (sends the email hash there)'), allowAnonymousFeedback: BOOLEAN,
           feedbackApprovalPolicy: { type: :string, enum: %w[anonymous_require_approval never_require_approval always_require_approval] },
           loginOnlyWithOauth: BOOLEAN,
           logoLinksTo: { type: :string, enum: %w[root_page custom_url nothing] }, logoCustomUrl: NULLABLE_STRING,
@@ -119,7 +122,7 @@ module Swagger
           useBrowserLocale: BOOLEAN, rootBoardId: INTEGER,
           defaultPostSorting: { type: :string, enum: %w[trending newest most_voted oldest] },
           customLinks: { type: :array, items: ref(:CustomLink) },
-          isPrivate: BOOLEAN, allowAnonymousFeedback: BOOLEAN,
+          isPrivate: BOOLEAN, useGravatar: BOOLEAN.merge(description: 'Avatars from gravatar.com (sends the email hash there)'), allowAnonymousFeedback: BOOLEAN,
           feedbackApprovalPolicy: { type: :string, enum: %w[anonymous_require_approval never_require_approval always_require_approval] },
           loginOnlyWithOauth: BOOLEAN,
           logoLinksTo: { type: :string, enum: %w[root_page custom_url nothing] }, logoCustomUrl: NULLABLE_STRING,

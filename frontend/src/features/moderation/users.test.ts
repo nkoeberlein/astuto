@@ -18,6 +18,8 @@ const user = (id: number, changes: Partial<ModerationUser> = {}): ModerationUser
   createdAt: '2026-10-28T10:00:00Z',
   canChangeStatus: true,
   canChangeRole: true,
+  canExport: false,
+  canDelete: false,
   ...changes,
 })
 

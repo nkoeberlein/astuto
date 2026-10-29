@@ -32,6 +32,7 @@ export function ProfilePage() {
       <NotificationsSection profile={profile} />
       {profile.hasSetPassword && <PasswordSection />}
       {profile.canHaveApiKey && <ApiKeySection current={profile.apiKey} />}
+      <DataExportSection />
       {profile.canDeleteAccount && <DeleteAccountSection needsPassword={profile.hasSetPassword} />}
     </div>
   )
@@ -246,6 +247,21 @@ function ApiKeySection({ current }: { current: string | null }) {
         {t('common.forms.api_key.generate_api_key')}
       </Button>
       <FormError error={generateApiKey.error} />
+    </SettingsSection>
+  )
+}
+
+// GDPR: a JSON file with profile, posts, comments, votes and follows
+function DataExportSection() {
+  const { t } = useI18n()
+  return (
+    <SettingsSection title={t('common.forms.auth.my_data')}>
+      <p className="text-sm text-muted-foreground">{t('common.forms.auth.my_data_help')}</p>
+      <Button asChild variant="outline">
+        <a href="/api/app/v1/profile/export" download>
+          {t('common.forms.auth.download_my_data')}
+        </a>
+      </Button>
     </SettingsSection>
   )
 }

@@ -32,3 +32,10 @@ namespace :astuto do
     end
   end
 end
+
+namespace :astuto do
+  desc 'Remove expired personal data now (runs daily with Sidekiq; see docs/privacy.md)'
+  task purge_expired_data: :environment do
+    puts PurgeExpiredData.perform_now.inspect
+  end
+end

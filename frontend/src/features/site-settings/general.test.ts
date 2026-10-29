@@ -14,6 +14,7 @@ const settings: GeneralSettings = {
   defaultPostSorting: 'trending',
   customLinks: [{ label: 'Docs', url: 'https://example.com/docs' }],
   isPrivate: false,
+  useGravatar: true,
   allowAnonymousFeedback: true,
   feedbackApprovalPolicy: 'anonymous_require_approval',
   loginOnlyWithOauth: false,

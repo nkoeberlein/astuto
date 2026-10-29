@@ -252,6 +252,18 @@ export function useUpdateModerationUser() {
   })
 }
 
+// Admins delete an account like its owner could (GDPR); posts and comments stay anonymous
+export function useDeleteModerationUser() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (id: number) =>
+      unwrap(api.DELETE('/api/app/v1/moderation/users/{id}', { params: { path: { id } } })),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ['moderation', 'users'] })
+    },
+  })
+}
+
 export function useUpdateGeneralSettings() {
   const queryClient = useQueryClient()
   return useMutation({
