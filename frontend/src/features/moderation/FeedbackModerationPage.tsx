@@ -40,14 +40,13 @@ export function FeedbackModerationPage({ tab }: { tab: ModerationTab }) {
             <span className="rounded-full border px-2.5 py-1 text-muted-foreground">
               {t(`site_settings.general.feedback_approval_policy_${queue.feedbackApprovalPolicy}`)}
             </span>
-            {/* Site settings are still in the legacy UI */}
-            <a
-              href="/site_settings/general"
+            <Link
+              to="/site_settings/general"
               className="flex items-center gap-1 text-primary underline-offset-4 hover:underline"
             >
               <Settings className="size-3.5" aria-hidden />
               {t('moderation.feedback.change_feedback_moderation_settings')}
-            </a>
+            </Link>
           </div>
         )}
       </div>

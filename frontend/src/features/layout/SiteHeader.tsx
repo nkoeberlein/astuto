@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router'
-import { LogOut, ShieldCheck } from 'lucide-react'
+import { LogOut, Settings, ShieldCheck } from 'lucide-react'
 import type { Board, Session } from '@/api/client'
 import { useLogout } from '@/api/mutations'
 import { EvoLogo } from '@/components/EvoLogo'
@@ -7,7 +7,7 @@ import { UserAvatar } from '@/components/UserAvatar'
 import { Button } from '@/components/ui/button'
 import { useLoginRedirect } from '@/features/auth/redirect'
 import { useI18n } from '@/lib/i18n'
-import { isModerator } from '@/lib/roles'
+import { isAdmin, isModerator } from '@/lib/roles'
 
 export function SiteHeader({ session, boards }: { session: Session; boards: Board[] }) {
   const { t } = useI18n()
@@ -90,6 +90,17 @@ export function SiteHeader({ session, boards }: { session: Session; boards: Boar
         {user ? (
           <div className="flex items-center gap-2 text-sm font-medium">
             {isModerator(user) && <ModerationLink pendingCount={session.pendingPostsCount ?? 0} />}
+            {isAdmin(user) && (
+              <Link
+                to="/site_settings/general"
+                className="rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                activeProps={{ className: 'text-primary' }}
+                aria-label={t('header.menu.site_settings')}
+                title={t('header.menu.site_settings')}
+              >
+                <Settings className="size-4" aria-hidden />
+              </Link>
+            )}
             <UserAvatar name={user.fullName} url={user.avatarUrl} />
             <span className="hidden sm:inline">{user.fullName}</span>
             <Button

@@ -125,6 +125,9 @@ Rails.application.routes.draw do
             resources :posts, only: [:index]
             resources :users, only: [:index, :update]
           end
+          namespace :site_settings do
+            resource :general, only: [:show, :update], controller: 'general'
+          end
         end
       end
     end

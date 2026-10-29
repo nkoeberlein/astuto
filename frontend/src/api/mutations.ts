@@ -9,14 +9,22 @@ import { replaceUser } from '@/features/moderation/users'
 import {
   api,
   type Comment,
+  type GeneralSettings,
   type Post,
   type PostPage,
   type Schemas,
   type Session,
   setCsrfToken,
+  type UpdateGeneralSettings,
   unwrap,
 } from './client'
-import { commentsQuery, moderationPostsQuery, postQuery, sessionQuery } from './queries'
+import {
+  commentsQuery,
+  generalSettingsQuery,
+  moderationPostsQuery,
+  postQuery,
+  sessionQuery,
+} from './queries'
 
 type VoteState = Schemas['VoteState']
 type ModerationQueue = Schemas['ModerationQueue']
@@ -229,6 +237,21 @@ export function useUpdateModerationUser() {
         (data) => data && replaceUser(data, updated),
       )
       void queryClient.invalidateQueries({ queryKey: ['moderation', 'users'] })
+    },
+  })
+}
+
+export function useUpdateGeneralSettings() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (changes: UpdateGeneralSettings) =>
+      unwrap(api.PATCH('/api/app/v1/site_settings/general', { body: changes })),
+    onSuccess: (saved) => {
+      queryClient.setQueryData<GeneralSettings>(generalSettingsQuery.queryKey, saved)
+      // Name, locale, header and visibility settings come with the session
+      void queryClient.invalidateQueries({ queryKey: sessionQuery.queryKey })
+      void queryClient.invalidateQueries({ queryKey: ['boards'] })
+      void queryClient.invalidateQueries({ queryKey: ['roadmap'] })
     },
   })
 }

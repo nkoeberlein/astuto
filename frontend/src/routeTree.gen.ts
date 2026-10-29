@@ -20,6 +20,7 @@ import { Route as ModerationUsersRouteImport } from './routes/moderation.users'
 import { Route as PasswordForgotRouteImport } from './routes/password.forgot'
 import { Route as PasswordResetRouteImport } from './routes/password.reset'
 import { Route as PostsPostSlugRouteImport } from './routes/posts.$postSlug'
+import { Route as Site_settingsGeneralRouteImport } from './routes/site_settings.general'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -76,6 +77,11 @@ const PostsPostSlugRoute = PostsPostSlugRouteImport.update({
   path: '/posts/$postSlug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const Site_settingsGeneralRoute = Site_settingsGeneralRouteImport.update({
+  id: '/site_settings/general',
+  path: '/site_settings/general',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -89,6 +95,7 @@ export interface FileRoutesByFullPath {
   '/password/forgot': typeof PasswordForgotRoute
   '/password/reset': typeof PasswordResetRoute
   '/posts/$postSlug': typeof PostsPostSlugRoute
+  '/site_settings/general': typeof Site_settingsGeneralRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -102,6 +109,7 @@ export interface FileRoutesByTo {
   '/password/forgot': typeof PasswordForgotRoute
   '/password/reset': typeof PasswordResetRoute
   '/posts/$postSlug': typeof PostsPostSlugRoute
+  '/site_settings/general': typeof Site_settingsGeneralRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -116,6 +124,7 @@ export interface FileRoutesById {
   '/password/forgot': typeof PasswordForgotRoute
   '/password/reset': typeof PasswordResetRoute
   '/posts/$postSlug': typeof PostsPostSlugRoute
+  '/site_settings/general': typeof Site_settingsGeneralRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -131,6 +140,7 @@ export interface FileRouteTypes {
     | '/password/forgot'
     | '/password/reset'
     | '/posts/$postSlug'
+    | '/site_settings/general'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -144,6 +154,7 @@ export interface FileRouteTypes {
     | '/password/forgot'
     | '/password/reset'
     | '/posts/$postSlug'
+    | '/site_settings/general'
   id:
     | '__root__'
     | '/'
@@ -157,6 +168,7 @@ export interface FileRouteTypes {
     | '/password/forgot'
     | '/password/reset'
     | '/posts/$postSlug'
+    | '/site_settings/general'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -171,6 +183,7 @@ export interface RootRouteChildren {
   PasswordForgotRoute: typeof PasswordForgotRoute
   PasswordResetRoute: typeof PasswordResetRoute
   PostsPostSlugRoute: typeof PostsPostSlugRoute
+  Site_settingsGeneralRoute: typeof Site_settingsGeneralRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -252,6 +265,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PostsPostSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/site_settings/general': {
+      id: '/site_settings/general'
+      path: '/site_settings/general'
+      fullPath: '/site_settings/general'
+      preLoaderRoute: typeof Site_settingsGeneralRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -267,6 +287,7 @@ const rootRouteChildren: RootRouteChildren = {
   PasswordForgotRoute: PasswordForgotRoute,
   PasswordResetRoute: PasswordResetRoute,
   PostsPostSlugRoute: PostsPostSlugRoute,
+  Site_settingsGeneralRoute: Site_settingsGeneralRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

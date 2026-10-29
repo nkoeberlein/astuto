@@ -160,3 +160,9 @@ export const moderationUsersQuery = (filters: UserFilters) =>
     initialPageParam: 1,
     getNextPageParam: (lastPage) => (lastPage.hasMore ? lastPage.page + 1 : undefined),
   })
+
+// Site settings › General (admins)
+export const generalSettingsQuery = queryOptions({
+  queryKey: ['siteSettings', 'general'],
+  queryFn: () => unwrap(api.GET('/api/app/v1/site_settings/general')),
+})

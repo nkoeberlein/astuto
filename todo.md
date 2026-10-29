@@ -130,7 +130,8 @@ Empfehlung (roadmap.md, Abschnitt 3): getrenntes Frontend mit React 19 + TS 7 + 
 - [x] Auth-Seiten: Login, Registrierung, Passwort, OAuth-Buttons (Devise mit JSON-Endpunkten)
 - [x] Moderation › Feedback-Queue (`/next/moderation/feedback`, `GET /api/app/v1/moderation/posts`): ausstehende und abgelehnte Posts freigeben/ablehnen, Moderations-Link mit Zähler im Header (`pendingPostsCount` in der Session)
 - [x] Moderation › Nutzer (`/next/moderation/users`, `GET/PATCH /api/app/v1/moderation/users`): Suche nach Name/E-Mail, Filter nach Rolle und Status, Sperren (Moderatoren), Rollen (Admins); Regeln aus `UserPolicy`, serverseitig gefiltert und seitenweise (`ModerationUsersQuery`)
-- [ ] Site Settings (General, Boards, Status, Roadmap, Auth, Appearance, Webhooks, API); der Link „Moderationseinstellungen ändern“ führt bis dahin ins alte UI
+- [x] Site Settings › General (`/next/site_settings/general`, `GET/PATCH /api/app/v1/site_settings/general`): alle Felder des alten Tabs, nur geänderte Felder werden gesendet, Warnung bei ungespeicherten Änderungen (`useBlocker`); Zahnrad im Header für Admins, übrige Bereiche verlinken ins alte UI
+- [ ] Site Settings › Boards, Status, Roadmap, Authentication (OAuth), Appearance, Webhooks, Invitations, API-Keys
 - [ ] E2E-Tests (Playwright oder Capybara) für jede neue Seite
 - [ ] Altes Frontend entfernen: `react-rails`, `react_ujs`, Redux, Bootstrap, jQuery, Turbolinks, `jsbundling`/Webpack, `i18n-js` 3; danach Sidekiq 8.1 und `connection_pool`-Pin entfernen
 - [ ] `app/controllers` (22 Dateien) nach Bereichen gliedern (z. B. `api/app/v1/site_settings/`)

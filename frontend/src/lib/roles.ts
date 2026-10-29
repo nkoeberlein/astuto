@@ -6,3 +6,8 @@ type User = NonNullable<Session['user']>
 export function isModerator(user: User | null | undefined): user is User {
   return user != null && ['moderator', 'admin', 'owner'].includes(user.role)
 }
+
+// Admins and owners manage site settings (User#admin? on the server)
+export function isAdmin(user: User | null | undefined): user is User {
+  return user != null && ['admin', 'owner'].includes(user.role)
+}

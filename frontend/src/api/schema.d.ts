@@ -1267,6 +1267,102 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/app/v1/site_settings/general": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** General site settings (admins) */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description current values */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["GeneralSettings"];
+                    };
+                };
+                /** @description not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description moderators are not admins */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update general site settings (admins) */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["UpdateGeneralSettings"];
+                };
+            };
+            responses: {
+                /** @description saves tenant and settings fields, leaves the rest alone */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["GeneralSettings"];
+                    };
+                };
+                /** @description moderators cannot change site settings */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description unsafe custom link */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
     "/api/app/v1/posts/{post_id}/summary": {
         parameters: {
             query?: never;
@@ -1562,6 +1658,76 @@ export interface components {
             role?: "user" | "moderator" | "admin";
             /** @enum {string} */
             status?: "active" | "blocked";
+        };
+        GeneralSettings: {
+            siteName: string;
+            siteLogo: string | null;
+            siteFavicon: string | null;
+            locale: string;
+            customDomain: string | null;
+            /** @enum {string} */
+            brandDisplay: "name_and_logo" | "name_only" | "logo_only" | "no_name_no_logo";
+            useBrowserLocale: boolean;
+            /** @description 0 shows the roadmap (or the first board) on the home page */
+            rootBoardId: number;
+            /** @enum {string} */
+            defaultPostSorting: "trending" | "newest" | "most_voted" | "oldest";
+            customLinks: components["schemas"]["CustomLink"][];
+            isPrivate: boolean;
+            allowAnonymousFeedback: boolean;
+            /** @enum {string} */
+            feedbackApprovalPolicy: "anonymous_require_approval" | "never_require_approval" | "always_require_approval";
+            loginOnlyWithOauth: boolean;
+            /** @enum {string} */
+            logoLinksTo: "root_page" | "custom_url" | "nothing";
+            logoCustomUrl: string | null;
+            roadmapEnabled: boolean;
+            showRoadmapInHeader: boolean;
+            /** @enum {string} */
+            collapseBoardsInHeader: "no_collapse" | "always_collapse";
+            mailLogoSize: number;
+            showVoteCount: boolean;
+            showVoteButtonInBoard: boolean;
+            hideUnusedStatusesInFilterByStatus: boolean;
+            showPoweredBy: boolean;
+            /** @description Custom domains only exist with MULTI_TENANCY=true */
+            multiTenancy: boolean;
+            availableLocales: string[];
+        };
+        UpdateGeneralSettings: {
+            siteName?: string;
+            siteLogo?: string | null;
+            siteFavicon?: string | null;
+            locale?: string;
+            customDomain?: string | null;
+            /** @enum {string} */
+            brandDisplay?: "name_and_logo" | "name_only" | "logo_only" | "no_name_no_logo";
+            useBrowserLocale?: boolean;
+            rootBoardId?: number;
+            /** @enum {string} */
+            defaultPostSorting?: "trending" | "newest" | "most_voted" | "oldest";
+            customLinks?: components["schemas"]["CustomLink"][];
+            isPrivate?: boolean;
+            allowAnonymousFeedback?: boolean;
+            /** @enum {string} */
+            feedbackApprovalPolicy?: "anonymous_require_approval" | "never_require_approval" | "always_require_approval";
+            loginOnlyWithOauth?: boolean;
+            /** @enum {string} */
+            logoLinksTo?: "root_page" | "custom_url" | "nothing";
+            logoCustomUrl?: string | null;
+            roadmapEnabled?: boolean;
+            showRoadmapInHeader?: boolean;
+            /** @enum {string} */
+            collapseBoardsInHeader?: "no_collapse" | "always_collapse";
+            mailLogoSize?: number;
+            showVoteCount?: boolean;
+            showVoteButtonInBoard?: boolean;
+            hideUnusedStatusesInFilterByStatus?: boolean;
+            showPoweredBy?: boolean;
+        };
+        CustomLink: {
+            label: string;
+            url: string;
         };
         VoteState: {
             liked: boolean;
