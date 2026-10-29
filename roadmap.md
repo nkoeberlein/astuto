@@ -111,7 +111,7 @@ Die häufigsten Probleme aus den Upstream-Issues: HTTPS hinter Reverse Proxy (#4
 5. ✅ Schreibende Aktionen: Post anlegen (auch anonym, mit Freigabe-Regeln und Spam-Schutz), Vote (optimistisch), Kommentar und Antwort, Moderator-Updates, Follow, Bearbeiten/Löschen, Statuswechsel; CSRF-Fluss getestet
 6. ✅ Roadmap-Seite, serverseitige Meta-Tags
 7. ✅ Auth-Seiten (Login, Registrierung, Passwort, OAuth) und eingebettete Roadmap
-8. ✅ Moderation (Feedback-Queue, Nutzer) und Site Settings (alle Bereiche); offen: Profil-Einstellungen
+8. ✅ Moderation (Feedback-Queue, Nutzer), Site Settings (alle Bereiche) und Profil-Einstellungen
 9. Altes Frontend und dessen Gems/Pakete entfernen (`react-rails`, `i18n-js`, Webpack, Bootstrap)
 
 ### Phase 4 – KI und MCP · P1 (MCP in 2.0, Rest 2.x)

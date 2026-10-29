@@ -37,8 +37,9 @@ export function TextField(props: {
   value: string
   onChange: (value: string) => void
   help?: ReactNode
-  type?: 'text' | 'url' | 'number'
+  type?: 'text' | 'url' | 'number' | 'password'
   placeholder?: string
+  autoComplete?: string
 }) {
   const id = useId()
   return (
@@ -49,6 +50,7 @@ export function TextField(props: {
         type={props.type ?? 'text'}
         value={props.value}
         placeholder={props.placeholder}
+        autoComplete={props.autoComplete}
         onChange={(event) => props.onChange(event.target.value)}
         aria-describedby={props.help ? `${id}-help` : undefined}
       />

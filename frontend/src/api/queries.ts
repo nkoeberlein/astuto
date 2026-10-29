@@ -190,3 +190,9 @@ export const invitationsQuery = queryOptions({
   queryKey: ['siteSettings', 'invitations'],
   queryFn: () => unwrap(api.GET('/api/app/v1/site_settings/invitations')),
 })
+
+// Profile settings of the signed-in user
+export const profileQuery = queryOptions({
+  queryKey: ['profile'],
+  queryFn: () => unwrap(api.GET('/api/app/v1/profile')),
+})

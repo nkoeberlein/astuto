@@ -88,6 +88,8 @@ class SpaController < ActionController::Base
         ["#{I18n.t('header.menu.moderation', default: 'Moderation')} · #{site_name}", site_name]
       when %r{\Asite_settings/}
         ["#{I18n.t('header.menu.site_settings', default: 'Site settings')} · #{site_name}", site_name]
+      when 'profile'
+        ["#{I18n.t('header.menu.profile_settings', default: 'Profile settings')} · #{site_name}", site_name]
       when 'login'
         ["#{I18n.t('common.forms.auth.log_in', default: 'Log in')} · #{site_name}", site_name]
       when 'register'

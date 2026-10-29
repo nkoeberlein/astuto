@@ -1284,6 +1284,171 @@ export interface paths {
         };
         trace?: never;
     };
+    "/api/app/v1/profile": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Profile settings of the signed-in user */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description current settings */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Profile"];
+                    };
+                };
+                /** @description not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        /** Delete the own account (soft delete) */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["DeleteProfile"];
+                };
+            };
+            responses: {
+                /** @description deleted and signed out */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Session"];
+                    };
+                };
+                /** @description wrong password */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /** Update profile settings */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["UpdateProfile"];
+                };
+            };
+            responses: {
+                /** @description new password with the current one, still signed in */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Profile"];
+                    };
+                };
+                /** @description OAuth accounts set a password first */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description email domain not allowed */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/api/app/v1/profile/api_key": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Generate a new API key (moderators) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description new key, the old one stops working */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["NewApiKey"];
+                    };
+                };
+                /** @description users cannot have API keys */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/app/v1/roadmap": {
         parameters: {
             query?: {
@@ -2745,6 +2910,43 @@ export interface components {
         };
         InvitationTestResult: {
             sentTo: string;
+        };
+        Profile: {
+            fullName: string;
+            email: string;
+            /** @description New email waiting for confirmation */
+            unconfirmedEmail: string | null;
+            /** @description False for accounts created via OAuth */
+            hasSetPassword: boolean;
+            notificationsEnabled: boolean;
+            /** @enum {string} */
+            recapNotificationFrequency: "never" | "daily" | "weekly" | "monthly";
+            /** @description Recap emails need Sidekiq */
+            recapAvailable: boolean;
+            canHaveApiKey: boolean;
+            /** @description Masked prefix of the current API key */
+            apiKey: string | null;
+            /** @description False for the owner */
+            canDeleteAccount: boolean;
+        };
+        UpdateProfile: {
+            fullName?: string;
+            notificationsEnabled?: boolean;
+            /** @enum {string} */
+            recapNotificationFrequency?: "never" | "daily" | "weekly" | "monthly";
+            email?: string;
+            password?: string;
+            passwordConfirmation?: string;
+            /** @description Needed to change email or password */
+            currentPassword?: string;
+        };
+        DeleteProfile: {
+            currentPassword?: string;
+        };
+        NewApiKey: {
+            /** @description Shown only once */
+            apiKey: string;
+            masked: string;
         };
         VoteState: {
             liked: boolean;

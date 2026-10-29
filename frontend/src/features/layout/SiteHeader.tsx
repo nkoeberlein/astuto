@@ -101,8 +101,14 @@ export function SiteHeader({ session, boards }: { session: Session; boards: Boar
                 <Settings className="size-4" aria-hidden />
               </Link>
             )}
-            <UserAvatar name={user.fullName} url={user.avatarUrl} />
-            <span className="hidden sm:inline">{user.fullName}</span>
+            <Link
+              to="/profile"
+              className="flex items-center gap-2 rounded-lg px-1.5 py-1 hover:bg-accent"
+              title={t('header.menu.profile_settings')}
+            >
+              <UserAvatar name={user.fullName} url={user.avatarUrl} />
+              <span className="hidden sm:inline">{user.fullName}</span>
+            </Link>
             <Button
               type="button"
               size="sm"

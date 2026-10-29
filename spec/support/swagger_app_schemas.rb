@@ -179,6 +179,23 @@ module Swagger
         InvitationTestInput: object({ subject: STRING, body: STRING }),
         InvitationResult: object({ sent: INTEGER, skipped: { type: :array, items: STRING, description: 'Invalid, registered or already accepted' } }),
         InvitationTestResult: object({ sentTo: STRING }),
+        Profile: object({
+          fullName: STRING, email: STRING, unconfirmedEmail: NULLABLE_STRING.merge(description: 'New email waiting for confirmation'),
+          hasSetPassword: BOOLEAN.merge(description: 'False for accounts created via OAuth'),
+          notificationsEnabled: BOOLEAN,
+          recapNotificationFrequency: { type: :string, enum: %w[never daily weekly monthly] },
+          recapAvailable: BOOLEAN.merge(description: 'Recap emails need Sidekiq'),
+          canHaveApiKey: BOOLEAN, apiKey: NULLABLE_STRING.merge(description: 'Masked prefix of the current API key'),
+          canDeleteAccount: BOOLEAN.merge(description: 'False for the owner')
+        }),
+        UpdateProfile: object({
+          fullName: STRING, notificationsEnabled: BOOLEAN,
+          recapNotificationFrequency: { type: :string, enum: %w[never daily weekly monthly] },
+          email: STRING, password: STRING, passwordConfirmation: STRING,
+          currentPassword: STRING.merge(description: 'Needed to change email or password')
+        }, required: []),
+        DeleteProfile: object({ currentPassword: STRING }, required: []),
+        NewApiKey: object({ apiKey: STRING.merge(description: 'Shown only once'), masked: STRING }),
         VoteState: object({ liked: BOOLEAN, likesCount: INTEGER }),
         FollowState: object({ followed: BOOLEAN }),
         Summary: object({ summary: STRING }),

@@ -109,6 +109,9 @@ Rails.application.routes.draw do
           resource :session, only: [:show, :create, :destroy]
           resource :registration, only: [:create]
           resource :password, only: [:create, :update]
+          resource :profile, only: [:show, :update, :destroy] do
+            post :api_key
+          end
           resources :translations, only: [:show], param: :locale, constraints: { locale: /[A-Za-z-]+/ }
           resources :boards, only: [:index, :show, :create, :update, :destroy] do
             put :reorder, on: :collection

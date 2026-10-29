@@ -17,10 +17,12 @@ import {
   type PostPage,
   type PostStatus,
   type PostStatusInput,
+  type Profile,
   type Schemas,
   type Session,
   setCsrfToken,
   type UpdateGeneralSettings,
+  type UpdateProfile,
   unwrap,
   type WebhookInput,
 } from './client'
@@ -31,6 +33,7 @@ import {
   moderationPostsQuery,
   postQuery,
   postStatusesQuery,
+  profileQuery,
   sessionQuery,
 } from './queries'
 
@@ -558,6 +561,34 @@ export function useInvitationMutations() {
     test: useMutation({
       mutationFn: (input: { subject: string; body: string }) =>
         unwrap(api.POST('/api/app/v1/site_settings/invitations/test', { body: input })),
+    }),
+  }
+}
+
+// Profile settings: changes, a new API key, deleting the account
+export function useProfileMutations() {
+  const queryClient = useQueryClient()
+  return {
+    update: useMutation({
+      mutationFn: (changes: UpdateProfile) =>
+        unwrap(api.PATCH('/api/app/v1/profile', { body: changes })),
+      onSuccess: (profile) => {
+        queryClient.setQueryData<Profile>(profileQuery.queryKey, profile)
+        // Name and email show in the header
+        void queryClient.invalidateQueries({ queryKey: sessionQuery.queryKey })
+      },
+    }),
+    generateApiKey: useMutation({
+      mutationFn: () => unwrap(api.POST('/api/app/v1/profile/api_key')),
+      onSuccess: () => queryClient.invalidateQueries({ queryKey: profileQuery.queryKey }),
+    }),
+    remove: useMutation({
+      mutationFn: (currentPassword: string) =>
+        unwrap(api.DELETE('/api/app/v1/profile', { body: { currentPassword } })),
+      onSuccess: (session) => {
+        queryClient.removeQueries({ queryKey: profileQuery.queryKey })
+        applySession(queryClient, session)
+      },
     }),
   }
 }

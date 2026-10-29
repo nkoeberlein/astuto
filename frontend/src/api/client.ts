@@ -31,6 +31,8 @@ export type Webhook = Schemas['Webhook']
 export type WebhookInput = Schemas['WebhookInput']
 export type WebhookHeader = Schemas['WebhookHeader']
 export type Invitation = Schemas['Invitation']
+export type Profile = Schemas['Profile']
+export type UpdateProfile = Schemas['UpdateProfile']
 export type Translations = { [key: string]: string | Translations }
 
 export class ApiError extends Error {
