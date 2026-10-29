@@ -341,6 +341,7 @@ en:
         title_edit: 'Edit OAuth provider'
         subtitle_oauth_config: 'OAuth configuration'
         subtitle_user_profile_config: 'User profile configuration'
+        profile_headers: 'Extra headers for the profile request (optional)'
         client_secret_help: 'hidden for security purposes'
     webhooks:
       title: 'Webhooks'

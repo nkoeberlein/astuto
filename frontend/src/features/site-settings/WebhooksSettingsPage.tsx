@@ -1,5 +1,5 @@
 import { useSuspenseQuery } from '@tanstack/react-query'
-import { BookOpen, Eye, FlaskConical, Pencil, Plus, Trash2, X } from 'lucide-react'
+import { BookOpen, Eye, FlaskConical, Pencil, Plus, Trash2 } from 'lucide-react'
 import { type FormEvent, useRef, useState } from 'react'
 import type { Webhook, WebhookInput } from '@/api/client'
 import { useWebhookMutations } from '@/api/mutations'
@@ -7,12 +7,12 @@ import { webhooksQuery, webhookVariablesQuery } from '@/api/queries'
 import { FormError } from '@/components/FormError'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
-import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { useI18n } from '@/lib/i18n'
 import { projectDocsUrl } from '@/lib/project'
 import { CheckboxField, SelectField, SettingsSection, TextField } from './fields'
+import { HeaderRows } from './HeaderRows'
 
 const TRIGGERS: Webhook['trigger'][] = [
   'new_post',
@@ -199,14 +199,6 @@ function WebhookForm(props: {
   const [busy, setBusy] = useState(false)
   const bodyRef = useRef<HTMLTextAreaElement>(null)
 
-  const setHeader = (index: number, change: Partial<{ key: string; value: string }>) =>
-    setDraft({
-      ...draft,
-      httpHeaders: draft.httpHeaders.map((header, i) =>
-        i === index ? { ...header, ...change } : header,
-      ),
-    })
-
   // Inserts {{ variable }} at the cursor of the body field
   const insertVariable = (variable: string) => {
     const field = bodyRef.current
@@ -275,53 +267,13 @@ function WebhookForm(props: {
         placeholder="https://"
       />
 
-      <fieldset className="space-y-2">
-        <legend className="text-sm font-medium">
-          {t('activerecord.attributes.webhook.http_headers')}
-        </legend>
-        {draft.httpHeaders.map((header, index) => (
-          // biome-ignore lint/suspicious/noArrayIndexKey: rows have no id and are edited in place
-          <div key={index} className="flex gap-2">
-            <Input
-              value={header.key}
-              onChange={(event) => setHeader(index, { key: event.target.value })}
-              placeholder="Authorization"
-              aria-label={t('site_settings.webhooks.form.header_n_key', { n: index + 1 })}
-              className="font-mono text-sm"
-            />
-            <Input
-              value={header.value}
-              onChange={(event) => setHeader(index, { value: event.target.value })}
-              placeholder="Bearer …"
-              aria-label={t('site_settings.webhooks.form.header_n_value', { n: index + 1 })}
-              className="font-mono text-sm"
-            />
-            <Button
-              type="button"
-              size="icon"
-              variant="ghost"
-              className="shrink-0 text-muted-foreground"
-              aria-label={`${t('common.buttons.delete')} ${index + 1}`}
-              onClick={() =>
-                setDraft({ ...draft, httpHeaders: draft.httpHeaders.filter((_, i) => i !== index) })
-              }
-            >
-              <X className="size-4" aria-hidden />
-            </Button>
-          </div>
-        ))}
-        <Button
-          type="button"
-          size="sm"
-          variant="ghost"
-          onClick={() =>
-            setDraft({ ...draft, httpHeaders: [...draft.httpHeaders, { key: '', value: '' }] })
-          }
-        >
-          <Plus className="size-4" aria-hidden />
-          {t('site_settings.webhooks.form.add_header')}
-        </Button>
-      </fieldset>
+      <HeaderRows
+        legend={t('activerecord.attributes.webhook.http_headers')}
+        rows={draft.httpHeaders}
+        onChange={(httpHeaders) => setDraft({ ...draft, httpHeaders })}
+        keyPlaceholder="Authorization"
+        valuePlaceholder="Bearer …"
+      />
 
       <div className="space-y-1.5">
         <Label htmlFor="webhook-body">{t('activerecord.attributes.webhook.http_body')}</Label>

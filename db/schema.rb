@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_25_150000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_29_130122) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -107,6 +107,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_25_150000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "slug"
+    t.jsonb "profile_headers", default: [], null: false
     t.index ["name", "tenant_id"], name: "index_o_auths_on_name_and_tenant_id", unique: true
     t.index ["slug", "tenant_id"], name: "index_o_auths_on_slug_and_tenant_id", unique: true
     t.index ["tenant_id"], name: "index_o_auths_on_tenant_id"

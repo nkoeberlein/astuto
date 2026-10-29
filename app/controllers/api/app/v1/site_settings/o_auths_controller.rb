@@ -61,6 +61,8 @@ module Api::App::V1::SiteSettings
           next if field == 'client_secret' && params[key].blank? && action_name == 'update'
 
           attributes[field] = params[key]
+        end.tap do |attributes|
+          attributes['profile_headers'] = params[:profileHeaders] if params.key?(:profileHeaders)
         end
       end
 
@@ -79,6 +81,7 @@ module Api::App::V1::SiteSettings
           scope: default ? nil : o_auth.scope,
           jsonUserNamePath: default ? nil : o_auth.json_user_name_path,
           jsonUserEmailPath: default ? nil : o_auth.json_user_email_path,
+          profileHeaders: default ? [] : o_auth.profile_headers.map { |header| { key: header['key'], value: header['value'] } },
           callbackUrl: o_auth.callback_url,
           testUrl: "/o_auths/#{o_auth.id}/start?reason=test"
         }

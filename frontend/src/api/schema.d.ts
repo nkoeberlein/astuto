@@ -2816,6 +2816,8 @@ export interface components {
             scope: string | null;
             jsonUserNamePath: string | null;
             jsonUserEmailPath: string | null;
+            /** @description Extra headers of the profile request (#485) */
+            profileHeaders: components["schemas"]["WebhookHeader"][];
             callbackUrl: string;
             testUrl: string;
         };
@@ -2832,6 +2834,7 @@ export interface components {
             scope?: string;
             jsonUserNamePath?: string | null;
             jsonUserEmailPath?: string;
+            profileHeaders?: components["schemas"]["WebhookHeader"][];
         };
         WebhookHeader: {
             key: string;

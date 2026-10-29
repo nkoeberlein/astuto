@@ -80,11 +80,12 @@ RSpec.describe 'api/app/v1/site_settings/o_auths', type: :request, openapi_spec:
       response(200, 'blank secret keeps the current one') do
         schema '$ref' => '#/components/schemas/OAuthSettings'
         let(:id) { github.id }
-        let(:o_auth) { { isEnabled: true, scope: 'read:user', clientSecret: '' } }
+        let(:o_auth) { { isEnabled: true, scope: 'read:user', clientSecret: '', profileHeaders: [{ key: 'User-Agent', value: 'Astuto' }] } }
         before { sign_in admin }
 
-        run_test! do
+        run_test! do |response|
           expect(github.reload).to have_attributes(is_enabled: true, scope: 'read:user', client_secret: 'top-secret')
+          expect(JSON.parse(response.body)['profileHeaders']).to eq([{ 'key' => 'User-Agent', 'value' => 'Astuto' }])
         end
       end
 

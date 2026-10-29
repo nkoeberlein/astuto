@@ -12,7 +12,8 @@ class OAuthPolicy < ApplicationPolicy
         :profile_url,
         :scope,
         :json_user_name_path,
-        :json_user_email_path
+        :json_user_email_path,
+        { profile_headers: [:key, :value] }
       ]
     else
       []

@@ -11,6 +11,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { useI18n } from '@/lib/i18n'
 import { projectDocsUrl } from '@/lib/project'
 import { CheckboxField, SelectField, SettingsSection, TextField } from './fields'
+import { HeaderRows } from './HeaderRows'
 
 // Site settings › Authentication (legacy: /site_settings/authentication):
 // email registration rules and OAuth providers
@@ -270,6 +271,7 @@ function OAuthForm(props: {
     scope: o?.scope ?? '',
     jsonUserNamePath: o?.jsonUserNamePath ?? '',
     jsonUserEmailPath: o?.jsonUserEmailPath ?? '',
+    profileHeaders: o?.profileHeaders ?? [],
   })
   const [busy, setBusy] = useState(false)
   const label = (field: string) => t(`activerecord.attributes.o_auth.${field}`)
@@ -324,6 +326,13 @@ function OAuthForm(props: {
       {field('profileUrl', 'profile_url', 'url')}
       {field('jsonUserEmailPath', 'json_user_email_path')}
       {field('jsonUserNamePath', 'json_user_name_path')}
+      <HeaderRows
+        legend={t('site_settings.authentication.form.profile_headers')}
+        rows={draft.profileHeaders}
+        onChange={(profileHeaders) => setDraft({ ...draft, profileHeaders })}
+        keyPlaceholder="User-Agent"
+        valuePlaceholder="Astuto"
+      />
       <div className="flex gap-2">
         <Button type="submit" disabled={busy}>
           {o ? t('common.buttons.update') : t('common.buttons.create')}

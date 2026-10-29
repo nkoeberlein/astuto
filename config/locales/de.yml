@@ -314,6 +314,7 @@ de:
         title_edit: 'OAuth-Anbieter bearbeiten'
         subtitle_oauth_config: 'OAuth-Konfiguration'
         subtitle_user_profile_config: 'Profileinstellungen'
+        profile_headers: 'Zusätzliche Header für den Profil-Abruf (optional)'
         client_secret_help: 'aus Sicherheitsgründen versteckt'
   moderation:
     menu:

@@ -142,13 +142,15 @@ module Swagger
           isDefault: BOOLEAN.merge(description: 'Set up by the instance; only isEnabled can be changed'),
           clientId: NULLABLE_STRING, authorizeUrl: NULLABLE_STRING, tokenUrl: NULLABLE_STRING, profileUrl: NULLABLE_STRING,
           scope: NULLABLE_STRING, jsonUserNamePath: NULLABLE_STRING, jsonUserEmailPath: NULLABLE_STRING,
+          profileHeaders: { type: :array, items: ref(:WebhookHeader), description: 'Extra headers of the profile request (#485)' },
           callbackUrl: STRING, testUrl: STRING
         }),
         OAuthInput: object({
           name: STRING, logo: NULLABLE_STRING, isEnabled: BOOLEAN, clientId: STRING,
           clientSecret: STRING.merge(description: 'Write-only; blank on update keeps the current secret'),
           authorizeUrl: STRING, tokenUrl: STRING, profileUrl: STRING, scope: STRING,
-          jsonUserNamePath: NULLABLE_STRING, jsonUserEmailPath: STRING
+          jsonUserNamePath: NULLABLE_STRING, jsonUserEmailPath: STRING,
+          profileHeaders: { type: :array, items: ref(:WebhookHeader) }
         }, required: []),
         WebhookHeader: object({ key: STRING, value: STRING }),
         Webhook: object({

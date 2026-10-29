@@ -67,7 +67,7 @@ Issue-Nummern beziehen sich auf `astuto/astuto`. Phasen siehe [roadmap.md](roadm
 ### OAuth
 - [x] `token_state`-Cookie (#472) in `app/controllers/o_auths_controller.rb`: `domain: ".#{request.domain}"` nur bei Subdomain-Tenancy setzen, sonst weglassen; `secure: request.ssl?` und `same_site: :lax` ergänzen; Spec dazu (`spec/requests/o_auths_cookie_spec.rb`)
 - [x] Eigene CA-Zertifikate / Self-Signed per Volume + `update-ca-certificates` im Entrypoint (#203)
-- [ ] Konfigurierbare Header für den Profil-API-Aufruf (#485)
+- [x] Konfigurierbare Header für den Profil-API-Aufruf (#485): `o_auths.profile_headers` (jsonb), eigener `Authorization`-Header ersetzt den Bearer-Token, Header-Zeilen im OAuth-Formular (`HeaderRows`, auch für Webhooks)
 
 ### E-Mail
 - [ ] „Testmail senden“ in den Site Settings
