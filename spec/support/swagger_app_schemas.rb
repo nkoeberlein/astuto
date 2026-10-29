@@ -106,7 +106,7 @@ module Swagger
           roadmapEnabled: BOOLEAN, showRoadmapInHeader: BOOLEAN,
           collapseBoardsInHeader: { type: :string, enum: %w[no_collapse always_collapse] },
           mailLogoSize: INTEGER, showVoteCount: BOOLEAN, showVoteButtonInBoard: BOOLEAN,
-          hideUnusedStatusesInFilterByStatus: BOOLEAN, showPoweredBy: BOOLEAN,
+          hideUnusedStatusesInFilterByStatus: BOOLEAN, showPoweredBy: BOOLEAN, customCss: NULLABLE_STRING,
           multiTenancy: BOOLEAN.merge(description: 'Custom domains only exist with MULTI_TENANCY=true'),
           availableLocales: { type: :array, items: STRING }
         }),
@@ -123,7 +123,7 @@ module Swagger
           roadmapEnabled: BOOLEAN, showRoadmapInHeader: BOOLEAN,
           collapseBoardsInHeader: { type: :string, enum: %w[no_collapse always_collapse] },
           mailLogoSize: INTEGER, showVoteCount: BOOLEAN, showVoteButtonInBoard: BOOLEAN,
-          hideUnusedStatusesInFilterByStatus: BOOLEAN, showPoweredBy: BOOLEAN
+          hideUnusedStatusesInFilterByStatus: BOOLEAN, showPoweredBy: BOOLEAN, customCss: NULLABLE_STRING
         }, required: []),
         CustomLink: object({ label: STRING, url: STRING }),
         BoardInput: object({

@@ -27,6 +27,7 @@ const settings: GeneralSettings = {
   showVoteButtonInBoard: true,
   hideUnusedStatusesInFilterByStatus: false,
   showPoweredBy: true,
+  customCss: null,
   multiTenancy: false,
   availableLocales: ['en', 'de'],
 }

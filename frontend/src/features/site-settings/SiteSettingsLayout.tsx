@@ -4,7 +4,7 @@ import type { ReactNode } from 'react'
 import { useI18n } from '@/lib/i18n'
 
 // Sections rebuilt in the v2 frontend
-const V2_SECTIONS = ['general', 'boards', 'post_statuses', 'roadmap'] as const
+const V2_SECTIONS = ['general', 'boards', 'post_statuses', 'roadmap', 'appearance'] as const
 
 // Sections still in the legacy UI open there until they are rebuilt
 const LEGACY_SECTIONS = ['authentication', 'invitations', 'appearance', 'webhooks'] as const

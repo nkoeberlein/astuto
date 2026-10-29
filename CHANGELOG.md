@@ -6,6 +6,7 @@ Issue numbers refer to the archived [astuto/astuto](https://github.com/astuto/as
 ## [Unreleased]
 
 ### Features
+- v2 frontend: site settings › Appearance at `/next/site_settings/appearance`: custom CSS with live preview before saving (`customCss` in `GET/PATCH /api/app/v1/site_settings/general`).
 - v2 frontend: site settings › Roadmap at `/next/site_settings/roadmap`: move statuses into or out of the roadmap, and build the embed code for `/next/embedded_roadmap` (filters, boards, statuses) with a copy button.
 - v2 frontend: site settings › Boards and › Statuses at `/next/site_settings/boards` and `/next/site_settings/post_statuses` (admins): create, edit (boards with their URL slug, statuses with color and roadmap flag), delete after a confirmation, and reorder with up/down buttons that also work with the keyboard. New app API endpoints: `POST/PATCH/DELETE /api/app/v1/boards(/:id)`, `PUT /api/app/v1/boards/reorder`, and the same for `/api/app/v1/post_statuses`.
 - v2 frontend: site settings › General at `/next/site_settings/general` (admins): name, logo, favicon, language, root page, default sorting, privacy, moderation rules, OAuth-only login, header, email logo size and visibility options, with a warning before leaving unsaved changes. Admins reach it through a settings icon in the header; the other settings sections still open in the legacy UI. New endpoints `GET/PATCH /api/app/v1/site_settings/general`.

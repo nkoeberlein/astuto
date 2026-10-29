@@ -1,5 +1,6 @@
 module Api::App::V1::SiteSettings
-  # Site settings › General (legacy: /site_settings/general, saved via PATCH /tenants/:id).
+  # Site settings › General and › Appearance (custom CSS) (legacy: /site_settings/general and
+  # /site_settings/appearance, saved via PATCH /tenants/:id).
   # Admins only; the writable fields come from TenantPolicy and TenantSettingPolicy.
   class GeneralController < Api::App::BaseController
     TENANT_FIELDS = %w[site_name site_logo site_favicon locale custom_domain].freeze
@@ -8,7 +9,7 @@ module Api::App::V1::SiteSettings
       is_private allow_anonymous_feedback feedback_approval_policy login_only_with_oauth
       logo_links_to logo_custom_url roadmap_enabled show_roadmap_in_header collapse_boards_in_header
       mail_logo_size show_vote_count show_vote_button_in_board hide_unused_statuses_in_filter_by_status
-      show_powered_by
+      show_powered_by custom_css
     ].freeze
 
     before_action :require_admin
@@ -100,6 +101,7 @@ module Api::App::V1::SiteSettings
           showVoteButtonInBoard: s.show_vote_button_in_board,
           hideUnusedStatusesInFilterByStatus: s.hide_unused_statuses_in_filter_by_status,
           showPoweredBy: s.show_powered_by,
+          customCss: s.custom_css,
           multiTenancy: Rails.application.multi_tenancy?,
           availableLocales: I18n.available_locales.map(&:to_s)
         }

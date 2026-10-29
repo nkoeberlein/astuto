@@ -1981,6 +1981,7 @@ export interface components {
             showVoteButtonInBoard: boolean;
             hideUnusedStatusesInFilterByStatus: boolean;
             showPoweredBy: boolean;
+            customCss: string | null;
             /** @description Custom domains only exist with MULTI_TENANCY=true */
             multiTenancy: boolean;
             availableLocales: string[];
@@ -2015,6 +2016,7 @@ export interface components {
             showVoteButtonInBoard?: boolean;
             hideUnusedStatusesInFilterByStatus?: boolean;
             showPoweredBy?: boolean;
+            customCss?: string | null;
         };
         CustomLink: {
             label: string;
