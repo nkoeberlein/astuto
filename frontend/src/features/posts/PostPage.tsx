@@ -70,7 +70,7 @@ export function PostPage({ postSlug }: { postSlug: string }) {
             params={{ boardSlug: board.slug }}
             className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
           >
-            <ArrowLeft className="size-4" aria-hidden /> {board.name}
+            <ArrowLeft className="size-4 rtl:-scale-x-100" aria-hidden /> {board.name}
           </Link>
         )}
 

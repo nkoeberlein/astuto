@@ -208,7 +208,8 @@ function PostForm(props: Props & { onClose: (pending: boolean) => void }) {
             tabIndex={-1}
             autoComplete="off"
             aria-hidden
-            className="absolute -left-[9999px] h-px w-px opacity-0"
+            // Out of sight without a sideways offset (which would scroll the page in RTL)
+            className="pointer-events-none absolute size-px overflow-hidden opacity-0 [clip-path:inset(50%)]"
           />
 
           <p className="text-sm text-muted-foreground">

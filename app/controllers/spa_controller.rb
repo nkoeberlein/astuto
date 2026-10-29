@@ -4,6 +4,8 @@ class SpaController < ActionController::Base
   include ApplicationHelper
 
   INDEX = Rails.root.join('public/next/index.html')
+  # Same list as textDirection() in frontend/src/lib/i18n.tsx
+  RTL_LANGUAGES = %w[ar fa he ur yi ps sd ug dv].freeze
 
   def show
     response.headers['Cache-Control'] = 'no-cache'
@@ -50,6 +52,11 @@ class SpaController < ActionController::Base
       ]
 
       # Block form: a replacement string would read "\0" or "\1" in a title as a backreference
+      # Language and writing direction before any script runs (no flash of the wrong direction)
+      locale = I18n.locale.to_s
+      direction = RTL_LANGUAGES.include?(locale.split('-').first) ? 'rtl' : 'ltr'
+      html = html.sub(/<html[^>]*>/) { %(<html lang="#{ERB::Util.html_escape(locale)}" dir="#{direction}">) }
+
       result = html.sub(%r{<title>.*?</title>}m) { "<title>#{escaped_title}</title>\n    #{meta_tags.join("\n    ")}" }
       if tenant.site_favicon.present?
         escaped_favicon = ERB::Util.html_escape(tenant.site_favicon)

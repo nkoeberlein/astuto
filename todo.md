@@ -127,7 +127,7 @@ Empfehlung (roadmap.md, Abschnitt 3): getrenntes Frontend mit React 19 + TS 7 + 
 - [ ] Umstieg: `/next` → `/`, sobald alle Seiten ersetzt sind
 - [x] Designsystem: Branding über CSS-Variablen (bestehende Site-Settings-Farben), Dark Mode, WCAG 2.2 AA, mobile first, volle Bildschirmfläche (2-Spalten-Layout auf Desktop)
 - [x] i18n: YAML-Übersetzungen über `GET /api/app/v1/translations/:locale`
-- [ ] RTL-fähig: im neuen Frontend nur CSS-Logical-Properties (`ms-`/`me-`, `ps-`/`pe-`, `start`/`end` statt `left`/`right`), `dir` am `<html>` aus der Locale; jetzt beachten, nachträglich wird es teuer
+- [x] RTL-fähig: nur noch CSS-Logical-Properties (auch in shadcn `select`/`avatar`), `lang`/`dir` am `<html>` aus der Locale (serverseitig in `SpaController` und im Client, `textDirection()`), Richtungs-Icons gespiegelt; mit erzwungenem `dir=rtl` geprüft. RTL-Übersetzungen fehlen noch
 - [x] Öffentliche Seiten: Board, Post-Detail und Kommentare, Roadmap
 - [x] Auth-Seiten: Login, Registrierung, Passwort, OAuth-Buttons (Devise mit JSON-Endpunkten)
 - [x] Moderation › Feedback-Queue (`/next/moderation/feedback`, `GET /api/app/v1/moderation/posts`): ausstehende und abgelehnte Posts freigeben/ablehnen, Moderations-Link mit Zähler im Header (`pendingPostsCount` in der Session)

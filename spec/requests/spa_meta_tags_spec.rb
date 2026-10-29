@@ -34,6 +34,14 @@ RSpec.describe 'SpaController server-side meta tags', type: :request do
     expect(response.body).to include('<meta property="og:description" content="Allow AI agents to query feedback via Model Context Protocol." />')
   end
 
+  it 'sets the language and writing direction of the page' do
+    Current.tenant.update!(locale: 'de')
+
+    get '/next/roadmap'
+
+    expect(response.body).to include('<html lang="de" dir="ltr">')
+  end
+
   it 'keeps backslash sequences in titles literal' do
     post_record.update!(title: 'Escape \0 and \1 in paths')
 

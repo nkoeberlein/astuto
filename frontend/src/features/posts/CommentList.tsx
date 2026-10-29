@@ -190,7 +190,7 @@ export function CommentList({
         <li key={comment.id} className="space-y-4">
           <CommentItem comment={comment} postSlug={postSlug} currentUser={currentUser} />
           {replies.length > 0 && (
-            <ul className="ml-10 space-y-4 border-l pl-4">
+            <ul className="ms-10 space-y-4 border-s ps-4">
               {replies.map((reply) => (
                 <li key={reply.id}>
                   <CommentItem comment={reply} postSlug={postSlug} currentUser={currentUser} />

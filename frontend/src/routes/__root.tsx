@@ -8,7 +8,7 @@ import { ErrorView } from '@/features/layout/ErrorView'
 import { SiteFooter } from '@/features/layout/SiteFooter'
 import { SiteHeader } from '@/features/layout/SiteHeader'
 import { escapeCustomCss } from '@/lib/custom-css'
-import { I18nProvider } from '@/lib/i18n'
+import { I18nProvider, textDirection } from '@/lib/i18n'
 
 export type RouterContext = { queryClient: QueryClient }
 
@@ -39,6 +39,7 @@ function RootLayout() {
 
   useEffect(() => {
     document.documentElement.lang = tenant.locale
+    document.documentElement.dir = textDirection(tenant.locale)
     document.title = tenant.siteName
     if (tenant.siteFavicon) {
       const icon = document.querySelector<HTMLLinkElement>('link[rel="icon"]')
