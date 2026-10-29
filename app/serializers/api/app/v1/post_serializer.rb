@@ -57,6 +57,8 @@ module Api::App::V1
         commentsCount: post.comments.count,
         liked: current_user.present? && post.likes.exists?(user_id: current_user.id),
         followed: current_user.present? && post.follows.exists?(user_id: current_user.id),
+        # Where the feedback came from; often an internal link, so moderators only
+        source: current_user&.moderator? && (post.source_url.present? || post.source_label.present?) ? { url: post.source_url, label: post.source_label } : nil,
         createdAt: post.created_at.iso8601,
         updatedAt: post.updated_at.iso8601
       }

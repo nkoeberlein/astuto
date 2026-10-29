@@ -184,11 +184,11 @@ module Api
 
         def post_params
           params.require(:title)
-          params.permit(:title, :description, :board_id)
+          params.permit(:title, :description, :board_id, :source_url, :source_label)
         end
 
         def post_update_params
-          params.permit(:title, :description)
+          params.permit(:title, :description, :source_url, :source_label)
         end
 
         def post_update_board_params

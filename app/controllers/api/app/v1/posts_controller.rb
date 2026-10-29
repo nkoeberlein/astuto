@@ -91,6 +91,9 @@ module Api::App::V1
           end
         end
 
+        post.source_url = params[:sourceUrl].presence if params.key?(:sourceUrl)
+        post.source_label = params[:sourceLabel].presence if params.key?(:sourceLabel)
+
         if params.key?(:approvalStatus) && params[:approvalStatus].present?
           # Assigning an unknown enum value raises ArgumentError (500)
           unless Post.approval_statuses.key?(params[:approvalStatus].to_s)
@@ -117,7 +120,7 @@ module Api::App::V1
 
       status_change_workflow.notify_followers if status_changed
       # Moderation: other people's posts, or board, status and approval of any post
-      moderated = post.saved_changes.keys & %w[board_id post_status_id approval_status]
+      moderated = post.saved_changes.keys & %w[board_id post_status_id approval_status source_url source_label]
       if current_user.moderator? && post.saved_changes? && (post.user_id != current_user.id || moderated.any?)
         audit('post.update', post, changes: post.saved_changes)
       end

@@ -128,6 +128,10 @@ en:
       empty: 'There are no posts'
       load_more: 'Load more'
   post:
+    source:
+      title: 'Source'
+      label: 'Source'
+      url: 'Link to the source'
     published_by: 'Published by'
     published_anonymously: 'Published anonymously'
     post_status_select:
@@ -209,6 +213,7 @@ en:
         api: 'REST API'
         mcp: 'MCP'
       actions:
+        post_create_for_author: 'posted for:'
         post_update: 'changed the post'
         post_delete: 'deleted the post'
         comment_update: 'edited a comment'

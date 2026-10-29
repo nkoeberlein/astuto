@@ -129,6 +129,10 @@ de:
       empty: 'Es existieren keine Beiträge'
       load_more: 'Mehr laden'
   post:
+    source:
+      title: 'Quelle'
+      label: 'Quelle'
+      url: 'Link zur Quelle'
     published_by: 'Herausgegeben von'
     published_anonymously: 'Anonym veröffentlicht'
     post_status_select:
@@ -210,6 +214,7 @@ de:
         api: 'REST-API'
         mcp: 'MCP'
       actions:
+        post_create_for_author: 'hat gepostet für:'
         post_update: 'hat den Post geändert:'
         post_delete: 'hat den Post gelöscht:'
         comment_update: 'hat einen Kommentar bearbeitet:'

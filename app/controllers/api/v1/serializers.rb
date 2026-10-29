@@ -38,6 +38,8 @@ module Api
         :user,
         :approval_status,
         :slug,
+        :source_url,
+        :source_label,
         :created_at,
         :updated_at
       ].freeze

@@ -1,6 +1,6 @@
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { Link, useNavigate } from '@tanstack/react-router'
-import { ArrowLeft, Pencil, ShieldCheck, Trash2 } from 'lucide-react'
+import { ArrowLeft, Link2, Pencil, ShieldCheck, Trash2 } from 'lucide-react'
 import { useState } from 'react'
 import { useDeletePost, useUpdatePost } from '@/api/mutations'
 import {
@@ -53,6 +53,8 @@ export function PostPage({ postSlug }: { postSlug: string }) {
   const [editing, setEditing] = useState(false)
   const [titleDraft, setTitleDraft] = useState(post.title)
   const [descriptionDraft, setDescriptionDraft] = useState(post.description ?? '')
+  const [sourceUrlDraft, setSourceUrlDraft] = useState(post.source?.url ?? '')
+  const [sourceLabelDraft, setSourceLabelDraft] = useState(post.source?.label ?? '')
 
   const user = session.user
   const canModerate = isModerator(user)
@@ -85,7 +87,16 @@ export function PostPage({ postSlug }: { postSlug: string }) {
                 onSubmit={(event) => {
                   event.preventDefault()
                   updatePost.mutate(
-                    { title: titleDraft, description: descriptionDraft || null },
+                    {
+                      title: titleDraft,
+                      description: descriptionDraft || null,
+                      ...(canModerate
+                        ? {
+                            sourceUrl: sourceUrlDraft || null,
+                            sourceLabel: sourceLabelDraft || null,
+                          }
+                        : {}),
+                    },
                     { onSuccess: () => setEditing(false) },
                   )
                 }}
@@ -110,6 +121,30 @@ export function PostPage({ postSlug }: { postSlug: string }) {
                     rows={5}
                   />
                 </div>
+                {canModerate && (
+                  <div className="grid gap-3 sm:grid-cols-[10rem_1fr]">
+                    <div className="space-y-1">
+                      <Label htmlFor="edit-post-source-label">{t('post.source.label')}</Label>
+                      <Input
+                        id="edit-post-source-label"
+                        value={sourceLabelDraft}
+                        onChange={(event) => setSourceLabelDraft(event.target.value)}
+                        maxLength={40}
+                        placeholder="Slack"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <Label htmlFor="edit-post-source-url">{t('post.source.url')}</Label>
+                      <Input
+                        id="edit-post-source-url"
+                        type="url"
+                        value={sourceUrlDraft}
+                        onChange={(event) => setSourceUrlDraft(event.target.value)}
+                        placeholder="https://"
+                      />
+                    </div>
+                  </div>
+                )}
                 <div className="flex gap-2">
                   <Button type="submit" size="sm" disabled={updatePost.isPending}>
                     {t('common.buttons.update')}
@@ -150,6 +185,7 @@ export function PostPage({ postSlug }: { postSlug: string }) {
                   <time dateTime={post.createdAt}>
                     {formatRelativeTime(post.createdAt, locale)}
                   </time>
+                  {post.source && <PostSource source={post.source} />}
                 </div>
                 {post.description && (
                   <div className="pt-2">
@@ -292,5 +328,23 @@ export function PostPage({ postSlug }: { postSlug: string }) {
         )}
       </aside>
     </div>
+  )
+}
+
+// Where moderators captured the feedback (Slack, email, ticket); only they get this field
+function PostSource({ source }: { source: { url: string | null; label: string | null } }) {
+  const { t } = useI18n()
+  const text = source.label ?? t('post.source.title')
+  return (
+    <span className="inline-flex items-center gap-1" title={t('post.source.title')}>
+      <Link2 className="size-3.5" aria-hidden />
+      {source.url ? (
+        <a href={source.url} target="_blank" rel="noopener noreferrer" className="underline">
+          {text}
+        </a>
+      ) : (
+        text
+      )}
+    </span>
   )
 }

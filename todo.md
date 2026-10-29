@@ -168,7 +168,7 @@ Empfehlung (roadmap.md, Abschnitt 3): getrenntes Frontend mit React 19 + TS 7 + 
 - [x] Duplikaterkennung beim Erstellen mit Postgres-Volltextsuche (#455) (`Post.search_by_name_or_description`, `Post.similar_to`, Live-Vorschläge in `NewPostForm.tsx`)
 - [x] KI-Anbieter-Abstraktion: OpenAI-kompatibel (inkl. Ollama), Anthropic; alles opt-in per ENV (`AI_PROVIDER` und `AI_MODEL`, kein fest eingebautes Modell), ohne KI voll funktionsfähig (`Ai::Client`)
 - [ ] Optional semantische Duplikate mit pgvector und Embeddings
-- [ ] Feedback aus anderen Quellen über MCP: Feld „Quelle/Link“ am Post (API, MCP, Anzeige) und `create_post` im Namen eines Nutzers (wie `impersonated_user_id` in API v1, nur Admins); Doku-Rezept „Slack-Thread → Post“ mit Claude
+- [x] Feedback aus anderen Quellen über MCP: `source_url`/`source_label` am Post (nur Moderatoren sehen sie: Post-Seite, REST-API, MCP; nur http(s)/mailto), `create_post` mit `author_email` (nur Admins, nur bestehende Konten, Audit-Eintrag), Rezept „Slack-Thread → Post“ in `docs/mcp-and-ai.md`
 - [ ] Duplikate zusammenführen (Merge): `merged_into_post_id` mit Umleitung, Votes und Kommentare konsolidieren (steht bisher nur im v3-Schema, roadmap §6; alle Wettbewerber mit Duplikaterkennung haben Merge)
 - [x] Zusammenfassung langer Diskussionen: Button im Moderationsbereich der Post-Seite (`/next`), `POST /api/app/v1/posts/:id/summary`, einen Tag gecacht
 - [ ] Vorschläge für Board und Tags (Methode in `Ai::Client` vorhanden; braucht Tags #171)

@@ -67,7 +67,9 @@ module Swagger
         Post: object({
           id: INTEGER, slug: STRING, title: STRING, description: NULLABLE_STRING, boardId: INTEGER, postStatusId: NULLABLE_INTEGER,
           approvalStatus: { type: :string, enum: %w[approved pending rejected] }, author: ref(:Author).merge(nullable: true),
-          likesCount: INTEGER, commentsCount: INTEGER, liked: BOOLEAN, followed: BOOLEAN, createdAt: DATETIME, updatedAt: DATETIME
+          likesCount: INTEGER, commentsCount: INTEGER, liked: BOOLEAN, followed: BOOLEAN,
+          source: object({ url: NULLABLE_STRING, label: NULLABLE_STRING }, nullable: true).merge(description: 'Where the feedback came from; moderators only'),
+          createdAt: DATETIME, updatedAt: DATETIME
         }),
         ModerationPost: object({
           id: INTEGER, slug: STRING, title: STRING, description: NULLABLE_STRING, boardId: INTEGER,
@@ -263,7 +265,8 @@ module Swagger
         }, required: %i[title formFillMs]),
         UpdatePost: object({
           title: STRING, description: NULLABLE_STRING, boardId: INTEGER,
-          postStatusId: NULLABLE_INTEGER, approvalStatus: { type: :string, enum: %w[approved pending rejected] }
+          postStatusId: NULLABLE_INTEGER, approvalStatus: { type: :string, enum: %w[approved pending rejected] },
+          sourceUrl: NULLABLE_STRING.merge(description: 'Moderators only'), sourceLabel: NULLABLE_STRING.merge(description: 'Moderators only')
         }, required: []),
         NewComment: object({ body: STRING, parentId: NULLABLE_INTEGER, isPostUpdate: BOOLEAN }, required: %i[body]),
         UpdateComment: object({ body: STRING, isPostUpdate: BOOLEAN }, required: []),

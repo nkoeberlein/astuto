@@ -24,6 +24,17 @@ class Post < ApplicationRecord
   ] 
 
   validates :title, presence: true, length: { in: 4..128 }
+  validates :source_label, length: { maximum: 40 }
+  validates :source_url, length: { maximum: 500 }
+  validate :source_url_is_a_link
+
+  # Moderators link to where feedback came from (Slack, email, ticket): http(s) or mailto only
+  def source_url_is_a_link
+    return if source_url.blank?
+    return if SafeUrl.safe?(source_url) && !SafeUrl.local_path?(source_url)
+
+    errors.add(:source_url, :invalid)
+  end
 
   paginates_per Rails.application.posts_per_page
 

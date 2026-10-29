@@ -3533,6 +3533,11 @@ export interface components {
             commentsCount: number;
             liked: boolean;
             followed: boolean;
+            /** @description Where the feedback came from; moderators only */
+            source: {
+                url: string | null;
+                label: string | null;
+            } | null;
             /** Format: date-time */
             createdAt: string;
             /** Format: date-time */
@@ -4034,6 +4039,10 @@ export interface components {
             postStatusId?: number | null;
             /** @enum {string} */
             approvalStatus?: "approved" | "pending" | "rejected";
+            /** @description Moderators only */
+            sourceUrl?: string | null;
+            /** @description Moderators only */
+            sourceLabel?: string | null;
         };
         NewComment: {
             body: string;
