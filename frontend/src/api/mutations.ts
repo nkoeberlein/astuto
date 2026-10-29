@@ -5,6 +5,7 @@ import {
   useQueryClient,
 } from '@tanstack/react-query'
 import { applyModeration } from '@/features/moderation/queue'
+import { replaceUser } from '@/features/moderation/users'
 import {
   api,
   type Comment,
@@ -19,6 +20,8 @@ import { commentsQuery, moderationPostsQuery, postQuery, sessionQuery } from './
 
 type VoteState = Schemas['VoteState']
 type ModerationQueue = Schemas['ModerationQueue']
+type ModerationUserPage = Schemas['ModerationUserPage']
+export type UpdateModerationUser = Schemas['UpdateModerationUser']
 export type NewPost = Schemas['NewPost']
 export type UpdatePost = Schemas['UpdatePost']
 export type NewComment = Schemas['NewComment']
@@ -204,6 +207,28 @@ export function useModeratePost() {
       void queryClient.invalidateQueries({ queryKey: sessionQuery.queryKey })
       void queryClient.invalidateQueries(isBoardPostList)
       void queryClient.invalidateQueries({ queryKey: ['roadmap'] })
+    },
+  })
+}
+
+// Block, unblock, or change the role of a user (moderation list)
+export function useUpdateModerationUser() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, ...changes }: UpdateModerationUser & { id: number }) =>
+      unwrap(
+        api.PATCH('/api/app/v1/moderation/users/{id}', {
+          params: { path: { id } },
+          body: changes,
+        }),
+      ),
+    onSuccess: (updated) => {
+      // Show the change right away, then reload for the counts and the filters
+      queryClient.setQueriesData<InfiniteData<ModerationUserPage>>(
+        { queryKey: ['moderation', 'users'] },
+        (data) => data && replaceUser(data, updated),
+      )
+      void queryClient.invalidateQueries({ queryKey: ['moderation', 'users'] })
     },
   })
 }

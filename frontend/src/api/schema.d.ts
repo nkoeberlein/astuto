@@ -599,6 +599,138 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/app/v1/moderation/users": {
+        parameters: {
+            query?: {
+                /** @description Part of the name or email */
+                search?: string;
+                /** @enum {unknown} */
+                role?: string;
+                /** @enum {unknown} */
+                status?: string;
+                page?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Users with role and status (moderators) */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description Part of the name or email */
+                    search?: string;
+                    /** @enum {unknown} */
+                    role?: string;
+                    /** @enum {unknown} */
+                    status?: string;
+                    page?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description filter by status */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ModerationUserPage"];
+                    };
+                };
+                /** @description not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description not a moderator */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/moderation/users/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Block, unblock or change the role of a user */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["UpdateModerationUser"];
+                };
+            };
+            responses: {
+                /** @description admin demotes a moderator, whose API key is removed */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ModerationUser"];
+                    };
+                };
+                /** @description nobody changes themselves */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description users cannot be marked deleted */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
     "/api/app/v1/password": {
         parameters: {
             query?: never;
@@ -1394,6 +1526,42 @@ export interface components {
             allowAnonymousFeedback: boolean;
             /** @enum {string} */
             feedbackApprovalPolicy: "anonymous_require_approval" | "never_require_approval" | "always_require_approval";
+        };
+        ModerationUser: {
+            id: number;
+            email: string;
+            fullName: string;
+            avatarUrl: string;
+            /** @enum {string} */
+            role: "user" | "moderator" | "admin" | "owner";
+            /** @enum {string} */
+            status: "active" | "blocked" | "deleted";
+            /** Format: date-time */
+            createdAt: string;
+            /** @description The current user may block or unblock this user */
+            canChangeStatus: boolean;
+            /** @description The current user (an admin) may change the role */
+            canChangeRole: boolean;
+        };
+        ModerationUserPage: {
+            users: components["schemas"]["ModerationUser"][];
+            page: number;
+            hasMore: boolean;
+            counts: {
+                total: number;
+                active: number;
+                blocked: number;
+                deleted: number;
+            };
+        };
+        UpdateModerationUser: {
+            /**
+             * @description Admins only
+             * @enum {string}
+             */
+            role?: "user" | "moderator" | "admin";
+            /** @enum {string} */
+            status?: "active" | "blocked";
         };
         VoteState: {
             liked: boolean;

@@ -1,5 +1,12 @@
 import { infiniteQueryOptions, queryOptions } from '@tanstack/react-query'
-import { api, setCsrfToken, type Translations, unwrap } from './client'
+import {
+  api,
+  setCsrfToken,
+  type Translations,
+  type UserRole,
+  type UserStatus,
+  unwrap,
+} from './client'
 
 export const SORT_OPTIONS = ['trending', 'newest', 'most_voted', 'oldest'] as const
 export type SortBy = (typeof SORT_OPTIONS)[number]
@@ -130,3 +137,26 @@ export const moderationPostsQuery = queryOptions({
   queryKey: ['moderation', 'posts'],
   queryFn: () => unwrap(api.GET('/api/app/v1/moderation/posts')),
 })
+
+// Empty search and missing role/status mean "all users"
+export type UserFilters = { search: string; role?: UserRole; status?: UserStatus }
+
+export const moderationUsersQuery = (filters: UserFilters) =>
+  infiniteQueryOptions({
+    queryKey: ['moderation', 'users', filters],
+    queryFn: ({ pageParam }) =>
+      unwrap(
+        api.GET('/api/app/v1/moderation/users', {
+          params: {
+            query: {
+              page: pageParam,
+              search: filters.search || undefined,
+              role: filters.role,
+              status: filters.status,
+            },
+          },
+        }),
+      ),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => (lastPage.hasMore ? lastPage.page + 1 : undefined),
+  })

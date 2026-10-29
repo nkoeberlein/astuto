@@ -77,6 +77,22 @@ module Swagger
           allowAnonymousFeedback: BOOLEAN,
           feedbackApprovalPolicy: { type: :string, enum: %w[anonymous_require_approval never_require_approval always_require_approval] }
         }),
+        ModerationUser: object({
+          id: INTEGER, email: STRING, fullName: STRING, avatarUrl: STRING,
+          role: { type: :string, enum: %w[user moderator admin owner] },
+          status: { type: :string, enum: %w[active blocked deleted] },
+          createdAt: DATETIME,
+          canChangeStatus: BOOLEAN.merge(description: 'The current user may block or unblock this user'),
+          canChangeRole: BOOLEAN.merge(description: 'The current user (an admin) may change the role')
+        }),
+        ModerationUserPage: object({
+          users: { type: :array, items: ref(:ModerationUser) }, page: INTEGER, hasMore: BOOLEAN,
+          counts: object({ total: INTEGER, active: INTEGER, blocked: INTEGER, deleted: INTEGER })
+        }),
+        UpdateModerationUser: object({
+          role: { type: :string, enum: %w[user moderator admin], description: 'Admins only' },
+          status: { type: :string, enum: %w[active blocked] }
+        }, required: []),
         VoteState: object({ liked: BOOLEAN, likesCount: INTEGER }),
         FollowState: object({ followed: BOOLEAN }),
         Summary: object({ summary: STRING }),

@@ -84,7 +84,7 @@ class SpaController < ActionController::Base
         end
       when 'roadmap', 'embedded_roadmap'
         ["#{I18n.t('roadmap.title', default: 'Roadmap')} · #{site_name}", site_name]
-      when 'moderation/feedback'
+      when 'moderation/feedback', 'moderation/users'
         ["#{I18n.t('header.menu.moderation', default: 'Moderation')} · #{site_name}", site_name]
       when 'login'
         ["#{I18n.t('common.forms.auth.log_in', default: 'Log in')} · #{site_name}", site_name]

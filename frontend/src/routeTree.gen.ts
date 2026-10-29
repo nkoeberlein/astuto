@@ -16,6 +16,7 @@ import { Route as RegisterRouteImport } from './routes/register'
 import { Route as RoadmapRouteImport } from './routes/roadmap'
 import { Route as BoardsBoardSlugRouteImport } from './routes/boards.$boardSlug'
 import { Route as ModerationFeedbackRouteImport } from './routes/moderation.feedback'
+import { Route as ModerationUsersRouteImport } from './routes/moderation.users'
 import { Route as PasswordForgotRouteImport } from './routes/password.forgot'
 import { Route as PasswordResetRouteImport } from './routes/password.reset'
 import { Route as PostsPostSlugRouteImport } from './routes/posts.$postSlug'
@@ -55,6 +56,11 @@ const ModerationFeedbackRoute = ModerationFeedbackRouteImport.update({
   path: '/moderation/feedback',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ModerationUsersRoute = ModerationUsersRouteImport.update({
+  id: '/moderation/users',
+  path: '/moderation/users',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PasswordForgotRoute = PasswordForgotRouteImport.update({
   id: '/password/forgot',
   path: '/password/forgot',
@@ -79,6 +85,7 @@ export interface FileRoutesByFullPath {
   '/roadmap': typeof RoadmapRoute
   '/boards/$boardSlug': typeof BoardsBoardSlugRoute
   '/moderation/feedback': typeof ModerationFeedbackRoute
+  '/moderation/users': typeof ModerationUsersRoute
   '/password/forgot': typeof PasswordForgotRoute
   '/password/reset': typeof PasswordResetRoute
   '/posts/$postSlug': typeof PostsPostSlugRoute
@@ -91,6 +98,7 @@ export interface FileRoutesByTo {
   '/roadmap': typeof RoadmapRoute
   '/boards/$boardSlug': typeof BoardsBoardSlugRoute
   '/moderation/feedback': typeof ModerationFeedbackRoute
+  '/moderation/users': typeof ModerationUsersRoute
   '/password/forgot': typeof PasswordForgotRoute
   '/password/reset': typeof PasswordResetRoute
   '/posts/$postSlug': typeof PostsPostSlugRoute
@@ -104,6 +112,7 @@ export interface FileRoutesById {
   '/roadmap': typeof RoadmapRoute
   '/boards/$boardSlug': typeof BoardsBoardSlugRoute
   '/moderation/feedback': typeof ModerationFeedbackRoute
+  '/moderation/users': typeof ModerationUsersRoute
   '/password/forgot': typeof PasswordForgotRoute
   '/password/reset': typeof PasswordResetRoute
   '/posts/$postSlug': typeof PostsPostSlugRoute
@@ -118,6 +127,7 @@ export interface FileRouteTypes {
     | '/roadmap'
     | '/boards/$boardSlug'
     | '/moderation/feedback'
+    | '/moderation/users'
     | '/password/forgot'
     | '/password/reset'
     | '/posts/$postSlug'
@@ -130,6 +140,7 @@ export interface FileRouteTypes {
     | '/roadmap'
     | '/boards/$boardSlug'
     | '/moderation/feedback'
+    | '/moderation/users'
     | '/password/forgot'
     | '/password/reset'
     | '/posts/$postSlug'
@@ -142,6 +153,7 @@ export interface FileRouteTypes {
     | '/roadmap'
     | '/boards/$boardSlug'
     | '/moderation/feedback'
+    | '/moderation/users'
     | '/password/forgot'
     | '/password/reset'
     | '/posts/$postSlug'
@@ -155,6 +167,7 @@ export interface RootRouteChildren {
   RoadmapRoute: typeof RoadmapRoute
   BoardsBoardSlugRoute: typeof BoardsBoardSlugRoute
   ModerationFeedbackRoute: typeof ModerationFeedbackRoute
+  ModerationUsersRoute: typeof ModerationUsersRoute
   PasswordForgotRoute: typeof PasswordForgotRoute
   PasswordResetRoute: typeof PasswordResetRoute
   PostsPostSlugRoute: typeof PostsPostSlugRoute
@@ -211,6 +224,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ModerationFeedbackRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/moderation/users': {
+      id: '/moderation/users'
+      path: '/moderation/users'
+      fullPath: '/moderation/users'
+      preLoaderRoute: typeof ModerationUsersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/password/forgot': {
       id: '/password/forgot'
       path: '/password/forgot'
@@ -243,6 +263,7 @@ const rootRouteChildren: RootRouteChildren = {
   RoadmapRoute: RoadmapRoute,
   BoardsBoardSlugRoute: BoardsBoardSlugRoute,
   ModerationFeedbackRoute: ModerationFeedbackRoute,
+  ModerationUsersRoute: ModerationUsersRoute,
   PasswordForgotRoute: PasswordForgotRoute,
   PasswordResetRoute: PasswordResetRoute,
   PostsPostSlugRoute: PostsPostSlugRoute,

@@ -387,3 +387,4 @@ en:
       search_placeholder: 'Search by name or email'
       filter_all_statuses: 'All statuses'
       filter_all_roles: 'All roles'
+      empty: 'No users found'

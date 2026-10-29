@@ -6,6 +6,7 @@ Issue numbers refer to the archived [astuto/astuto](https://github.com/astuto/as
 ## [Unreleased]
 
 ### Features
+- v2 frontend: user moderation at `/next/moderation/users` – search by name or email, filter by role and status, block and unblock (moderators), change roles (admins). Same rules as the legacy UI: nobody changes themselves or the owner, moderators only manage users. Unlike the legacy list, the server searches and pages through the users (50 at a time). New endpoints `GET /api/app/v1/moderation/users` and `PATCH /api/app/v1/moderation/users/:id`.
 - v2 frontend: feedback moderation at `/next/moderation/feedback` – posts waiting for approval and rejected posts, approve or reject with one click. Moderators get a moderation link in the header with the number of pending posts. New endpoint `GET /api/app/v1/moderation/posts`; the session tells moderators the pending count (`pendingPostsCount`).
 - v2 frontend: embeddable roadmap at `/next/embedded_roadmap` for an iframe on another site, without header and footer; posts open in a new tab. It takes the legacy embed parameters (`show_boards`, `show_statuses`, `show_board_filter=false`, `show_status_filter=false`), so existing embed codes keep working after the switch from `/next` to `/`. Only this page may be framed by other sites, and only while the roadmap is enabled.
 

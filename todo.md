@@ -129,7 +129,7 @@ Empfehlung (roadmap.md, Abschnitt 3): getrenntes Frontend mit React 19 + TS 7 + 
 - [x] Öffentliche Seiten: Board, Post-Detail und Kommentare, Roadmap
 - [x] Auth-Seiten: Login, Registrierung, Passwort, OAuth-Buttons (Devise mit JSON-Endpunkten)
 - [x] Moderation › Feedback-Queue (`/next/moderation/feedback`, `GET /api/app/v1/moderation/posts`): ausstehende und abgelehnte Posts freigeben/ablehnen, Moderations-Link mit Zähler im Header (`pendingPostsCount` in der Session)
-- [ ] Moderation › Nutzer (Suche, Rollen, Sperren)
+- [x] Moderation › Nutzer (`/next/moderation/users`, `GET/PATCH /api/app/v1/moderation/users`): Suche nach Name/E-Mail, Filter nach Rolle und Status, Sperren (Moderatoren), Rollen (Admins); Regeln aus `UserPolicy`, serverseitig gefiltert und seitenweise (`ModerationUsersQuery`)
 - [ ] Site Settings (General, Boards, Status, Roadmap, Auth, Appearance, Webhooks, API); der Link „Moderationseinstellungen ändern“ führt bis dahin ins alte UI
 - [ ] E2E-Tests (Playwright oder Capybara) für jede neue Seite
 - [ ] Altes Frontend entfernen: `react-rails`, `react_ujs`, Redux, Bootstrap, jQuery, Turbolinks, `jsbundling`/Webpack, `i18n-js` 3; danach Sidekiq 8.1 und `connection_pool`-Pin entfernen

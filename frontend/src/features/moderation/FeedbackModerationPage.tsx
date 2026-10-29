@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button'
 import { formatRelativeTime } from '@/lib/format'
 import { useI18n } from '@/lib/i18n'
 import { cn } from '@/lib/utils'
+import { ModerationNav } from './ModerationNav'
 import { excerpt, type ModerationTab, postsInTab } from './queue'
 
 // Feedback queue (legacy: /moderation/feedback): approve or reject posts waiting for approval
@@ -28,9 +29,7 @@ export function FeedbackModerationPage({ tab }: { tab: ModerationTab }) {
   return (
     <div className="mx-auto max-w-3xl space-y-6">
       <div className="space-y-3">
-        <h1 className="text-2xl font-semibold tracking-tight">
-          {t('header.menu.moderation')} · {t('moderation.menu.feedback')}
-        </h1>
+        <ModerationNav />
         {isAdmin && (
           <div className="flex flex-wrap items-center gap-2 text-xs">
             <span className="rounded-full border px-2.5 py-1 text-muted-foreground">

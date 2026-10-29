@@ -123,6 +123,7 @@ Rails.application.routes.draw do
           end
           namespace :moderation do
             resources :posts, only: [:index]
+            resources :users, only: [:index, :update]
           end
         end
       end
