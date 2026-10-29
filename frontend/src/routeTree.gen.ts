@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as Embedded_roadmapRouteImport } from './routes/embedded_roadmap'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as MyFeedbackRouteImport } from './routes/my-feedback'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as RoadmapRouteImport } from './routes/roadmap'
@@ -46,6 +47,11 @@ const Embedded_roadmapRoute = Embedded_roadmapRouteImport.update({
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MyFeedbackRoute = MyFeedbackRouteImport.update({
+  id: '/my-feedback',
+  path: '/my-feedback',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProfileRoute = ProfileRouteImport.update({
@@ -156,6 +162,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/embedded_roadmap': typeof Embedded_roadmapRoute
   '/login': typeof LoginRoute
+  '/my-feedback': typeof MyFeedbackRoute
   '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
   '/roadmap': typeof RoadmapRoute
@@ -181,6 +188,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/embedded_roadmap': typeof Embedded_roadmapRoute
   '/login': typeof LoginRoute
+  '/my-feedback': typeof MyFeedbackRoute
   '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
   '/roadmap': typeof RoadmapRoute
@@ -207,6 +215,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/embedded_roadmap': typeof Embedded_roadmapRoute
   '/login': typeof LoginRoute
+  '/my-feedback': typeof MyFeedbackRoute
   '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
   '/roadmap': typeof RoadmapRoute
@@ -234,6 +243,7 @@ export interface FileRouteTypes {
     | '/'
     | '/embedded_roadmap'
     | '/login'
+    | '/my-feedback'
     | '/profile'
     | '/register'
     | '/roadmap'
@@ -259,6 +269,7 @@ export interface FileRouteTypes {
     | '/'
     | '/embedded_roadmap'
     | '/login'
+    | '/my-feedback'
     | '/profile'
     | '/register'
     | '/roadmap'
@@ -284,6 +295,7 @@ export interface FileRouteTypes {
     | '/'
     | '/embedded_roadmap'
     | '/login'
+    | '/my-feedback'
     | '/profile'
     | '/register'
     | '/roadmap'
@@ -310,6 +322,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   Embedded_roadmapRoute: typeof Embedded_roadmapRoute
   LoginRoute: typeof LoginRoute
+  MyFeedbackRoute: typeof MyFeedbackRoute
   ProfileRoute: typeof ProfileRoute
   RegisterRoute: typeof RegisterRoute
   RoadmapRoute: typeof RoadmapRoute
@@ -353,6 +366,13 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/my-feedback': {
+      id: '/my-feedback'
+      path: '/my-feedback'
+      fullPath: '/my-feedback'
+      preLoaderRoute: typeof MyFeedbackRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/profile': {
@@ -502,6 +522,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   Embedded_roadmapRoute: Embedded_roadmapRoute,
   LoginRoute: LoginRoute,
+  MyFeedbackRoute: MyFeedbackRoute,
   ProfileRoute: ProfileRoute,
   RegisterRoute: RegisterRoute,
   RoadmapRoute: RoadmapRoute,

@@ -82,6 +82,20 @@ export const boardPostsQuery = (boardSlug: string, filters: PostFilters) =>
     getNextPageParam: (lastPage) => (lastPage.hasMore ? lastPage.page + 1 : undefined),
   })
 
+export const MY_POSTS_FILTERS = ['created', 'voted', 'followed'] as const
+export type MyPostsFilter = (typeof MY_POSTS_FILTERS)[number]
+
+// "My feedback": always refetched when the page opens, since votes and follows change elsewhere
+export const myPostsQuery = (filter: MyPostsFilter) =>
+  infiniteQueryOptions({
+    queryKey: ['my-posts', filter],
+    queryFn: ({ pageParam }) =>
+      unwrap(api.GET('/api/app/v1/my_posts', { params: { query: { filter, page: pageParam } } })),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => (lastPage.hasMore ? lastPage.page + 1 : undefined),
+    staleTime: 0,
+  })
+
 export const ROADMAP_SORT_OPTIONS = ['most_voted', 'recently_updated'] as const
 export type RoadmapSortBy = (typeof ROADMAP_SORT_OPTIONS)[number]
 

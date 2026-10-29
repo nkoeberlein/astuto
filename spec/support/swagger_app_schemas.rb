@@ -55,6 +55,17 @@ module Swagger
           likesCount: INTEGER, commentsCount: INTEGER, liked: BOOLEAN, createdAt: DATETIME
         }),
         PostPage: object({ posts: { type: :array, items: ref(:PostListItem) }, page: INTEGER, hasMore: BOOLEAN }),
+        MyPost: object({
+          id: INTEGER, slug: STRING, title: STRING, description: NULLABLE_STRING, postStatusId: NULLABLE_INTEGER,
+          likesCount: INTEGER, commentsCount: INTEGER, liked: BOOLEAN, createdAt: DATETIME, updatedAt: DATETIME,
+          board: object({ name: STRING, slug: STRING }, nullable: true),
+          approvalStatus: { type: :string, enum: %w[approved pending rejected merged] }
+        }),
+        MyPostPage: object({
+          filter: { type: :string, enum: MyPostsQuery::FILTERS },
+          counts: object({ created: INTEGER, voted: INTEGER, followed: INTEGER }),
+          posts: { type: :array, items: ref(:MyPost) }, page: INTEGER, hasMore: BOOLEAN
+        }),
         RoadmapPost: object({
           id: INTEGER, slug: STRING, title: STRING, boardId: INTEGER,
           likesCount: INTEGER, commentsCount: INTEGER, liked: BOOLEAN, updatedAt: DATETIME

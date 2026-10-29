@@ -15,6 +15,15 @@ module Api::App::V1
       }
     end
 
+    # Row from MyPostsQuery: list item plus board and approval status (own posts can be pending)
+    def self.my_item(post, board:)
+      list_item(post).merge(
+        board: board && { name: board.name, slug: board.slug },
+        approvalStatus: post.approval_status,
+        updatedAt: post.updated_at.iso8601
+      )
+    end
+
     # Row from RoadmapQuery (includes aggregated counts)
     def self.roadmap_item(post)
       {

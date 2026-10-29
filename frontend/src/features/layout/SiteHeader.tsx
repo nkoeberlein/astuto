@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router'
-import { LogOut, Settings, ShieldCheck } from 'lucide-react'
+import { ListChecks, LogOut, Settings, ShieldCheck } from 'lucide-react'
 import type { Board, Session } from '@/api/client'
 import { useLogout } from '@/api/mutations'
 import { EvoLogo } from '@/components/EvoLogo'
@@ -101,6 +101,15 @@ export function SiteHeader({ session, boards }: { session: Session; boards: Boar
                 <Settings className="size-4" aria-hidden />
               </Link>
             )}
+            <Link
+              to="/my-feedback"
+              className="rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+              activeProps={{ className: 'text-primary' }}
+              aria-label={t('header.menu.my_feedback')}
+              title={t('header.menu.my_feedback')}
+            >
+              <ListChecks className="size-4" aria-hidden />
+            </Link>
             <Link
               to="/profile"
               className="flex items-center gap-2 rounded-lg px-1.5 py-1 hover:bg-accent"

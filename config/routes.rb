@@ -35,6 +35,7 @@ Rails.application.routes.draw do
     get '/confirmation/new', to: 'spa#show', as: :spa_confirmation_new
     get '/unlock/new', to: 'spa#show', as: :spa_unlock_new
     get '/profile', to: 'spa#show', as: :spa_profile
+    get '/my-feedback', to: 'spa#show', as: :spa_my_feedback
     %w[feedback users].each do |section|
       get "/moderation/#{section}", to: 'spa#show', as: "moderation_#{section}"
     end
@@ -98,6 +99,7 @@ Rails.application.routes.draw do
             put :reorder, on: :collection
           end
           resource :roadmap, only: [:show]
+          resources :my_posts, only: [:index]
           resources :posts, only: [:show, :update, :destroy] do
             post :merge, on: :member
             resources :comments, only: [:index, :create, :update, :destroy] do

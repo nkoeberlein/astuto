@@ -1334,6 +1334,55 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/app/v1/my_posts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Posts the signed-in person created, voted on or follows ("My feedback") */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description created (also pending, rejected and merged own posts), voted or followed */
+                    filter?: "created" | "voted" | "followed";
+                    page?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description posts, newest update first, with counts per filter */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["MyPostPage"];
+                    };
+                };
+                /** @description not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/app/v1/password": {
         parameters: {
             query?: never;
@@ -3682,6 +3731,38 @@ export interface components {
         };
         PostPage: {
             posts: components["schemas"]["PostListItem"][];
+            page: number;
+            hasMore: boolean;
+        };
+        MyPost: {
+            id: number;
+            slug: string;
+            title: string;
+            description: string | null;
+            postStatusId: number | null;
+            likesCount: number;
+            commentsCount: number;
+            liked: boolean;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+            board: {
+                name: string;
+                slug: string;
+            } | null;
+            /** @enum {string} */
+            approvalStatus: "approved" | "pending" | "rejected" | "merged";
+        };
+        MyPostPage: {
+            /** @enum {string} */
+            filter: "created" | "voted" | "followed";
+            counts: {
+                created: number;
+                voted: number;
+                followed: number;
+            };
+            posts: components["schemas"]["MyPost"][];
             page: number;
             hasMore: boolean;
         };

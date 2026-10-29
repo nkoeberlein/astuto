@@ -83,12 +83,27 @@ de:
       move_down: 'Nach unten'
   header:
     menu:
+      my_feedback: 'Mein Feedback'
       site_settings: 'Seiteneinstellungen'
       moderation: 'Moderation'
       profile_header: 'Profil'
       profile_settings: 'Profileinstellungen'
       sign_out: 'Abmelden'
     log_in: 'Einloggen / Registrieren'
+  my_feedback:
+    title: 'Mein Feedback'
+    filters:
+      created: 'Erstellt'
+      voted: 'Abgestimmt'
+      followed: 'Gefolgt'
+    empty:
+      created: 'Du hast noch kein Feedback geschrieben.'
+      voted: 'Du hast noch für keinen Beitrag gestimmt.'
+      followed: 'Du folgst noch keinem Beitrag.'
+    approval:
+      pending: 'Wartet auf Freigabe'
+      rejected: 'Abgelehnt'
+      merged: 'Zusammengeführt'
   roadmap:
     title: 'Roadmap'
     empty: 'Die Roadmap ist leer.'
