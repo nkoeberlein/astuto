@@ -23,6 +23,7 @@ import { Route as PostsPostSlugRouteImport } from './routes/posts.$postSlug'
 import { Route as Site_settingsBoardsRouteImport } from './routes/site_settings.boards'
 import { Route as Site_settingsGeneralRouteImport } from './routes/site_settings.general'
 import { Route as Site_settingsPost_statusesRouteImport } from './routes/site_settings.post_statuses'
+import { Route as Site_settingsRoadmapRouteImport } from './routes/site_settings.roadmap'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -95,6 +96,11 @@ const Site_settingsPost_statusesRoute =
     path: '/site_settings/post_statuses',
     getParentRoute: () => rootRouteImport,
   } as any)
+const Site_settingsRoadmapRoute = Site_settingsRoadmapRouteImport.update({
+  id: '/site_settings/roadmap',
+  path: '/site_settings/roadmap',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -111,6 +117,7 @@ export interface FileRoutesByFullPath {
   '/site_settings/boards': typeof Site_settingsBoardsRoute
   '/site_settings/general': typeof Site_settingsGeneralRoute
   '/site_settings/post_statuses': typeof Site_settingsPost_statusesRoute
+  '/site_settings/roadmap': typeof Site_settingsRoadmapRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -127,6 +134,7 @@ export interface FileRoutesByTo {
   '/site_settings/boards': typeof Site_settingsBoardsRoute
   '/site_settings/general': typeof Site_settingsGeneralRoute
   '/site_settings/post_statuses': typeof Site_settingsPost_statusesRoute
+  '/site_settings/roadmap': typeof Site_settingsRoadmapRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -144,6 +152,7 @@ export interface FileRoutesById {
   '/site_settings/boards': typeof Site_settingsBoardsRoute
   '/site_settings/general': typeof Site_settingsGeneralRoute
   '/site_settings/post_statuses': typeof Site_settingsPost_statusesRoute
+  '/site_settings/roadmap': typeof Site_settingsRoadmapRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -162,6 +171,7 @@ export interface FileRouteTypes {
     | '/site_settings/boards'
     | '/site_settings/general'
     | '/site_settings/post_statuses'
+    | '/site_settings/roadmap'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -178,6 +188,7 @@ export interface FileRouteTypes {
     | '/site_settings/boards'
     | '/site_settings/general'
     | '/site_settings/post_statuses'
+    | '/site_settings/roadmap'
   id:
     | '__root__'
     | '/'
@@ -194,6 +205,7 @@ export interface FileRouteTypes {
     | '/site_settings/boards'
     | '/site_settings/general'
     | '/site_settings/post_statuses'
+    | '/site_settings/roadmap'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -211,6 +223,7 @@ export interface RootRouteChildren {
   Site_settingsBoardsRoute: typeof Site_settingsBoardsRoute
   Site_settingsGeneralRoute: typeof Site_settingsGeneralRoute
   Site_settingsPost_statusesRoute: typeof Site_settingsPost_statusesRoute
+  Site_settingsRoadmapRoute: typeof Site_settingsRoadmapRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -313,6 +326,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Site_settingsPost_statusesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/site_settings/roadmap': {
+      id: '/site_settings/roadmap'
+      path: '/site_settings/roadmap'
+      fullPath: '/site_settings/roadmap'
+      preLoaderRoute: typeof Site_settingsRoadmapRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -331,6 +351,7 @@ const rootRouteChildren: RootRouteChildren = {
   Site_settingsBoardsRoute: Site_settingsBoardsRoute,
   Site_settingsGeneralRoute: Site_settingsGeneralRoute,
   Site_settingsPost_statusesRoute: Site_settingsPost_statusesRoute,
+  Site_settingsRoadmapRoute: Site_settingsRoadmapRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

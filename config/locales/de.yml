@@ -246,6 +246,8 @@ de:
       title_embed: 'Embed roadmap'
       empty: 'Die Roadmap ist leer.'
       help: 'Du kannst der Roadmap Status hinzufügen, indem du sie aus dem Abschnitt unten ziehst. Wenn du stattdessen einen neuen Status erstellst oder seine Reihenfolge ändern möchtest, gehe zu Site-Einstellungen Status.'
+      help_buttons: 'Mit dem Pfeil-Knopf verschiebst du einen Status in die Roadmap oder heraus. Status anlegen oder sortieren: Site Settings > Status.'
+      embed_scope_help: 'Wähle Boards oder Status, um nur diese zu zeigen; ohne Auswahl erscheinen alle.'
       show_board_filter: 'Show board filter'
       show_post_status_filter: 'Show status filter'
       embed_help: 'You can embed the roadmap in your website by copying the code above.'

@@ -1,18 +1,16 @@
-import { createFileRoute, redirect } from '@tanstack/react-router'
-import { boardsQuery, generalSettingsQuery, sessionQuery } from '@/api/queries'
+import { createFileRoute } from '@tanstack/react-router'
+import { boardsQuery, generalSettingsQuery } from '@/api/queries'
 import { ErrorView } from '@/features/layout/ErrorView'
 import { GeneralSettingsPage } from '@/features/site-settings/GeneralSettingsPage'
+import { requireAdmin } from '@/features/site-settings/route'
 import { SiteSettingsLayout } from '@/features/site-settings/SiteSettingsLayout'
 
 export const Route = createFileRoute('/site_settings/general')({
   loader: async ({ context: { queryClient }, location }) => {
-    const session = await queryClient.ensureQueryData(sessionQuery)
-    if (!session.user) throw redirect({ to: '/login', search: { redirect: location.href } })
-
-    // Non-admins get a 403 from the API, shown by the error view
+    await requireAdmin(queryClient, location)
     await Promise.all([
-      queryClient.ensureQueryData(generalSettingsQuery),
       queryClient.ensureQueryData(boardsQuery),
+      queryClient.ensureQueryData(generalSettingsQuery),
     ])
   },
   component: () => (

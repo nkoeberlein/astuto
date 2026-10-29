@@ -132,7 +132,8 @@ Empfehlung (roadmap.md, Abschnitt 3): getrenntes Frontend mit React 19 + TS 7 + 
 - [x] Moderation › Nutzer (`/next/moderation/users`, `GET/PATCH /api/app/v1/moderation/users`): Suche nach Name/E-Mail, Filter nach Rolle und Status, Sperren (Moderatoren), Rollen (Admins); Regeln aus `UserPolicy`, serverseitig gefiltert und seitenweise (`ModerationUsersQuery`)
 - [x] Site Settings › General (`/next/site_settings/general`, `GET/PATCH /api/app/v1/site_settings/general`): alle Felder des alten Tabs, nur geänderte Felder werden gesendet, Warnung bei ungespeicherten Änderungen (`useBlocker`); Zahnrad im Header für Admins, übrige Bereiche verlinken ins alte UI
 - [x] Site Settings › Boards und Status (`/next/site_settings/boards`, `/next/site_settings/post_statuses`): anlegen, bearbeiten, löschen, sortieren per Hoch/Runter-Knopf (tastaturbedienbar); App-API `POST/PATCH/DELETE` und `PUT …/reorder` mit vollständiger ID-Liste; gemeinsamer `ListEditor`
-- [ ] Site Settings › Roadmap, Authentication (OAuth), Appearance, Webhooks, Invitations, API-Keys
+- [x] Site Settings › Roadmap (`/next/site_settings/roadmap`): Status in/aus der Roadmap, Einbett-Code für `/next/embedded_roadmap` mit Board-/Status-Auswahl und Kopier-Knopf
+- [ ] Site Settings › Authentication (OAuth), Appearance, Webhooks, Invitations, API-Keys
 - [ ] E2E-Tests (Playwright oder Capybara) für jede neue Seite
 - [ ] Altes Frontend entfernen: `react-rails`, `react_ujs`, Redux, Bootstrap, jQuery, Turbolinks, `jsbundling`/Webpack, `i18n-js` 3; danach Sidekiq 8.1 und `connection_pool`-Pin entfernen
 - [ ] `app/controllers` (22 Dateien) nach Bereichen gliedern (z. B. `api/app/v1/site_settings/`)

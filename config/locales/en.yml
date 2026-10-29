@@ -272,6 +272,8 @@ en:
       title_embed: 'Embed roadmap'
       empty: 'The roadmap is empty.'
       help: 'You can add statuses to the roadmap by dragging them from the section below. If you instead want to create a new status or change their order, go to Site settings > Statuses.'
+      help_buttons: 'Use the arrow button to move a status into or out of the roadmap. To create statuses or change their order, go to Site settings > Statuses.'
+      embed_scope_help: 'Select boards or statuses to show only those; nothing selected shows all of them.'
       show_board_filter: 'Show board filter'
       show_post_status_filter: 'Show status filter'
       embed_help: 'You can embed the roadmap in your website by copying the code above.'
