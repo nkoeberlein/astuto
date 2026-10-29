@@ -202,6 +202,14 @@ de:
       hide: 'Übersetzung ausblenden'
       label: 'KI-Übersetzung'
       hint: 'Der Text wird an den eingestellten KI-Anbieter gesendet.'
+    ai_suggestion:
+      button: 'Board und Tags vorschlagen'
+      loading: 'Überlege…'
+      hint: 'Titel und Beschreibung werden an den eingestellten KI-Anbieter gesendet.'
+      board: 'Board:'
+      tags: 'Tags:'
+      none: 'Kein Vorschlag: nichts passt besser als das, was der Beitrag hat.'
+      apply: 'Übernehmen'
     ai_summary:
       title: 'KI-Zusammenfassung'
       button: 'Diskussion zusammenfassen'

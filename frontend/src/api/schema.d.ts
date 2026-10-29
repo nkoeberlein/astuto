@@ -3598,6 +3598,57 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/app/v1/posts/{post_id}/suggestion": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Post id or slug */
+                post_id: string;
+            };
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** AI suggestion of board and tags from the existing ones (moderators, needs AI_PROVIDER and AI_MODEL) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description Post id or slug */
+                    post_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description suggestion; unknown names are dropped */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Suggestion"];
+                    };
+                };
+                /** @description not a moderator */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/app/v1/posts/{post_id}/summary": {
         parameters: {
             query?: never;
@@ -4936,6 +4987,10 @@ export interface components {
         };
         Summary: {
             summary: string;
+        };
+        Suggestion: {
+            boardId: number | null;
+            tagIds: number[];
         };
         ChangelogEntry: {
             id: number;

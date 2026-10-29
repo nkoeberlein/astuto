@@ -280,6 +280,7 @@ module Swagger
         VoteState: object({ liked: BOOLEAN, likesCount: INTEGER }),
         FollowState: object({ followed: BOOLEAN }),
         Summary: object({ summary: STRING }),
+        Suggestion: object({ boardId: NULLABLE_INTEGER, tagIds: { type: :array, items: INTEGER } }),
         ChangelogEntry: object({
           id: INTEGER, title: STRING, body: STRING, publishedAt: { type: :string, format: 'date-time', nullable: true, description: 'null for drafts' },
           posts: { type: :array, items: object({ id: INTEGER, title: STRING, slug: STRING }) }

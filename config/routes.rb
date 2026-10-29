@@ -122,6 +122,7 @@ Rails.application.routes.draw do
             resource :vote, only: [:create, :destroy]
             resource :follow, only: [:create, :destroy]
             resource :summary, only: [:create]
+            resource :suggestion, only: [:create]
             post :translation, to: 'feedback_translations#translate_post'
           end
           namespace :moderation do

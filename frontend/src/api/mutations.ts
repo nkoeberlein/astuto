@@ -371,6 +371,18 @@ export function useTranslateComment(postSlug: string, commentId: number) {
   })
 }
 
+// AI suggestion of board and tags (moderators); applying it is a normal post update
+export function useSuggestBoardAndTags(postSlug: string) {
+  return useMutation({
+    mutationFn: () =>
+      unwrap(
+        api.POST('/api/app/v1/posts/{post_id}/suggestion', {
+          params: { path: { post_id: postSlug } },
+        }),
+      ),
+  })
+}
+
 export function useLogin() {
   const queryClient = useQueryClient()
   return useMutation({

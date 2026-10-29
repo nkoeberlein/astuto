@@ -27,6 +27,7 @@ Issue numbers refer to the archived [astuto/astuto](https://github.com/astuto/as
 - Legacy webhook endpoints `PUT /webhooks/:id/test` and `PUT /webhooks_preview` checked no permissions: anyone, even without an account, could fire a feedback space's webhooks with test data and read the target's response. Both now require an admin.
 
 ### Features
+- **AI board and tag suggestions:** with an AI provider configured, moderators get a board and tags proposed from the existing ones and apply them with one click.
 - **Tags** (#171): admins define tags with a colour (Site settings › Tags), moderators put them on posts from the post page, and everyone sees them in lists and filters a board by them (`?tag=`). Merging a post keeps its tags; the REST API and MCP include them.
 - **Feedback widget:** a button for your own website or app (`<script src=".../widget.js">`) opens boards, roadmap and changelog in a panel. Your server signs a short visitor token (HS256 JWT) with the widget secret, and the visitor votes and posts under their own account, found by your user id or email, or created. Works without third-party cookies. Moderators and admins are never signed in through the widget. Site settings › Widget; see [docs/widget.md](docs/widget.md).
 - **Webhook templates for Slack, Discord and Microsoft Teams** (#419): one click in the webhook form fills method, header and a message for the chosen trigger, in the language of the feedback space. Teams gets an Adaptive Card for its Workflows app. See [docs/webhooks.md](docs/webhooks.md).

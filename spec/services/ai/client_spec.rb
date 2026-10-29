@@ -131,4 +131,29 @@ RSpec.describe Ai::Client do
       expect(args[:max_tokens]).to eq(4096)
     end
   end
+
+  describe '#suggest_board_and_tags' do
+    let(:client) { described_class.new(provider: 'ollama', model: 'm') }
+    let(:board) { Struct.new(:name, :description).new('Bugs', 'Things that break') }
+    let(:tag) { Struct.new(:name).new('Mobile') }
+
+    it 'offers only the existing boards and tags and reads JSON from the answer' do
+      prompt = nil
+      allow(client).to receive(:complete) do |**args|
+        prompt = args[:user_prompt]
+        "Sure! ```json\n{\"board\": \"Bugs\", \"tags\": [\"Mobile\", 7, \"A\", \"B\", \"C\"]}\n```"
+      end
+
+      result = client.suggest_board_and_tags(title: 'Crash', description: 'On start', boards: [board], tags: [tag])
+
+      expect(prompt).to include('- Bugs: Things that break', '- Mobile', 'Feedback title: Crash')
+      expect(result).to eq('board' => 'Bugs', 'tags' => %w[Mobile A B])
+    end
+
+    it 'returns an empty suggestion when the answer is not JSON' do
+      allow(client).to receive(:complete).and_return('I cannot help with that')
+
+      expect(client.suggest_board_and_tags(title: 'x', description: nil, boards: [], tags: [])).to eq('board' => nil, 'tags' => [])
+    end
+  end
 end

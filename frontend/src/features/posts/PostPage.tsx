@@ -28,6 +28,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { formatRelativeTime } from '@/lib/format'
 import { useI18n } from '@/lib/i18n'
 import { isModerator } from '@/lib/roles'
+import { AiSuggestion } from './AiSuggestion'
 import { AiSummary } from './AiSummary'
 import { PostTranslation } from './AiTranslation'
 import { CommentForm } from './CommentForm'
@@ -359,6 +360,13 @@ export function PostPage({ postSlug }: { postSlug: string }) {
               </div>
             )}
             {!editing && <FormError error={updatePost.error} />}
+            {session.aiEnabled && (
+              <AiSuggestion
+                post={post}
+                boards={boards}
+                onApply={(changes) => updatePost.mutate(changes)}
+              />
+            )}
             {session.aiEnabled && <AiSummary postSlug={post.slug} />}
             {board && <MergePost post={post} boardSlug={board.slug} />}
           </section>

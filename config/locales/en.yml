@@ -201,6 +201,14 @@ en:
       hide: 'Hide translation'
       label: 'AI translation'
       hint: 'The text is sent to the configured AI provider.'
+    ai_suggestion:
+      button: 'Suggest board and tags'
+      loading: 'Thinking…'
+      hint: 'Title and description are sent to the configured AI provider.'
+      board: 'Board:'
+      tags: 'Tags:'
+      none: 'No suggestion: nothing fits better than what the post has.'
+      apply: 'Apply'
     ai_summary:
       title: 'AI summary'
       button: 'Summarize discussion'
