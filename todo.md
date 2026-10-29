@@ -42,6 +42,7 @@ Issue-Nummern beziehen sich auf `astuto/astuto`. Phasen siehe [roadmap.md](roadm
 - [x] Dependabot: Bundler, npm (Frontend; altes UI nur Sicherheitsupdates), Docker, Compose, Actions; Minor/Patch gruppiert. In den Repo-Einstellungen „Dependabot security updates“ aktivieren
 
 ### Sicherheit
+- [x] Webhook-Test und -Vorschau des alten UI (`PUT /webhooks/:id/test`, `PUT /webhooks_preview`) prüften keine Rechte: jeder, auch ohne Konto, konnte Webhooks auslösen und die Antwort des Ziels lesen; jetzt nur Admins (`spec/requests/webhooks_authorization_spec.rb`)
 - [x] **v3-Voraussetzung:** Webhook-URL/-Header mit JSON statt Marshal verschlüsselt (`Webhook.encryptor`, liest beide Formate), Migration `ReencryptWebhooksAsJson` schreibt bestehende Werte neu
 - [x] **Datenschutz:** Die alten JSON-Endpunkte (Kommentare, Likes, Statusverlauf, Post-Seite) lieferten `user_email` aller Autoren öffentlich aus. Jetzt nur noch für Moderatoren und die Person selbst, sonst Gravatar-Hash (`Legacy::AuthorFields`); neue App-API über `AuthorSerializer`
 - [x] Standard-Admin: `ADMIN_EMAIL` / `ADMIN_PASSWORD`, ohne Passwort außerhalb von Development ein zufälliges, einmal im Log ausgegeben (`DefaultAdminCredentials`)

@@ -1,4 +1,11 @@
 class WebhooksController < ApplicationController
+  # Every action needs an admin: preview and test used to be open to anyone, so visitors
+  # could fire a tenant's webhooks and read the target's response
+  before_action :authenticate_user!
+  # Outside the actions: their catch-all rescue would turn a refusal into a 422
+  before_action -> { authorize Webhook, :create? }, only: [:preview]
+  before_action -> { authorize Webhook.find(params[:id]), :update? }, only: [:test]
+
   def index
     authorize Webhook
 

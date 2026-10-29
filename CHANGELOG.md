@@ -5,6 +5,9 @@ Issue numbers refer to the archived [astuto/astuto](https://github.com/astuto/as
 
 ## [Unreleased]
 
+### Security
+- Legacy webhook endpoints `PUT /webhooks/:id/test` and `PUT /webhooks_preview` checked no permissions: anyone, even without an account, could fire a feedback space's webhooks with test data and read the target's response. Both now require an admin.
+
 ### Features
 - v2 frontend: site settings › Authentication at `/next/site_settings/authentication`: email registration rules (everyone, certain domains, nobody) and OAuth providers – create, edit, switch on or off, test in a popup, copy the callback URL, delete; default providers of the instance can be switched on or off per feedback space. The client secret is never sent to the browser; leaving it empty when editing keeps the current one. New endpoints under `/api/app/v1/site_settings/o_auths`.
 - v2 frontend: site settings › Appearance at `/next/site_settings/appearance`: custom CSS with live preview before saving (`customCss` in `GET/PATCH /api/app/v1/site_settings/general`).
