@@ -1,7 +1,7 @@
 <%= render 'user_mailer/opening', user_name: @user.full_name_or_email %>
 
 <p>
-  <%= t('mailers.user.notify_follower_of_changelog_entry.body_html', title: ERB::Util.html_escape(@entry.title)) %>:
+  <%= t('mailers.user.notify_follower_of_changelog_entry.body_html', title: @entry.title) %>:
 </p>
 
 <ul>

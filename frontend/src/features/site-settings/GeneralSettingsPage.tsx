@@ -188,6 +188,12 @@ function GeneralForm(props: {
           ).map((policy) => ({ value: policy, label: help(`feedback_approval_policy_${policy}`) }))}
           help={help('feedback_approval_policy_help')}
         />
+        <CheckboxField
+          label={label('tenant_setting', 'require_user_approval')}
+          checked={draft.requireUserApproval}
+          onChange={(value) => set('requireUserApproval', value)}
+          help={help('require_user_approval_help')}
+        />
         {draft.feedbackApprovalPolicy === 'new_users_require_approval' && (
           <TextField
             label={label('tenant_setting', 'trusted_after_posts')}

@@ -56,6 +56,13 @@ class UserMailer < ApplicationMailer
     )
   end
 
+  # An admin approved the account (#362)
+  def account_approved(user:)
+    Current.tenant = user.tenant
+    @user = user
+    mail(to: user.email, subject: t('mailers.user.account_approved.subject', site_name: site_name))
+  end
+
   # frequency: "daily", "weekly" or "monthly"; from/to: the period (see SendRecapEmails)
   def recap(user:, frequency:, from:, to:)
     Current.tenant = user.tenant

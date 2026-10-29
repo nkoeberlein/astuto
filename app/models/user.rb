@@ -16,7 +16,8 @@ class User < ApplicationRecord
   has_many :changelog_entries, dependent: :nullify
 
   enum :role, [:user, :moderator, :admin, :owner]
-  enum :status, [:active, :blocked, :deleted]
+  # pending_approval: signed up while Site settings › General › Approve new accounts is on (#362)
+  enum :status, [:active, :blocked, :deleted, :pending_approval]
 
   enum :recap_notification_frequency, [:never, :daily, :weekly, :monthly]
 
@@ -46,6 +47,8 @@ class User < ApplicationRecord
 
   def inactive_message
     return I18n.t('devise.failure.locked') if access_locked?
+
+    return I18n.t('errors.user_pending_approval') if pending_approval?
 
     active? ? super : I18n.t('errors.user_blocked_or_deleted')
   end

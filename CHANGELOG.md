@@ -28,6 +28,7 @@ Issue numbers refer to the archived [astuto/astuto](https://github.com/astuto/as
 - Legacy webhook endpoints `PUT /webhooks/:id/test` and `PUT /webhooks_preview` checked no permissions: anyone, even without an account, could fire a feedback space's webhooks with test data and read the target's response. Both now require an admin.
 
 ### Features
+- **Approve new accounts** (#362): with Site settings › General › Approve new accounts on, sign-ups by email or OAuth wait until an admin approves them in Moderation › Users. Admins get an email for each, the person gets one when approved. Invited people and SAML, LDAP or widget logins are approved automatically.
 - **Private boards** (#414): a board can be visible to everyone, only to signed-in people, or only to moderators and admins (Site settings › Boards). Its posts are left out everywhere for others: lists, roadmap, "My feedback", changelog entries, RSS, sitemap, page titles, recap and notification emails.
 - **AI board and tag suggestions:** with an AI provider configured, moderators get a board and tags proposed from the existing ones and apply them with one click.
 - **Tags** (#171): admins define tags with a colour (Site settings › Tags), moderators put them on posts from the post page, and everyone sees them in lists and filters a board by them (`?tag=`). Merging a post keeps its tags; the REST API and MCP include them.

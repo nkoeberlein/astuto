@@ -1,0 +1,9 @@
+<%= render 'user_mailer/opening', user_name: @user.full_name_or_email %>
+
+<p><%= t('mailers.user.account_approved.body_html') %></p>
+
+<p>
+  <%= link_to t('mailers.user.account_approved.sign_in'), get_url_for(method(:spa_login_url)) %>
+</p>
+
+<%= render 'user_mailer/closing' %>

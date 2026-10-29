@@ -19,6 +19,7 @@ const settings: GeneralSettings = {
   allowAnonymousFeedback: true,
   feedbackApprovalPolicy: 'anonymous_require_approval',
   trustedAfterPosts: 3,
+  requireUserApproval: false,
   loginOnlyWithOauth: false,
   logoLinksTo: 'root_page',
   logoCustomUrl: null,

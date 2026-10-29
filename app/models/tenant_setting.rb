@@ -72,6 +72,12 @@ class TenantSetting < ApplicationRecord
     end
   end
 
+  # Status of an account that signs up by itself (email or OAuth); invited people and logins
+  # vouched for by SAML, LDAP or the widget are active right away
+  def status_for_new_user
+    require_user_approval ? 'pending_approval' : 'active'
+  end
+
   # Trust grows with approved posts only: rejected ones do not count
   def trusted?(user)
     user.present? && user.posts.where(approval_status: 'approved').limit(trusted_after_posts).count >= trusted_after_posts

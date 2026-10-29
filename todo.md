@@ -216,7 +216,8 @@ Empfehlung (roadmap.md, Abschnitt 3): getrenntes Frontend mit React 19 + TS 7 + 
 - [ ] Bild-Upload und Anhänge, auf Upstream-PR #454 aufbauen (#253, #482); **vorher entscheiden:** Speicher ohne Active Storage (Regel für v2/v3), z. B. S3-kompatibel oder Postgres-`bytea` – unnötig wäre eine Baustelle, die die v3-Migration wieder verkompliziert
 - [x] Tags für Posts (#171): Site Settings › Tags (Name, Farbe, Reihenfolge), Moderatoren vergeben sie auf der Post-Seite (Audit `post.tag_ids`), Anzeige in Listen und auf der Post-Seite, Board-Filter `?tag=`, Merge übernimmt Tags; REST-API und MCP liefern Tags mit
 - [x] Private Boards (#414): Sichtbarkeit pro Board (alle / nur Angemeldete / nur Moderatoren und Admins), zentral über `Board.visible_to` und `Post.on_boards_visible_to`: Boards, Posts, Kommentare, Votes, Roadmap, Mein Feedback, Changelog-Einträge, Feeds, Sitemap, Seitentitel, Recap und Benachrichtigungsmails; `spec/requests/private_boards_spec.rb`
-- [ ] Admin-Freigabe neuer Nutzer (#362), eigene Signup-Anforderungen (#30)
+- [x] Admin-Freigabe neuer Nutzer (#362): Einstellung „Neue Konten freigeben“, Status `pending_approval` für Registrierungen per E-Mail/OAuth (Einladungen, SAML, LDAP, Widget bleiben automatisch), Mail an Admins, „Freigeben“ in Moderation › Nutzer, Mail an die Person
+- [ ] Eigene Signup-Anforderungen (#30): Umfang unklar, Entscheidung nötig
 - [ ] Import/Export (#368)
 - [ ] Roadmap per Drag-and-drop sortieren (#473)
 - [ ] Votes auf Kommentare (#408), Downvotes (#421), Vote-Limit pro Monat (#422); Downvotes vor einer Umsetzung hinterfragen, Reaktionen und Budget-Voting sind bewusst ausgeschlossen (roadmap.md §1)

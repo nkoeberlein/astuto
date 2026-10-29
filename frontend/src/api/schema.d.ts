@@ -4338,6 +4338,8 @@ export interface components {
         };
         RegistrationResult: {
             confirmationRequired: boolean;
+            /** @description An admin approves the account first */
+            approvalRequired: boolean;
             message: string;
             session: components["schemas"]["Session"];
         };
@@ -4524,7 +4526,7 @@ export interface components {
             /** @enum {string} */
             role: "user" | "moderator" | "admin" | "owner";
             /** @enum {string} */
-            status: "active" | "blocked" | "deleted";
+            status: "active" | "blocked" | "deleted" | "pending_approval";
             /** Format: date-time */
             createdAt: string;
             /** @description The current user may block or unblock this user */
@@ -4549,6 +4551,7 @@ export interface components {
                 active: number;
                 blocked: number;
                 deleted: number;
+                pendingApproval: number;
             };
         };
         UpdateModerationUser: {
@@ -4557,7 +4560,10 @@ export interface components {
              * @enum {string}
              */
             role?: "user" | "moderator" | "admin";
-            /** @enum {string} */
+            /**
+             * @description active also approves an account that waits for approval
+             * @enum {string}
+             */
             status?: "active" | "blocked";
         };
         GeneralSettings: {
@@ -4583,6 +4589,8 @@ export interface components {
             feedbackApprovalPolicy: "anonymous_require_approval" | "never_require_approval" | "always_require_approval" | "new_users_require_approval";
             /** @description Approved posts after which an account is trusted (policy new_users_require_approval) */
             trustedAfterPosts: number;
+            /** @description New sign-ups (email, OAuth) wait for approval by an admin */
+            requireUserApproval: boolean;
             loginOnlyWithOauth: boolean;
             /** @enum {string} */
             logoLinksTo: "root_page" | "custom_url" | "nothing";
@@ -4627,6 +4635,8 @@ export interface components {
             feedbackApprovalPolicy?: "anonymous_require_approval" | "never_require_approval" | "always_require_approval" | "new_users_require_approval";
             /** @description Approved posts after which an account is trusted (policy new_users_require_approval) */
             trustedAfterPosts?: number;
+            /** @description New sign-ups (email, OAuth) wait for approval by an admin */
+            requireUserApproval?: boolean;
             loginOnlyWithOauth?: boolean;
             /** @enum {string} */
             logoLinksTo?: "root_page" | "custom_url" | "nothing";

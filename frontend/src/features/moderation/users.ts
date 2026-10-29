@@ -4,7 +4,7 @@ import type { UserFilters } from '@/api/queries'
 import { asText } from '@/lib/search-params'
 
 export const USER_ROLES: UserRole[] = ['owner', 'admin', 'moderator', 'user']
-export const USER_STATUSES: UserStatus[] = ['active', 'blocked', 'deleted']
+export const USER_STATUSES: UserStatus[] = ['active', 'pending_approval', 'blocked', 'deleted']
 // Roles an admin can give; nobody can make someone owner
 export type AssignableRole = Exclude<UserRole, 'owner'>
 export const ASSIGNABLE_ROLES: AssignableRole[] = ['user', 'moderator', 'admin']
@@ -48,6 +48,8 @@ export function confirmationKey(
   change: { role?: UserRole; status?: UserStatus },
 ): string | undefined {
   if (change.status === 'blocked') return 'moderation.users.block_confirmation'
+  // Approving a new account needs no question; it can be blocked again
+  if (change.status === 'active' && user.status === 'pending_approval') return undefined
   if (change.status === 'active') return 'moderation.users.unblock_confirmation'
   if (change.role === user.role) return undefined
   if (change.role === 'moderator') return 'moderation.users.role_to_moderator_confirmation'

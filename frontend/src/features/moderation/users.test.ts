@@ -49,7 +49,7 @@ describe('replaceUser', () => {
       users,
       page: 1,
       hasMore: false,
-      counts: { total: 3, active: 3, blocked: 0, deleted: 0 },
+      counts: { total: 3, active: 3, blocked: 0, deleted: 0, pendingApproval: 0 },
     })
     const data = { pages: [page([user(1), user(2)]), page([user(3)])], pageParams: [1, 2] }
     const result = replaceUser(data, user(3, { status: 'blocked' }))
@@ -66,6 +66,10 @@ describe('confirmationKey', () => {
     expect(confirmationKey(user(1), { status: 'active' })).toBe(
       'moderation.users.unblock_confirmation',
     )
+    // Approving a waiting account needs no question
+    expect(
+      confirmationKey(user(1, { status: 'pending_approval' }), { status: 'active' }),
+    ).toBeUndefined()
     expect(confirmationKey(user(1), { role: 'admin' })).toBe(
       'moderation.users.role_to_admin_confirmation',
     )

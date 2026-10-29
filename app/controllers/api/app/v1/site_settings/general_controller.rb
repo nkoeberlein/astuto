@@ -6,7 +6,7 @@ module Api::App::V1::SiteSettings
     TENANT_FIELDS = %w[site_name site_logo site_favicon locale custom_domain].freeze
     SETTING_FIELDS = %w[
       brand_display use_browser_locale root_board_id default_post_sorting custom_links
-      is_private use_gravatar require_two_factor_for_staff allow_anonymous_feedback feedback_approval_policy trusted_after_posts login_only_with_oauth
+      is_private use_gravatar require_two_factor_for_staff allow_anonymous_feedback feedback_approval_policy trusted_after_posts require_user_approval login_only_with_oauth
       logo_links_to logo_custom_url roadmap_enabled show_roadmap_in_header collapse_boards_in_header
       mail_logo_size show_vote_count show_vote_button_in_board hide_unused_statuses_in_filter_by_status
       show_powered_by custom_css email_registration_policy allowed_email_domains
@@ -86,6 +86,7 @@ module Api::App::V1::SiteSettings
           allowAnonymousFeedback: s.allow_anonymous_feedback,
           feedbackApprovalPolicy: s.feedback_approval_policy,
           trustedAfterPosts: s.trusted_after_posts,
+          requireUserApproval: s.require_user_approval,
           loginOnlyWithOauth: s.login_only_with_oauth,
           logoLinksTo: s.logo_links_to,
           logoCustomUrl: s.logo_custom_url,

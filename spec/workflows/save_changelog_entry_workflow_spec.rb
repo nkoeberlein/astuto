@@ -62,4 +62,11 @@ RSpec.describe SaveChangelogEntryWorkflow do
     expect(mail.subject).to include('Release 1')
     expect(mail.body.encoded).to include('Dark mode', 'Export', "/changelog#entry-#{entry.id}")
   end
+
+  it 'escapes the entry title in the mail once' do
+    _, entry = save(attributes: { title: 'Tom & Jerry' }, post_ids: [post_a.id], published: true)
+
+    expect(UserMailer.notify_follower_of_changelog_entry(user: follower, entry: entry).body.encoded)
+      .to include('<strong>Tom &amp; Jerry</strong>')
+  end
 end

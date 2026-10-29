@@ -53,7 +53,7 @@ export function RegisterPage({
       },
       {
         onSuccess: (result) => {
-          if (result.confirmationRequired) {
+          if (result.confirmationRequired || result.approvalRequired) {
             setConfirmationMessage(
               result.message ?? t('devise.registrations.signed_up_but_unconfirmed'),
             )

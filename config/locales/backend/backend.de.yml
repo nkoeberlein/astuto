@@ -23,6 +23,7 @@ de:
     not_logged_in: 'Du musst angemeldet sein, um auf diese Seite zugreifen zu können'
     not_enough_privileges: 'Du hast nicht die Berechtigung, auf diese Seite zuzugreifen'
     user_blocked_or_deleted: 'Du kannst nicht auf dein Konto zugreifen, da es gesperrt oder gelöscht wurde.'
+    user_pending_approval: 'Dein Konto wartet auf die Freigabe durch einen Admin. Du bekommst eine E-Mail, sobald du dich anmelden kannst.'
     o_auth_login_error: 'Beim Einloggen mit %{name} ist ein Fehler aufgetreten. Bitte wende dich an den Administrator oder versuche einen anderen Anbieter.'
     board:
       update_order: 'Beim Neuordnen der Boards ist ein Fehler aufgetreten'
@@ -37,6 +38,10 @@ de:
         subject: '[%{site_name}] Testmail'
         body: 'Diese Testmail von %{site_name} ist angekommen, der Mailversand funktioniert also.'
         details: 'Gesendet per %{delivery_method} von %{from}.'
+      user_pending_approval:
+        subject: '[%{site_name}] Neues Konto wartet auf Freigabe: %{name}'
+        body_html: '<strong>%{name}</strong> (%{email}) hat sich registriert und wartet auf deine Freigabe.'
+        review: 'In Moderation › Nutzer prüfen'
     devise:
       welcome_greeting: 'Willkommen auf %{site_name}, %{email}!'
       opening_greeting: 'Hallo %{email}!'
@@ -58,6 +63,10 @@ de:
         subject: '[%{site_name}] Neu im Changelog: %{title}'
         body_html: 'Im Changelog gibt es einen neuen Eintrag, <strong>%{title}</strong>. Er setzt Feedback um, dem du folgst'
         read_entry: 'Zum Changelog'
+      account_approved:
+        subject: '[%{site_name}] Dein Konto ist freigegeben'
+        body_html: 'Ein Admin hat dein Konto freigegeben. Du kannst dich jetzt anmelden.'
+        sign_in: 'Anmelden'
       recap:
         pending_posts_count_html: 'Neues Feedback, das auf Freigabe wartet: %{count}'
         published_posts_count_html: 'Neu veröffentlichtes Feedback: %{count}'
@@ -213,6 +222,7 @@ de:
         allowed_email_domains: 'Erlaubte E-Mail-Domains'
         allow_anonymous_feedback: 'Anonymes Feedback erlauben'
         feedback_approval_policy: 'Feedback-Freigaberichtlinie'
+        require_user_approval: 'Neue Konten freigeben'
         trusted_after_posts: 'Vertrauenswürdig nach freigegebenen Beiträgen'
         show_vote_count: 'Stimmenanzahl für Nutzer*innen anzeigen'
         show_vote_button_in_board: 'Zeige Abstimm-Buttons auf der Übersichtsseite an'

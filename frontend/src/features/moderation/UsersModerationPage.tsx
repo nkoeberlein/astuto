@@ -1,5 +1,5 @@
 import { useSuspenseInfiniteQuery } from '@tanstack/react-query'
-import { Ban, Download, LockOpen, Trash2 } from 'lucide-react'
+import { Ban, Check, Download, LockOpen, Trash2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import type { ModerationUser, UserRole, UserStatus } from '@/api/client'
 import {
@@ -63,7 +63,13 @@ export function UsersModerationPage({ filters, onFiltersChange }: Props) {
           {counts.total} {t('activerecord.models.user', { count: counts.total })} ({counts.active}{' '}
           {t('moderation.users.status_active')}, {counts.blocked}{' '}
           {t('moderation.users.status_blocked')}, {counts.deleted}{' '}
-          {t('moderation.users.status_deleted')})
+          {t('moderation.users.status_deleted')}
+          {counts.pendingApproval > 0 && (
+            <>
+              , {counts.pendingApproval} {t('moderation.users.status_pending_approval')}
+            </>
+          )}
+          )
         </p>
       )}
 
@@ -179,6 +185,7 @@ function UserRow(props: {
   const { t } = useI18n()
   const { user } = props
   const blocked = user.status === 'blocked'
+  const waiting = user.status === 'pending_approval'
 
   return (
     <li className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center">
@@ -227,6 +234,17 @@ function UserRow(props: {
           <span className="text-sm text-muted-foreground sm:w-40 sm:text-end">
             {t(`moderation.users.role_${user.role}`)}
           </span>
+        )}
+        {user.canChangeStatus && waiting && (
+          <Button
+            type="button"
+            size="sm"
+            disabled={props.busy}
+            onClick={() => props.onChange({ status: 'active' })}
+          >
+            <Check className="size-4" aria-hidden />
+            {t('moderation.users.approve')}
+          </Button>
         )}
         {user.canChangeStatus && (
           <Button

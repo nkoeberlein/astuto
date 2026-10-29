@@ -25,7 +25,8 @@ module Api::App::V1::Moderation
           total: User.count,
           active: User.active.count,
           blocked: User.blocked.count,
-          deleted: User.deleted.count
+          deleted: User.deleted.count,
+          pendingApproval: User.pending_approval.count
         }
       }
     end
@@ -55,6 +56,8 @@ module Api::App::V1::Moderation
       return render_error(:unprocessable_content, user.errors.full_messages.join(', ')) unless saved
 
       audit('user.update', user, changes: user.saved_changes.slice('role', 'status')) if user.saved_changes?
+      # Approved (#362): the person can sign in now
+      UserMailer.account_approved(user: user).deliver_later if user.saved_change_to_status == %w[pending_approval active]
       render json: serialize(user)
     end
 

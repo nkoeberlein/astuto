@@ -13,6 +13,7 @@ class TenantSettingPolicy < ApplicationPolicy
         :allow_anonymous_feedback,
         :feedback_approval_policy,
         :trusted_after_posts,
+        :require_user_approval,
         :show_vote_count,
         :show_vote_button_in_board,
         :hide_unused_statuses_in_filter_by_status,

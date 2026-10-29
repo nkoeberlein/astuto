@@ -43,7 +43,7 @@ module Swagger
         RegisterInput: object({
           fullName: STRING, email: STRING, password: STRING, passwordConfirmation: STRING, invitationToken: NULLABLE_STRING
         }, required: %i[fullName email password passwordConfirmation]),
-        RegistrationResult: object({ confirmationRequired: BOOLEAN, message: STRING, session: ref(:Session) }),
+        RegistrationResult: object({ confirmationRequired: BOOLEAN, approvalRequired: BOOLEAN.merge(description: 'An admin approves the account first'), message: STRING, session: ref(:Session) }),
         ForgotPasswordInput: object({ email: STRING }),
         EmailInput: object({ email: STRING }),
         ResetPasswordInput: object({ resetPasswordToken: STRING, password: STRING, passwordConfirmation: STRING }),
@@ -101,7 +101,7 @@ module Swagger
         ModerationUser: object({
           id: INTEGER, email: STRING, fullName: STRING, avatarUrl: NULLABLE_STRING,
           role: { type: :string, enum: %w[user moderator admin owner] },
-          status: { type: :string, enum: %w[active blocked deleted] },
+          status: { type: :string, enum: User.statuses.keys },
           createdAt: DATETIME,
           canChangeStatus: BOOLEAN.merge(description: 'The current user may block or unblock this user'),
           canChangeRole: BOOLEAN.merge(description: 'The current user (an admin) may change the role'),
@@ -111,11 +111,11 @@ module Swagger
         UserDataExport: { type: :object, description: 'Everything stored about a person: profile, posts, comments, votes, follows', additionalProperties: true },
         ModerationUserPage: object({
           users: { type: :array, items: ref(:ModerationUser) }, page: INTEGER, hasMore: BOOLEAN,
-          counts: object({ total: INTEGER, active: INTEGER, blocked: INTEGER, deleted: INTEGER })
+          counts: object({ total: INTEGER, active: INTEGER, blocked: INTEGER, deleted: INTEGER, pendingApproval: INTEGER })
         }),
         UpdateModerationUser: object({
           role: { type: :string, enum: %w[user moderator admin], description: 'Admins only' },
-          status: { type: :string, enum: %w[active blocked] }
+          status: { type: :string, enum: %w[active blocked], description: 'active also approves an account that waits for approval' }
         }, required: []),
         GeneralSettings: object({
           siteName: STRING, siteLogo: NULLABLE_STRING, siteFavicon: NULLABLE_STRING, locale: STRING, customDomain: NULLABLE_STRING,
@@ -126,6 +126,7 @@ module Swagger
           isPrivate: BOOLEAN, useGravatar: BOOLEAN.merge(description: 'Avatars from gravatar.com (sends the email hash there)'), requireTwoFactorForStaff: BOOLEAN, allowAnonymousFeedback: BOOLEAN,
           feedbackApprovalPolicy: { type: :string, enum: TenantSetting.feedback_approval_policies.keys },
           trustedAfterPosts: INTEGER.merge(description: 'Approved posts after which an account is trusted (policy new_users_require_approval)'),
+          requireUserApproval: BOOLEAN.merge(description: 'New sign-ups (email, OAuth) wait for approval by an admin'),
           loginOnlyWithOauth: BOOLEAN,
           logoLinksTo: { type: :string, enum: %w[root_page custom_url nothing] }, logoCustomUrl: NULLABLE_STRING,
           roadmapEnabled: BOOLEAN, showRoadmapInHeader: BOOLEAN,
@@ -146,6 +147,7 @@ module Swagger
           isPrivate: BOOLEAN, useGravatar: BOOLEAN.merge(description: 'Avatars from gravatar.com (sends the email hash there)'), requireTwoFactorForStaff: BOOLEAN, allowAnonymousFeedback: BOOLEAN,
           feedbackApprovalPolicy: { type: :string, enum: TenantSetting.feedback_approval_policies.keys },
           trustedAfterPosts: INTEGER.merge(description: 'Approved posts after which an account is trusted (policy new_users_require_approval)'),
+          requireUserApproval: BOOLEAN.merge(description: 'New sign-ups (email, OAuth) wait for approval by an admin'),
           loginOnlyWithOauth: BOOLEAN,
           logoLinksTo: { type: :string, enum: %w[root_page custom_url nothing] }, logoCustomUrl: NULLABLE_STRING,
           roadmapEnabled: BOOLEAN, showRoadmapInHeader: BOOLEAN,

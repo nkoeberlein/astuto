@@ -23,6 +23,7 @@ en:
     not_logged_in: 'You must be logged in to access this page'
     not_enough_privileges: 'You do not have the privilegies to access this page'
     user_blocked_or_deleted: 'You cannot access your account because it has been blocked or deleted.'
+    user_pending_approval: 'Your account waits for approval by an administrator. You get an email when you can sign in.'
     o_auth_login_error: 'There was an error logging in with %{name}. Please contact the site administrator or try a different provider.'
     board:
       update_order: 'There was an error in reordering boards'
@@ -37,6 +38,10 @@ en:
         subject: '[%{site_name}] Test email'
         body: 'This test email from %{site_name} arrived, so sending emails works.'
         details: 'Sent with %{delivery_method} from %{from}.'
+      user_pending_approval:
+        subject: '[%{site_name}] New account waits for approval: %{name}'
+        body_html: '<strong>%{name}</strong> (%{email}) signed up and waits for your approval.'
+        review: 'Review in Moderation › Users'
     devise:
       welcome_greeting: 'Welcome to %{site_name}, %{email}!'
       opening_greeting: 'Hello %{email}!'
@@ -76,6 +81,10 @@ en:
         subject: '[%{site_name}] New in the changelog: %{title}'
         body_html: 'The changelog has a new entry, <strong>%{title}</strong>. It delivers feedback you follow'
         read_entry: 'Read the changelog'
+      account_approved:
+        subject: '[%{site_name}] Your account is approved'
+        body_html: 'An administrator approved your account. You can sign in now.'
+        sign_in: 'Sign in'
       recap:
         subject: '[%{site_name}] %{frequency} recap of feedback space activity'
         body_html: 'Here is the %{frequency} recap of activities in your feedback space'
@@ -199,6 +208,7 @@ en:
         allowed_email_domains: 'Allowed email domains'
         allow_anonymous_feedback: 'Allow anonymous feedback'
         feedback_approval_policy: 'Feedback approval policy'
+        require_user_approval: 'Approve new accounts'
         trusted_after_posts: 'Trusted after approved posts'
         show_vote_count: 'Show vote count to users'
         show_vote_button_in_board: 'Show vote buttons in board page'
