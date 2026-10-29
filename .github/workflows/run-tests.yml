@@ -73,6 +73,23 @@ jobs:
           npm run api:types
           git diff --exit-code src/api/schema.d.ts
 
+      # The v2 frontend in a real browser, against the running production container.
+      # The fresh install's admin gets a known password for the tests.
+      - name: End-to-end tests (Playwright)
+        run: |
+          docker compose exec web bin/rails runner 'User.unscoped.find_by!(role: "owner").update!(password: "e2e-password-ci", password_confirmation: "e2e-password-ci")'
+          cd frontend
+          npx playwright install --with-deps chromium
+          E2E_BASE_URL=http://localhost:3000 E2E_ADMIN_PASSWORD=e2e-password-ci npm run e2e
+
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v5
+        with:
+          name: playwright-report
+          path: frontend/playwright-report
+          retention-days: 7
+
       - name: Security checks (gems, legacy npm packages, Brakeman)
         run: |
           docker compose exec web bin/bundler-audit check --update

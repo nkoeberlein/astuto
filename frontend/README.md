@@ -71,6 +71,7 @@ BACKEND_URL=http://localhost:3000 npm run dev
 | `npm run lint` / `npm run format` | Biome check / fix                                                                                                     |
 | `npm run typecheck`               | TypeScript 7 (`tsc --noEmit`)                                                                                         |
 | `npm test`                        | Vitest                                                                                                                |
+| `npm run e2e`                     | Playwright end-to-end tests against a running instance (`E2E_BASE_URL`, default `http://localhost:3000`; admin from `E2E_ADMIN_EMAIL`/`E2E_ADMIN_PASSWORD`, default the development seeds). They create and delete their own boards and posts |
 | `npm run api:types`               | regenerate `src/api/schema.d.ts` from the OpenAPI file (run `bundle exec rake rswag:specs:swaggerize` in Rails first) |
 
 ## Notes

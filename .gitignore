@@ -46,3 +46,8 @@ yarn-debug.log*
 /swagger/*
 # v2 frontend build output (frontend/ -> public/next)
 /public/next
+
+# Playwright output
+/frontend/playwright-report
+/frontend/test-results
+/frontend/e2e/.auth

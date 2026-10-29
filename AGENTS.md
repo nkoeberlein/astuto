@@ -21,7 +21,7 @@ Astuto Evolution: community continuation of Astuto, a self-hosted customer feedb
 - Dev: `docker compose up` (app on :3000, override with `ASTUTO_PORT`; default admin `admin@example.com` / `password` in development; elsewhere a random password unless `ADMIN_PASSWORD` is set, see `DefaultAdminCredentials`)
 - Tests: `docker compose exec web bundle exec rspec` (system specs on arm64: install `chromium chromium-driver`, set `CHROME_BIN`/`CHROMEDRIVER_PATH`)
 - API docs: `RSWAG_SWAGGERIZE=true RAILS_ENV=test bundle exec rake rswag:specs:swaggerize` (writes `swagger/v1/swagger.yaml` and `swagger/app/v1/openapi.yaml`)
-- Frontend: `docker compose up` → http://localhost:5173/next/; in `frontend/`: `npm run lint|typecheck|test|build`, `npm run api:types` after API changes
+- Frontend: `docker compose up` → http://localhost:5173/next/; in `frontend/`: `npm run lint|typecheck|test|build`, `npm run api:types` after API changes; `npm run e2e` (Playwright) against a running instance, also in CI (`run-tests.yml`)
 - Local CI: `docker compose exec web bin/ci` (bundler-audit, yarn audit for critical advisories, Brakeman, RSpec, seeds)
 - Prod image: `docker build --build-arg ENVIRONMENT=production --target prod .`
 
