@@ -49,7 +49,7 @@ module Swagger
         ResetPasswordInput: object({ resetPasswordToken: STRING, password: STRING, passwordConfirmation: STRING }),
         PasswordResetResponse: object({ message: STRING, session: ref(:Session) }),
         MessageResponse: object({ message: STRING }),
-        Board: object({ id: INTEGER, name: STRING, slug: STRING, description: NULLABLE_STRING }),
+        Board: object({ id: INTEGER, name: STRING, slug: STRING, description: NULLABLE_STRING, visibility: { type: :string, enum: %w[everyone signed_in staff], description: 'Who sees the board and its posts (private boards)' } }),
         PostStatus: object({ id: INTEGER, name: STRING, color: STRING, order: INTEGER, showInRoadmap: BOOLEAN }),
         Tag: object({ id: INTEGER, name: STRING, color: STRING, order: INTEGER }),
         TagInput: object({ name: STRING, color: STRING.merge(description: 'Hex color, e.g. #64748b') }, required: []),
@@ -158,7 +158,8 @@ module Swagger
         CustomLink: object({ label: STRING, url: STRING }),
         BoardInput: object({
           name: STRING, description: NULLABLE_STRING,
-          slug: NULLABLE_STRING.merge(description: 'URL part; blank generates one from the name')
+          slug: NULLABLE_STRING.merge(description: 'URL part; blank generates one from the name'),
+          visibility: { type: :string, enum: %w[everyone signed_in staff], description: 'Who sees the board and its posts (private boards)' }
         }, required: []),
         PostStatusInput: object({ name: STRING, color: STRING.merge(description: 'Hex color, e.g. #0077cc'), showInRoadmap: BOOLEAN }, required: []),
         Reorder: object({ ids: { type: :array, items: INTEGER, description: 'Every id, in the new order' } }),

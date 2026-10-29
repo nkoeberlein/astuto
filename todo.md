@@ -215,7 +215,7 @@ Empfehlung (roadmap.md, Abschnitt 3): getrenntes Frontend mit React 19 + TS 7 + 
 
 - [ ] Bild-Upload und Anhänge, auf Upstream-PR #454 aufbauen (#253, #482); **vorher entscheiden:** Speicher ohne Active Storage (Regel für v2/v3), z. B. S3-kompatibel oder Postgres-`bytea` – unnötig wäre eine Baustelle, die die v3-Migration wieder verkompliziert
 - [x] Tags für Posts (#171): Site Settings › Tags (Name, Farbe, Reihenfolge), Moderatoren vergeben sie auf der Post-Seite (Audit `post.tag_ids`), Anzeige in Listen und auf der Post-Seite, Board-Filter `?tag=`, Merge übernimmt Tags; REST-API und MCP liefern Tags mit
-- [ ] Private Boards (#414)
+- [x] Private Boards (#414): Sichtbarkeit pro Board (alle / nur Angemeldete / nur Moderatoren und Admins), zentral über `Board.visible_to` und `Post.on_boards_visible_to`: Boards, Posts, Kommentare, Votes, Roadmap, Mein Feedback, Changelog-Einträge, Feeds, Sitemap, Seitentitel, Recap und Benachrichtigungsmails; `spec/requests/private_boards_spec.rb`
 - [ ] Admin-Freigabe neuer Nutzer (#362), eigene Signup-Anforderungen (#30)
 - [ ] Import/Export (#368)
 - [ ] Roadmap per Drag-and-drop sortieren (#473)

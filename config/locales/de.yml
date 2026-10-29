@@ -446,9 +446,15 @@ de:
       show_vote_button_in_board_help: 'Wenn Sie diese Einstellung aktivieren, können Nutzer*innen Beiträge von der Board-Seite bewerten. Dies kann Nutzer*innen dazu veranlassen, über mehr Beiträge abzustimmen, was zu einer höheren Anzahl von Stimmen führt – die Bedeutung indes verringert sich.'
       hide_unused_statuses_in_filter_by_status_help: 'Ist das aktiviert, zeigt der Statusfilter eines Boards nur Status, die mindestens ein Post dieses Boards hat.'
     boards:
+      visibility:
+        everyone: 'Alle'
+        signed_in: 'Nur angemeldete Personen'
+        staff: 'Nur Moderatoren und Admins'
       title: 'Boards'
       empty: 'Es existieren keine Boards. Erstelle unten eines!'
       form:
+        visibility: 'Wer es sieht'
+        visibility_help: 'Beiträge des Boards sind für alle anderen überall ausgeblendet: Listen, Roadmap, Suche, Feeds, Sitemap, E-Mails. Moderatoren und Admins sehen immer alle Boards.'
         name: 'Boardname'
         description: 'Boardbeschreibung (optional)'
         slug: 'URL (optional)'

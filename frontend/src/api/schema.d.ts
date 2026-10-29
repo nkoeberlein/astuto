@@ -4364,6 +4364,11 @@ export interface components {
             name: string;
             slug: string;
             description: string | null;
+            /**
+             * @description Who sees the board and its posts (private boards)
+             * @enum {string}
+             */
+            visibility: "everyone" | "signed_in" | "staff";
         };
         PostStatus: {
             id: number;
@@ -4649,6 +4654,11 @@ export interface components {
             description?: string | null;
             /** @description URL part; blank generates one from the name */
             slug?: string | null;
+            /**
+             * @description Who sees the board and its posts (private boards)
+             * @enum {string}
+             */
+            visibility?: "everyone" | "signed_in" | "staff";
         };
         PostStatusInput: {
             name?: string;

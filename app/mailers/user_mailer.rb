@@ -48,7 +48,7 @@ class UserMailer < ApplicationMailer
     Current.tenant = user.tenant
     @user = user
     @entry = entry
-    @posts = entry.posts.where(approval_status: 'approved', id: user.follows.select(:post_id)).order(:title).to_a
+    @posts = entry.posts.where(approval_status: 'approved', id: user.follows.select(:post_id)).on_boards_visible_to(user).order(:title).to_a
 
     mail(
       to: user.email,

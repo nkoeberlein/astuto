@@ -148,6 +148,7 @@ de:
         description: 'Beschreibung'
         name: 'Name'
       board:
+        visibility: 'Sichtbarkeit'
         name: 'Name'
         description: 'Beschreibung'
         order: 'Sortierung'

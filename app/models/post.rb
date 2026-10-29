@@ -92,6 +92,11 @@ class Post < ApplicationRecord
         .limit(limit)
     end
 
+    # Posts on boards the person may see (Board.visible_to)
+    def on_boards_visible_to(user)
+      where(board_id: Board.visible_to(user).select(:id))
+    end
+
     def order_by(sort_by)
       case sort_by
       when 'trending'

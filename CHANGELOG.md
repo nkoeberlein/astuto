@@ -14,6 +14,7 @@ Issue numbers refer to the archived [astuto/astuto](https://github.com/astuto/as
 - The astuto.io promo banner and the call to the astuto.io certificate API when a custom domain is saved (`ASTUTO_CNAME_API_URL`, `ASTUTO_CNAME_API_KEY`).
 
 ### Changed
+- `RATE_LIMIT_REQUESTS` sets the general per-IP request limit (default 300 per 5 minutes).
 - Documentation links in the app point to the guides in `docs/` (three of four links into the archived astuto-docs repository were dead). New guides: appearance and colour tokens, REST API, OAuth settings for Google, Microsoft, GitHub, GitLab and Keycloak. The astuto-docs text itself has no license and was not copied.
 - **RuboCop** checks the Ruby code in CI (`lint.yml`) and in `bin/ci`: Lint, Security and a few Rails/RSpec cops, no style rules, with its own bundle in `lint/`. The 51 findings it had are fixed (mostly unused variables; no bugs among them).
 - Emails are sent from `EMAIL_MAIL_FROM` or, without it, `noreply@<host of BASE_URL>` (before: `noreply@astuto.io`, the discontinued hosted service). `EMAIL_MAIL_REPLY_TO` defaults to the sender.
@@ -27,6 +28,7 @@ Issue numbers refer to the archived [astuto/astuto](https://github.com/astuto/as
 - Legacy webhook endpoints `PUT /webhooks/:id/test` and `PUT /webhooks_preview` checked no permissions: anyone, even without an account, could fire a feedback space's webhooks with test data and read the target's response. Both now require an admin.
 
 ### Features
+- **Private boards** (#414): a board can be visible to everyone, only to signed-in people, or only to moderators and admins (Site settings › Boards). Its posts are left out everywhere for others: lists, roadmap, "My feedback", changelog entries, RSS, sitemap, page titles, recap and notification emails.
 - **AI board and tag suggestions:** with an AI provider configured, moderators get a board and tags proposed from the existing ones and apply them with one click.
 - **Tags** (#171): admins define tags with a colour (Site settings › Tags), moderators put them on posts from the post page, and everyone sees them in lists and filters a board by them (`?tag=`). Merging a post keeps its tags; the REST API and MCP include them.
 - **Feedback widget:** a button for your own website or app (`<script src=".../widget.js">`) opens boards, roadmap and changelog in a panel. Your server signs a short visitor token (HS256 JWT) with the widget secret, and the visitor votes and posts under their own account, found by your user id or email, or created. Works without third-party cookies. Moderators and admins are never signed in through the widget. Site settings › Widget; see [docs/widget.md](docs/widget.md).

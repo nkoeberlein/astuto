@@ -37,6 +37,7 @@ class RoadmapQuery
         .left_outer_joins(:likes, :comments)
         .group('posts.id')
         .where(approval_status: 'approved', post_status_id: status_ids)
+        .on_boards_visible_to(@user)
         .order(Arel.sql(order_sql))
     end
 

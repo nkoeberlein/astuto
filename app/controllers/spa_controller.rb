@@ -110,7 +110,7 @@ class SpaController < ActionController::Base
       case path
       when %r{\Aboards/([^/]+)\z}
         slug = Regexp.last_match(1)
-        board = Board.friendly.find(slug) rescue nil
+        board = Board.visible_to(nil).friendly.find(slug) rescue nil
         if board
           desc = plain_excerpt(board.description).presence || site_name
           ["#{board.name} · #{site_name}", desc]
@@ -119,7 +119,7 @@ class SpaController < ActionController::Base
         end
       when %r{\Aposts/([^/]+)\z}
         slug = Regexp.last_match(1)
-        post = Post.where(approval_status: 'approved').friendly.find(slug) rescue nil
+        post = Post.where(approval_status: 'approved').on_boards_visible_to(nil).friendly.find(slug) rescue nil
         if post
           desc = plain_excerpt(post.description).presence || post.title
           ["#{post.title} · #{site_name}", desc]
@@ -167,7 +167,7 @@ class SpaController < ActionController::Base
       slug = page_path[%r{\Aboards/([^/]+)\z}, 1]
       return unless slug
 
-      board = Board.friendly.find(slug)
+      board = Board.visible_to(nil).friendly.find(slug)
       title = ERB::Util.html_escape(board.name)
       href = ERB::Util.html_escape(board_feed_path(board))
       %(<link rel="alternate" type="application/rss+xml" title="#{title}" href="#{href}" />)

@@ -5,7 +5,7 @@ module Api::App::V1
 
     # GET /api/app/v1/boards/:board_id/posts?search=&sort_by=&post_status_ids[]=&page=
     def index
-      board = Board.friendly.find(params[:board_id])
+      board = find_visible_board(params[:board_id])
       result = BoardPostsQuery.new(
         board: board,
         user: current_user,
@@ -31,7 +31,7 @@ module Api::App::V1
     # POST /api/app/v1/boards/:board_id/posts
     # { title, description, isAnonymous, honeypot, formFillMs }
     def create
-      board = Board.friendly.find(params[:board_id])
+      board = find_visible_board(params[:board_id])
       anonymous = ActiveModel::Type::Boolean.new.cast(params[:isAnonymous]) || false
 
       return render_error(:unprocessable_content, I18n.t('errors.unknown')) if spam?

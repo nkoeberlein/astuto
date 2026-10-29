@@ -13,9 +13,9 @@ class SeoController < ApplicationController
   def sitemap
     return head :not_found if @tenant.nil? || @tenant_setting.is_private
 
-    @boards = Board.order(order: :asc).to_a
-    @board_updates = Post.where(approval_status: 'approved').group(:board_id).maximum(:updated_at)
-    @posts = Post.where(approval_status: 'approved').order(updated_at: :desc).limit(MAX_POSTS).select(:id, :slug, :updated_at)
+    @boards = Board.visible_to(nil).order(order: :asc).to_a
+    @board_updates = Post.where(approval_status: 'approved').on_boards_visible_to(nil).group(:board_id).maximum(:updated_at)
+    @posts = Post.where(approval_status: 'approved').on_boards_visible_to(nil).order(updated_at: :desc).limit(MAX_POSTS).select(:id, :slug, :updated_at)
     @roadmap = @tenant_setting.roadmap_enabled
     @changelog = ChangelogEntry.published.maximum(:published_at)
 

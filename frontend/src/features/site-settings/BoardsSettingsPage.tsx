@@ -6,10 +6,13 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { useI18n } from '@/lib/i18n'
 import { excerpt } from '@/lib/text'
-import { TextField } from './fields'
+import { SelectField, TextField } from './fields'
 import { ListEditor } from './ListEditor'
 
-type BoardDraft = { name: string; slug: string; description: string }
+type Visibility = Board['visibility']
+type BoardDraft = { name: string; slug: string; description: string; visibility: Visibility }
+
+const VISIBILITIES: Visibility[] = ['everyone', 'signed_in', 'staff']
 
 // Site settings › Boards (legacy: /site_settings/boards)
 export function BoardsSettingsPage() {
@@ -21,6 +24,7 @@ export function BoardsSettingsPage() {
     name: draft.name.trim(),
     slug: draft.slug.trim() || null,
     description: draft.description.trim() || null,
+    visibility: draft.visibility,
   })
 
   return (
@@ -36,13 +40,19 @@ export function BoardsSettingsPage() {
             /boards/{board.slug}
             {board.description && ` · ${excerpt(board.description, 120)}`}
           </p>
+          {board.visibility !== 'everyone' && (
+            <p className="text-xs text-muted-foreground">
+              {t(`site_settings.boards.visibility.${board.visibility}`)}
+            </p>
+          )}
         </>
       )}
-      newDraft={() => ({ name: '', slug: '', description: '' })}
+      newDraft={() => ({ name: '', slug: '', description: '', visibility: 'everyone' })}
       draftFor={(board) => ({
         name: board.name,
         slug: board.slug,
         description: board.description ?? '',
+        visibility: board.visibility,
       })}
       renderForm={(draft, setDraft) => (
         <>
@@ -67,6 +77,16 @@ export function BoardsSettingsPage() {
               onChange={(event) => setDraft({ ...draft, description: event.target.value })}
             />
           </div>
+          <SelectField
+            label={t('site_settings.boards.form.visibility')}
+            value={draft.visibility}
+            onChange={(visibility) => setDraft({ ...draft, visibility })}
+            options={VISIBILITIES.map((value) => ({
+              value,
+              label: t(`site_settings.boards.visibility.${value}`),
+            }))}
+            help={t('site_settings.boards.form.visibility_help')}
+          />
         </>
       )}
       onCreate={(draft) => create.mutateAsync(input(draft))}

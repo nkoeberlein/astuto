@@ -1,5 +1,5 @@
 import { useSuspenseInfiniteQuery, useSuspenseQuery } from '@tanstack/react-query'
-import { Rss } from 'lucide-react'
+import { Lock, Rss } from 'lucide-react'
 import type { Board } from '@/api/client'
 import {
   boardPostsQuery,
@@ -38,12 +38,18 @@ export function BoardPage({ board, filters, onFiltersChange }: Props) {
       <aside className="space-y-5 lg:sticky lg:top-20">
         <div className="space-y-1.5 rounded-xl border border-primary/15 bg-linear-to-r from-primary/5 via-card to-card p-5 shadow-2xs">
           <h1 className="text-2xl font-bold tracking-tight">{board.name}</h1>
+          {board.visibility !== 'everyone' && (
+            <p className="inline-flex items-center gap-1 text-xs text-muted-foreground">
+              <Lock className="size-3" aria-hidden />
+              {t(`site_settings.boards.visibility.${board.visibility}`)}
+            </p>
+          )}
           {board.description && (
             <div className="text-sm text-muted-foreground">
               <Markdown>{board.description}</Markdown>
             </div>
           )}
-          {!session.tenant.settings.isPrivate && (
+          {!session.tenant.settings.isPrivate && board.visibility === 'everyone' && (
             <a
               href={`/boards/${encodeURIComponent(board.slug)}/feed`}
               className="inline-flex items-center gap-1 pt-1 text-xs text-muted-foreground hover:text-foreground"

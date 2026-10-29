@@ -12,7 +12,7 @@ class FeedsController < ApplicationController
   rescue_from(ActiveRecord::RecordNotFound) { head :not_found }
 
   def board
-    board = Board.friendly.find(params[:id])
+    board = Board.visible_to_everyone.friendly.find(params[:id])
     posts = board.posts
       .where(approval_status: 'approved')
       .includes(:post_status)

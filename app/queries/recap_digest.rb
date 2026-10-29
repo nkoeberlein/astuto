@@ -30,6 +30,7 @@ class RecapDigest
   def top_posts
     @top_posts ||= Post
       .where(approval_status: 'approved')
+      .on_boards_visible_to(user)
       .joins(:likes)
       .where(likes: { created_at: range })
       .group('posts.id')
@@ -44,7 +45,7 @@ class RecapDigest
     @status_changes ||= PostStatusChange
       .where(created_at: range, post_id: user.follows.select(:post_id))
       .where.not(user_id: user.id)
-      .joins(:post).where(posts: { approval_status: 'approved' })
+      .joins(:post).where(posts: { approval_status: 'approved', board_id: Board.visible_to(user).select(:id) })
       .includes(:post, :post_status)
       .order(created_at: :desc)
       .to_a
@@ -66,6 +67,7 @@ class RecapDigest
 
     def new_posts_scope
       # IS DISTINCT FROM keeps anonymous posts (user_id NULL), unlike !=
-      Post.where(approval_status: 'approved', created_at: range).where('posts.user_id IS DISTINCT FROM ?', user.id)
+      Post.where(approval_status: 'approved', created_at: range).on_boards_visible_to(user)
+        .where('posts.user_id IS DISTINCT FROM ?', user.id)
     end
 end

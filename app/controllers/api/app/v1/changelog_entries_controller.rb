@@ -11,10 +11,10 @@ module Api::App::V1
     def index
       entries = current_user&.moderator? ? ChangelogEntry.all : ChangelogEntry.published
       page = [params[:page].to_i, 1].max
-      rows = entries.newest_first.includes(:posts).offset((page - 1) * PER_PAGE).limit(PER_PAGE + 1).to_a
+      rows = entries.newest_first.includes(posts: :board).offset((page - 1) * PER_PAGE).limit(PER_PAGE + 1).to_a
 
       render json: {
-        entries: rows.first(PER_PAGE).map { |entry| ChangelogEntrySerializer.call(entry) },
+        entries: rows.first(PER_PAGE).map { |entry| ChangelogEntrySerializer.call(entry, viewer: current_user) },
         page: page,
         hasMore: rows.size > PER_PAGE
       }
@@ -77,7 +77,7 @@ module Api::App::V1
 
         audit(action, entry, changes: entry.saved_changes.except('followers_notified_at'), subject_label: entry.title)
         audit('changelog.publish', entry, subject_label: entry.title) if entry.published? && !was_published
-        render status: status, json: ChangelogEntrySerializer.call(entry.reload)
+        render status: status, json: ChangelogEntrySerializer.call(entry.reload, viewer: current_user)
       end
   end
 end

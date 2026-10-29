@@ -44,6 +44,7 @@ class MyPostsQuery
 
     # Votes and follows count only on posts everybody sees (or the person's own)
     def filtered(posts, filter)
+      posts = posts.on_boards_visible_to(@user)
       visible = posts.where(approval_status: 'approved').or(posts.where(user_id: @user.id).where.not(approval_status: 'merged'))
       case filter
       when 'created' then posts.where(user_id: @user.id)

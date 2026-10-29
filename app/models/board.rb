@@ -5,6 +5,21 @@ class Board < ApplicationRecord
   
   has_many :posts, dependent: :destroy
 
+  # Private boards (#414): everyone, only signed-in people, or only moderators and admins.
+  # Every place that shows boards or posts goes through visible_to / Post.on_boards_visible_to.
+  enum :visibility, [:everyone, :signed_in, :staff], prefix: :visible_to
+
+  def self.visible_to(user)
+    return all if user&.moderator?
+    return where(visibility: %w[everyone signed_in]) if user
+
+    where(visibility: 'everyone')
+  end
+
+  def visible_to?(user)
+    visible_to_everyone? || (visible_to_signed_in? && user.present?) || user&.moderator? || false
+  end
+
   before_save :sanitize_slug
 
   validates :name, presence: true, uniqueness: { scope: :tenant_id }

@@ -123,10 +123,19 @@ module Api
 
         # Posts that are not approved are only visible to moderators. A merged duplicate stands
         # for the post it was merged into (old links, votes and comments keep working).
+        # A board the current person may see (private boards, #414), else 404
+        def find_visible_board(id)
+          board = Board.friendly.find(id)
+          raise ActiveRecord::RecordNotFound unless board.visible_to?(current_user)
+
+          board
+        end
+
         def find_visible_post(id)
           post = Post.friendly.find(id)
           5.times { post.merged? && post.merged_into ? post = post.merged_into : break }
           raise ActiveRecord::RecordNotFound unless post.approved? || current_user&.moderator?
+          raise ActiveRecord::RecordNotFound unless post.board.visible_to?(current_user)
 
           post
         end

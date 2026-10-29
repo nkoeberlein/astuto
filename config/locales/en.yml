@@ -408,9 +408,15 @@ en:
       login_only_with_oauth_help: 'If you enable this setting, email and password login as well as email registration are hidden. Users can only log in and sign up with OAuth providers. Password reset links remain available.'
       mail_logo_size_help: 'Size in pixels of the logo shown in outgoing emails.'
     boards:
+      visibility:
+        everyone: 'Everyone'
+        signed_in: 'Only signed-in people'
+        staff: 'Only moderators and admins'
       title: 'Boards'
       empty: 'There are no boards. Create one below!'
       form:
+        visibility: 'Who can see it'
+        visibility_help: 'Posts of the board are hidden everywhere from people who may not see it: lists, roadmap, search, feeds, sitemap, emails. Moderators and admins always see every board.'
         name: 'Board name'
         description: 'Board description (optional)'
         slug: 'URL (optional)'

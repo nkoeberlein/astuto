@@ -139,6 +139,7 @@ en:
         name_attribute: 'Attribute with the name'
         auto_create_users: 'Create an account on the first login'
       board:
+        visibility: 'Visibility'
         name: 'Name'
         description: 'Description'
         order: 'Order'

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_30_020000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_30_030000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -54,6 +54,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_30_020000) do
     t.integer "order", null: false
     t.bigint "tenant_id", null: false
     t.string "slug"
+    t.integer "visibility", default: 0, null: false
     t.index ["name", "tenant_id"], name: "index_boards_on_name_and_tenant_id", unique: true
     t.index ["slug", "tenant_id"], name: "index_boards_on_slug_and_tenant_id", unique: true
     t.index ["tenant_id"], name: "index_boards_on_tenant_id"
