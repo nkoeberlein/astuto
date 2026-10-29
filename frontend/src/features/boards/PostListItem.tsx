@@ -3,6 +3,7 @@ import { MessageSquare } from 'lucide-react'
 import type { ReactNode } from 'react'
 import type { PostListItem as PostListItemData, PostStatus } from '@/api/client'
 import { StatusBadge } from '@/features/posts/StatusBadge'
+import { TagBadges } from '@/features/posts/TagBadges'
 import { VoteButton } from '@/features/posts/VoteButton'
 import { VoteCount } from '@/features/posts/VoteCount'
 import { useI18n } from '@/lib/i18n'
@@ -57,6 +58,7 @@ export function PostListItem(props: {
           </span>
           {props.meta}
         </div>
+        <TagBadges tagIds={post.tagIds} />
       </div>
     </li>
   )

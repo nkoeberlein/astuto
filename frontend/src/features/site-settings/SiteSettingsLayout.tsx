@@ -7,6 +7,7 @@ const SECTIONS = [
   'general',
   'boards',
   'post_statuses',
+  'tags',
   'roadmap',
   'authentication',
   'appearance',

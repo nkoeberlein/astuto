@@ -81,7 +81,11 @@ export function PostStatusesSettingsPage() {
 }
 
 // Color picker plus hex text field (the picker alone is hard to use with a keyboard)
-function ColorField(props: { label: string; value: string; onChange: (value: string) => void }) {
+export function ColorField(props: {
+  label: string
+  value: string
+  onChange: (value: string) => void
+}) {
   const id = useId()
   return (
     <div className="space-y-1.5">

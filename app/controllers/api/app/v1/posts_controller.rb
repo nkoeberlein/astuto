@@ -12,11 +12,12 @@ module Api::App::V1
         search: params[:search],
         sort_by: params[:sort_by],
         post_status_ids: params[:post_status_ids],
+        tag_ids: params[:tag_ids],
         page: params[:page] || 1
       ).call
 
       render json: {
-        posts: result.posts.map { |post| PostSerializer.list_item(post) },
+        posts: result.posts.then { |posts| tags = PostSerializer.tag_ids_by_post(posts); posts.map { |post| PostSerializer.list_item(post, tag_ids: tags.fetch(post.id, [])) } },
         page: result.page,
         hasMore: result.has_more
       }
@@ -91,6 +92,13 @@ module Api::App::V1
           end
         end
 
+        if params.key?(:tagIds)
+          tag_ids = Array(params[:tagIds]).map(&:to_i).uniq
+          return render_error(:unprocessable_content, I18n.t('errors.unknown')) unless Tag.where(id: tag_ids).count == tag_ids.size
+
+          old_tag_ids = post.tags.map(&:id)
+        end
+
         post.source_url = params[:sourceUrl].presence if params.key?(:sourceUrl)
         post.source_label = params[:sourceLabel].presence if params.key?(:sourceLabel)
 
@@ -114,15 +122,21 @@ module Api::App::V1
       saved = ActiveRecord::Base.transaction do
         result = post.save
         status_change_workflow.create_status_change! if result && status_changed
+        if result && tag_ids
+          post.tag_ids = tag_ids
+          post.tags.reset # back to the order of the tags
+        end
         result
       end
       return render_error(:unprocessable_content, post.errors.full_messages.join(', ')) unless saved
 
       status_change_workflow.notify_followers if status_changed
       # Moderation: other people's posts, or board, status and approval of any post
-      moderated = post.saved_changes.keys & %w[board_id post_status_id approval_status source_url source_label]
-      if current_user.moderator? && post.saved_changes? && (post.user_id != current_user.id || moderated.any?)
-        audit('post.update', post, changes: post.saved_changes)
+      changes = post.saved_changes.to_h
+      changes['tag_ids'] = [old_tag_ids, tag_ids.sort] if tag_ids && old_tag_ids.sort != tag_ids.sort
+      moderated = changes.keys & %w[board_id post_status_id approval_status source_url source_label tag_ids]
+      if current_user.moderator? && changes.except('updated_at').any? && (post.user_id != current_user.id || moderated.any?)
+        audit('post.update', post, changes: changes)
       end
       render json: PostSerializer.detail(post, current_user: current_user)
     end

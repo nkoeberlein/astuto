@@ -1,7 +1,13 @@
 module Api::App::V1
   module PostSerializer
     # Row from BoardPostsQuery (includes aggregated counts)
-    def self.list_item(post)
+    # Tag ids of many posts in one query, for list items
+    def self.tag_ids_by_post(posts)
+      PostTag.where(post_id: posts.map(&:id)).joins(:tag).order('tags.order').pluck(:post_id, :tag_id)
+        .group_by(&:first).transform_values { |pairs| pairs.map(&:last) }
+    end
+
+    def self.list_item(post, tag_ids: [])
       {
         id: post.id,
         slug: post.slug,
@@ -11,13 +17,14 @@ module Api::App::V1
         likesCount: post.likes_count.to_i,
         commentsCount: post.comments_count.to_i,
         liked: post.liked.to_i.positive?,
+        tagIds: tag_ids,
         createdAt: post.created_at.iso8601
       }
     end
 
     # Row from MyPostsQuery: list item plus board and approval status (own posts can be pending)
-    def self.my_item(post, board:)
-      list_item(post).merge(
+    def self.my_item(post, board:, tag_ids: [])
+      list_item(post, tag_ids: tag_ids).merge(
         board: board && { name: board.name, slug: board.slug },
         approvalStatus: post.approval_status,
         updatedAt: post.updated_at.iso8601
@@ -61,6 +68,7 @@ module Api::App::V1
         boardId: post.board_id,
         postStatusId: post.post_status_id,
         approvalStatus: post.approval_status,
+        tagIds: post.tags.map(&:id),
         author: AuthorSerializer.call(post.user),
         likesCount: post.likes.count,
         commentsCount: post.comments.count,

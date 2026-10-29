@@ -5,6 +5,7 @@ import { applySession, applyVote } from './mutations'
 import { postQuery, sessionQuery } from './queries'
 
 const listItem = (id: number) => ({
+  tagIds: [] as number[],
   id,
   slug: `post-${id}`,
   title: `Post ${id}`,

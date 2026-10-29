@@ -51,15 +51,18 @@ module Swagger
         MessageResponse: object({ message: STRING }),
         Board: object({ id: INTEGER, name: STRING, slug: STRING, description: NULLABLE_STRING }),
         PostStatus: object({ id: INTEGER, name: STRING, color: STRING, order: INTEGER, showInRoadmap: BOOLEAN }),
+        Tag: object({ id: INTEGER, name: STRING, color: STRING, order: INTEGER }),
+        TagInput: object({ name: STRING, color: STRING.merge(description: 'Hex color, e.g. #64748b') }, required: []),
         PostListItem: object({
           id: INTEGER, slug: STRING, title: STRING, description: NULLABLE_STRING, postStatusId: NULLABLE_INTEGER,
-          likesCount: INTEGER, commentsCount: INTEGER, liked: BOOLEAN, createdAt: DATETIME
+          likesCount: INTEGER, commentsCount: INTEGER, liked: BOOLEAN, createdAt: DATETIME,
+          tagIds: { type: :array, items: INTEGER, description: 'Tags in their order' }
         }),
         PostPage: object({ posts: { type: :array, items: ref(:PostListItem) }, page: INTEGER, hasMore: BOOLEAN }),
         MyPost: object({
           id: INTEGER, slug: STRING, title: STRING, description: NULLABLE_STRING, postStatusId: NULLABLE_INTEGER,
           likesCount: INTEGER, commentsCount: INTEGER, liked: BOOLEAN, createdAt: DATETIME, updatedAt: DATETIME,
-          board: object({ name: STRING, slug: STRING }, nullable: true),
+          board: object({ name: STRING, slug: STRING }, nullable: true), tagIds: { type: :array, items: INTEGER, description: 'Tags in their order' },
           approvalStatus: { type: :string, enum: %w[approved pending rejected merged] }
         }),
         MyPostPage: object({
@@ -79,7 +82,7 @@ module Swagger
         Post: object({
           id: INTEGER, slug: STRING, title: STRING, description: NULLABLE_STRING, boardId: INTEGER, postStatusId: NULLABLE_INTEGER,
           approvalStatus: { type: :string, enum: %w[approved pending rejected] }, author: ref(:Author).merge(nullable: true),
-          likesCount: INTEGER, commentsCount: INTEGER, liked: BOOLEAN, followed: BOOLEAN,
+          likesCount: INTEGER, commentsCount: INTEGER, liked: BOOLEAN, followed: BOOLEAN, tagIds: { type: :array, items: INTEGER, description: 'Tags in their order' },
           source: object({ url: NULLABLE_STRING, label: NULLABLE_STRING }, nullable: true).merge(description: 'Where the feedback came from; moderators only'),
           mergedPosts: { type: :array, items: object({ title: STRING }), description: 'Duplicates merged into this post' },
           changelogEntries: { type: :array, items: object({ id: INTEGER, title: STRING }), description: 'Published changelog entries that deliver this post' },
@@ -308,7 +311,8 @@ module Swagger
         UpdatePost: object({
           title: STRING, description: NULLABLE_STRING, boardId: INTEGER,
           postStatusId: NULLABLE_INTEGER, approvalStatus: { type: :string, enum: %w[approved pending rejected] },
-          sourceUrl: NULLABLE_STRING.merge(description: 'Moderators only'), sourceLabel: NULLABLE_STRING.merge(description: 'Moderators only')
+          sourceUrl: NULLABLE_STRING.merge(description: 'Moderators only'), sourceLabel: NULLABLE_STRING.merge(description: 'Moderators only'),
+          tagIds: { type: :array, items: INTEGER, description: 'Moderators only; replaces the tags of the post' }
         }, required: []),
         NewComment: object({ body: STRING, parentId: NULLABLE_INTEGER, isPostUpdate: BOOLEAN }, required: %i[body]),
         UpdateComment: object({ body: STRING, isPostUpdate: BOOLEAN }, required: []),

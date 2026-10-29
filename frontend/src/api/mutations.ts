@@ -24,6 +24,8 @@ import {
   type Session,
   setBearerToken,
   setCsrfToken,
+  type Tag,
+  type TagInput,
   type UpdateGeneralSettings,
   type UpdateLdapSettings,
   type UpdateProfile,
@@ -43,6 +45,7 @@ import {
   profileQuery,
   samlSettingsQuery,
   sessionQuery,
+  tagsQuery,
   widgetSettingsQuery,
 } from './queries'
 
@@ -573,6 +576,39 @@ export function usePostStatusMutations() {
           postStatusesQuery.queryKey,
           (statuses) => statuses && sortByIds(statuses, ids),
         )
+      },
+      onSettled,
+    }),
+  }
+}
+
+// Site settings › Tags (admins); post lists show tags, so they are refetched too
+export function useTagMutations() {
+  const queryClient = useQueryClient()
+  const onSettled = () => {
+    void queryClient.invalidateQueries({ queryKey: tagsQuery.queryKey })
+    void queryClient.invalidateQueries(isBoardPostList)
+    void queryClient.invalidateQueries({ queryKey: ['posts'] })
+  }
+  return {
+    create: useMutation({
+      mutationFn: (tag: TagInput) => unwrap(api.POST('/api/app/v1/tags', { body: tag })),
+      onSettled,
+    }),
+    update: useMutation({
+      mutationFn: ({ id, ...tag }: TagInput & { id: number }) =>
+        unwrap(api.PATCH('/api/app/v1/tags/{id}', { params: { path: { id } }, body: tag })),
+      onSettled,
+    }),
+    remove: useMutation({
+      mutationFn: (id: number) =>
+        unwrap(api.DELETE('/api/app/v1/tags/{id}', { params: { path: { id } } })),
+      onSettled,
+    }),
+    reorder: useMutation({
+      mutationFn: (ids: number[]) => unwrap(api.PUT('/api/app/v1/tags/reorder', { body: { ids } })),
+      onMutate: (ids) => {
+        queryClient.setQueryData<Tag[]>(tagsQuery.queryKey, (tags) => tags && sortByIds(tags, ids))
       },
       onSettled,
     }),

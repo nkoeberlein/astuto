@@ -15,6 +15,8 @@ export type PostFilters = {
   search: string
   sortBy: SortBy
   statusIds: number[]
+  // Posts with any of these tags
+  tagIds?: number[]
 }
 
 export const sessionQuery = queryOptions({
@@ -74,6 +76,7 @@ export const boardPostsQuery = (boardSlug: string, filters: PostFilters) =>
               sort_by: filters.sortBy,
               search: filters.search || undefined,
               'post_status_ids[]': filters.statusIds.length ? filters.statusIds : undefined,
+              'tag_ids[]': filters.tagIds?.length ? filters.tagIds : undefined,
             },
           },
         }),
@@ -81,6 +84,12 @@ export const boardPostsQuery = (boardSlug: string, filters: PostFilters) =>
     initialPageParam: 1,
     getNextPageParam: (lastPage) => (lastPage.hasMore ? lastPage.page + 1 : undefined),
   })
+
+export const tagsQuery = queryOptions({
+  queryKey: ['tags'],
+  queryFn: () => unwrap(api.GET('/api/app/v1/tags')),
+  staleTime: 5 * 60_000,
+})
 
 export const MY_POSTS_FILTERS = ['created', 'voted', 'followed'] as const
 export type MyPostsFilter = (typeof MY_POSTS_FILTERS)[number]
@@ -256,6 +265,7 @@ export const AUDIT_CATEGORIES = [
   'user',
   'board',
   'post_status',
+  'tag',
   'changelog',
   'site_settings',
   'o_auth',

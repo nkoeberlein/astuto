@@ -7,7 +7,7 @@ module Api
       # List posts
       def index
         posts = Post
-          .includes(:board, :post_status, :user)
+          .includes(:board, :post_status, :user, :tags)
           .order(created_at: :desc)
           .limit(params[:limit] || 20)
           .offset(params[:offset] || 0)
@@ -20,14 +20,15 @@ module Api
         render json: posts.as_json(only: POST_JSON_ATTRIBUTES, include: {
           board: { only: BOARD_JSON_ATTRIBUTES },
           post_status: { only: POST_STATUS_JSON_ATTRIBUTES },
-          user: { only: USER_JSON_ATTRIBUTES }
+          user: { only: USER_JSON_ATTRIBUTES },
+          tags: { only: TAG_JSON_ATTRIBUTES }
         })
       end
 
       # Get a post by id
       def show
         post = Post
-          .includes(:board, :post_status, :user)
+          .includes(:board, :post_status, :user, :tags)
           .find_by(id: params[:id])
 
         unless post
@@ -39,7 +40,8 @@ module Api
         render json: post.as_json(only: POST_JSON_ATTRIBUTES, include: {
           board: { only: BOARD_JSON_ATTRIBUTES },
           post_status: { only: POST_STATUS_JSON_ATTRIBUTES },
-          user: { only: USER_JSON_ATTRIBUTES }
+          user: { only: USER_JSON_ATTRIBUTES },
+          tags: { only: TAG_JSON_ATTRIBUTES }
         })
       end
 

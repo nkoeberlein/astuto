@@ -21,6 +21,8 @@ class MergePostsWorkflow
       move(source.follows, target.follows)
       source.comments.update_all(post_id: target.id, updated_at: Time.current)
       move_changelog_links
+      # The kept post gets the tags of the duplicate too
+      target.tag_ids = (target.tag_ids + source.tag_ids).uniq
       # Posts merged into the duplicate earlier now point to the target directly
       Post.where(merged_into_post_id: source.id).update_all(merged_into_post_id: target.id)
       source.update!(approval_status: 'merged', merged_into: target)

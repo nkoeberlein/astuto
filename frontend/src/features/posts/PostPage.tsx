@@ -36,6 +36,8 @@ import { CommentLoginHint } from './CommentLoginHint'
 import { FollowButton } from './FollowButton'
 import { MergePost } from './MergePost'
 import { StatusBadge } from './StatusBadge'
+import { TagBadges } from './TagBadges'
+import { TagPicker } from './TagPicker'
 import { VoteButton } from './VoteButton'
 
 const NO_STATUS_VALUE = '__none__'
@@ -189,6 +191,7 @@ export function PostPage({ postSlug }: { postSlug: string }) {
                   </time>
                   {post.source && <PostSource source={post.source} />}
                 </div>
+                <TagBadges tagIds={post.tagIds} />
                 {post.description && (
                   <div className="pt-2">
                     <Markdown>{post.description}</Markdown>
@@ -326,6 +329,12 @@ export function PostPage({ postSlug }: { postSlug: string }) {
                 </SelectContent>
               </Select>
             </div>
+
+            <TagPicker
+              tagIds={post.tagIds}
+              onChange={(tagIds) => updatePost.mutate({ tagIds })}
+              disabled={updatePost.isPending}
+            />
 
             {boards.length > 1 && (
               <div className="space-y-1.5">

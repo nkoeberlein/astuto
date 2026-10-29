@@ -164,6 +164,7 @@ de:
     search_box:
       title: 'Suchen'
     filter_box:
+      tags: 'Nach Tag filtern'
       title: 'Nach Status filtern'
     sort_by_box:
       title: 'Sortieren nach'
@@ -175,6 +176,8 @@ de:
       empty: 'Es existieren keine Beiträge'
       load_more: 'Mehr laden'
   post:
+    tags:
+      title: 'Tags'
     in_changelog: 'Im Changelog:'
     merge:
       button: 'In anderen Post zusammenführen'
@@ -258,6 +261,13 @@ de:
       rotate: 'Neues Geheimnis'
       rotate_confirm: 'Neues Geheimnis erzeugen? Mit dem bisherigen signierte Tokens gelten dann nicht mehr.'
       token_rules: 'Claims: email (Pflicht), name, id (deine Nutzer-ID, verknüpft das Konto auch bei geänderter E-Mail). Nur HS256; das Token muss innerhalb eines Tages ablaufen.'
+    tags:
+      title: 'Tags'
+      empty: 'Noch keine Tags. Tags gruppieren Beiträge über Boards hinweg, z. B. nach Produktbereich; Moderatoren vergeben sie, Besucher filtern danach.'
+      delete_confirmation: 'Diesen Tag löschen? Er wird von allen Beiträgen entfernt.'
+      form:
+        name: 'Name'
+        color: 'Farbe'
     audit_log:
       description: 'Änderungen durch Admins und Moderatoren: Moderation, Nutzer, Boards, Status, Einstellungen, Anmeldedienste, Webhooks, Einladungen und API-Keys. Einträge bleiben ein Jahr erhalten.'
       filter: 'Nach Bereich filtern'
@@ -272,6 +282,7 @@ de:
         one: '1 Einladung'
         other: '%{count} Einladungen'
       categories:
+        tag: 'Tags'
         post: 'Posts'
         comment: 'Kommentare'
         user: 'Nutzer'
@@ -290,6 +301,10 @@ de:
         api: 'REST-API'
         mcp: 'MCP'
       actions:
+        tag_create: 'hat den Tag angelegt:'
+        tag_update: 'hat den Tag geändert:'
+        tag_delete: 'hat den Tag gelöscht:'
+        tag_reorder: 'hat die Tags neu sortiert'
         post_create_for_author: 'hat gepostet für:'
         post_update: 'hat den Post geändert:'
         post_delete: 'hat den Post gelöscht:'
@@ -372,6 +387,7 @@ de:
       general: 'Generell'
       authentication: 'Authentifizierung'
       boards: 'Boards'
+      tags: 'Tags'
       post_statuses: 'Status'
       roadmap: 'Übersicht'
       invitations: 'Einladungen'

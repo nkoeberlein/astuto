@@ -12,7 +12,7 @@ module Api::App::V1
       render json: {
         filter: query.filter,
         counts: query.counts,
-        posts: result.posts.map { |post| PostSerializer.my_item(post, board: boards[post.board_id]) },
+        posts: result.posts.then { |posts| tags = PostSerializer.tag_ids_by_post(posts); posts.map { |post| PostSerializer.my_item(post, board: boards[post.board_id], tag_ids: tags.fetch(post.id, [])) } },
         page: result.page,
         hasMore: result.has_more
       }

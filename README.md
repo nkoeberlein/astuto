@@ -36,6 +36,7 @@ Astuto Evolution helps you collect, manage and prioritize feedback from your cus
 - **Webhooks:** integrate with your existing tools (e.g. Jira, Trello, Slack)
 - **API:** programmatically manage your feedback space with the REST API
 - **Feedback widget:** a button for your own site or app; visitors signed in there vote and post under their account (signed token)
+- **Tags:** label posts across boards (e.g. by product area) and filter by them
 - **Changelog:** release notes linked to the delivered feedback, with RSS and an email to followers
 - **Moderation Queue:** decide whether to show new feedback immediately or request approval (always, for anonymous feedback, or for the first posts of each account)
 - **Anonymous Feedback:** enable unregistered users to publish feedback

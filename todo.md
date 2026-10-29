@@ -214,7 +214,7 @@ Empfehlung (roadmap.md, Abschnitt 3): getrenntes Frontend mit React 19 + TS 7 + 
 - [ ] Import aus Canny (neben CSV, #368)
 
 - [ ] Bild-Upload und Anhänge, auf Upstream-PR #454 aufbauen (#253, #482); **vorher entscheiden:** Speicher ohne Active Storage (Regel für v2/v3), z. B. S3-kompatibel oder Postgres-`bytea` – unnötig wäre eine Baustelle, die die v3-Migration wieder verkompliziert
-- [ ] Tags für Posts (#171)
+- [x] Tags für Posts (#171): Site Settings › Tags (Name, Farbe, Reihenfolge), Moderatoren vergeben sie auf der Post-Seite (Audit `post.tag_ids`), Anzeige in Listen und auf der Post-Seite, Board-Filter `?tag=`, Merge übernimmt Tags; REST-API und MCP liefern Tags mit
 - [ ] Private Boards (#414)
 - [ ] Admin-Freigabe neuer Nutzer (#362), eigene Signup-Anforderungen (#30)
 - [ ] Import/Export (#368)

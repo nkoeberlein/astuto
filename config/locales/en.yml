@@ -163,6 +163,7 @@ en:
     search_box:
       title: 'Search'
     filter_box:
+      tags: 'Filter by tag'
       title: 'Filter by status'
     sort_by_box:
       title: 'Sort by'
@@ -174,6 +175,8 @@ en:
       empty: 'There are no posts'
       load_more: 'Load more'
   post:
+    tags:
+      title: 'Tags'
     in_changelog: 'In the changelog:'
     merge:
       button: 'Merge into another post'
@@ -257,6 +260,13 @@ en:
       rotate: 'New secret'
       rotate_confirm: 'Create a new secret? Tokens signed with the current one stop working.'
       token_rules: 'Claims: email (required), name, id (your user id, links the account even when the email changes). HS256 only; the token must expire within a day.'
+    tags:
+      title: 'Tags'
+      empty: 'No tags yet. Tags group posts across boards, e.g. by product area; moderators put them on posts and visitors filter by them.'
+      delete_confirmation: 'Delete this tag? It is removed from all posts.'
+      form:
+        name: 'Name'
+        color: 'Color'
     audit_log:
       description: 'Changes by admins and moderators: moderation, users, boards, statuses, settings, sign-in providers, webhooks, invitations and API keys. Entries are kept for a year.'
       filter: 'Filter by area'
@@ -271,6 +281,7 @@ en:
         one: '1 invitation'
         other: '%{count} invitations'
       categories:
+        tag: 'Tags'
         post: 'Posts'
         comment: 'Comments'
         user: 'Users'
@@ -289,6 +300,10 @@ en:
         api: 'REST API'
         mcp: 'MCP'
       actions:
+        tag_create: 'created the tag'
+        tag_update: 'changed the tag'
+        tag_delete: 'deleted the tag'
+        tag_reorder: 'reordered the tags'
         post_create_for_author: 'posted for:'
         post_update: 'changed the post'
         post_delete: 'deleted the post'
@@ -332,6 +347,7 @@ en:
       general: 'General'
       authentication: 'Authentication'
       boards: 'Boards'
+      tags: 'Tags'
       post_statuses: 'Statuses'
       roadmap: 'Roadmap'
       widget: 'Widget'

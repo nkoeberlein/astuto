@@ -6,6 +6,7 @@ class Tenant < ApplicationRecord
   has_one :widget_config, dependent: :destroy
   has_one :tenant_setting, dependent: :destroy
   has_many :changelog_entries, dependent: :delete_all
+  has_many :tags, dependent: :delete_all
   has_many :boards, dependent: :destroy
   has_many :post_statuses, dependent: :destroy
   has_many :posts, dependent: :destroy

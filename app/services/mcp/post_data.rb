@@ -46,6 +46,7 @@ module Mcp
         source_url: post.source_url,
         source_label: post.source_label,
         merged_into_post_id: post.merged_into_post_id,
+        tags: post.tags.map(&:name),
         likes_count: post.likes_count.to_i,
         comments_count: post.comments_count.to_i,
         created_at: post.created_at.iso8601

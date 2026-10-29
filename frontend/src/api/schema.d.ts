@@ -1705,6 +1705,8 @@ export interface paths {
                 page?: number;
                 /** @description Filter by status; 0 means posts without status */
                 "post_status_ids[]"?: unknown[];
+                /** @description Filter by tag: posts with any of these tags */
+                "tag_ids[]"?: unknown[];
             };
             header?: never;
             path: {
@@ -1723,6 +1725,8 @@ export interface paths {
                     page?: number;
                     /** @description Filter by status; 0 means posts without status */
                     "post_status_ids[]"?: unknown[];
+                    /** @description Filter by tag: posts with any of these tags */
+                    "tag_ids[]"?: unknown[];
                 };
                 header?: never;
                 path: {
@@ -1758,6 +1762,8 @@ export interface paths {
                     page?: number;
                     /** @description Filter by status; 0 means posts without status */
                     "post_status_ids[]"?: unknown[];
+                    /** @description Filter by tag: posts with any of these tags */
+                    "tag_ids[]"?: unknown[];
                 };
                 header?: never;
                 path: {
@@ -2417,7 +2423,7 @@ export interface paths {
         get: {
             parameters: {
                 query?: {
-                    category?: "post" | "comment" | "user" | "board" | "post_status" | "changelog" | "site_settings" | "o_auth" | "saml" | "ldap" | "widget" | "webhook" | "invitation" | "api_key";
+                    category?: "post" | "comment" | "user" | "board" | "post_status" | "tag" | "changelog" | "site_settings" | "o_auth" | "saml" | "ldap" | "widget" | "webhook" | "invitation" | "api_key";
                     /** @description nextBefore of the previous page */
                     before?: number;
                 };
@@ -3661,6 +3667,181 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/app/v1/tags": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Tags in their order */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description tags */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Tag"][];
+                    };
+                };
+            };
+        };
+        put?: never;
+        /** Create a tag (admins) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["TagInput"];
+                };
+            };
+            responses: {
+                /** @description created */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Tag"];
+                    };
+                };
+                /** @description duplicate name */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/tags/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete a tag; it goes away from all posts (admins) */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description deleted */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /** Rename or recolor a tag (admins) */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["TagInput"];
+                };
+            };
+            responses: {
+                /** @description saved */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Tag"];
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/api/app/v1/tags/reorder": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Order of the tags (admins) */
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        ids: number[];
+                    };
+                };
+            };
+            responses: {
+                /** @description new order */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Tag"][];
+                    };
+                };
+            };
+        };
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/app/v1/session/two_factor": {
         parameters: {
             query?: never;
@@ -4140,6 +4321,17 @@ export interface components {
             order: number;
             showInRoadmap: boolean;
         };
+        Tag: {
+            id: number;
+            name: string;
+            color: string;
+            order: number;
+        };
+        TagInput: {
+            name?: string;
+            /** @description Hex color, e.g. #64748b */
+            color?: string;
+        };
         PostListItem: {
             id: number;
             slug: string;
@@ -4151,6 +4343,8 @@ export interface components {
             liked: boolean;
             /** Format: date-time */
             createdAt: string;
+            /** @description Tags in their order */
+            tagIds: number[];
         };
         PostPage: {
             posts: components["schemas"]["PostListItem"][];
@@ -4174,6 +4368,8 @@ export interface components {
                 name: string;
                 slug: string;
             } | null;
+            /** @description Tags in their order */
+            tagIds: number[];
             /** @enum {string} */
             approvalStatus: "approved" | "pending" | "rejected" | "merged";
         };
@@ -4223,6 +4419,8 @@ export interface components {
             commentsCount: number;
             liked: boolean;
             followed: boolean;
+            /** @description Tags in their order */
+            tagIds: number[];
             /** @description Where the feedback came from; moderators only */
             source: {
                 url: string | null;
@@ -4835,6 +5033,8 @@ export interface components {
             sourceUrl?: string | null;
             /** @description Moderators only */
             sourceLabel?: string | null;
+            /** @description Moderators only; replaces the tags of the post */
+            tagIds?: number[];
         };
         NewComment: {
             body: string;

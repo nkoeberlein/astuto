@@ -33,6 +33,7 @@ import { Route as Site_settingsGeneralRouteImport } from './routes/site_settings
 import { Route as Site_settingsInvitationsRouteImport } from './routes/site_settings.invitations'
 import { Route as Site_settingsPost_statusesRouteImport } from './routes/site_settings.post_statuses'
 import { Route as Site_settingsRoadmapRouteImport } from './routes/site_settings.roadmap'
+import { Route as Site_settingsTagsRouteImport } from './routes/site_settings.tags'
 import { Route as Site_settingsWebhooksRouteImport } from './routes/site_settings.webhooks'
 import { Route as Site_settingsWidgetRouteImport } from './routes/site_settings.widget'
 import { Route as UnlockNewRouteImport } from './routes/unlock.new'
@@ -160,6 +161,11 @@ const Site_settingsRoadmapRoute = Site_settingsRoadmapRouteImport.update({
   path: '/site_settings/roadmap',
   getParentRoute: () => rootRouteImport,
 } as any)
+const Site_settingsTagsRoute = Site_settingsTagsRouteImport.update({
+  id: '/site_settings/tags',
+  path: '/site_settings/tags',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const Site_settingsWebhooksRoute = Site_settingsWebhooksRouteImport.update({
   id: '/site_settings/webhooks',
   path: '/site_settings/webhooks',
@@ -201,6 +207,7 @@ export interface FileRoutesByFullPath {
   '/site_settings/invitations': typeof Site_settingsInvitationsRoute
   '/site_settings/post_statuses': typeof Site_settingsPost_statusesRoute
   '/site_settings/roadmap': typeof Site_settingsRoadmapRoute
+  '/site_settings/tags': typeof Site_settingsTagsRoute
   '/site_settings/webhooks': typeof Site_settingsWebhooksRoute
   '/site_settings/widget': typeof Site_settingsWidgetRoute
   '/unlock/new': typeof UnlockNewRoute
@@ -230,6 +237,7 @@ export interface FileRoutesByTo {
   '/site_settings/invitations': typeof Site_settingsInvitationsRoute
   '/site_settings/post_statuses': typeof Site_settingsPost_statusesRoute
   '/site_settings/roadmap': typeof Site_settingsRoadmapRoute
+  '/site_settings/tags': typeof Site_settingsTagsRoute
   '/site_settings/webhooks': typeof Site_settingsWebhooksRoute
   '/site_settings/widget': typeof Site_settingsWidgetRoute
   '/unlock/new': typeof UnlockNewRoute
@@ -260,6 +268,7 @@ export interface FileRoutesById {
   '/site_settings/invitations': typeof Site_settingsInvitationsRoute
   '/site_settings/post_statuses': typeof Site_settingsPost_statusesRoute
   '/site_settings/roadmap': typeof Site_settingsRoadmapRoute
+  '/site_settings/tags': typeof Site_settingsTagsRoute
   '/site_settings/webhooks': typeof Site_settingsWebhooksRoute
   '/site_settings/widget': typeof Site_settingsWidgetRoute
   '/unlock/new': typeof UnlockNewRoute
@@ -291,6 +300,7 @@ export interface FileRouteTypes {
     | '/site_settings/invitations'
     | '/site_settings/post_statuses'
     | '/site_settings/roadmap'
+    | '/site_settings/tags'
     | '/site_settings/webhooks'
     | '/site_settings/widget'
     | '/unlock/new'
@@ -320,6 +330,7 @@ export interface FileRouteTypes {
     | '/site_settings/invitations'
     | '/site_settings/post_statuses'
     | '/site_settings/roadmap'
+    | '/site_settings/tags'
     | '/site_settings/webhooks'
     | '/site_settings/widget'
     | '/unlock/new'
@@ -349,6 +360,7 @@ export interface FileRouteTypes {
     | '/site_settings/invitations'
     | '/site_settings/post_statuses'
     | '/site_settings/roadmap'
+    | '/site_settings/tags'
     | '/site_settings/webhooks'
     | '/site_settings/widget'
     | '/unlock/new'
@@ -379,6 +391,7 @@ export interface RootRouteChildren {
   Site_settingsInvitationsRoute: typeof Site_settingsInvitationsRoute
   Site_settingsPost_statusesRoute: typeof Site_settingsPost_statusesRoute
   Site_settingsRoadmapRoute: typeof Site_settingsRoadmapRoute
+  Site_settingsTagsRoute: typeof Site_settingsTagsRoute
   Site_settingsWebhooksRoute: typeof Site_settingsWebhooksRoute
   Site_settingsWidgetRoute: typeof Site_settingsWidgetRoute
   UnlockNewRoute: typeof UnlockNewRoute
@@ -554,6 +567,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Site_settingsRoadmapRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/site_settings/tags': {
+      id: '/site_settings/tags'
+      path: '/site_settings/tags'
+      fullPath: '/site_settings/tags'
+      preLoaderRoute: typeof Site_settingsTagsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/site_settings/webhooks': {
       id: '/site_settings/webhooks'
       path: '/site_settings/webhooks'
@@ -603,6 +623,7 @@ const rootRouteChildren: RootRouteChildren = {
   Site_settingsInvitationsRoute: Site_settingsInvitationsRoute,
   Site_settingsPost_statusesRoute: Site_settingsPost_statusesRoute,
   Site_settingsRoadmapRoute: Site_settingsRoadmapRoute,
+  Site_settingsTagsRoute: Site_settingsTagsRoute,
   Site_settingsWebhooksRoute: Site_settingsWebhooksRoute,
   Site_settingsWidgetRoute: Site_settingsWidgetRoute,
   UnlockNewRoute: UnlockNewRoute,
