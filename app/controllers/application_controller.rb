@@ -100,6 +100,15 @@ class ApplicationController < ActionController::Base
       }, status: :forbidden
     end
 
+    # Comments, votes and status history of a post waiting for approval (or rejected) are as
+    # hidden as the post itself: only moderators see them
+    def hide_unless_post_visible
+      post = Post.friendly.find(params[:post_id])
+      return if post.approved? || current_user&.moderator?
+
+      render json: { error: t('errors.unauthorized') }, status: :not_found
+    end
+
     def check_tenant_is_private
       return unless Current.tenant.tenant_setting.is_private
       return if user_signed_in?
@@ -119,10 +128,7 @@ class ApplicationController < ActionController::Base
     end
 
     def should_check_tenant_is_private?
-      controller_name == 'posts' ||
-      controller_name == 'boards' ||
-      controller_name == 'comments' ||
-      (controller_name == 'static_pages' && action_name == 'root') ||
-      (controller_name == 'static_pages' && action_name == 'roadmap')
+      %w[posts boards comments likes post_status_changes].include?(controller_name) ||
+      (controller_name == 'static_pages' && %w[root roadmap embedded_roadmap].include?(action_name))
     end
 end

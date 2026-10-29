@@ -1,4 +1,6 @@
 class PostStatusChangesController < ApplicationController
+  before_action :hide_unless_post_visible, only: [:index]
+
   def index
     post_status_changes = PostStatusChange
       .select(
