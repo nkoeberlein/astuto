@@ -12,6 +12,7 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { formatRelativeTime } from '@/lib/format'
 import { useI18n } from '@/lib/i18n'
+import { isModerator } from '@/lib/roles'
 import { CommentForm } from './CommentForm'
 
 // Top-level comments with their replies (one level deep, like the legacy UI)
@@ -42,15 +43,12 @@ function CommentItem({ comment, postSlug, currentUser }: { comment: Comment } & 
   const deleteComment = useDeleteComment(postSlug ?? '')
 
   const name = comment.author?.fullName ?? t('post.published_anonymously')
-  const isModerator =
-    currentUser !== null &&
-    currentUser !== undefined &&
-    ['moderator', 'admin', 'owner'].includes(currentUser.role)
+  const canModerate = isModerator(currentUser)
   const canManage =
     Boolean(postSlug) &&
     currentUser !== null &&
     currentUser !== undefined &&
-    (currentUser.id === comment.author?.id || isModerator)
+    (currentUser.id === comment.author?.id || canModerate)
 
   return (
     <div className="flex gap-3">
@@ -85,7 +83,7 @@ function CommentItem({ comment, postSlug, currentUser }: { comment: Comment } & 
               required
               aria-label={t('post.new_comment.placeholder')}
             />
-            {isModerator && (
+            {canModerate && (
               <div className="flex items-center gap-2">
                 <Checkbox
                   id={`edit-comment-update-${comment.id}`}

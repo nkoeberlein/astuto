@@ -24,7 +24,7 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description signed-in user */
+                /** @description moderator, with the number of posts waiting for approval */
                 200: {
                     headers: {
                         [name: string]: unknown;
@@ -539,6 +539,60 @@ export interface paths {
                 };
             };
         };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/moderation/posts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Feedback queue: pending and rejected posts (moderators) */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description newest first, without approved posts */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ModerationQueue"];
+                    };
+                };
+                /** @description not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description not a moderator */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -1216,6 +1270,8 @@ export interface components {
             user: components["schemas"]["CurrentUser"];
             /** @description True for moderators when an AI provider is configured */
             aiEnabled: boolean;
+            /** @description Posts waiting for approval; null unless the user is a moderator */
+            pendingPostsCount: number | null;
             tenant: components["schemas"]["Tenant"];
         };
         LoginInput: {
@@ -1318,6 +1374,26 @@ export interface components {
             createdAt: string;
             /** Format: date-time */
             updatedAt: string;
+        };
+        ModerationPost: {
+            id: number;
+            slug: string;
+            title: string;
+            description: string | null;
+            boardId: number;
+            /** @enum {string} */
+            approvalStatus: "pending" | "rejected";
+            author: components["schemas"]["Author"];
+            /** Format: date-time */
+            createdAt: string;
+        };
+        ModerationQueue: {
+            /** @description Newest first, at most 100 */
+            posts: components["schemas"]["ModerationPost"][];
+            pendingCount: number;
+            allowAnonymousFeedback: boolean;
+            /** @enum {string} */
+            feedbackApprovalPolicy: "anonymous_require_approval" | "never_require_approval" | "always_require_approval";
         };
         VoteState: {
             liked: boolean;

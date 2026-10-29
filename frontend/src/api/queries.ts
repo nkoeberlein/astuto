@@ -124,3 +124,9 @@ export const commentsQuery = (postSlug: string) =>
         }),
       ),
   })
+
+// Feedback queue of moderators: pending and rejected posts
+export const moderationPostsQuery = queryOptions({
+  queryKey: ['moderation', 'posts'],
+  queryFn: () => unwrap(api.GET('/api/app/v1/moderation/posts')),
+})

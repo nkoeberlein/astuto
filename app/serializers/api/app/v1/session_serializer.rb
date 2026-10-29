@@ -7,6 +7,8 @@ module Api::App::V1
         user: user && current_user(user),
         # Moderators see AI actions only when a provider is configured
         aiEnabled: user&.moderator? ? Ai::Client.enabled? : false,
+        # Badge on the moderation link in the header
+        pendingPostsCount: user&.moderator? ? Post.pending.count : nil,
         tenant: {
           siteName: tenant.site_name,
           siteLogo: tenant.site_logo,

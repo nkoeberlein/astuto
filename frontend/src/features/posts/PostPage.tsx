@@ -27,6 +27,7 @@ import { Separator } from '@/components/ui/separator'
 import { Textarea } from '@/components/ui/textarea'
 import { formatRelativeTime } from '@/lib/format'
 import { useI18n } from '@/lib/i18n'
+import { isModerator } from '@/lib/roles'
 import { AiSummary } from './AiSummary'
 import { CommentForm } from './CommentForm'
 import { CommentList } from './CommentList'
@@ -54,8 +55,8 @@ export function PostPage({ postSlug }: { postSlug: string }) {
   const [descriptionDraft, setDescriptionDraft] = useState(post.description ?? '')
 
   const user = session.user
-  const isModerator = user !== null && ['moderator', 'admin', 'owner'].includes(user.role)
-  const canEdit = user !== null && (user.id === post.author?.id || isModerator)
+  const canModerate = isModerator(user)
+  const canEdit = user !== null && (user.id === post.author?.id || canModerate)
 
   const board = boards.find((b) => b.id === post.boardId)
   const status = statuses.find((s) => s.id === post.postStatusId)
@@ -175,7 +176,7 @@ export function PostPage({ postSlug }: { postSlug: string }) {
             currentUser={user}
           />
           {user ? (
-            <CommentForm postSlug={post.slug} canMarkAsUpdate={isModerator} />
+            <CommentForm postSlug={post.slug} canMarkAsUpdate={canModerate} />
           ) : (
             <CommentLoginHint />
           )}
@@ -227,7 +228,7 @@ export function PostPage({ postSlug }: { postSlug: string }) {
           <FormError error={deletePost.error} />
         </div>
 
-        {isModerator && (
+        {canModerate && (
           <section
             aria-label={t('header.menu.moderation')}
             className="space-y-3 rounded-xl border border-primary/20 bg-card p-4 shadow-2xs"

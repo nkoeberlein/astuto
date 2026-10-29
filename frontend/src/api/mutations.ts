@@ -4,6 +4,7 @@ import {
   useMutation,
   useQueryClient,
 } from '@tanstack/react-query'
+import { applyModeration } from '@/features/moderation/queue'
 import {
   api,
   type Comment,
@@ -14,9 +15,10 @@ import {
   setCsrfToken,
   unwrap,
 } from './client'
-import { commentsQuery, postQuery, sessionQuery } from './queries'
+import { commentsQuery, moderationPostsQuery, postQuery, sessionQuery } from './queries'
 
 type VoteState = Schemas['VoteState']
+type ModerationQueue = Schemas['ModerationQueue']
 export type NewPost = Schemas['NewPost']
 export type UpdatePost = Schemas['UpdatePost']
 export type NewComment = Schemas['NewComment']
@@ -175,6 +177,31 @@ export function useDeletePost(postSlug: string) {
       ),
     onSuccess: () => {
       queryClient.removeQueries({ queryKey: postQuery(postSlug).queryKey })
+      void queryClient.invalidateQueries(isBoardPostList)
+      void queryClient.invalidateQueries({ queryKey: ['roadmap'] })
+    },
+  })
+}
+
+// Approve or reject a post from the feedback queue
+export function useModeratePost() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (change: { id: number; approvalStatus: 'approved' | 'rejected' }) =>
+      unwrap(
+        api.PATCH('/api/app/v1/posts/{id}', {
+          params: { path: { id: String(change.id) } },
+          body: { approvalStatus: change.approvalStatus },
+        }),
+      ),
+    onSuccess: (updated) => {
+      queryClient.setQueryData<ModerationQueue>(
+        moderationPostsQuery.queryKey,
+        (queue) => queue && applyModeration(queue, updated.id, updated.approvalStatus),
+      )
+      queryClient.setQueryData<Post>(postQuery(updated.slug).queryKey, updated)
+      // Pending count in the header, and approved posts appear in boards and the roadmap
+      void queryClient.invalidateQueries({ queryKey: sessionQuery.queryKey })
       void queryClient.invalidateQueries(isBoardPostList)
       void queryClient.invalidateQueries({ queryKey: ['roadmap'] })
     },

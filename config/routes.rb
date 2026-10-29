@@ -121,6 +121,9 @@ Rails.application.routes.draw do
             resource :follow, only: [:create, :destroy]
             resource :summary, only: [:create]
           end
+          namespace :moderation do
+            resources :posts, only: [:index]
+          end
         end
       end
     end

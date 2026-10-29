@@ -29,6 +29,20 @@ module Api::App::V1
       }
     end
 
+    # Feedback queue for moderators (posts waiting for approval or rejected)
+    def self.moderation_item(post)
+      {
+        id: post.id,
+        slug: post.slug,
+        title: post.title,
+        description: post.description,
+        boardId: post.board_id,
+        approvalStatus: post.approval_status,
+        author: AuthorSerializer.call(post.user),
+        createdAt: post.created_at.iso8601
+      }
+    end
+
     def self.detail(post, current_user:)
       {
         id: post.id,

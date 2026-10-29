@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router'
-import { LogOut } from 'lucide-react'
+import { LogOut, ShieldCheck } from 'lucide-react'
 import type { Board, Session } from '@/api/client'
 import { useLogout } from '@/api/mutations'
 import { EvoLogo } from '@/components/EvoLogo'
@@ -7,6 +7,7 @@ import { UserAvatar } from '@/components/UserAvatar'
 import { Button } from '@/components/ui/button'
 import { useLoginRedirect } from '@/features/auth/redirect'
 import { useI18n } from '@/lib/i18n'
+import { isModerator } from '@/lib/roles'
 
 export function SiteHeader({ session, boards }: { session: Session; boards: Board[] }) {
   const { t } = useI18n()
@@ -88,6 +89,7 @@ export function SiteHeader({ session, boards }: { session: Session; boards: Boar
 
         {user ? (
           <div className="flex items-center gap-2 text-sm font-medium">
+            {isModerator(user) && <ModerationLink pendingCount={session.pendingPostsCount ?? 0} />}
             <UserAvatar name={user.fullName} url={user.avatarUrl} />
             <span className="hidden sm:inline">{user.fullName}</span>
             <Button
@@ -113,5 +115,32 @@ export function SiteHeader({ session, boards }: { session: Session; boards: Boar
         )}
       </div>
     </header>
+  )
+}
+
+// Feedback queue for moderators; the badge counts posts waiting for approval
+function ModerationLink({ pendingCount }: { pendingCount: number }) {
+  const { t } = useI18n()
+  const label = t('header.menu.moderation')
+
+  return (
+    <Link
+      to="/moderation/feedback"
+      className="relative flex items-center gap-1.5 rounded-lg px-2 py-1.5 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+      activeProps={{ className: 'text-primary' }}
+      aria-label={pendingCount > 0 ? `${label} (${pendingCount})` : label}
+      title={label}
+    >
+      <ShieldCheck className="size-4" aria-hidden />
+      <span className="hidden md:inline">{label}</span>
+      {pendingCount > 0 && (
+        <span
+          className="min-w-5 rounded-full bg-primary px-1.5 text-center text-xs font-semibold text-primary-foreground tabular-nums"
+          aria-hidden
+        >
+          {pendingCount}
+        </span>
+      )}
+    </Link>
   )
 }

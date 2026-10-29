@@ -14,6 +14,8 @@ export type Author = Schemas['Author']
 export type Roadmap = Schemas['Roadmap']
 export type RoadmapColumn = Schemas['RoadmapColumn']
 export type RoadmapPost = Schemas['RoadmapPost']
+export type ModerationPost = Schemas['ModerationPost']
+export type ModerationQueue = Schemas['ModerationQueue']
 export type Translations = { [key: string]: string | Translations }
 
 export class ApiError extends Error {

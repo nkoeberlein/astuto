@@ -36,7 +36,7 @@ module Swagger
           oauthProviders: { type: :array, items: ref(:OAuthProvider) },
           settings: ref(:TenantSettings)
         }),
-        Session: object({ csrfToken: STRING, user: ref(:CurrentUser).merge(nullable: true), aiEnabled: BOOLEAN.merge(description: 'True for moderators when an AI provider is configured'), tenant: ref(:Tenant) }),
+        Session: object({ csrfToken: STRING, user: ref(:CurrentUser).merge(nullable: true), aiEnabled: BOOLEAN.merge(description: 'True for moderators when an AI provider is configured'), pendingPostsCount: NULLABLE_INTEGER.merge(description: 'Posts waiting for approval; null unless the user is a moderator'), tenant: ref(:Tenant) }),
         LoginInput: object({ email: STRING, password: STRING, rememberMe: BOOLEAN }, required: %i[email password]),
         RegisterInput: object({
           fullName: STRING, email: STRING, password: STRING, passwordConfirmation: STRING, invitationToken: NULLABLE_STRING
@@ -66,6 +66,16 @@ module Swagger
           id: INTEGER, slug: STRING, title: STRING, description: NULLABLE_STRING, boardId: INTEGER, postStatusId: NULLABLE_INTEGER,
           approvalStatus: { type: :string, enum: %w[approved pending rejected] }, author: ref(:Author).merge(nullable: true),
           likesCount: INTEGER, commentsCount: INTEGER, liked: BOOLEAN, followed: BOOLEAN, createdAt: DATETIME, updatedAt: DATETIME
+        }),
+        ModerationPost: object({
+          id: INTEGER, slug: STRING, title: STRING, description: NULLABLE_STRING, boardId: INTEGER,
+          approvalStatus: { type: :string, enum: %w[pending rejected] }, author: ref(:Author).merge(nullable: true), createdAt: DATETIME
+        }),
+        ModerationQueue: object({
+          posts: { type: :array, items: ref(:ModerationPost), description: 'Newest first, at most 100' },
+          pendingCount: INTEGER,
+          allowAnonymousFeedback: BOOLEAN,
+          feedbackApprovalPolicy: { type: :string, enum: %w[anonymous_require_approval never_require_approval always_require_approval] }
         }),
         VoteState: object({ liked: BOOLEAN, likesCount: INTEGER }),
         FollowState: object({ followed: BOOLEAN }),

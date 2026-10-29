@@ -15,6 +15,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as RoadmapRouteImport } from './routes/roadmap'
 import { Route as BoardsBoardSlugRouteImport } from './routes/boards.$boardSlug'
+import { Route as ModerationFeedbackRouteImport } from './routes/moderation.feedback'
 import { Route as PasswordForgotRouteImport } from './routes/password.forgot'
 import { Route as PasswordResetRouteImport } from './routes/password.reset'
 import { Route as PostsPostSlugRouteImport } from './routes/posts.$postSlug'
@@ -49,6 +50,11 @@ const BoardsBoardSlugRoute = BoardsBoardSlugRouteImport.update({
   path: '/boards/$boardSlug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ModerationFeedbackRoute = ModerationFeedbackRouteImport.update({
+  id: '/moderation/feedback',
+  path: '/moderation/feedback',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PasswordForgotRoute = PasswordForgotRouteImport.update({
   id: '/password/forgot',
   path: '/password/forgot',
@@ -72,6 +78,7 @@ export interface FileRoutesByFullPath {
   '/register': typeof RegisterRoute
   '/roadmap': typeof RoadmapRoute
   '/boards/$boardSlug': typeof BoardsBoardSlugRoute
+  '/moderation/feedback': typeof ModerationFeedbackRoute
   '/password/forgot': typeof PasswordForgotRoute
   '/password/reset': typeof PasswordResetRoute
   '/posts/$postSlug': typeof PostsPostSlugRoute
@@ -83,6 +90,7 @@ export interface FileRoutesByTo {
   '/register': typeof RegisterRoute
   '/roadmap': typeof RoadmapRoute
   '/boards/$boardSlug': typeof BoardsBoardSlugRoute
+  '/moderation/feedback': typeof ModerationFeedbackRoute
   '/password/forgot': typeof PasswordForgotRoute
   '/password/reset': typeof PasswordResetRoute
   '/posts/$postSlug': typeof PostsPostSlugRoute
@@ -95,6 +103,7 @@ export interface FileRoutesById {
   '/register': typeof RegisterRoute
   '/roadmap': typeof RoadmapRoute
   '/boards/$boardSlug': typeof BoardsBoardSlugRoute
+  '/moderation/feedback': typeof ModerationFeedbackRoute
   '/password/forgot': typeof PasswordForgotRoute
   '/password/reset': typeof PasswordResetRoute
   '/posts/$postSlug': typeof PostsPostSlugRoute
@@ -108,6 +117,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/roadmap'
     | '/boards/$boardSlug'
+    | '/moderation/feedback'
     | '/password/forgot'
     | '/password/reset'
     | '/posts/$postSlug'
@@ -119,6 +129,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/roadmap'
     | '/boards/$boardSlug'
+    | '/moderation/feedback'
     | '/password/forgot'
     | '/password/reset'
     | '/posts/$postSlug'
@@ -130,6 +141,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/roadmap'
     | '/boards/$boardSlug'
+    | '/moderation/feedback'
     | '/password/forgot'
     | '/password/reset'
     | '/posts/$postSlug'
@@ -142,6 +154,7 @@ export interface RootRouteChildren {
   RegisterRoute: typeof RegisterRoute
   RoadmapRoute: typeof RoadmapRoute
   BoardsBoardSlugRoute: typeof BoardsBoardSlugRoute
+  ModerationFeedbackRoute: typeof ModerationFeedbackRoute
   PasswordForgotRoute: typeof PasswordForgotRoute
   PasswordResetRoute: typeof PasswordResetRoute
   PostsPostSlugRoute: typeof PostsPostSlugRoute
@@ -191,6 +204,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BoardsBoardSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/moderation/feedback': {
+      id: '/moderation/feedback'
+      path: '/moderation/feedback'
+      fullPath: '/moderation/feedback'
+      preLoaderRoute: typeof ModerationFeedbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/password/forgot': {
       id: '/password/forgot'
       path: '/password/forgot'
@@ -222,6 +242,7 @@ const rootRouteChildren: RootRouteChildren = {
   RegisterRoute: RegisterRoute,
   RoadmapRoute: RoadmapRoute,
   BoardsBoardSlugRoute: BoardsBoardSlugRoute,
+  ModerationFeedbackRoute: ModerationFeedbackRoute,
   PasswordForgotRoute: PasswordForgotRoute,
   PasswordResetRoute: PasswordResetRoute,
   PostsPostSlugRoute: PostsPostSlugRoute,
