@@ -5,7 +5,7 @@ import { safeRedirect } from '@/features/auth/redirect'
 import { ErrorView } from '@/features/layout/ErrorView'
 
 type LoginSearch = {
-  // Page to return to after sign-in (path without the /next basepath)
+  // Page to return to after sign-in (a local path)
   redirect?: string
 }
 

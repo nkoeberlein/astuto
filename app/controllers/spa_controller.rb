@@ -1,5 +1,6 @@
-# Serves the built v2 frontend (frontend/ → public/next) for all its client-side routes,
-# injecting server-side <title>, description, Open Graph tags, and favicon for SEO & link previews.
+# Serves the built v2 frontend (frontend/ → public/next) for all its pages (config/routes.rb),
+# injecting server-side <title>, description, Open Graph tags, favicon, language and direction,
+# and the flash messages of Rails pages that redirect here (e.g. after confirming an email).
 class SpaController < ActionController::Base
   include ApplicationHelper
 
@@ -12,7 +13,11 @@ class SpaController < ActionController::Base
 
     if INDEX.exist?
       tenant = get_tenant_from_request(request)
+      return redirect_to(pending_tenant_path) if tenant&.pending?
+      return redirect_to(blocked_tenant_path) if tenant&.blocked?
+
       html = tenant ? inject_meta_tags(INDEX.read, tenant) : INDEX.read
+      html = inject_flash(html)
       allow_iframe_embedding if tenant && embedded_roadmap?
       render html: html.html_safe, layout: false, content_type: 'text/html'
     else
@@ -25,7 +30,21 @@ class SpaController < ActionController::Base
     # Other sites may show the roadmap in an iframe (like the legacy /embedded_roadmap).
     # All other pages keep X-Frame-Options: SAMEORIGIN against clickjacking.
     def embedded_roadmap?
-      params[:path].to_s == 'embedded_roadmap' && TenantSetting.first_or_create.roadmap_enabled?
+      page_path == 'embedded_roadmap' && TenantSetting.first_or_create.roadmap_enabled?
+    end
+
+    # "boards/feature-requests" for /boards/feature-requests
+    def page_path
+      request.path.delete_prefix('/').delete_suffix('/')
+    end
+
+    # Flash messages as JSON in a meta tag; the frontend shows them once (FlashMessages)
+    def inject_flash(html)
+      messages = flash.to_hash.slice('notice', 'alert').select { |_, text| text.is_a?(String) && text.present? }
+      return html if messages.empty?
+
+      tag = %(<meta name="astuto-flash" content="#{ERB::Util.html_escape(messages.to_json)}" />)
+      html.sub('</head>') { "    #{tag}\n  </head>" }
     end
 
     def allow_iframe_embedding
@@ -69,7 +88,7 @@ class SpaController < ActionController::Base
       site_name = tenant.site_name.presence || AstutoProject::NAME
       return [site_name, site_name] if setting.is_private
 
-      path = params[:path].to_s
+      path = page_path
       case path
       when %r{\Aboards/([^/]+)\z}
         slug = Regexp.last_match(1)

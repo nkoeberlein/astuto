@@ -5,6 +5,10 @@ Issue numbers refer to the archived [astuto/astuto](https://github.com/astuto/as
 
 ## [Unreleased]
 
+### Changed
+- **The new user interface replaces the old one at `/`.** Every page – boards, posts, roadmap, embedded roadmap, login, sign-up, password reset, profile, moderation and site settings – comes from the v2 frontend. `/next/...` redirects to `/...` (301), and the Devise pages `/users/sign_in`, `/users/sign_up`, `/users/password/new|edit` and `/users/edit` redirect to the new pages, keeping their notices (e.g. after confirming an email). See UPGRADING.md for custom CSS.
+- The Capybara system specs of the old UI are gone; Playwright end-to-end tests cover the new pages, including a Content Security Policy check in the browser console.
+
 ### Security
 - Private feedback spaces: votes (`/posts/:id/likes`), status history (`/posts/:id/post_status_changes`) and the embedded roadmap (`/embedded_roadmap`) were readable without logging in. They now require a login like the rest of the space.
 - Comments, votes and status history of posts waiting for approval or rejected were readable by everyone; like the post itself, they are now visible to moderators only.

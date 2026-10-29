@@ -128,7 +128,6 @@ class ApplicationController < ActionController::Base
     end
 
     def should_check_tenant_is_private?
-      %w[posts boards comments likes post_status_changes].include?(controller_name) ||
-      (controller_name == 'static_pages' && %w[root roadmap embedded_roadmap].include?(action_name))
+      %w[posts boards comments likes post_status_changes].include?(controller_name)
     end
 end

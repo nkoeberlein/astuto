@@ -1,7 +1,6 @@
 class PostsController < ApplicationController
   before_action :authenticate_user!, only: [:update, :destroy]
   before_action :authenticate_moderator, only: [:moderation]
-  before_action :authenticate_moderator_if_post_not_approved, only: [:show]
   before_action :check_tenant_subscription, only: [:create, :update, :destroy]
 
   def index
@@ -61,44 +60,6 @@ class PostsController < ApplicationController
       render json: {
         error: @post.errors.full_messages
       }, status: :unprocessable_entity
-    end
-  end
-
-  def show
-    @post = Post
-      .friendly
-      .select(
-        :id,
-        :title,
-        :slug,
-        :description,
-        :approval_status,
-        :board_id,
-        :user_id,
-        :post_status_id,
-        :created_at,
-        :updated_at,
-        'users.email as user_email',
-        'users.full_name as user_full_name'
-      )
-      .eager_load(:user) # left outer join
-      .find(params[:id])
-    
-    @post_statuses = PostStatus.select(:id, :name, :color).order(order: :asc)
-    @board = @post.board
-
-    @page_title = @post.title.length > 60 ? @post.title.slice(0, 60) + "..." : @post.title
-
-    # Author emails only for moderators and the author (Legacy::AuthorFields)
-    @post_json = Legacy::AuthorFields.merge(@post, viewer: current_user)
-
-    respond_to do |format|
-      format.html do
-        likes = @post.likes.select(:id, :user_id, :full_name, :email).left_outer_joins(:user)
-        @likes_json = likes.map { |like| Legacy::AuthorFields.merge(like, viewer: current_user, email_attribute: :email, prefix: '') }
-      end
-
-      format.json { render json: @post_json }
     end
   end
 
@@ -174,10 +135,6 @@ class PostsController < ApplicationController
 
   private
 
-    def authenticate_moderator_if_post_not_approved
-      post = Post.friendly.find(params[:id])
-      authenticate_moderator unless post.approval_status == "approved"
-    end
 
     def anti_spam_checks
       rendered_at = params[:post][:form_rendered_at].to_i

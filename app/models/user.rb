@@ -73,7 +73,7 @@ class User < ApplicationRecord
   end
 
   # Like Devise's send_reset_password_instructions, but the email links to the
-  # password reset page of the v2 frontend (/next/password/reset)
+  # password reset page of the v2 frontend (/password/reset)
   def send_next_reset_password_instructions
     token = set_reset_password_token
     send_devise_notification(:reset_password_instructions, token, template_name: 'reset_password_instructions_next')

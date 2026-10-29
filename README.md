@@ -46,7 +46,7 @@ Astuto Evolution helps you collect, manage and prioritize feedback from your cus
 | Ruby / Rails | 3.0 / 6.1 (end of life) | 4.0 / 8.1 |
 | PostgreSQL | 14 (EOL 11/2026) | 18 (19 once it is released) |
 | Docker image | `riggraz/astuto` (amd64) | `ghcr.io/nkoeberlein/astuto-evo` (amd64 + arm64) |
-| User interface | React 16, Bootstrap 4 | being rebuilt (React 19, TypeScript, Tailwind), public pages under `/next` |
+| User interface | React 16, Bootstrap 4 | rebuilt: React 19, TypeScript, Tailwind, every page at `/` |
 | AI / MCP | – | MCP server, opt-in AI discussion summary |
 
 Upgrading an existing Astuto installation: see [UPGRADING.md](UPGRADING.md).
@@ -57,7 +57,7 @@ Upgrading an existing Astuto installation: see [UPGRADING.md](UPGRADING.md).
 
 ### In v2 (towards 2.0)
 
-- **Complete the new UI** (React 19 + TanStack, served under `/next` and then moved to `/`): roadmap page, login / sign-up / password as SPA pages with OAuth buttons, moderation queue and site settings, editing and deleting posts and comments, status changes
+- **New UI** (React 19 + TanStack) for every page: boards, posts, roadmap, embedding, login / sign-up / password with OAuth, moderation, all site settings, profile. Next: remove the legacy React 16 code
 - **Design system:** branding over CSS variables (reusing your current site colors), dark mode, WCAG 2.2 AA, mobile first
 - **AI-native features:** MCP server under `/mcp` with API-key auth (already part of the alpha) so assistants like Claude, Cursor and others can search, read, create and triage feedback; duplicate detection while posting (Postgres full-text search, optionally semantic with pgvector); discussion summaries and tag/board suggestions, all strictly opt-in per site settings
 - **Operations:** webhook error visibility (delivery log per webhook), "send test mail" for site settings, configurable favicon and header links, roadmap can be disabled, instance-wide default sort order, OAuth-only login option

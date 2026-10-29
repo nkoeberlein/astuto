@@ -37,11 +37,11 @@ RSpec.describe 'Account lockout (Devise :lockable)', type: :request do
     it 'rejects the correct password with the locked message' do
       lock!
 
-      # Lockable's unauthenticated_message → Devise failure app recalls the
-      # sign-in form (200) and shows the locked message via flash
+      # Lockable's unauthenticated_message → Devise failure app recalls the sign-in
+      # action, which now hands over to the v2 login page with the locked message
       post '/users/sign_in', params: { user: { email: user.email, password: password } }
 
-      expect(response.status).to eq(200)
+      expect(response).to redirect_to('/login')
       expect(flash[:alert]).to eq(I18n.t('devise.failure.locked'))
     end
 

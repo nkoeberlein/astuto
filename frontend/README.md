@@ -14,9 +14,9 @@ Tailwind CSS 4 · shadcn/ui (Radix) · Vite 8 · Vitest · Biome (lint + format)
 ## Architecture
 
 ```
-Browser ──/next/*──▶ SPA (this folder, built to public/next)
+Browser ──/, /boards/*, /posts/*, /login, /site_settings/*, …──▶ SPA (this folder, built to public/next)
         ──/api/app/v1/*──▶ Rails JSON API (session cookie + X-CSRF-Token)
-        ──/users/*, /o_auths/*──▶ Devise / OAuth pages (legacy, for now)
+        ──/users/*, /o_auths/*──▶ Devise / OAuth endpoints (their pages redirect into the SPA)
 ```
 
 - **API contract:** `app/controllers/api/app/v1` and `app/serializers/api/app/v1` in Rails,
@@ -27,13 +27,16 @@ Browser ──/next/*──▶ SPA (this folder, built to public/next)
   components read with `useSuspenseQuery` (`src/api/queries.ts`).
 - **Translations:** reused from `config/locales/*.yml`, served by
   `GET /api/app/v1/translations/:locale` (`src/lib/i18n.tsx`, Rails-style `%{var}` and one/other).
-- **Auth:** the Rails session cookie. Login and sign-up still link to the legacy Devise pages, which
-  return to the referring page afterwards.
+- **Auth:** the Rails session cookie, set by the SPA's login and sign-up pages through the app API.
+  Rails pages that redirect into the SPA (e.g. email confirmation) pass their flash message in
+  `<meta name="astuto-flash">` (`FlashMessages`).
 - **Writes:** `src/api/mutations.ts` (create post, vote, follow, comment). The CSRF token from
   `GET /session` is sent as `X-CSRF-Token`. Votes update the cache optimistically and roll back on errors.
   New posts carry a hidden honeypot field and the time the form was opened (server-side anti-spam).
-- **Production:** the Docker build runs `npm run build`; Rails serves `public/next/index.html`
-  for all `/next/*` routes (`SpaController`).
+- **Production:** the Docker build runs `npm run build` into `public/next`; Rails serves
+  `public/next/index.html` for every page route in `config/routes.rb` (`SpaController`), the built
+  files stay under `/next/assets`. Old `/next/*` URLs redirect to `/*`. A new page needs a route
+  in `src/routes` and one in `config/routes.rb`.
 
 ```
 src/
@@ -52,7 +55,7 @@ With Docker (Rails, Postgres and Vite):
 docker compose up
 ```
 
-Open http://localhost:5173/next/. Vite proxies API and Devise requests to Rails.
+Open http://localhost:5173/. Vite proxies API and Devise requests to Rails.
 
 On the host instead (Node ≥ 26), against a Rails server on another port:
 

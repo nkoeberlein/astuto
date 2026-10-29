@@ -25,8 +25,8 @@ module App
     config.active_job.queue_adapter = ENV["ACTIVE_JOB_BACKEND"] == "sidekiq" ? :sidekiq : :async
 
     # Never serve public/**/index.html for a bare directory path. Otherwise the
-    # static file server answers /next and /next/ with public/next/index.html
-    # itself, skipping SpaController (meta tags) and the Content Security Policy.
+    # static file server answers /next/ with public/next/index.html itself, skipping
+    # the redirect to / and SpaController (meta tags, Content Security Policy).
     config.public_file_server.index_name = "no-directory-index"
 
     # Settings in config/environments/* take precedence over those specified here.

@@ -3,9 +3,6 @@ class RegistrationsController < Devise::RegistrationsController
 
   # Needed to have Current.tenant available in Devise's controllers
   prepend_before_action :load_tenant_data
-  before_action :load_oauths, only: [:new]
-  before_action :set_page_title_new, only: [:new]
-  before_action :set_page_title_edit, only: [:edit]
 
   # Override create to check whether email registration is possible
   def create
@@ -49,6 +46,17 @@ class RegistrationsController < Devise::RegistrationsController
     end
 
     super
+  end
+
+  # Sign-up and profile pages are part of the v2 frontend
+  def new
+    flash.keep
+    redirect_to spa_register_path(params.permit(:invitation_token, :email).to_h)
+  end
+
+  def edit
+    flash.keep
+    redirect_to spa_profile_path
   end
 
   # Override update to check whether provided email is allowed
@@ -103,15 +111,5 @@ class RegistrationsController < Devise::RegistrationsController
           super
         end
       end
-    end
-    
-  private
-
-    def set_page_title_new
-      @page_title = t('common.forms.auth.sign_up')
-    end
-
-    def set_page_title_edit
-      @page_title = t('common.forms.auth.profile_settings')
     end
 end

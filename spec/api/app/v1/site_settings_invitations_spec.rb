@@ -94,7 +94,7 @@ RSpec.describe 'api/app/v1/site_settings/invitations', type: :request, openapi_s
           mail = ActionMailer::Base.deliveries.last
           expect(mail.to).to eq(['admin@acme.example'])
           expect(mail.subject).to eq('[TEST] Join us')
-          expect(mail.body.encoded).to include('/next/register?')
+          expect(mail.body.encoded).to match(%r{/register\?[^"<]*invitation_token=})
           expect(Invitation.find_by(email: 'admin@acme.example')).to be_nil
         end
       end

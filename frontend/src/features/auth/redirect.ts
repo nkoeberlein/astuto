@@ -13,7 +13,7 @@ export function safeRedirect(value: unknown): string | undefined {
   return value
 }
 
-// Current page (path + query, without the /next basepath) as the redirect
+// Current page (path + query, without the router basepath) as the redirect
 // search param for links to /login and /register
 export function useLoginRedirect(): string | undefined {
   const { pathname, href } = useLocation()

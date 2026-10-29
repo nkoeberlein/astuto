@@ -19,8 +19,8 @@ RSpec.describe 'Content Security Policy', type: :request do
     expect(directive('object-src')).to eq("object-src 'none'")
   end
 
-  it 'gives the inline locale script the nonce from the header' do
-    get root_path
+  it 'gives the inline locale script of the Rails pages the nonce from the header' do
+    get new_user_confirmation_path
 
     nonce = directive('script-src')[/'nonce-([^']+)'/, 1]
     expect(nonce).to be_present
@@ -44,10 +44,10 @@ RSpec.describe 'Content Security Policy', type: :request do
     expect(directive('style-src')).not_to include("'nonce-")
   end
 
-  it 'sends the policy for the v2 frontend, whose start page Rails renders itself' do
+  it 'sends the policy for the v2 frontend, whose pages Rails renders itself' do
     skip 'v2 frontend not built' unless SpaController::INDEX.exist?
 
-    %w[/next /next/].each do |path|
+    %w[/ /roadmap].each do |path|
       get path
       expect(directive('script-src')).to include("'self'")
       expect(response.body).to include('og:site_name')

@@ -29,10 +29,30 @@ Rails.application.routes.draw do
   end
 
   constraints subdomain: /.*/ do
-    root to: 'static_pages#root'
-    
-    get '/roadmap', to: 'static_pages#roadmap'
-    get '/embedded_roadmap', to: 'static_pages#embedded_roadmap'
+    # Pages of the v2 frontend (frontend/ → public/next), served by SpaController.
+    # Named routes keep URL helpers in mails and workflows (root_url, roadmap_url, post_url, ...).
+    root to: 'spa#show'
+    get '/roadmap', to: 'spa#show', as: :roadmap
+    get '/embedded_roadmap', to: 'spa#show', as: :embedded_roadmap
+    get '/boards/:id', to: 'spa#show', format: false
+    get '/posts/:id', to: 'spa#show', format: false
+    get '/login', to: 'spa#show', as: :spa_login
+    get '/register', to: 'spa#show', as: :spa_register
+    get '/password/forgot', to: 'spa#show', as: :spa_password_forgot
+    get '/password/reset', to: 'spa#show', as: :spa_password_reset
+    get '/profile', to: 'spa#show', as: :spa_profile
+    %w[feedback users].each do |section|
+      get "/moderation/#{section}", to: 'spa#show', as: "moderation_#{section}"
+    end
+    %w[general authentication boards post_statuses roadmap webhooks invitations appearance].each do |section|
+      get "/site_settings/#{section}", to: 'spa#show', as: "site_settings_#{section}"
+    end
+    # The v2 frontend lived under /next until 2.0; old links and embed codes keep working
+    get '/next(/*path)', format: false, to: redirect(status: 301) { |params, request|
+      query = request.query_string.presence
+      "/#{params[:path]}#{"?#{query}" if query}"
+    }
+
     get '/pending-tenant', to: 'static_pages#pending_tenant'
     get '/blocked-tenant', to: 'static_pages#blocked_tenant'
     
@@ -61,7 +81,7 @@ Rails.application.routes.draw do
     get '/o_auths/:id/callback', to: 'o_auths#callback', as: :o_auth_callback
     get '/o_auths/sign_in_from_oauth_token', to: 'o_auths#sign_in_from_oauth_token', as: :o_auth_sign_in_from_oauth_token
   
-    resources :posts, only: [:index, :create, :show, :update, :destroy] do
+    resources :posts, only: [:index, :create, :update, :destroy] do
       resource :follows, only: [:create, :destroy]
       resources :follows, only: [:index]
       resource :likes, only: [:create, :destroy]
@@ -72,7 +92,7 @@ Rails.application.routes.draw do
       get '/moderation', on: :collection, to: 'posts#moderation'
     end
     
-    resources :boards, only: [:index, :create, :update, :destroy, :show] do
+    resources :boards, only: [:index, :create, :update, :destroy] do
       patch 'update_order', on: :collection
     end
   
@@ -85,22 +105,6 @@ Rails.application.routes.draw do
 
     resources :api_keys, only: [:create]
   
-    namespace :site_settings do
-      get 'general'
-      get 'authentication'
-      get 'boards'
-      get 'post_statuses'
-      get 'roadmap'
-      get 'webhooks'
-      get 'invitations'
-      get 'appearance'
-    end
-
-    namespace :moderation do
-      get 'feedback'
-      get 'users'
-    end
-
     # API routes
     # JSON API for the v2 frontend (frontend/), session cookie + CSRF header
     namespace :api do
@@ -148,9 +152,6 @@ Rails.application.routes.draw do
         end
       end
     end
-
-    # v2 frontend, served under /next until it replaces the legacy UI
-    get '/next(/*path)', to: 'spa#show', as: :spa, format: false
 
     # Model Context Protocol (MCP) Streamable HTTP endpoint (authenticated via API key)
     post '/mcp', to: 'mcp#handle'

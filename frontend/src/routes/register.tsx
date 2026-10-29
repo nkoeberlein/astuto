@@ -7,7 +7,7 @@ import { ErrorView } from '@/features/layout/ErrorView'
 type RegisterSearch = {
   email?: string
   invitation_token?: string
-  // Page to return to after sign-up (path without the /next basepath)
+  // Page to return to after sign-up (a local path)
   redirect?: string
 }
 

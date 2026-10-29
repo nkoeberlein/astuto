@@ -34,7 +34,7 @@ module Api::App::V1::SiteSettings
           subject: params[:subject],
           body: params[:body],
           link_for: lambda { |token, email|
-            get_url_for(method(:spa_url), options: { path: 'register', invitation_token: token, email: email })
+            get_url_for(method(:spa_register_url), options: { invitation_token: token, email: email })
           }
         )
       end

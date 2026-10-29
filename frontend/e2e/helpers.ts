@@ -14,7 +14,7 @@ export const unique = (prefix: string) => `${prefix} ${Date.now().toString(36)}`
 
 // Logs in on the v2 login page and waits for the redirect to `redirect`
 export async function logIn(page: Page, redirect = '/') {
-  await page.goto(`/next/login?redirect=${encodeURIComponent(redirect)}`)
+  await page.goto(`/login?redirect=${encodeURIComponent(redirect)}`)
   await page.getByLabel('Email').fill(ADMIN.email)
   await page.getByLabel('Password', { exact: true }).fill(ADMIN.password)
   await page.getByRole('button', { name: 'Log in', exact: true }).click()

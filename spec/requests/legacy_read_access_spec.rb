@@ -34,10 +34,4 @@ RSpec.describe 'legacy read access', type: :request do
     end
   end
 
-  it 'requires a login for the embedded roadmap of a private feedback space' do
-    setting.update!(is_private: true)
-
-    get '/embedded_roadmap'
-    expect(response).to redirect_to(new_user_session_path)
-  end
 end

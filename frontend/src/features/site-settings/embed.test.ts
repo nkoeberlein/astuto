@@ -6,7 +6,7 @@ describe('embedCode', () => {
 
   it('links the embedded roadmap without parameters by default', () => {
     expect(embedCode('https://feedback.example', all)).toContain(
-      'src="https://feedback.example/next/embedded_roadmap"',
+      'src="https://feedback.example/embedded_roadmap"',
     )
   })
 

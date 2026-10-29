@@ -112,7 +112,8 @@ Die häufigsten Probleme aus den Upstream-Issues: HTTPS hinter Reverse Proxy (#4
 6. ✅ Roadmap-Seite, serverseitige Meta-Tags
 7. ✅ Auth-Seiten (Login, Registrierung, Passwort, OAuth) und eingebettete Roadmap
 8. ✅ Moderation (Feedback-Queue, Nutzer), Site Settings (alle Bereiche) und Profil-Einstellungen
-9. Altes Frontend und dessen Gems/Pakete entfernen (`react-rails`, `i18n-js`, Webpack, Bootstrap)
+9. ✅ Umstieg: das neue Frontend liefert alle Seiten unter `/` aus (`/next/*` leitet um)
+10. Altes Frontend und dessen Gems/Pakete entfernen (`react-rails`, `i18n-js`, Webpack, Bootstrap); hängt an Billing und Tenant-Signup (Entscheidung Geschäftsmodell, Abschnitt 7)
 
 ### Phase 4 – KI und MCP · P1 (MCP in 2.0, Rest 2.x)
 - ✅ **MCP-Server** (Streamable HTTP unter `/mcp` auf dem offiziellen `mcp`-Gem, Auth per API-Key, später OAuth). Tools: Posts suchen, lesen, anlegen, Status ändern, kommentieren, Votes und Trends abfragen, Roadmap lesen. Damit triagieren Claude, Cursor und andere Assistenten Feedback direkt. Unter den Self-Hosted-Tools hat das sonst nur Quackback.

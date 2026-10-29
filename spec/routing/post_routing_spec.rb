@@ -9,7 +9,7 @@ RSpec.describe 'posts routing', :aggregate_failures, type: :routing do
       controller: 'posts', action: 'create'
     )
     expect(get: '/posts/1').to route_to(
-      controller: 'posts', action: 'show', id: '1'
+      controller: 'spa', action: 'show', id: '1'
     )
     expect(patch: '/posts/1').to route_to(
       controller: 'posts', action: 'update', id: '1'

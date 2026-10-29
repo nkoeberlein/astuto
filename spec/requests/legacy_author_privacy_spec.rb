@@ -22,13 +22,11 @@ RSpec.describe 'legacy JSON endpoints: author emails', type: :request do
     likes = JSON.parse(response.body)
     get post_post_status_changes_path(post_record.id), as: :json
     changes = JSON.parse(response.body)
-    get post_path(post_record), as: :json
-    post_json = JSON.parse(response.body)
-    { comments: comments, likes: likes, changes: changes, post: post_json }
+    { comments: comments, likes: likes, changes: changes }
   end
 
   def all_bodies
-    [post_comments_path(post_record.id), post_likes_path(post_record.id), post_post_status_changes_path(post_record.id), post_path(post_record)]
+    [post_comments_path(post_record.id), post_likes_path(post_record.id), post_post_status_changes_path(post_record.id)]
       .map { |path| get(path, as: :json) && response.body }
       .join
   end
@@ -40,8 +38,6 @@ RSpec.describe 'legacy JSON endpoints: author emails', type: :request do
     expect(data[:comments].first['user_gravatar_hash']).to eq(User.gravatar_hash(author.email))
     expect(data[:likes].first['gravatar_hash']).to eq(User.gravatar_hash(voter.email))
     expect(data[:changes].first['user_gravatar_hash']).to eq(User.gravatar_hash(moderator.email))
-    expect(data[:post]['user_gravatar_hash']).to eq(User.gravatar_hash(author.email))
-    expect(data[:post]['user_email']).to be_nil
   end
 
   it 'hides other people\'s emails from signed-in users' do
@@ -55,7 +51,6 @@ RSpec.describe 'legacy JSON endpoints: author emails', type: :request do
     data = fetch_all
 
     expect(data[:comments].first['user_email']).to eq(author.email)
-    expect(data[:post]['user_email']).to eq(author.email)
     expect(data[:likes].first['email']).to be_nil
   end
 
@@ -68,11 +63,4 @@ RSpec.describe 'legacy JSON endpoints: author emails', type: :request do
     expect(data[:changes].first['user_email']).to eq(moderator.email)
   end
 
-  it 'keeps emails out of the post page props for visitors' do
-    get post_path(post_record)
-
-    expect(response).to have_http_status(:ok)
-    expect(response.body).not_to include(author.email, voter.email)
-    expect(response.body).to include(User.gravatar_hash(author.email))
-  end
 end

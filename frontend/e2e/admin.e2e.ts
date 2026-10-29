@@ -12,7 +12,7 @@ test.describe('admin journey', () => {
     const boardName = unique('E2E Board')
     const postTitle = unique('E2E idea')
 
-    await page.goto('/next/site_settings/boards')
+    await page.goto('/site_settings/boards')
 
     // Create a board: it shows up in the header
     await page.getByRole('button', { name: 'New' }).click()
@@ -43,7 +43,7 @@ test.describe('admin journey', () => {
       await expect(page.getByText('A comment from the e2e test')).toBeVisible()
     } finally {
       // Clean up: deleting the board deletes its posts
-      await page.goto('/next/site_settings/boards')
+      await page.goto('/site_settings/boards')
       await page.getByRole('button', { name: `${boardName}: Delete` }).click()
       await expect(
         page.getByRole('navigation', { name: 'Boards' }).getByRole('link', { name: boardName }),
@@ -64,13 +64,13 @@ test.describe('admin journey', () => {
       ['/moderation/users', 'Moderation'],
       ['/profile', 'Profile settings'],
     ] as const) {
-      await page.goto(`/next${path}`)
+      await page.goto(path)
       await expect(page.getByRole('heading', { name: heading }).first()).toBeVisible()
     }
   })
 
   test('saving general settings shows up in the header', async ({ page }) => {
-    await page.goto('/next/site_settings/general')
+    await page.goto('/site_settings/general')
     const siteName = page.getByLabel('Site name')
     const original = await siteName.inputValue()
     const changed = unique('E2E Site')
@@ -92,7 +92,7 @@ test.describe('admin journey', () => {
     // New contexts inherit the admin session from test.use: start this one signed out
     const visitorContext = await browser.newContext({ storageState: { cookies: [], origins: [] } })
     const visitor = await visitorContext.newPage()
-    await visitor.goto('/next/boards/feature-requests')
+    await visitor.goto('/boards/feature-requests')
     await visitor.getByRole('button', { name: 'Submit feedback' }).click()
     await visitor.getByLabel('Title').fill(title)
     await visitor.waitForTimeout(2100)
@@ -101,17 +101,17 @@ test.describe('admin journey', () => {
     await visitorContext.close()
 
     // The moderator approves it from the queue; then it shows on the board
-    await page.goto('/next/moderation/feedback')
+    await page.goto('/moderation/feedback')
     const item = page.getByRole('listitem').filter({ hasText: title })
     await item.getByRole('button', { name: 'Approve' }).click()
     await expect(item).toHaveCount(0)
 
-    await page.goto('/next/boards/feature-requests')
+    await page.goto('/boards/feature-requests')
     await expect(page.getByRole('link', { name: title })).toBeVisible()
 
     // Clean up through the post page
     await page.getByRole('link', { name: title }).click()
     await page.getByRole('button', { name: 'Delete' }).first().click()
-    await expect(page).toHaveURL(/\/next\/boards\/feature-requests/)
+    await expect(page).toHaveURL(/\/boards\/feature-requests/)
   })
 })

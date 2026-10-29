@@ -17,6 +17,18 @@ settings depend on it.
 - **Billing** (multi-tenant hosting only): requests use Stripe API version
   `2024-04-10`. Set the same version on your webhook endpoint in the Stripe dashboard.
 - The image no longer contains Node.js; Astuto does not need it at runtime.
+- **New user interface at `/`.** Every page now comes from the new frontend. Links to
+  the old pages keep working: `/next/...` (the preview of 2.0) redirects to `/...`, and
+  `/users/sign_in`, `/users/sign_up`, `/users/password/new|edit` and `/users/edit` lead to
+  `/login`, `/register`, `/password/forgot|reset` and `/profile`. Board, post, roadmap,
+  moderation and settings addresses stay the same.
+- **Embedded roadmap:** existing `<iframe src=".../embedded_roadmap?...">` codes keep working
+  with the same parameters (`show_boards`, `show_statuses`, `show_board_filter`,
+  `show_status_filter`). Posts open in a new tab. In a private feedback space the embed
+  shows nothing to visitors who are not logged in.
+- **Custom CSS** was written for the old markup (Bootstrap classes). Check it after the
+  update and adjust selectors in Site settings › Appearance; the preview there shows the
+  result before saving.
 
 ## PostgreSQL 14 → 19
 

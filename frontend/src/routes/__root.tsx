@@ -4,6 +4,7 @@ import { createRootRouteWithContext, Outlet, useMatches } from '@tanstack/react-
 import { useEffect } from 'react'
 import type { Session } from '@/api/client'
 import { boardsQuery, sessionQuery, translationsQuery } from '@/api/queries'
+import { FlashMessages } from '@/components/FlashMessages'
 import { ErrorView } from '@/features/layout/ErrorView'
 import { SiteFooter } from '@/features/layout/SiteFooter'
 import { SiteHeader } from '@/features/layout/SiteHeader'
@@ -59,6 +60,7 @@ function RootLayout() {
       ) : (
         <div className="flex min-h-dvh flex-col">
           <HeaderWithBoards />
+          <FlashMessages />
           <main className="w-full flex-1 px-4 py-6 sm:px-6 lg:px-10">
             <Outlet />
           </main>

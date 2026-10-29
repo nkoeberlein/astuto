@@ -18,7 +18,7 @@ module SafeUrl
     false
   end
 
-  # Same-site path like "/next/posts/1", but not a protocol-relative "//host"
+  # Same-site path like "/posts/1", but not a protocol-relative "//host"
   # URL. Backslashes and line breaks are rejected because browsers treat "/\host"
   # like "//host". Use it for return targets after sign-in.
   def self.local_path?(value)
