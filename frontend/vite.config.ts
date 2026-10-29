@@ -11,9 +11,10 @@ const backend = process.env.BACKEND_URL ?? 'http://localhost:3000'
 // Paths that Rails serves: the app API, Devise and OAuth pages, legacy assets
 const proxied = ['/api', '/users', '/o_auths', '/assets', '/rails']
 
-export default defineConfig({
-  // Served under /next until the v2 frontend replaces the legacy UI
-  base: '/next/',
+export default defineConfig(({ command }) => ({
+  // Built files live under /next/assets; Rails serves the pages themselves at / (SpaController).
+  // The dev server serves everything at /.
+  base: command === 'build' ? '/next/' : '/',
   plugins: [tanstackRouter({ target: 'react', autoCodeSplitting: true }), react(), tailwindcss()],
   resolve: {
     alias: { '@': path.resolve(import.meta.dirname, 'src') },
@@ -34,4 +35,4 @@ export default defineConfig({
     setupFiles: ['./test/setup.ts'],
     css: false,
   },
-})
+}))

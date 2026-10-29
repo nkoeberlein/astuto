@@ -35,11 +35,6 @@ class UserMailerPreview < ActionMailer::Preview
   end
 
   def recap
-    UserMailer.recap(
-      frequency: I18n.t('common.forms.auth.recap_notification_frequency_daily'),
-      user: User.first,
-      published_posts_count: 3,
-      pending_posts_count: 2,
-    )
+    UserMailer.recap(user: User.first, frequency: 'weekly', from: 1.week.ago, to: Time.current)
   end
 end

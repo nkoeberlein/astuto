@@ -1,0 +1,33 @@
+dn: dc=example,dc=com
+objectClass: top
+objectClass: dcObject
+objectClass: organization
+o: Example
+dc: example
+
+dn: ou=people,dc=example,dc=com
+objectClass: organizationalUnit
+ou: people
+
+dn: cn=service,ou=people,dc=example,dc=com
+objectClass: inetOrgPerson
+cn: service
+sn: service
+userPassword: servicesecret
+
+dn: uid=ada,ou=people,dc=example,dc=com
+objectClass: inetOrgPerson
+uid: ada
+cn: Ada Lovelace
+sn: Lovelace
+displayName: Ada Lovelace
+mail: ada@example.com
+userPassword: adasecret
+
+dn: uid=bob,ou=people,dc=example,dc=com
+objectClass: inetOrgPerson
+uid: bob
+cn: Bob Builder
+sn: Builder
+mail: bob@example.com
+userPassword: bobsecret

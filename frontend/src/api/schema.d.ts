@@ -24,7 +24,7 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description signed-in user */
+                /** @description moderator, with the number of posts waiting for approval */
                 200: {
                     headers: {
                         [name: string]: unknown;
@@ -57,6 +57,15 @@ export interface paths {
                     };
                     content: {
                         "application/json": components["schemas"]["Session"];
+                    };
+                };
+                /** @description password correct, two-factor code needed (POST /api/app/v1/session/two_factor) */
+                202: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["TwoFactorRequired"];
                     };
                 };
                 /** @description account is locked (too many failed attempts) */
@@ -201,7 +210,49 @@ export interface paths {
             };
         };
         put?: never;
-        post?: never;
+        /** Create a board (admins) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["BoardInput"];
+                };
+            };
+            responses: {
+                /** @description created at the end, slug from the name */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Board"];
+                    };
+                };
+                /** @description moderators cannot create boards */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description duplicate name */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
         delete?: never;
         options?: never;
         head?: never;
@@ -213,8 +264,7 @@ export interface paths {
             query?: never;
             header?: never;
             path: {
-                /** @description Board id or slug */
-                id: string;
+                id: number;
             };
             cookie?: never;
         };
@@ -224,8 +274,7 @@ export interface paths {
                 query?: never;
                 header?: never;
                 path: {
-                    /** @description Board id or slug */
-                    id: string;
+                    id: number;
                 };
                 cookie?: never;
             };
@@ -253,10 +302,63 @@ export interface paths {
         };
         put?: never;
         post?: never;
-        delete?: never;
+        /** Delete a board and its posts (admins) */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description deleted, the other boards move up */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description moderators cannot delete boards */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
         options?: never;
         head?: never;
-        patch?: never;
+        /** Update a board (admins) */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["BoardInput"];
+                };
+            };
+            responses: {
+                /** @description renamed with a custom slug */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Board"];
+                    };
+                };
+            };
+        };
         trace?: never;
     };
     "/api/app/v1/post_statuses": {
@@ -294,7 +396,503 @@ export interface paths {
             };
         };
         put?: never;
+        /** Create a status (admins) */
+        post: {
+            parameters: {
+                query?: {
+                    /** @description Optional board id or slug to filter out unused statuses when hideUnusedStatusesInFilterByStatus is enabled */
+                    board_id?: string;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["PostStatusInput"];
+                };
+            };
+            responses: {
+                /** @description created */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PostStatus"];
+                    };
+                };
+                /** @description invalid color */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/changelog_entries": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Changelog entries, newest first (moderators also see drafts, which come first) */
+        get: {
+            parameters: {
+                query?: {
+                    page?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description published entries */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ChangelogEntryPage"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        /** Write a changelog entry (moderators) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["ChangelogEntryInput"];
+                };
+            };
+            responses: {
+                /** @description created */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ChangelogEntry"];
+                    };
+                };
+                /** @description not a moderator */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description invalid */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/changelog_entries/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
         post?: never;
+        /** Delete a changelog entry (moderators) */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description deleted */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /** Change, publish or unpublish a changelog entry (moderators) */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["ChangelogEntryInput"];
+                };
+            };
+            responses: {
+                /** @description saved */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ChangelogEntry"];
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/api/app/v1/changelog_entries/linkable_posts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Approved posts to link to an entry, posts with a status first (moderators) */
+        get: {
+            parameters: {
+                query?: {
+                    search?: string;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description posts */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["LinkablePost"][];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/changelog_entries/draft": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** AI draft of the text from the linked posts (moderators, needs AI_PROVIDER and AI_MODEL) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["ChangelogDraftInput"];
+                };
+            };
+            responses: {
+                /** @description draft */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ChangelogDraft"];
+                    };
+                };
+                /** @description AI is not configured */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/confirmation": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Send the email confirmation link again */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["EmailInput"];
+                };
+            };
+            responses: {
+                /** @description same answer for confirmed or unknown addresses, nothing sent */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["MessageResponse"];
+                    };
+                };
+                /** @description invalid email format */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/unlock": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Send the unlock link again */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["EmailInput"];
+                };
+            };
+            responses: {
+                /** @description instructions sent (paranoid mode) */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["MessageResponse"];
+                    };
+                };
+                /** @description invalid email format */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/posts/{post_id}/translation": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Post id or slug */
+                post_id: string;
+            };
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** AI translation of a post into the interface language (moderators, needs AI_PROVIDER and AI_MODEL) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description Post id or slug */
+                    post_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description translated title and description */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PostTranslation"];
+                    };
+                };
+                /** @description not a moderator */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description AI is not configured */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description AI provider failed */
+                502: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/posts/{post_id}/comments/{comment_id}/translation": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Post id or slug */
+                post_id: string;
+                comment_id: number;
+            };
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** AI translation of a comment into the interface language (moderators, needs AI_PROVIDER and AI_MODEL) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description Post id or slug */
+                    post_id: string;
+                    comment_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description translated comment */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CommentTranslation"];
+                    };
+                };
+                /** @description not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description comment of another post */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
         delete?: never;
         options?: never;
         head?: never;
@@ -545,6 +1143,477 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/app/v1/session/ldap": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Log in with the company directory (LDAP / Active Directory) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["LdapLoginInput"];
+                };
+            };
+            responses: {
+                /** @description signed in */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Session"];
+                    };
+                };
+                /** @description wrong login or password */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/site_settings/ldap": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** LDAP settings (admins) */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description settings */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["LdapSettings"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Change LDAP settings (admins) */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["UpdateLdapSettings"];
+                };
+            };
+            responses: {
+                /** @description saved */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["LdapSettings"];
+                    };
+                };
+                /** @description invalid filter */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/api/app/v1/site_settings/ldap/test": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Look up a login with the service account (admins) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["LdapTestInput"];
+                };
+            };
+            responses: {
+                /** @description found */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["LdapTestResult"];
+                    };
+                };
+                /** @description not found or no connection */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/moderation/posts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Feedback queue: pending and rejected posts (moderators) */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description newest first, without approved posts */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ModerationQueue"];
+                    };
+                };
+                /** @description not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description not a moderator */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/moderation/users": {
+        parameters: {
+            query?: {
+                /** @description Part of the name or email */
+                search?: string;
+                /** @enum {unknown} */
+                role?: string;
+                /** @enum {unknown} */
+                status?: string;
+                page?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Users with role and status (moderators) */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description Part of the name or email */
+                    search?: string;
+                    /** @enum {unknown} */
+                    role?: string;
+                    /** @enum {unknown} */
+                    status?: string;
+                    page?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description filter by status */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ModerationUserPage"];
+                    };
+                };
+                /** @description not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description not a moderator */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/moderation/users/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete (anonymize) an account (admins, GDPR) */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description deleted */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description moderators cannot delete accounts */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /** Block, unblock or change the role of a user */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["UpdateModerationUser"];
+                };
+            };
+            responses: {
+                /** @description admin demotes a moderator, whose API key is removed */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ModerationUser"];
+                    };
+                };
+                /** @description nobody changes themselves */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description users cannot be marked deleted */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/api/app/v1/moderation/users/{id}/export": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        /** Everything stored about a person, as a JSON download (admins, GDPR) */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description data */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["UserDataExport"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/my_posts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Posts the signed-in person created, voted on or follows ("My feedback") */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description created (also pending, rejected and merged own posts), voted or followed */
+                    filter?: "created" | "voted" | "followed";
+                    page?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description posts, newest update first, with counts per filter */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["MyPostPage"];
+                    };
+                };
+                /** @description not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/app/v1/password": {
         parameters: {
             query?: never;
@@ -636,6 +1705,8 @@ export interface paths {
                 page?: number;
                 /** @description Filter by status; 0 means posts without status */
                 "post_status_ids[]"?: unknown[];
+                /** @description Filter by tag: posts with any of these tags */
+                "tag_ids[]"?: unknown[];
             };
             header?: never;
             path: {
@@ -654,6 +1725,8 @@ export interface paths {
                     page?: number;
                     /** @description Filter by status; 0 means posts without status */
                     "post_status_ids[]"?: unknown[];
+                    /** @description Filter by tag: posts with any of these tags */
+                    "tag_ids[]"?: unknown[];
                 };
                 header?: never;
                 path: {
@@ -689,6 +1762,8 @@ export interface paths {
                     page?: number;
                     /** @description Filter by status; 0 means posts without status */
                     "post_status_ids[]"?: unknown[];
+                    /** @description Filter by tag: posts with any of these tags */
+                    "tag_ids[]"?: unknown[];
                 };
                 header?: never;
                 path: {
@@ -731,6 +1806,61 @@ export interface paths {
                     };
                 };
                 /** @description invalid title */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/posts/{id}/merge": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Slug or id of the duplicate */
+                id: string;
+            };
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Merge a duplicate into another post (moderators); not reversible */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description Slug or id of the duplicate */
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["MergePostInput"];
+                };
+            };
+            responses: {
+                /** @description merged; the target with its new votes and comments */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Post"];
+                    };
+                };
+                /** @description same or already merged post */
                 422: {
                     headers: {
                         [name: string]: unknown;
@@ -969,6 +2099,207 @@ export interface paths {
         };
         trace?: never;
     };
+    "/api/app/v1/profile": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Profile settings of the signed-in user */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description current settings */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Profile"];
+                    };
+                };
+                /** @description not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        /** Delete the own account (soft delete) */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["DeleteProfile"];
+                };
+            };
+            responses: {
+                /** @description deleted and signed out */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Session"];
+                    };
+                };
+                /** @description wrong password */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /** Update profile settings */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["UpdateProfile"];
+                };
+            };
+            responses: {
+                /** @description new password with the current one, still signed in */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Profile"];
+                    };
+                };
+                /** @description OAuth accounts set a password first */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description email domain not allowed */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/api/app/v1/profile/api_key": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Generate a new API key (moderators) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description new key, the old one stops working */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["NewApiKey"];
+                    };
+                };
+                /** @description users cannot have API keys */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/profile/export": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Everything stored about the signed-in person, as a JSON download (GDPR) */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description data */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["UserDataExport"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/app/v1/roadmap": {
         parameters: {
             query?: {
@@ -1081,6 +2412,1243 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/app/v1/site_settings/audit_events": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Audit log, newest first (admins) */
+        get: {
+            parameters: {
+                query?: {
+                    category?: "post" | "comment" | "user" | "board" | "post_status" | "tag" | "changelog" | "site_settings" | "o_auth" | "saml" | "ldap" | "widget" | "webhook" | "invitation" | "api_key";
+                    /** @description nextBefore of the previous page */
+                    before?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description entries */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AuditEventPage"];
+                    };
+                };
+                /** @description moderators cannot read it */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/boards/reorder": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Reorder boards (admins) */
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["Reorder"];
+                };
+            };
+            responses: {
+                /** @description boards in the new order */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Board"][];
+                    };
+                };
+                /** @description ids missing a board */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/post_statuses/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete a status (admins); its posts keep existing without one */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description deleted */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /** Update a status (admins) */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["PostStatusInput"];
+                };
+            };
+            responses: {
+                /** @description updated */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PostStatus"];
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/api/app/v1/post_statuses/reorder": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Reorder statuses (admins) */
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["Reorder"];
+                };
+            };
+            responses: {
+                /** @description statuses in the new order */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PostStatus"][];
+                    };
+                };
+                /** @description duplicate ids */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/site_settings/general": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** General site settings (admins) */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description current values */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["GeneralSettings"];
+                    };
+                };
+                /** @description not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description moderators are not admins */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update general site settings (admins) */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["UpdateGeneralSettings"];
+                };
+            };
+            responses: {
+                /** @description saves tenant and settings fields, leaves the rest alone */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["GeneralSettings"];
+                    };
+                };
+                /** @description moderators cannot change site settings */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description unsafe custom link */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/api/app/v1/site_settings/invitations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Invitations sent (admins) */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description with status */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Invitation"][];
+                    };
+                };
+                /** @description moderators are not admins */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        /** Send invitations (admins) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["InvitationInput"];
+                };
+            };
+            responses: {
+                /** @description sends to new addresses, skips members, accepted and invalid ones */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["InvitationResult"];
+                    };
+                };
+                /** @description more than 20 addresses */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/site_settings/invitations/test": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Send a test invitation to oneself (admins) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["InvitationTestInput"];
+                };
+            };
+            responses: {
+                /** @description sent to the admin, with a v2 sign-up link */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["InvitationTestResult"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/site_settings/o_auths": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** OAuth providers (admins) */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description own and default providers, never the client secret */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["OAuthSettings"][];
+                    };
+                };
+                /** @description moderators are not admins */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        /** Create an OAuth provider (admins) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["OAuthInput"];
+                };
+            };
+            responses: {
+                /** @description created */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["OAuthSettings"];
+                    };
+                };
+                /** @description missing required fields */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/site_settings/o_auths/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete an OAuth provider (admins) */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description deleted */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /** Update an OAuth provider (admins) */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["OAuthInput"];
+                };
+            };
+            responses: {
+                /** @description blank secret keeps the current one */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["OAuthSettings"];
+                    };
+                };
+                /** @description default providers cannot be edited */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/api/app/v1/site_settings/o_auths/{id}/default": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        get?: never;
+        /** Switch a default provider on or off for this feedback space (admins) */
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        enabled: boolean;
+                    };
+                };
+            };
+            responses: {
+                /** @description switched on */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["OAuthSettings"];
+                    };
+                };
+                /** @description not a default provider */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/site_settings/saml": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** SAML single sign-on settings (admins) */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description settings */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["SamlSettings"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Change SAML settings (admins) */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["UpdateSamlSettings"];
+                };
+            };
+            responses: {
+                /** @description saved */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["SamlSettings"];
+                    };
+                };
+                /** @description switched on without a valid certificate */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/api/app/v1/site_settings/saml/parse_metadata": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Read entity ID, SSO URL and certificate from IdP metadata (not saved) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["SamlMetadataInput"];
+                };
+            };
+            responses: {
+                /** @description fields */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["SamlIdpFields"];
+                    };
+                };
+                /** @description not metadata */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/site_settings/test_email": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Send a test email to oneself (admins) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description sent at once */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["TestEmailResult"];
+                    };
+                };
+                /** @description moderators are not admins */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description delivery error, even with delivery errors switched off */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/site_settings/webhooks": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Webhooks (admins) */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description with decrypted URL and headers */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Webhook"][];
+                    };
+                };
+                /** @description moderators are not admins */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        /** Create a webhook (admins) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["WebhookInput"];
+                };
+            };
+            responses: {
+                /** @description created, empty header rows dropped */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Webhook"];
+                    };
+                };
+                /** @description unknown HTTP method */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/site_settings/webhooks/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete a webhook (admins) */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description deleted */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /** Update a webhook (admins) */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["WebhookInput"];
+                };
+            };
+            responses: {
+                /** @description switched on */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Webhook"];
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/api/app/v1/site_settings/webhooks/variables": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Template variables per trigger (admins) */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description variables */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["WebhookVariables"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/site_settings/webhooks/templates": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Ready-made bodies for Slack, Discord and Microsoft Teams per trigger (admins) */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description templates */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["WebhookTemplates"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/site_settings/webhooks/preview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Render URL and body with example data (admins) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["WebhookPreviewInput"];
+                };
+            };
+            responses: {
+                /** @description rendered */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["WebhookPreview"];
+                    };
+                };
+                /** @description Liquid syntax error */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/site_settings/webhooks/{id}/test": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Send the webhook with example data (admins) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description sent with the configured method and headers */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["WebhookTestResult"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/site_settings/webhooks/{id}/deliveries": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        /** Recent deliveries of a webhook (admins) */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description newest first */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["WebhookDelivery"][];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/site_settings/webhooks/{id}/rotate_secret": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** New signing secret (admins) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description rotated */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Webhook"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/posts/{post_id}/suggestion": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Post id or slug */
+                post_id: string;
+            };
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** AI suggestion of board and tags from the existing ones (moderators, needs AI_PROVIDER and AI_MODEL) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description Post id or slug */
+                    post_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description suggestion; unknown names are dropped */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Suggestion"];
+                    };
+                };
+                /** @description not a moderator */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/app/v1/posts/{post_id}/summary": {
         parameters: {
             query?: never;
@@ -1150,6 +3718,535 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/app/v1/tags": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Tags in their order */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description tags */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Tag"][];
+                    };
+                };
+            };
+        };
+        put?: never;
+        /** Create a tag (admins) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["TagInput"];
+                };
+            };
+            responses: {
+                /** @description created */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Tag"];
+                    };
+                };
+                /** @description duplicate name */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/tags/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete a tag; it goes away from all posts (admins) */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description deleted */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /** Rename or recolor a tag (admins) */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["TagInput"];
+                };
+            };
+            responses: {
+                /** @description saved */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Tag"];
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/api/app/v1/tags/reorder": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Order of the tags (admins) */
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        ids: number[];
+                    };
+                };
+            };
+            responses: {
+                /** @description new order */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Tag"][];
+                    };
+                };
+            };
+        };
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/session/two_factor": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Second login step: code from the authenticator app or a backup code */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["TwoFactorCodeInput"];
+                };
+            };
+            responses: {
+                /** @description signed in */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Session"];
+                    };
+                };
+                /** @description wrong code or no login in progress */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/profile/two_factor": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Start setting up 2FA: new secret and QR code (not active until confirmed) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["DeleteProfile"];
+                };
+            };
+            responses: {
+                /** @description secret */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["TwoFactorSetup"];
+                    };
+                };
+            };
+        };
+        /** Turn 2FA off (password, or a code for accounts without password) */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["TwoFactorDisableInput"];
+                };
+            };
+            responses: {
+                /** @description off */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/profile/two_factor/confirm": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Turn 2FA on with a code from the app; returns the backup codes once */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["TwoFactorCodeInput"];
+                };
+            };
+            responses: {
+                /** @description on */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["TwoFactorBackupCodes"];
+                    };
+                };
+                /** @description wrong code */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/profile/two_factor/backup_codes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** New backup codes (the old ones stop working) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["TwoFactorCodeInput"];
+                };
+            };
+            responses: {
+                /** @description new codes */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["TwoFactorBackupCodes"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/widget/session": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Trade a visitor token from your app for a widget access token */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["WidgetSessionInput"];
+                };
+            };
+            responses: {
+                /** @description access token */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["WidgetSession"];
+                    };
+                };
+                /** @description invalid or expired visitor token */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/site_settings/widget": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Widget settings with the secret (admins) */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description settings */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["WidgetSettings"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Change widget settings (admins) */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["UpdateWidgetSettings"];
+                };
+            };
+            responses: {
+                /** @description saved */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["WidgetSettings"];
+                    };
+                };
+                /** @description invalid origin */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/api/app/v1/site_settings/widget/rotate_secret": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** New widget secret; tokens signed with the old one stop working (admins) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description new secret */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["WidgetSettings"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -1160,7 +4257,8 @@ export interface components {
         Author: {
             id: number;
             fullName: string;
-            avatarUrl: string;
+            /** @description null when Gravatar is switched off */
+            avatarUrl: string | null;
         };
         CurrentUser: {
             id: number;
@@ -1168,7 +4266,9 @@ export interface components {
             fullName: string;
             /** @enum {string} */
             role: "user" | "moderator" | "admin" | "owner";
-            avatarUrl: string;
+            avatarUrl: string | null;
+            /** @description Staff must set up 2FA before moderating (TenantSetting require_two_factor_for_staff) */
+            twoFactorSetupRequired: boolean;
         };
         OAuthProvider: {
             id: number;
@@ -1204,6 +4304,10 @@ export interface components {
             customCss: string | null;
         };
         Tenant: {
+            /** @description Name of the company account when LDAP login is on */
+            ldapLabel: string | null;
+            /** @description At least one published changelog entry (header link) */
+            hasChangelog: boolean;
             siteName: string;
             siteLogo: string | null;
             siteFavicon: string | null;
@@ -1216,6 +4320,8 @@ export interface components {
             user: components["schemas"]["CurrentUser"];
             /** @description True for moderators when an AI provider is configured */
             aiEnabled: boolean;
+            /** @description Posts waiting for approval; null unless the user is a moderator */
+            pendingPostsCount: number | null;
             tenant: components["schemas"]["Tenant"];
         };
         LoginInput: {
@@ -1232,10 +4338,15 @@ export interface components {
         };
         RegistrationResult: {
             confirmationRequired: boolean;
+            /** @description An admin approves the account first */
+            approvalRequired: boolean;
             message: string;
             session: components["schemas"]["Session"];
         };
         ForgotPasswordInput: {
+            email: string;
+        };
+        EmailInput: {
             email: string;
         };
         ResetPasswordInput: {
@@ -1255,6 +4366,11 @@ export interface components {
             name: string;
             slug: string;
             description: string | null;
+            /**
+             * @description Who sees the board and its posts (private boards)
+             * @enum {string}
+             */
+            visibility: "everyone" | "signed_in" | "staff";
         };
         PostStatus: {
             id: number;
@@ -1262,6 +4378,17 @@ export interface components {
             color: string;
             order: number;
             showInRoadmap: boolean;
+        };
+        Tag: {
+            id: number;
+            name: string;
+            color: string;
+            order: number;
+        };
+        TagInput: {
+            name?: string;
+            /** @description Hex color, e.g. #64748b */
+            color?: string;
         };
         PostListItem: {
             id: number;
@@ -1274,9 +4401,45 @@ export interface components {
             liked: boolean;
             /** Format: date-time */
             createdAt: string;
+            /** @description Tags in their order */
+            tagIds: number[];
         };
         PostPage: {
             posts: components["schemas"]["PostListItem"][];
+            page: number;
+            hasMore: boolean;
+        };
+        MyPost: {
+            id: number;
+            slug: string;
+            title: string;
+            description: string | null;
+            postStatusId: number | null;
+            likesCount: number;
+            commentsCount: number;
+            liked: boolean;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+            board: {
+                name: string;
+                slug: string;
+            } | null;
+            /** @description Tags in their order */
+            tagIds: number[];
+            /** @enum {string} */
+            approvalStatus: "approved" | "pending" | "rejected" | "merged";
+        };
+        MyPostPage: {
+            /** @enum {string} */
+            filter: "created" | "voted" | "followed";
+            counts: {
+                created: number;
+                voted: number;
+                followed: number;
+            };
+            posts: components["schemas"]["MyPost"][];
             page: number;
             hasMore: boolean;
         };
@@ -1314,10 +4477,526 @@ export interface components {
             commentsCount: number;
             liked: boolean;
             followed: boolean;
+            /** @description Tags in their order */
+            tagIds: number[];
+            /** @description Where the feedback came from; moderators only */
+            source: {
+                url: string | null;
+                label: string | null;
+            } | null;
+            /** @description Duplicates merged into this post */
+            mergedPosts: {
+                title: string;
+            }[];
+            /** @description Published changelog entries that deliver this post */
+            changelogEntries: {
+                id: number;
+                title: string;
+            }[];
             /** Format: date-time */
             createdAt: string;
             /** Format: date-time */
             updatedAt: string;
+        };
+        ModerationPost: {
+            id: number;
+            slug: string;
+            title: string;
+            description: string | null;
+            boardId: number;
+            /** @enum {string} */
+            approvalStatus: "pending" | "rejected";
+            author: components["schemas"]["Author"];
+            /** Format: date-time */
+            createdAt: string;
+        };
+        ModerationQueue: {
+            /** @description Newest first, at most 100 */
+            posts: components["schemas"]["ModerationPost"][];
+            pendingCount: number;
+            allowAnonymousFeedback: boolean;
+            /** @enum {string} */
+            feedbackApprovalPolicy: "anonymous_require_approval" | "never_require_approval" | "always_require_approval" | "new_users_require_approval";
+        };
+        ModerationUser: {
+            id: number;
+            email: string;
+            fullName: string;
+            avatarUrl: string | null;
+            /** @enum {string} */
+            role: "user" | "moderator" | "admin" | "owner";
+            /** @enum {string} */
+            status: "active" | "blocked" | "deleted" | "pending_approval";
+            /** Format: date-time */
+            createdAt: string;
+            /** @description The current user may block or unblock this user */
+            canChangeStatus: boolean;
+            /** @description The current user (an admin) may change the role */
+            canChangeRole: boolean;
+            /** @description Admins may download the stored data */
+            canExport: boolean;
+            /** @description The current user (an admin) may delete the account */
+            canDelete: boolean;
+        };
+        /** @description Everything stored about a person: profile, posts, comments, votes, follows */
+        UserDataExport: {
+            [key: string]: unknown;
+        };
+        ModerationUserPage: {
+            users: components["schemas"]["ModerationUser"][];
+            page: number;
+            hasMore: boolean;
+            counts: {
+                total: number;
+                active: number;
+                blocked: number;
+                deleted: number;
+                pendingApproval: number;
+            };
+        };
+        UpdateModerationUser: {
+            /**
+             * @description Admins only
+             * @enum {string}
+             */
+            role?: "user" | "moderator" | "admin";
+            /**
+             * @description active also approves an account that waits for approval
+             * @enum {string}
+             */
+            status?: "active" | "blocked";
+        };
+        GeneralSettings: {
+            siteName: string;
+            siteLogo: string | null;
+            siteFavicon: string | null;
+            locale: string;
+            customDomain: string | null;
+            /** @enum {string} */
+            brandDisplay: "name_and_logo" | "name_only" | "logo_only" | "no_name_no_logo";
+            useBrowserLocale: boolean;
+            /** @description 0 shows the roadmap (or the first board) on the home page */
+            rootBoardId: number;
+            /** @enum {string} */
+            defaultPostSorting: "trending" | "newest" | "most_voted" | "oldest";
+            customLinks: components["schemas"]["CustomLink"][];
+            isPrivate: boolean;
+            /** @description Avatars from gravatar.com (sends the email hash there) */
+            useGravatar: boolean;
+            requireTwoFactorForStaff: boolean;
+            allowAnonymousFeedback: boolean;
+            /** @enum {string} */
+            feedbackApprovalPolicy: "anonymous_require_approval" | "never_require_approval" | "always_require_approval" | "new_users_require_approval";
+            /** @description Approved posts after which an account is trusted (policy new_users_require_approval) */
+            trustedAfterPosts: number;
+            /** @description New sign-ups (email, OAuth) wait for approval by an admin */
+            requireUserApproval: boolean;
+            loginOnlyWithOauth: boolean;
+            /** @enum {string} */
+            logoLinksTo: "root_page" | "custom_url" | "nothing";
+            logoCustomUrl: string | null;
+            roadmapEnabled: boolean;
+            showRoadmapInHeader: boolean;
+            /** @enum {string} */
+            collapseBoardsInHeader: "no_collapse" | "always_collapse";
+            mailLogoSize: number;
+            showVoteCount: boolean;
+            showVoteButtonInBoard: boolean;
+            hideUnusedStatusesInFilterByStatus: boolean;
+            showPoweredBy: boolean;
+            customCss: string | null;
+            /** @enum {string} */
+            emailRegistrationPolicy: "all_allowed" | "custom_domains_allowed" | "none_allowed";
+            /** @description Comma-separated, for custom_domains_allowed */
+            allowedEmailDomains: string | null;
+            /** @description Custom domains only exist with MULTI_TENANCY=true */
+            multiTenancy: boolean;
+            availableLocales: string[];
+        };
+        UpdateGeneralSettings: {
+            siteName?: string;
+            siteLogo?: string | null;
+            siteFavicon?: string | null;
+            locale?: string;
+            customDomain?: string | null;
+            /** @enum {string} */
+            brandDisplay?: "name_and_logo" | "name_only" | "logo_only" | "no_name_no_logo";
+            useBrowserLocale?: boolean;
+            rootBoardId?: number;
+            /** @enum {string} */
+            defaultPostSorting?: "trending" | "newest" | "most_voted" | "oldest";
+            customLinks?: components["schemas"]["CustomLink"][];
+            isPrivate?: boolean;
+            /** @description Avatars from gravatar.com (sends the email hash there) */
+            useGravatar?: boolean;
+            requireTwoFactorForStaff?: boolean;
+            allowAnonymousFeedback?: boolean;
+            /** @enum {string} */
+            feedbackApprovalPolicy?: "anonymous_require_approval" | "never_require_approval" | "always_require_approval" | "new_users_require_approval";
+            /** @description Approved posts after which an account is trusted (policy new_users_require_approval) */
+            trustedAfterPosts?: number;
+            /** @description New sign-ups (email, OAuth) wait for approval by an admin */
+            requireUserApproval?: boolean;
+            loginOnlyWithOauth?: boolean;
+            /** @enum {string} */
+            logoLinksTo?: "root_page" | "custom_url" | "nothing";
+            logoCustomUrl?: string | null;
+            roadmapEnabled?: boolean;
+            showRoadmapInHeader?: boolean;
+            /** @enum {string} */
+            collapseBoardsInHeader?: "no_collapse" | "always_collapse";
+            mailLogoSize?: number;
+            showVoteCount?: boolean;
+            showVoteButtonInBoard?: boolean;
+            hideUnusedStatusesInFilterByStatus?: boolean;
+            showPoweredBy?: boolean;
+            customCss?: string | null;
+            /** @enum {string} */
+            emailRegistrationPolicy?: "all_allowed" | "custom_domains_allowed" | "none_allowed";
+            allowedEmailDomains?: string | null;
+        };
+        CustomLink: {
+            label: string;
+            url: string;
+        };
+        BoardInput: {
+            name?: string;
+            description?: string | null;
+            /** @description URL part; blank generates one from the name */
+            slug?: string | null;
+            /**
+             * @description Who sees the board and its posts (private boards)
+             * @enum {string}
+             */
+            visibility?: "everyone" | "signed_in" | "staff";
+        };
+        PostStatusInput: {
+            name?: string;
+            /** @description Hex color, e.g. #0077cc */
+            color?: string;
+            showInRoadmap?: boolean;
+        };
+        Reorder: {
+            /** @description Every id, in the new order */
+            ids: number[];
+        };
+        OAuthSettings: {
+            id: number;
+            name: string;
+            logo: string | null;
+            /** @description For default providers: switched on for this feedback space */
+            isEnabled: boolean;
+            /** @description Set up by the instance; only isEnabled can be changed */
+            isDefault: boolean;
+            clientId: string | null;
+            authorizeUrl: string | null;
+            tokenUrl: string | null;
+            profileUrl: string | null;
+            scope: string | null;
+            jsonUserNamePath: string | null;
+            jsonUserEmailPath: string | null;
+            /** @description Extra headers of the profile request (#485) */
+            profileHeaders: components["schemas"]["WebhookHeader"][];
+            callbackUrl: string;
+            testUrl: string;
+        };
+        OAuthInput: {
+            name?: string;
+            logo?: string | null;
+            isEnabled?: boolean;
+            clientId?: string;
+            /** @description Write-only; blank on update keeps the current secret */
+            clientSecret?: string;
+            authorizeUrl?: string;
+            tokenUrl?: string;
+            profileUrl?: string;
+            scope?: string;
+            jsonUserNamePath?: string | null;
+            jsonUserEmailPath?: string;
+            profileHeaders?: components["schemas"]["WebhookHeader"][];
+        };
+        WebhookHeader: {
+            key: string;
+            value: string;
+        };
+        Webhook: {
+            id: number;
+            name: string;
+            description: string | null;
+            isEnabled: boolean;
+            /** @enum {string} */
+            trigger: "new_post" | "new_post_pending_approval" | "delete_post" | "post_status_change" | "new_comment" | "new_vote" | "new_user";
+            /** @enum {string} */
+            httpMethod: "post" | "put" | "patch" | "delete";
+            /** @description Liquid template */
+            url: string;
+            /** @description Liquid template that renders JSON */
+            httpBody: string | null;
+            httpHeaders: components["schemas"]["WebhookHeader"][];
+            /** @description Key of the X-Astuto-Signature HMAC */
+            signingSecret: string;
+            lastDelivery: components["schemas"]["WebhookDelivery"];
+        };
+        WebhookDelivery: {
+            id: number;
+            success: boolean;
+            isTest: boolean;
+            httpStatus: number | null;
+            durationMs: number | null;
+            error: string | null;
+            responseBody: string | null;
+            /** Format: date-time */
+            createdAt: string;
+        };
+        WebhookInput: {
+            name?: string;
+            description?: string | null;
+            isEnabled?: boolean;
+            /** @enum {string} */
+            trigger?: "new_post" | "new_post_pending_approval" | "delete_post" | "post_status_change" | "new_comment" | "new_vote" | "new_user";
+            /** @enum {string} */
+            httpMethod?: "post" | "put" | "patch" | "delete";
+            url?: string;
+            httpBody?: string | null;
+            httpHeaders?: components["schemas"]["WebhookHeader"][];
+        };
+        WebhookPreviewInput: {
+            trigger: string;
+            url: string;
+            httpBody?: string | null;
+        };
+        WebhookPreview: {
+            url: string;
+            body: string;
+        };
+        WebhookTestResult: {
+            status: number;
+            /** @description Response body, at most 4000 characters */
+            body: string;
+        };
+        /** @description Template variables per trigger, e.g. post.title */
+        WebhookVariables: {
+            [key: string]: string[];
+        };
+        WebhookTemplates: {
+            /** @description Liquid body per trigger */
+            slack: {
+                [key: string]: string;
+            };
+            /** @description Liquid body per trigger */
+            discord: {
+                [key: string]: string;
+            };
+            /** @description Liquid body per trigger */
+            teams: {
+                [key: string]: string;
+            };
+        };
+        SamlSettings: {
+            enabled: boolean;
+            /** @description Text of the login button */
+            label: string;
+            idpEntityId: string | null;
+            idpSsoUrl: string | null;
+            /** @description PEM certificate the IdP signs with */
+            idpCert: string | null;
+            /** @description Blank: common attribute names, then the NameID */
+            emailAttribute: string | null;
+            nameAttribute: string | null;
+            autoCreateUsers: boolean;
+            /** @description Entity ID (and metadata URL) of Astuto for the IdP */
+            spEntityId: string;
+            acsUrl: string;
+        };
+        UpdateSamlSettings: {
+            enabled?: boolean;
+            label?: string;
+            idpEntityId?: string | null;
+            idpSsoUrl?: string | null;
+            idpCert?: string | null;
+            emailAttribute?: string | null;
+            nameAttribute?: string | null;
+            autoCreateUsers?: boolean;
+        };
+        SamlMetadataInput: {
+            xml: string;
+        };
+        LdapSettings: {
+            enabled: boolean;
+            label: string;
+            host: string | null;
+            port: number;
+            /** @enum {string} */
+            encryption: "plain" | "start_tls" | "simple_tls";
+            verifyCertificate: boolean;
+            baseDn: string | null;
+            bindDn: string | null;
+            /** @description The password itself is never sent */
+            bindPasswordSet: boolean;
+            /** @description %{login} stands for the escaped login name */
+            userFilter: string;
+            emailAttribute: string;
+            nameAttribute: string;
+            autoCreateUsers: boolean;
+        };
+        UpdateLdapSettings: {
+            enabled?: boolean;
+            label?: string;
+            host?: string | null;
+            port?: number;
+            /** @enum {string} */
+            encryption?: "plain" | "start_tls" | "simple_tls";
+            verifyCertificate?: boolean;
+            baseDn?: string | null;
+            bindDn?: string | null;
+            /** @description Blank keeps the current one */
+            bindPassword?: string;
+            userFilter?: string;
+            emailAttribute?: string;
+            nameAttribute?: string;
+            autoCreateUsers?: boolean;
+        };
+        LdapTestInput: {
+            login: string;
+        };
+        LdapTestResult: {
+            dn: string;
+            email: string | null;
+            name: string | null;
+        };
+        LdapLoginInput: {
+            login: string;
+            password: string;
+            rememberMe?: boolean;
+        };
+        SamlIdpFields: {
+            idpEntityId: string | null;
+            idpSsoUrl: string;
+            idpCert: string | null;
+        };
+        AuditChange: {
+            /** @description model.attribute, e.g. post.post_status_id */
+            field: string;
+            /** @description Any JSON value; "[filtered]" for secrets */
+            from: unknown;
+            /** @description Any JSON value */
+            to: unknown;
+        };
+        AuditEvent: {
+            id: number;
+            /** Format: date-time */
+            createdAt: string;
+            /** @description category.verb, e.g. post.update, webhook.rotate_secret */
+            action: string;
+            actorName: string | null;
+            subjectType: string | null;
+            subjectLabel: string | null;
+            /** @description Link to the post while it exists */
+            subjectPath: string | null;
+            changes: components["schemas"]["AuditChange"][];
+            /** @enum {string} */
+            source: "app" | "api" | "mcp";
+            ip: string | null;
+        };
+        AuditEventPage: {
+            events: components["schemas"]["AuditEvent"][];
+            nextBefore: number | null;
+        };
+        Invitation: {
+            id: number;
+            email: string;
+            /** @enum {string} */
+            status: "pending" | "accepted" | "expired";
+            /** Format: date-time */
+            sentAt: string;
+            /** Format: date-time */
+            acceptedAt: string | null;
+        };
+        InvitationInput: {
+            /** @description At most 20 addresses */
+            to: string[];
+            subject: string;
+            /** @description Must contain %link% */
+            body: string;
+        };
+        InvitationTestInput: {
+            subject: string;
+            body: string;
+        };
+        InvitationResult: {
+            sent: number;
+            /** @description Invalid, registered or already accepted */
+            skipped: string[];
+        };
+        InvitationTestResult: {
+            sentTo: string;
+        };
+        Profile: {
+            fullName: string;
+            email: string;
+            /** @description New email waiting for confirmation */
+            unconfirmedEmail: string | null;
+            /** @description False for accounts created via OAuth */
+            hasSetPassword: boolean;
+            notificationsEnabled: boolean;
+            /** @enum {string} */
+            recapNotificationFrequency: "never" | "daily" | "weekly" | "monthly";
+            /** @description Recap emails need Sidekiq */
+            recapAvailable: boolean;
+            canHaveApiKey: boolean;
+            /** @description Masked prefix of the current API key */
+            apiKey: string | null;
+            /** @description False for the owner */
+            canDeleteAccount: boolean;
+            twoFactorEnabled: boolean;
+            /** @description Required for this staff member by the site settings */
+            twoFactorRequired: boolean;
+            backupCodesLeft: number;
+        };
+        TwoFactorRequired: {
+            twoFactorRequired: boolean;
+        };
+        TwoFactorCodeInput: {
+            /** @description 6-digit code from the app or a backup code */
+            code: string;
+        };
+        TwoFactorSetup: {
+            /** @description For manual entry, in groups of four */
+            secret: string;
+            otpauthUri: string;
+            /** @description data: URI of an SVG QR code */
+            qrCode: string;
+        };
+        TwoFactorBackupCodes: {
+            backupCodes: string[];
+        };
+        TwoFactorDisableInput: {
+            currentPassword?: string;
+            code?: string;
+        };
+        UpdateProfile: {
+            fullName?: string;
+            notificationsEnabled?: boolean;
+            /** @enum {string} */
+            recapNotificationFrequency?: "never" | "daily" | "weekly" | "monthly";
+            email?: string;
+            password?: string;
+            passwordConfirmation?: string;
+            /** @description Needed to change email or password */
+            currentPassword?: string;
+        };
+        DeleteProfile: {
+            currentPassword?: string;
+        };
+        NewApiKey: {
+            /** @description Shown only once */
+            apiKey: string;
+            masked: string;
+        };
+        TestEmailResult: {
+            sentTo: string;
+            deliveryMethod: string;
+            from: string;
         };
         VoteState: {
             liked: boolean;
@@ -1329,6 +5008,81 @@ export interface components {
         Summary: {
             summary: string;
         };
+        Suggestion: {
+            boardId: number | null;
+            tagIds: number[];
+        };
+        ChangelogEntry: {
+            id: number;
+            title: string;
+            body: string;
+            /**
+             * Format: date-time
+             * @description null for drafts
+             */
+            publishedAt: string | null;
+            posts: {
+                id: number;
+                title: string;
+                slug: string;
+            }[];
+        };
+        ChangelogEntryPage: {
+            entries: components["schemas"]["ChangelogEntry"][];
+            page: number;
+            hasMore: boolean;
+        };
+        ChangelogEntryInput: {
+            title?: string;
+            body?: string;
+            postIds?: number[];
+            /** @description true publishes a draft (first time: emails the followers of the linked posts), false turns it back into a draft */
+            published?: boolean;
+        };
+        LinkablePost: {
+            id: number;
+            title: string;
+            slug: string;
+            postStatusId: number | null;
+        };
+        ChangelogDraftInput: {
+            postIds: number[];
+        };
+        ChangelogDraft: {
+            body: string;
+        };
+        WidgetSessionInput: {
+            /** @description Visitor token: HS256 JWT signed with the widget secret (claims email, name, id, exp) */
+            token: string;
+        };
+        WidgetSession: {
+            /** @description Send as Authorization: Bearer */
+            accessToken: string;
+            /** Format: date-time */
+            expiresAt: string;
+        };
+        WidgetSettings: {
+            enabled: boolean;
+            /** @description Signs visitor tokens; keep it on your server */
+            secret: string;
+            /** @description Sites that may show the widget, one origin per line (empty: any) */
+            allowedOrigins: string;
+            autoCreateUsers: boolean;
+        };
+        UpdateWidgetSettings: {
+            enabled?: boolean;
+            allowedOrigins?: string;
+            autoCreateUsers?: boolean;
+        };
+        PostTranslation: {
+            title: string;
+            description: string | null;
+            locale: string;
+        };
+        CommentTranslation: {
+            body: string;
+            locale: string;
+        };
         NewPost: {
             title: string;
             description?: string | null;
@@ -1339,6 +5093,10 @@ export interface components {
             /** @description Milliseconds the form was open before it was sent (anti-spam) */
             formFillMs: number;
         };
+        MergePostInput: {
+            /** @description Post that stays and takes over votes, followers and comments */
+            targetId: number;
+        };
         UpdatePost: {
             title?: string;
             description?: string | null;
@@ -1346,6 +5104,12 @@ export interface components {
             postStatusId?: number | null;
             /** @enum {string} */
             approvalStatus?: "approved" | "pending" | "rejected";
+            /** @description Moderators only */
+            sourceUrl?: string | null;
+            /** @description Moderators only */
+            sourceLabel?: string | null;
+            /** @description Moderators only; replaces the tags of the post */
+            tagIds?: number[];
         };
         NewComment: {
             body: string;

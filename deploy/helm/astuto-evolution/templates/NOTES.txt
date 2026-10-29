@@ -1,0 +1,17 @@
+Astuto Evolution {{ .Chart.AppVersion }} is starting at {{ .Values.baseUrl }}
+
+The first start loads the schema and creates the first feedback space with an admin account:
+{{- if or .Values.secrets.adminPassword .Values.existingSecret }}
+  the password is ADMIN_PASSWORD from the Secret.
+{{- else }}
+  a random password is printed once in the log:
+  kubectl logs -n {{ .Release.Namespace }} deploy/{{ include "astuto.fullname" . }}-web | grep -A2 "admin account"
+{{- end }}
+{{- if .Values.multiTenancy }}
+
+Multi-tenancy: point *.{{ (urlParse .Values.baseUrl).host }} at the ingress and create feedback
+spaces at {{ .Values.baseUrl }}/instance (INSTANCE_ADMIN_PASSWORD) or with
+  kubectl exec -n {{ .Release.Namespace }} deploy/{{ include "astuto.fullname" . }}-web -- bin/rails tenants:create SUBDOMAIN=acme OWNER_EMAIL=owner@acme.example
+{{- end }}
+
+Keep secrets.secretKeyBase unchanged across upgrades. Backups: docs/operations.md.

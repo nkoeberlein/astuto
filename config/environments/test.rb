@@ -39,8 +39,8 @@ Rails.application.configure do
   config.action_mailer.perform_caching = false
 
   config.action_mailer.default_options = {
-    from: "notifications@astuto.io",
-    reply_to: "notifications@astuto.io"
+    from: Rails.application.default_mail_from,
+    reply_to: Rails.application.default_mail_reply_to
   }
 
   # Tell Action Mailer not to deliver emails to the real world.

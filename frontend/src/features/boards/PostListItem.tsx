@@ -1,7 +1,9 @@
 import { Link } from '@tanstack/react-router'
 import { MessageSquare } from 'lucide-react'
+import type { ReactNode } from 'react'
 import type { PostListItem as PostListItemData, PostStatus } from '@/api/client'
 import { StatusBadge } from '@/features/posts/StatusBadge'
+import { TagBadges } from '@/features/posts/TagBadges'
 import { VoteButton } from '@/features/posts/VoteButton'
 import { VoteCount } from '@/features/posts/VoteCount'
 import { useI18n } from '@/lib/i18n'
@@ -21,6 +23,10 @@ export function PostListItem(props: {
   showVoteCount: boolean
   voteButton: boolean
   signedIn: boolean
+  // Extra details in the bottom row (board, approval state)
+  meta?: ReactNode
+  // The widget opens posts on the full site
+  newTab?: boolean
 }) {
   const { t } = useI18n()
   const { post } = props
@@ -38,6 +44,7 @@ export function PostListItem(props: {
           to="/posts/$postSlug"
           params={{ postSlug: post.slug }}
           className="font-medium hover:underline"
+          {...(props.newTab ? { target: '_blank', rel: 'noopener' } : {})}
         >
           {post.title}
         </Link>
@@ -49,7 +56,9 @@ export function PostListItem(props: {
           <span className="flex items-center gap-1" title={t('post.comments.title')}>
             <MessageSquare className="size-3.5" aria-hidden /> {post.commentsCount}
           </span>
+          {props.meta}
         </div>
+        <TagBadges tagIds={post.tagIds} />
       </div>
     </li>
   )

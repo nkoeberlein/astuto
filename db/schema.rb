@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_25_150000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_30_040000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -28,6 +28,24 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_25_150000) do
     t.index ["user_id"], name: "index_api_keys_on_user_id"
   end
 
+  create_table "audit_events", force: :cascade do |t|
+    t.bigint "tenant_id", null: false
+    t.bigint "user_id"
+    t.string "actor_label"
+    t.string "action", null: false
+    t.string "subject_type"
+    t.bigint "subject_id"
+    t.string "subject_label"
+    t.jsonb "field_changes", default: {}, null: false
+    t.string "source", default: "app", null: false
+    t.string "ip"
+    t.datetime "created_at", null: false
+    t.index ["tenant_id", "action"], name: "index_audit_events_on_tenant_id_and_action"
+    t.index ["tenant_id", "created_at"], name: "index_audit_events_on_tenant_id_and_created_at"
+    t.index ["tenant_id"], name: "index_audit_events_on_tenant_id"
+    t.index ["user_id"], name: "index_audit_events_on_user_id"
+  end
+
   create_table "boards", force: :cascade do |t|
     t.string "name", null: false
     t.text "description"
@@ -36,9 +54,36 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_25_150000) do
     t.integer "order", null: false
     t.bigint "tenant_id", null: false
     t.string "slug"
+    t.integer "visibility", default: 0, null: false
     t.index ["name", "tenant_id"], name: "index_boards_on_name_and_tenant_id", unique: true
     t.index ["slug", "tenant_id"], name: "index_boards_on_slug_and_tenant_id", unique: true
     t.index ["tenant_id"], name: "index_boards_on_tenant_id"
+  end
+
+  create_table "changelog_entries", force: :cascade do |t|
+    t.bigint "tenant_id", null: false
+    t.bigint "user_id"
+    t.string "title", null: false
+    t.text "body", default: "", null: false
+    t.datetime "published_at"
+    t.datetime "followers_notified_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tenant_id", "published_at"], name: "index_changelog_entries_on_tenant_id_and_published_at"
+    t.index ["tenant_id"], name: "index_changelog_entries_on_tenant_id"
+    t.index ["user_id"], name: "index_changelog_entries_on_user_id"
+  end
+
+  create_table "changelog_entry_posts", force: :cascade do |t|
+    t.bigint "tenant_id", null: false
+    t.bigint "changelog_entry_id", null: false
+    t.bigint "post_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["changelog_entry_id", "post_id"], name: "index_changelog_entry_posts_on_changelog_entry_id_and_post_id", unique: true
+    t.index ["changelog_entry_id"], name: "index_changelog_entry_posts_on_changelog_entry_id"
+    t.index ["post_id"], name: "index_changelog_entry_posts_on_post_id"
+    t.index ["tenant_id"], name: "index_changelog_entry_posts_on_tenant_id"
   end
 
   create_table "comments", force: :cascade do |t|
@@ -79,6 +124,26 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_25_150000) do
     t.index ["tenant_id"], name: "index_invitations_on_tenant_id"
   end
 
+  create_table "ldap_configs", force: :cascade do |t|
+    t.bigint "tenant_id", null: false
+    t.boolean "enabled", default: false, null: false
+    t.string "label", default: "Company account", null: false
+    t.string "host"
+    t.integer "port", default: 389, null: false
+    t.string "encryption", default: "start_tls", null: false
+    t.boolean "verify_certificate", default: true, null: false
+    t.string "base_dn"
+    t.string "bind_dn"
+    t.string "bind_password_ciphertext"
+    t.string "user_filter", default: "(|(uid=%{login})(sAMAccountName=%{login})(mail=%{login}))", null: false
+    t.string "email_attribute", default: "mail", null: false
+    t.string "name_attribute", default: "displayName", null: false
+    t.boolean "auto_create_users", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tenant_id"], name: "index_ldap_configs_on_tenant_id", unique: true
+  end
+
   create_table "likes", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "post_id", null: false
@@ -107,6 +172,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_25_150000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "slug"
+    t.jsonb "profile_headers", default: [], null: false
     t.index ["name", "tenant_id"], name: "index_o_auths_on_name_and_tenant_id", unique: true
     t.index ["slug", "tenant_id"], name: "index_o_auths_on_slug_and_tenant_id", unique: true
     t.index ["tenant_id"], name: "index_o_auths_on_tenant_id"
@@ -137,6 +203,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_25_150000) do
     t.index ["tenant_id"], name: "index_post_statuses_on_tenant_id"
   end
 
+  create_table "post_tags", force: :cascade do |t|
+    t.bigint "tenant_id", null: false
+    t.bigint "post_id", null: false
+    t.bigint "tag_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["post_id", "tag_id"], name: "index_post_tags_on_post_id_and_tag_id", unique: true
+    t.index ["post_id"], name: "index_post_tags_on_post_id"
+    t.index ["tag_id"], name: "index_post_tags_on_tag_id"
+    t.index ["tenant_id"], name: "index_post_tags_on_tenant_id"
+  end
+
   create_table "posts", force: :cascade do |t|
     t.string "title", null: false
     t.text "description"
@@ -148,25 +226,41 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_25_150000) do
     t.bigint "tenant_id", null: false
     t.string "slug"
     t.integer "approval_status", default: 0, null: false
+    t.string "source_url", limit: 500
+    t.string "source_label", limit: 40
+    t.bigint "merged_into_post_id"
     t.index ["board_id"], name: "index_posts_on_board_id"
+    t.index ["merged_into_post_id"], name: "index_posts_on_merged_into_post_id"
     t.index ["post_status_id"], name: "index_posts_on_post_status_id"
     t.index ["slug", "tenant_id"], name: "index_posts_on_slug_and_tenant_id", unique: true
     t.index ["tenant_id"], name: "index_posts_on_tenant_id"
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
-  create_table "tenant_billings", force: :cascade do |t|
+  create_table "saml_configs", force: :cascade do |t|
     t.bigint "tenant_id", null: false
-    t.integer "status", default: 0, null: false
-    t.datetime "trial_ends_at", precision: nil
+    t.boolean "enabled", default: false, null: false
+    t.string "label", default: "Single sign-on", null: false
+    t.string "idp_entity_id"
+    t.string "idp_sso_url"
+    t.text "idp_cert"
+    t.string "email_attribute"
+    t.string "name_attribute"
+    t.boolean "auto_create_users", default: true, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "customer_id"
-    t.datetime "subscription_ends_at", precision: nil
-    t.string "slug"
-    t.string "auth_token"
-    t.index ["slug"], name: "index_tenant_billings_on_slug", unique: true
-    t.index ["tenant_id"], name: "index_tenant_billings_on_tenant_id"
+    t.index ["tenant_id"], name: "index_saml_configs_on_tenant_id", unique: true
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.bigint "tenant_id", null: false
+    t.string "name", null: false
+    t.string "color", default: "#64748b", null: false
+    t.integer "order", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tenant_id", "name"], name: "index_tags_on_tenant_id_and_name", unique: true
+    t.index ["tenant_id"], name: "index_tags_on_tenant_id"
   end
 
   create_table "tenant_default_o_auths", force: :cascade do |t|
@@ -204,6 +298,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_25_150000) do
     t.jsonb "custom_links", default: [], null: false
     t.boolean "login_only_with_oauth", default: false, null: false
     t.integer "mail_logo_size", default: 64, null: false
+    t.boolean "use_gravatar", default: true, null: false
+    t.boolean "require_two_factor_for_staff", default: false, null: false
+    t.integer "trusted_after_posts", default: 3, null: false
+    t.boolean "require_user_approval", default: false, null: false
     t.index ["tenant_id"], name: "index_tenant_settings_on_tenant_id"
   end
 
@@ -248,11 +346,33 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_25_150000) do
     t.integer "failed_attempts", default: 0, null: false
     t.string "unlock_token"
     t.datetime "locked_at"
+    t.string "otp_secret_ciphertext"
+    t.datetime "otp_enabled_at"
+    t.bigint "otp_last_used_at"
+    t.jsonb "otp_backup_code_digests", default: [], null: false
+    t.string "widget_external_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email", "tenant_id"], name: "index_users_on_email_and_tenant_id", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["tenant_id", "widget_external_id"], name: "index_users_on_tenant_id_and_widget_external_id", unique: true, where: "(widget_external_id IS NOT NULL)"
     t.index ["tenant_id"], name: "index_users_on_tenant_id"
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
+  end
+
+  create_table "webhook_deliveries", force: :cascade do |t|
+    t.bigint "webhook_id", null: false
+    t.bigint "tenant_id", null: false
+    t.string "trigger", null: false
+    t.boolean "is_test", default: false, null: false
+    t.boolean "success", default: false, null: false
+    t.integer "http_status"
+    t.integer "duration_ms"
+    t.text "error"
+    t.text "response_body"
+    t.datetime "created_at", null: false
+    t.index ["tenant_id"], name: "index_webhook_deliveries_on_tenant_id"
+    t.index ["webhook_id", "created_at"], name: "index_webhook_deliveries_on_webhook_id_and_created_at"
+    t.index ["webhook_id"], name: "index_webhook_deliveries_on_webhook_id"
   end
 
   create_table "webhooks", force: :cascade do |t|
@@ -267,13 +387,32 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_25_150000) do
     t.bigint "tenant_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "signing_secret"
     t.index ["name", "tenant_id"], name: "index_webhooks_on_name_and_tenant_id", unique: true
     t.index ["tenant_id"], name: "index_webhooks_on_tenant_id"
   end
 
+  create_table "widget_configs", force: :cascade do |t|
+    t.bigint "tenant_id", null: false
+    t.boolean "enabled", default: false, null: false
+    t.text "secret_ciphertext"
+    t.text "allowed_origins", default: "", null: false
+    t.boolean "auto_create_users", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tenant_id"], name: "index_widget_configs_on_tenant_id", unique: true
+  end
+
   add_foreign_key "api_keys", "tenants"
   add_foreign_key "api_keys", "users"
+  add_foreign_key "audit_events", "tenants"
+  add_foreign_key "audit_events", "users", on_delete: :nullify
   add_foreign_key "boards", "tenants"
+  add_foreign_key "changelog_entries", "tenants"
+  add_foreign_key "changelog_entries", "users", on_delete: :nullify
+  add_foreign_key "changelog_entry_posts", "changelog_entries", on_delete: :cascade
+  add_foreign_key "changelog_entry_posts", "posts", on_delete: :cascade
+  add_foreign_key "changelog_entry_posts", "tenants"
   add_foreign_key "comments", "comments", column: "parent_id"
   add_foreign_key "comments", "posts"
   add_foreign_key "comments", "tenants"
@@ -282,6 +421,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_25_150000) do
   add_foreign_key "follows", "tenants"
   add_foreign_key "follows", "users"
   add_foreign_key "invitations", "tenants"
+  add_foreign_key "ldap_configs", "tenants"
   add_foreign_key "likes", "posts"
   add_foreign_key "likes", "tenants"
   add_foreign_key "likes", "users"
@@ -291,14 +431,22 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_25_150000) do
   add_foreign_key "post_status_changes", "tenants"
   add_foreign_key "post_status_changes", "users"
   add_foreign_key "post_statuses", "tenants"
+  add_foreign_key "post_tags", "posts", on_delete: :cascade
+  add_foreign_key "post_tags", "tags", on_delete: :cascade
+  add_foreign_key "post_tags", "tenants"
   add_foreign_key "posts", "boards"
   add_foreign_key "posts", "post_statuses"
+  add_foreign_key "posts", "posts", column: "merged_into_post_id"
   add_foreign_key "posts", "tenants"
   add_foreign_key "posts", "users"
-  add_foreign_key "tenant_billings", "tenants"
+  add_foreign_key "saml_configs", "tenants"
+  add_foreign_key "tags", "tenants"
   add_foreign_key "tenant_default_o_auths", "o_auths"
   add_foreign_key "tenant_default_o_auths", "tenants"
   add_foreign_key "tenant_settings", "tenants"
   add_foreign_key "users", "tenants"
+  add_foreign_key "webhook_deliveries", "tenants"
+  add_foreign_key "webhook_deliveries", "webhooks", on_delete: :cascade
   add_foreign_key "webhooks", "tenants"
+  add_foreign_key "widget_configs", "tenants"
 end

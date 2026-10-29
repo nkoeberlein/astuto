@@ -9,23 +9,23 @@ RSpec.describe 'Content Security Policy', type: :request do
     csp.split(';').map(&:strip).find { |d| d.start_with?("#{name} ") }.to_s
   end
 
-  it 'only allows scripts from this site, Stripe or with the nonce' do
+  it 'only allows scripts from this site or with the nonce' do
     get root_path
 
     expect(response).to have_http_status(:ok)
     script_src = directive('script-src')
-    expect(script_src).to include("'self'", 'https://js.stripe.com', "'nonce-")
+    expect(script_src).to include("'self'", "'nonce-")
+    expect(csp).not_to include('stripe')
     expect(script_src).not_to include("'unsafe-inline'", "'unsafe-eval'")
     expect(directive('object-src')).to eq("object-src 'none'")
   end
 
-  it 'gives the inline locale script the nonce from the header' do
-    get root_path
+  it 'serves the Rails notice pages without any script' do
+    get pending_tenant_path
 
-    nonce = directive('script-src')[/'nonce-([^']+)'/, 1]
-    expect(nonce).to be_present
-    expect(response.body).to match(/<script[^>]* nonce="#{Regexp.escape(nonce)}"/)
-    expect(response.body).to include('data-turbolinks-eval="false"')
+    expect(response).to have_http_status(:ok)
+    expect(directive('script-src')).to include("'nonce-")
+    expect(response.body).not_to include('<script')
   end
 
   it 'uses a new nonce for every response' do
@@ -44,10 +44,10 @@ RSpec.describe 'Content Security Policy', type: :request do
     expect(directive('style-src')).not_to include("'nonce-")
   end
 
-  it 'sends the policy for the v2 frontend, whose start page Rails renders itself' do
+  it 'sends the policy for the v2 frontend, whose pages Rails renders itself' do
     skip 'v2 frontend not built' unless SpaController::INDEX.exist?
 
-    %w[/next /next/].each do |path|
+    %w[/ /roadmap].each do |path|
       get path
       expect(directive('script-src')).to include("'self'")
       expect(response.body).to include('og:site_name')

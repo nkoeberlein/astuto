@@ -1,0 +1,7 @@
+<p>
+  <%= t('mailers.admin.user_pending_approval.body_html', name: @user.full_name_or_email, email: @user.email) %>
+</p>
+
+<p>
+  <%= link_to t('mailers.admin.user_pending_approval.review'), get_url_for(method(:moderation_users_url), options: { status: 'pending_approval' }) %>
+</p>

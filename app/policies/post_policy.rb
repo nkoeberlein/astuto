@@ -23,4 +23,10 @@ class PostPolicy < ApplicationPolicy
   def summarize?
     user.moderator?
   end
+
+  # AI translation of the post and its comments (moderators only, like summaries: each call
+  # costs money at the provider)
+  def translate?
+    user.moderator?
+  end
 end

@@ -31,6 +31,10 @@ rescue ActiveRecord::PendingMigrationError => e
   exit 1
 end
 RSpec.configure do |config|
+  # Rails loads routes lazily on the first request; specs without a request (jobs, workflows,
+  # models building URLs) need the URL helpers too
+  config.before(:suite) { Rails.application.reload_routes_unless_loaded }
+
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_paths = ["#{::Rails.root}/spec/fixtures"]
 

@@ -10,22 +10,67 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ChangelogRouteImport } from './routes/changelog'
+import { Route as EmbedRouteImport } from './routes/embed'
+import { Route as Embedded_roadmapRouteImport } from './routes/embedded_roadmap'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as MyFeedbackRouteImport } from './routes/my-feedback'
+import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as RoadmapRouteImport } from './routes/roadmap'
 import { Route as BoardsBoardSlugRouteImport } from './routes/boards.$boardSlug'
+import { Route as ConfirmationNewRouteImport } from './routes/confirmation.new'
+import { Route as ModerationFeedbackRouteImport } from './routes/moderation.feedback'
+import { Route as ModerationUsersRouteImport } from './routes/moderation.users'
 import { Route as PasswordForgotRouteImport } from './routes/password.forgot'
 import { Route as PasswordResetRouteImport } from './routes/password.reset'
 import { Route as PostsPostSlugRouteImport } from './routes/posts.$postSlug'
+import { Route as Site_settingsAppearanceRouteImport } from './routes/site_settings.appearance'
+import { Route as Site_settingsAudit_logRouteImport } from './routes/site_settings.audit_log'
+import { Route as Site_settingsAuthenticationRouteImport } from './routes/site_settings.authentication'
+import { Route as Site_settingsBoardsRouteImport } from './routes/site_settings.boards'
+import { Route as Site_settingsGeneralRouteImport } from './routes/site_settings.general'
+import { Route as Site_settingsInvitationsRouteImport } from './routes/site_settings.invitations'
+import { Route as Site_settingsPost_statusesRouteImport } from './routes/site_settings.post_statuses'
+import { Route as Site_settingsRoadmapRouteImport } from './routes/site_settings.roadmap'
+import { Route as Site_settingsTagsRouteImport } from './routes/site_settings.tags'
+import { Route as Site_settingsWebhooksRouteImport } from './routes/site_settings.webhooks'
+import { Route as Site_settingsWidgetRouteImport } from './routes/site_settings.widget'
+import { Route as UnlockNewRouteImport } from './routes/unlock.new'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ChangelogRoute = ChangelogRouteImport.update({
+  id: '/changelog',
+  path: '/changelog',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EmbedRoute = EmbedRouteImport.update({
+  id: '/embed',
+  path: '/embed',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const Embedded_roadmapRoute = Embedded_roadmapRouteImport.update({
+  id: '/embedded_roadmap',
+  path: '/embedded_roadmap',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MyFeedbackRoute = MyFeedbackRouteImport.update({
+  id: '/my-feedback',
+  path: '/my-feedback',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RegisterRoute = RegisterRouteImport.update({
@@ -43,6 +88,21 @@ const BoardsBoardSlugRoute = BoardsBoardSlugRouteImport.update({
   path: '/boards/$boardSlug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ConfirmationNewRoute = ConfirmationNewRouteImport.update({
+  id: '/confirmation/new',
+  path: '/confirmation/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ModerationFeedbackRoute = ModerationFeedbackRouteImport.update({
+  id: '/moderation/feedback',
+  path: '/moderation/feedback',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ModerationUsersRoute = ModerationUsersRouteImport.update({
+  id: '/moderation/users',
+  path: '/moderation/users',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PasswordForgotRoute = PasswordForgotRouteImport.update({
   id: '/password/forgot',
   path: '/password/forgot',
@@ -58,80 +118,283 @@ const PostsPostSlugRoute = PostsPostSlugRouteImport.update({
   path: '/posts/$postSlug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const Site_settingsAppearanceRoute = Site_settingsAppearanceRouteImport.update({
+  id: '/site_settings/appearance',
+  path: '/site_settings/appearance',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const Site_settingsAudit_logRoute = Site_settingsAudit_logRouteImport.update({
+  id: '/site_settings/audit_log',
+  path: '/site_settings/audit_log',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const Site_settingsAuthenticationRoute =
+  Site_settingsAuthenticationRouteImport.update({
+    id: '/site_settings/authentication',
+    path: '/site_settings/authentication',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const Site_settingsBoardsRoute = Site_settingsBoardsRouteImport.update({
+  id: '/site_settings/boards',
+  path: '/site_settings/boards',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const Site_settingsGeneralRoute = Site_settingsGeneralRouteImport.update({
+  id: '/site_settings/general',
+  path: '/site_settings/general',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const Site_settingsInvitationsRoute =
+  Site_settingsInvitationsRouteImport.update({
+    id: '/site_settings/invitations',
+    path: '/site_settings/invitations',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const Site_settingsPost_statusesRoute =
+  Site_settingsPost_statusesRouteImport.update({
+    id: '/site_settings/post_statuses',
+    path: '/site_settings/post_statuses',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const Site_settingsRoadmapRoute = Site_settingsRoadmapRouteImport.update({
+  id: '/site_settings/roadmap',
+  path: '/site_settings/roadmap',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const Site_settingsTagsRoute = Site_settingsTagsRouteImport.update({
+  id: '/site_settings/tags',
+  path: '/site_settings/tags',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const Site_settingsWebhooksRoute = Site_settingsWebhooksRouteImport.update({
+  id: '/site_settings/webhooks',
+  path: '/site_settings/webhooks',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const Site_settingsWidgetRoute = Site_settingsWidgetRouteImport.update({
+  id: '/site_settings/widget',
+  path: '/site_settings/widget',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UnlockNewRoute = UnlockNewRouteImport.update({
+  id: '/unlock/new',
+  path: '/unlock/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/changelog': typeof ChangelogRoute
+  '/embed': typeof EmbedRoute
+  '/embedded_roadmap': typeof Embedded_roadmapRoute
   '/login': typeof LoginRoute
+  '/my-feedback': typeof MyFeedbackRoute
+  '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
   '/roadmap': typeof RoadmapRoute
   '/boards/$boardSlug': typeof BoardsBoardSlugRoute
+  '/confirmation/new': typeof ConfirmationNewRoute
+  '/moderation/feedback': typeof ModerationFeedbackRoute
+  '/moderation/users': typeof ModerationUsersRoute
   '/password/forgot': typeof PasswordForgotRoute
   '/password/reset': typeof PasswordResetRoute
   '/posts/$postSlug': typeof PostsPostSlugRoute
+  '/site_settings/appearance': typeof Site_settingsAppearanceRoute
+  '/site_settings/audit_log': typeof Site_settingsAudit_logRoute
+  '/site_settings/authentication': typeof Site_settingsAuthenticationRoute
+  '/site_settings/boards': typeof Site_settingsBoardsRoute
+  '/site_settings/general': typeof Site_settingsGeneralRoute
+  '/site_settings/invitations': typeof Site_settingsInvitationsRoute
+  '/site_settings/post_statuses': typeof Site_settingsPost_statusesRoute
+  '/site_settings/roadmap': typeof Site_settingsRoadmapRoute
+  '/site_settings/tags': typeof Site_settingsTagsRoute
+  '/site_settings/webhooks': typeof Site_settingsWebhooksRoute
+  '/site_settings/widget': typeof Site_settingsWidgetRoute
+  '/unlock/new': typeof UnlockNewRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/changelog': typeof ChangelogRoute
+  '/embed': typeof EmbedRoute
+  '/embedded_roadmap': typeof Embedded_roadmapRoute
   '/login': typeof LoginRoute
+  '/my-feedback': typeof MyFeedbackRoute
+  '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
   '/roadmap': typeof RoadmapRoute
   '/boards/$boardSlug': typeof BoardsBoardSlugRoute
+  '/confirmation/new': typeof ConfirmationNewRoute
+  '/moderation/feedback': typeof ModerationFeedbackRoute
+  '/moderation/users': typeof ModerationUsersRoute
   '/password/forgot': typeof PasswordForgotRoute
   '/password/reset': typeof PasswordResetRoute
   '/posts/$postSlug': typeof PostsPostSlugRoute
+  '/site_settings/appearance': typeof Site_settingsAppearanceRoute
+  '/site_settings/audit_log': typeof Site_settingsAudit_logRoute
+  '/site_settings/authentication': typeof Site_settingsAuthenticationRoute
+  '/site_settings/boards': typeof Site_settingsBoardsRoute
+  '/site_settings/general': typeof Site_settingsGeneralRoute
+  '/site_settings/invitations': typeof Site_settingsInvitationsRoute
+  '/site_settings/post_statuses': typeof Site_settingsPost_statusesRoute
+  '/site_settings/roadmap': typeof Site_settingsRoadmapRoute
+  '/site_settings/tags': typeof Site_settingsTagsRoute
+  '/site_settings/webhooks': typeof Site_settingsWebhooksRoute
+  '/site_settings/widget': typeof Site_settingsWidgetRoute
+  '/unlock/new': typeof UnlockNewRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/changelog': typeof ChangelogRoute
+  '/embed': typeof EmbedRoute
+  '/embedded_roadmap': typeof Embedded_roadmapRoute
   '/login': typeof LoginRoute
+  '/my-feedback': typeof MyFeedbackRoute
+  '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
   '/roadmap': typeof RoadmapRoute
   '/boards/$boardSlug': typeof BoardsBoardSlugRoute
+  '/confirmation/new': typeof ConfirmationNewRoute
+  '/moderation/feedback': typeof ModerationFeedbackRoute
+  '/moderation/users': typeof ModerationUsersRoute
   '/password/forgot': typeof PasswordForgotRoute
   '/password/reset': typeof PasswordResetRoute
   '/posts/$postSlug': typeof PostsPostSlugRoute
+  '/site_settings/appearance': typeof Site_settingsAppearanceRoute
+  '/site_settings/audit_log': typeof Site_settingsAudit_logRoute
+  '/site_settings/authentication': typeof Site_settingsAuthenticationRoute
+  '/site_settings/boards': typeof Site_settingsBoardsRoute
+  '/site_settings/general': typeof Site_settingsGeneralRoute
+  '/site_settings/invitations': typeof Site_settingsInvitationsRoute
+  '/site_settings/post_statuses': typeof Site_settingsPost_statusesRoute
+  '/site_settings/roadmap': typeof Site_settingsRoadmapRoute
+  '/site_settings/tags': typeof Site_settingsTagsRoute
+  '/site_settings/webhooks': typeof Site_settingsWebhooksRoute
+  '/site_settings/widget': typeof Site_settingsWidgetRoute
+  '/unlock/new': typeof UnlockNewRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/changelog'
+    | '/embed'
+    | '/embedded_roadmap'
     | '/login'
+    | '/my-feedback'
+    | '/profile'
     | '/register'
     | '/roadmap'
     | '/boards/$boardSlug'
+    | '/confirmation/new'
+    | '/moderation/feedback'
+    | '/moderation/users'
     | '/password/forgot'
     | '/password/reset'
     | '/posts/$postSlug'
+    | '/site_settings/appearance'
+    | '/site_settings/audit_log'
+    | '/site_settings/authentication'
+    | '/site_settings/boards'
+    | '/site_settings/general'
+    | '/site_settings/invitations'
+    | '/site_settings/post_statuses'
+    | '/site_settings/roadmap'
+    | '/site_settings/tags'
+    | '/site_settings/webhooks'
+    | '/site_settings/widget'
+    | '/unlock/new'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/changelog'
+    | '/embed'
+    | '/embedded_roadmap'
     | '/login'
+    | '/my-feedback'
+    | '/profile'
     | '/register'
     | '/roadmap'
     | '/boards/$boardSlug'
+    | '/confirmation/new'
+    | '/moderation/feedback'
+    | '/moderation/users'
     | '/password/forgot'
     | '/password/reset'
     | '/posts/$postSlug'
+    | '/site_settings/appearance'
+    | '/site_settings/audit_log'
+    | '/site_settings/authentication'
+    | '/site_settings/boards'
+    | '/site_settings/general'
+    | '/site_settings/invitations'
+    | '/site_settings/post_statuses'
+    | '/site_settings/roadmap'
+    | '/site_settings/tags'
+    | '/site_settings/webhooks'
+    | '/site_settings/widget'
+    | '/unlock/new'
   id:
     | '__root__'
     | '/'
+    | '/changelog'
+    | '/embed'
+    | '/embedded_roadmap'
     | '/login'
+    | '/my-feedback'
+    | '/profile'
     | '/register'
     | '/roadmap'
     | '/boards/$boardSlug'
+    | '/confirmation/new'
+    | '/moderation/feedback'
+    | '/moderation/users'
     | '/password/forgot'
     | '/password/reset'
     | '/posts/$postSlug'
+    | '/site_settings/appearance'
+    | '/site_settings/audit_log'
+    | '/site_settings/authentication'
+    | '/site_settings/boards'
+    | '/site_settings/general'
+    | '/site_settings/invitations'
+    | '/site_settings/post_statuses'
+    | '/site_settings/roadmap'
+    | '/site_settings/tags'
+    | '/site_settings/webhooks'
+    | '/site_settings/widget'
+    | '/unlock/new'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ChangelogRoute: typeof ChangelogRoute
+  EmbedRoute: typeof EmbedRoute
+  Embedded_roadmapRoute: typeof Embedded_roadmapRoute
   LoginRoute: typeof LoginRoute
+  MyFeedbackRoute: typeof MyFeedbackRoute
+  ProfileRoute: typeof ProfileRoute
   RegisterRoute: typeof RegisterRoute
   RoadmapRoute: typeof RoadmapRoute
   BoardsBoardSlugRoute: typeof BoardsBoardSlugRoute
+  ConfirmationNewRoute: typeof ConfirmationNewRoute
+  ModerationFeedbackRoute: typeof ModerationFeedbackRoute
+  ModerationUsersRoute: typeof ModerationUsersRoute
   PasswordForgotRoute: typeof PasswordForgotRoute
   PasswordResetRoute: typeof PasswordResetRoute
   PostsPostSlugRoute: typeof PostsPostSlugRoute
+  Site_settingsAppearanceRoute: typeof Site_settingsAppearanceRoute
+  Site_settingsAudit_logRoute: typeof Site_settingsAudit_logRoute
+  Site_settingsAuthenticationRoute: typeof Site_settingsAuthenticationRoute
+  Site_settingsBoardsRoute: typeof Site_settingsBoardsRoute
+  Site_settingsGeneralRoute: typeof Site_settingsGeneralRoute
+  Site_settingsInvitationsRoute: typeof Site_settingsInvitationsRoute
+  Site_settingsPost_statusesRoute: typeof Site_settingsPost_statusesRoute
+  Site_settingsRoadmapRoute: typeof Site_settingsRoadmapRoute
+  Site_settingsTagsRoute: typeof Site_settingsTagsRoute
+  Site_settingsWebhooksRoute: typeof Site_settingsWebhooksRoute
+  Site_settingsWidgetRoute: typeof Site_settingsWidgetRoute
+  UnlockNewRoute: typeof UnlockNewRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -143,11 +406,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/changelog': {
+      id: '/changelog'
+      path: '/changelog'
+      fullPath: '/changelog'
+      preLoaderRoute: typeof ChangelogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/embed': {
+      id: '/embed'
+      path: '/embed'
+      fullPath: '/embed'
+      preLoaderRoute: typeof EmbedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/embedded_roadmap': {
+      id: '/embedded_roadmap'
+      path: '/embedded_roadmap'
+      fullPath: '/embedded_roadmap'
+      preLoaderRoute: typeof Embedded_roadmapRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/login': {
       id: '/login'
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/my-feedback': {
+      id: '/my-feedback'
+      path: '/my-feedback'
+      fullPath: '/my-feedback'
+      preLoaderRoute: typeof MyFeedbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/register': {
@@ -171,6 +469,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BoardsBoardSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/confirmation/new': {
+      id: '/confirmation/new'
+      path: '/confirmation/new'
+      fullPath: '/confirmation/new'
+      preLoaderRoute: typeof ConfirmationNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/moderation/feedback': {
+      id: '/moderation/feedback'
+      path: '/moderation/feedback'
+      fullPath: '/moderation/feedback'
+      preLoaderRoute: typeof ModerationFeedbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/moderation/users': {
+      id: '/moderation/users'
+      path: '/moderation/users'
+      fullPath: '/moderation/users'
+      preLoaderRoute: typeof ModerationUsersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/password/forgot': {
       id: '/password/forgot'
       path: '/password/forgot'
@@ -192,18 +511,122 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PostsPostSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/site_settings/appearance': {
+      id: '/site_settings/appearance'
+      path: '/site_settings/appearance'
+      fullPath: '/site_settings/appearance'
+      preLoaderRoute: typeof Site_settingsAppearanceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/site_settings/audit_log': {
+      id: '/site_settings/audit_log'
+      path: '/site_settings/audit_log'
+      fullPath: '/site_settings/audit_log'
+      preLoaderRoute: typeof Site_settingsAudit_logRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/site_settings/authentication': {
+      id: '/site_settings/authentication'
+      path: '/site_settings/authentication'
+      fullPath: '/site_settings/authentication'
+      preLoaderRoute: typeof Site_settingsAuthenticationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/site_settings/boards': {
+      id: '/site_settings/boards'
+      path: '/site_settings/boards'
+      fullPath: '/site_settings/boards'
+      preLoaderRoute: typeof Site_settingsBoardsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/site_settings/general': {
+      id: '/site_settings/general'
+      path: '/site_settings/general'
+      fullPath: '/site_settings/general'
+      preLoaderRoute: typeof Site_settingsGeneralRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/site_settings/invitations': {
+      id: '/site_settings/invitations'
+      path: '/site_settings/invitations'
+      fullPath: '/site_settings/invitations'
+      preLoaderRoute: typeof Site_settingsInvitationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/site_settings/post_statuses': {
+      id: '/site_settings/post_statuses'
+      path: '/site_settings/post_statuses'
+      fullPath: '/site_settings/post_statuses'
+      preLoaderRoute: typeof Site_settingsPost_statusesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/site_settings/roadmap': {
+      id: '/site_settings/roadmap'
+      path: '/site_settings/roadmap'
+      fullPath: '/site_settings/roadmap'
+      preLoaderRoute: typeof Site_settingsRoadmapRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/site_settings/tags': {
+      id: '/site_settings/tags'
+      path: '/site_settings/tags'
+      fullPath: '/site_settings/tags'
+      preLoaderRoute: typeof Site_settingsTagsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/site_settings/webhooks': {
+      id: '/site_settings/webhooks'
+      path: '/site_settings/webhooks'
+      fullPath: '/site_settings/webhooks'
+      preLoaderRoute: typeof Site_settingsWebhooksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/site_settings/widget': {
+      id: '/site_settings/widget'
+      path: '/site_settings/widget'
+      fullPath: '/site_settings/widget'
+      preLoaderRoute: typeof Site_settingsWidgetRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/unlock/new': {
+      id: '/unlock/new'
+      path: '/unlock/new'
+      fullPath: '/unlock/new'
+      preLoaderRoute: typeof UnlockNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ChangelogRoute: ChangelogRoute,
+  EmbedRoute: EmbedRoute,
+  Embedded_roadmapRoute: Embedded_roadmapRoute,
   LoginRoute: LoginRoute,
+  MyFeedbackRoute: MyFeedbackRoute,
+  ProfileRoute: ProfileRoute,
   RegisterRoute: RegisterRoute,
   RoadmapRoute: RoadmapRoute,
   BoardsBoardSlugRoute: BoardsBoardSlugRoute,
+  ConfirmationNewRoute: ConfirmationNewRoute,
+  ModerationFeedbackRoute: ModerationFeedbackRoute,
+  ModerationUsersRoute: ModerationUsersRoute,
   PasswordForgotRoute: PasswordForgotRoute,
   PasswordResetRoute: PasswordResetRoute,
   PostsPostSlugRoute: PostsPostSlugRoute,
+  Site_settingsAppearanceRoute: Site_settingsAppearanceRoute,
+  Site_settingsAudit_logRoute: Site_settingsAudit_logRoute,
+  Site_settingsAuthenticationRoute: Site_settingsAuthenticationRoute,
+  Site_settingsBoardsRoute: Site_settingsBoardsRoute,
+  Site_settingsGeneralRoute: Site_settingsGeneralRoute,
+  Site_settingsInvitationsRoute: Site_settingsInvitationsRoute,
+  Site_settingsPost_statusesRoute: Site_settingsPost_statusesRoute,
+  Site_settingsRoadmapRoute: Site_settingsRoadmapRoute,
+  Site_settingsTagsRoute: Site_settingsTagsRoute,
+  Site_settingsWebhooksRoute: Site_settingsWebhooksRoute,
+  Site_settingsWidgetRoute: Site_settingsWidgetRoute,
+  UnlockNewRoute: UnlockNewRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

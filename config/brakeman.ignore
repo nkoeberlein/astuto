@@ -1,0 +1,16 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "Redirect",
+      "warning_code": 18,
+      "fingerprint": "a3cef475f02c9e4c1bbccdec81d8a7b362891b1272ea4997e7511f3bd9b5abc3",
+      "check_name": "Redirect",
+      "message": "Possible unprotected redirect",
+      "file": "app/controllers/o_auths_controller.rb",
+      "line": 40,
+      "code": "redirect_to(OAuth.include_defaults.friendly.find(params[:id]).authorize_url_with_query_params, :allow_other_host => true)",
+      "note": "Redirects to the authorize URL of an OAuth provider an admin configured for this feedback space (or the instance); params[:id] only picks the provider."
+    }
+  ],
+  "brakeman_version": "8.1.0"
+}

@@ -1,0 +1,56 @@
+# Lint and render the Helm chart (deploy/helm/astuto-evolution)
+
+name: Helm chart
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'deploy/helm/**'
+      - '.github/workflows/helm.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'deploy/helm/**'
+      - '.github/workflows/helm.yml'
+
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: deploy/helm/astuto-evolution
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v4
+
+      - name: Lint
+        run: |
+          helm lint . --strict \
+            --set baseUrl=https://feedback.example.com,database.host=db,secrets.secretKeyBase=x
+
+      # Every optional part switched on once, and the minimal setup
+      - name: Render
+        run: |
+          helm template astuto . \
+            --set baseUrl=https://feedback.example.com,database.host=db,secrets.secretKeyBase=x > minimal.yaml
+          helm template astuto . \
+            --set baseUrl=https://feedback.example.com,database.host=db,existingSecret=astuto-secrets \
+            --set multiTenancy=true,worker.enabled=true,worker.redisUrl=redis://redis:6379/0 \
+            --set ingress.enabled=true,serviceMonitor.enabled=true \
+            --set config.EMAIL_SMTP_HOST=smtp.example.com > full.yaml
+          grep -q 'RAILS_HOSTS: ".feedback.example.com"' full.yaml
+          grep -q 'kind: ServiceMonitor' full.yaml
+          grep -q 'bundle' full.yaml
+          ! grep -q 'kind: Secret' full.yaml
+          # Missing required values must fail
+          ! helm template astuto . --set database.host=db,secrets.secretKeyBase=x
+
+      - name: Validate against the Kubernetes schemas
+        run: |
+          curl -sSL https://github.com/yannh/kubeconform/releases/download/v0.6.7/kubeconform-linux-amd64.tar.gz | tar xz
+          ./kubeconform -strict -summary -ignore-missing-schemas minimal.yaml full.yaml

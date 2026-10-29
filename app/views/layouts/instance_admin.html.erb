@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="<%= I18n.locale %>" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex">
+    <title><%= t('instance_admin.title') %></title>
+    <%= csrf_meta_tags %>
+    <%= render 'layouts/plain_styles' %>
+  </head>
+  <body>
+    <main>
+      <p class="muted"><a href="<%= instance_admin_tenants_path %>"><%= t('instance_admin.title') %></a> · <%= Rails.application.base_url_host %></p>
+      <% if notice %><p class="flash" role="status"><%= notice %></p><% end %>
+      <% if alert %><p class="flash alert" role="alert"><%= alert %></p><% end %>
+      <%= yield %>
+    </main>
+  </body>
+</html>

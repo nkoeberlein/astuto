@@ -82,5 +82,5 @@ If you need to work with the Rails console, just attach a shell to the `web` con
 
 Tests are done using RSpec, a testing framework for Ruby on Rails:
 
-- To execute all specs, run `rspec` command inside the `web` container. System specs relies on Google Chrome to run, so you may need to rebuild Astuto image uncommenting lines 9-11 in Dockerfile.
-- If you want to run all specs except for system specs, you can run the script `script/rspec-no-system-specs.sh`.
+- To execute all specs, run `rspec` inside the `web` container (`docker compose exec web bundle exec rspec`).
+- Browser tests of the user interface are Playwright tests in `frontend/e2e`: start the app (`docker compose up`), then run `npm run e2e` in `frontend/` (see `frontend/README.md`).

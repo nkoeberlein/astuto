@@ -1,6 +1,6 @@
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { Link, useNavigate } from '@tanstack/react-router'
-import { ArrowLeft, Pencil, ShieldCheck, Trash2 } from 'lucide-react'
+import { ArrowLeft, Link2, Pencil, ShieldCheck, Trash2 } from 'lucide-react'
 import { useState } from 'react'
 import { useDeletePost, useUpdatePost } from '@/api/mutations'
 import {
@@ -27,12 +27,18 @@ import { Separator } from '@/components/ui/separator'
 import { Textarea } from '@/components/ui/textarea'
 import { formatRelativeTime } from '@/lib/format'
 import { useI18n } from '@/lib/i18n'
+import { isModerator } from '@/lib/roles'
+import { AiSuggestion } from './AiSuggestion'
 import { AiSummary } from './AiSummary'
+import { PostTranslation } from './AiTranslation'
 import { CommentForm } from './CommentForm'
 import { CommentList } from './CommentList'
 import { CommentLoginHint } from './CommentLoginHint'
 import { FollowButton } from './FollowButton'
+import { MergePost } from './MergePost'
 import { StatusBadge } from './StatusBadge'
+import { TagBadges } from './TagBadges'
+import { TagPicker } from './TagPicker'
 import { VoteButton } from './VoteButton'
 
 const NO_STATUS_VALUE = '__none__'
@@ -52,10 +58,12 @@ export function PostPage({ postSlug }: { postSlug: string }) {
   const [editing, setEditing] = useState(false)
   const [titleDraft, setTitleDraft] = useState(post.title)
   const [descriptionDraft, setDescriptionDraft] = useState(post.description ?? '')
+  const [sourceUrlDraft, setSourceUrlDraft] = useState(post.source?.url ?? '')
+  const [sourceLabelDraft, setSourceLabelDraft] = useState(post.source?.label ?? '')
 
   const user = session.user
-  const isModerator = user !== null && ['moderator', 'admin', 'owner'].includes(user.role)
-  const canEdit = user !== null && (user.id === post.author?.id || isModerator)
+  const canModerate = isModerator(user)
+  const canEdit = user !== null && (user.id === post.author?.id || canModerate)
 
   const board = boards.find((b) => b.id === post.boardId)
   const status = statuses.find((s) => s.id === post.postStatusId)
@@ -69,7 +77,7 @@ export function PostPage({ postSlug }: { postSlug: string }) {
             params={{ boardSlug: board.slug }}
             className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
           >
-            <ArrowLeft className="size-4" aria-hidden /> {board.name}
+            <ArrowLeft className="size-4 rtl:-scale-x-100" aria-hidden /> {board.name}
           </Link>
         )}
 
@@ -84,7 +92,16 @@ export function PostPage({ postSlug }: { postSlug: string }) {
                 onSubmit={(event) => {
                   event.preventDefault()
                   updatePost.mutate(
-                    { title: titleDraft, description: descriptionDraft || null },
+                    {
+                      title: titleDraft,
+                      description: descriptionDraft || null,
+                      ...(canModerate
+                        ? {
+                            sourceUrl: sourceUrlDraft || null,
+                            sourceLabel: sourceLabelDraft || null,
+                          }
+                        : {}),
+                    },
                     { onSuccess: () => setEditing(false) },
                   )
                 }}
@@ -109,6 +126,30 @@ export function PostPage({ postSlug }: { postSlug: string }) {
                     rows={5}
                   />
                 </div>
+                {canModerate && (
+                  <div className="grid gap-3 sm:grid-cols-[10rem_1fr]">
+                    <div className="space-y-1">
+                      <Label htmlFor="edit-post-source-label">{t('post.source.label')}</Label>
+                      <Input
+                        id="edit-post-source-label"
+                        value={sourceLabelDraft}
+                        onChange={(event) => setSourceLabelDraft(event.target.value)}
+                        maxLength={40}
+                        placeholder="Slack"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <Label htmlFor="edit-post-source-url">{t('post.source.url')}</Label>
+                      <Input
+                        id="edit-post-source-url"
+                        type="url"
+                        value={sourceUrlDraft}
+                        onChange={(event) => setSourceUrlDraft(event.target.value)}
+                        placeholder="https://"
+                      />
+                    </div>
+                  </div>
+                )}
                 <div className="flex gap-2">
                   <Button type="submit" size="sm" disabled={updatePost.isPending}>
                     {t('common.buttons.update')}
@@ -149,11 +190,37 @@ export function PostPage({ postSlug }: { postSlug: string }) {
                   <time dateTime={post.createdAt}>
                     {formatRelativeTime(post.createdAt, locale)}
                   </time>
+                  {post.source && <PostSource source={post.source} />}
                 </div>
+                <TagBadges tagIds={post.tagIds} />
                 {post.description && (
                   <div className="pt-2">
                     <Markdown>{post.description}</Markdown>
                   </div>
+                )}
+                {session.aiEnabled && <PostTranslation postSlug={post.slug} />}
+                {post.changelogEntries.length > 0 && (
+                  <p className="text-sm text-muted-foreground">
+                    {t('post.in_changelog')}{' '}
+                    {post.changelogEntries.map((entry, index) => (
+                      <span key={entry.id}>
+                        {index > 0 && ' · '}
+                        <Link
+                          to="/changelog"
+                          hash={`entry-${entry.id}`}
+                          className="text-primary hover:underline"
+                        >
+                          {entry.title}
+                        </Link>
+                      </span>
+                    ))}
+                  </p>
+                )}
+                {post.mergedPosts.length > 0 && (
+                  <p className="text-sm text-muted-foreground">
+                    {t('post.merge.merged_from')}{' '}
+                    {post.mergedPosts.map((merged) => merged.title).join(' · ')}
+                  </p>
                 )}
               </>
             )}
@@ -173,9 +240,10 @@ export function PostPage({ postSlug }: { postSlug: string }) {
             comments={comments}
             postSlug={user ? post.slug : undefined}
             currentUser={user}
+            canTranslate={session.aiEnabled}
           />
           {user ? (
-            <CommentForm postSlug={post.slug} canMarkAsUpdate={isModerator} />
+            <CommentForm postSlug={post.slug} canMarkAsUpdate={canModerate} />
           ) : (
             <CommentLoginHint />
           )}
@@ -227,7 +295,7 @@ export function PostPage({ postSlug }: { postSlug: string }) {
           <FormError error={deletePost.error} />
         </div>
 
-        {isModerator && (
+        {canModerate && (
           <section
             aria-label={t('header.menu.moderation')}
             className="space-y-3 rounded-xl border border-primary/20 bg-card p-4 shadow-2xs"
@@ -263,6 +331,12 @@ export function PostPage({ postSlug }: { postSlug: string }) {
               </Select>
             </div>
 
+            <TagPicker
+              tagIds={post.tagIds}
+              onChange={(tagIds) => updatePost.mutate({ tagIds })}
+              disabled={updatePost.isPending}
+            />
+
             {boards.length > 1 && (
               <div className="space-y-1.5">
                 <Label className="text-xs text-muted-foreground">
@@ -286,10 +360,36 @@ export function PostPage({ postSlug }: { postSlug: string }) {
               </div>
             )}
             {!editing && <FormError error={updatePost.error} />}
+            {session.aiEnabled && (
+              <AiSuggestion
+                post={post}
+                boards={boards}
+                onApply={(changes) => updatePost.mutate(changes)}
+              />
+            )}
             {session.aiEnabled && <AiSummary postSlug={post.slug} />}
+            {board && <MergePost post={post} boardSlug={board.slug} />}
           </section>
         )}
       </aside>
     </div>
+  )
+}
+
+// Where moderators captured the feedback (Slack, email, ticket); only they get this field
+function PostSource({ source }: { source: { url: string | null; label: string | null } }) {
+  const { t } = useI18n()
+  const text = source.label ?? t('post.source.title')
+  return (
+    <span className="inline-flex items-center gap-1" title={t('post.source.title')}>
+      <Link2 className="size-3.5" aria-hidden />
+      {source.url ? (
+        <a href={source.url} target="_blank" rel="noopener noreferrer" className="underline">
+          {text}
+        </a>
+      ) : (
+        text
+      )}
+    </span>
   )
 }

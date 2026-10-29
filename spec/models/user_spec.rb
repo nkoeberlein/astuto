@@ -31,7 +31,7 @@ RSpec.describe User, type: :model do
   end
 
   it 'can have the following statuses: "active", "blocked" and "deleted"' do
-    active = user
+    user
     blocked = FactoryBot.build(:blocked)
     deleted = FactoryBot.build(:deleted)
 

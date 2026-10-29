@@ -83,7 +83,7 @@ Astuto Evolution führt das archivierte [astuto/astuto](https://github.com/astut
 
 **Anforderungen an die neue UI:** Mobile first, Dark Mode, WCAG 2.2 AA, Branding über CSS-Variablen, ein Komponentensatz auch für das einbettbare Widget, Übersetzungen aus den bestehenden YAML-Dateien (als JSON exportiert), RTL-fähig (CSS-Logical-Properties, `dir` aus der Locale; RTL-Übersetzungen, sobald jemand sie beisteuert).
 
-**Multi-Tenancy bleibt (entschieden).** Mehrere Feedback-Portale pro Instanz sind für Unternehmen mit mehreren Produkten oder Marken und für Agenturen wichtig (#76) und die Grundlage einer möglichen gehosteten Variante. Tenant-Signup, Custom Domains und Stripe-Billing bleiben vorerst erhalten. Ob Billing modernisiert oder entfernt wird, hängt vom Geschäftsmodell ab (siehe 7.).
+**Multi-Tenancy bleibt (entschieden).** Mehrere Feedback-Portale pro Instanz sind für Unternehmen mit mehreren Produkten oder Marken und für Agenturen wichtig (#76) und die Grundlage einer möglichen gehosteten Variante. **Kein Billing (entschieden):** Stripe-Billing und Trial des eingestellten astuto.io-Angebots sind entfernt. Custom Domains bleiben (TLS per Caddy On-Demand-TLS, siehe `docs/multi-tenancy.md`); der abgeschaltete Tenant-Signup fällt mit dem alten Frontend weg, Tenants entstehen in der Instanz-Verwaltung `/instance` oder per Rake-Task (#76).
 
 ## 4. Phasen
 
@@ -98,21 +98,22 @@ Astuto Evolution führt das archivierte [astuto/astuto](https://github.com/astut
 - [x] Dependabot, `bundler-audit`, Brakeman, lokales `bin/ci`
 - [ ] PostgreSQL 19 bei GA (Anleitung in [UPGRADING.md](UPGRADING.md) ist fertig und getestet)
 - [x] Security-Policy (`SECURITY.md`)
-- [ ] Multi-Tenancy-Modus testen und dokumentieren (Subdomains, Custom Domains, Tenant-Verwaltung); Billing je nach Geschäftsmodell (siehe 7.)
+- [x] Multi-Tenancy-Modus getestet und dokumentiert (`docs/multi-tenancy.md`: Subdomains, Custom Domains, TLS, Tenant-Verwaltung per Rake); Billing entfernt
 
 ### Phase 2 – Betrieb und Bugfixes · P1
 Die häufigsten Probleme aus den Upstream-Issues: HTTPS hinter Reverse Proxy (#478, #201), OAuth-Cookie (#472), SMTP (#330 u. a.), Webhook-Fehler sichtbar machen (#458), konfigurierbare DB (#326, #207), Standard-Admin-Passwort, unsicherer SMTP-Standard. Details in todo.md.
 
-### Phase 3 – Altes Frontend ersetzen · P1 (Kern von v2, begonnen)
+### Phase 3 – Altes Frontend ersetzen · P1 (Kern von v2) ✅
 1. ✅ Entscheidung: v3 wird **TanStack Start + Drizzle + Tailwind** → v2 bekommt ein getrenntes React-Frontend
 2. ✅ `frontend/` mit Vite 8, React 19, **TypeScript 7**, TanStack Router/Query, Tailwind 4, shadcn/ui, **Biome** (statt ESLint/Prettier), Vitest; eigener CI-Workflow; Build ins Image, ausgeliefert unter `/next`
 3. ✅ App-API `/api/app/v1` (lesend: Session, Übersetzungen, Boards, Status, Posts, Kommentare), OpenAPI per rswag, generierte TS-Typen
 4. ✅ Board-Seite (Suche, Sortierung, Statusfilter, Mehr laden) und Post-Detail mit Kommentaren
 5. ✅ Schreibende Aktionen: Post anlegen (auch anonym, mit Freigabe-Regeln und Spam-Schutz), Vote (optimistisch), Kommentar und Antwort, Moderator-Updates, Follow, Bearbeiten/Löschen, Statuswechsel; CSRF-Fluss getestet
 6. ✅ Roadmap-Seite, serverseitige Meta-Tags
-7. Auth-Seiten (Login, Registrierung, Passwort, OAuth) und eingebettete Roadmap
-8. Moderation und Site Settings
-9. Altes Frontend und dessen Gems/Pakete entfernen (`react-rails`, `i18n-js`, Webpack, Bootstrap)
+7. ✅ Auth-Seiten (Login, Registrierung, Passwort, OAuth) und eingebettete Roadmap
+8. ✅ Moderation (Feedback-Queue, Nutzer), Site Settings (alle Bereiche) und Profil-Einstellungen
+9. ✅ Umstieg: das neue Frontend liefert alle Seiten unter `/` aus (`/next/*` leitet um)
+10. ✅ Altes Frontend entfernt: React 16, Redux, Bootstrap, jQuery, Turbolinks, Webpack, Sass, Sprockets, `react-rails`, `i18n-js`, die alten JSON-Endpunkte und der abgeschaltete Tenant-Signup. Node.js braucht nur noch der Build von `frontend/`
 
 ### Phase 4 – KI und MCP · P1 (MCP in 2.0, Rest 2.x)
 - ✅ **MCP-Server** (Streamable HTTP unter `/mcp` auf dem offiziellen `mcp`-Gem, Auth per API-Key, später OAuth). Tools: Posts suchen, lesen, anlegen, Status ändern, kommentieren, Votes und Trends abfragen, Roadmap lesen. Damit triagieren Claude, Cursor und andere Assistenten Feedback direkt. Unter den Self-Hosted-Tools hat das sonst nur Quackback.
@@ -188,21 +189,21 @@ Die häufigsten Probleme aus den Upstream-Issues: HTTPS hinter Reverse Proxy (#4
 
 **Was diese Zielgruppe erwartet** (fließt in die Prioritäten der todo.md ein):
 - **Identität:** SSO über OIDC (vorhanden: beliebige OAuth2-Anbieter), zusätzlich **SAML** und **LDAP/AD** (#8), Login nur über SSO (#471), automatische Rollen über Gruppen, **2FA/MFA für Admins und Moderatoren**
-- **Mandanten:** mehrere Portale pro Instanz mit eigener Domain und eigenem Branding (vorhanden, testen und dokumentieren), Verwaltung über eine Instanz-Admin-Oberfläche
+- **Mandanten:** mehrere Portale pro Instanz mit eigener Domain und eigenem Branding (vorhanden, getestet und dokumentiert), Verwaltung über die Instanz-Verwaltung `/instance`
 - **Compliance:** Audit-Log (wer hat was geändert), DSGVO-Funktionen (Export und Löschung pro Person, Aufbewahrungsfristen), Datenverarbeitung ohne Drittanbieter, KI nur opt-in mit eigenem Modell
 - **Betrieb:** Backup/Restore-Anleitung, mehrere Web-Instanzen hinter Load Balancer, Health-Check-Endpunkt, Prometheus-Metriken, Helm-Chart, signierte Images mit SBOM
 - **Vertrauen:** `SECURITY.md` mit Meldeweg, Sicherheitsupdates mit Fristen, dokumentierte Versionen mit Supportzeitraum (LTS)
 - **Integration:** Jira, Azure DevOps, Teams, Slack (Webhook-Vorlagen zuerst), REST-API und MCP
 
 **Lizenz und Mittelstand:** Die AGPL-3.0 erlaubt kommerzielle Nutzung ohne Einschränkung. Pflichten entstehen erst, wenn jemand den Code *ändert* und Nutzern über das Netz anbietet: Dann muss er die Änderungen veröffentlichen. Manche Rechtsabteilungen lehnen AGPL trotzdem grundsätzlich ab. Optionen:
-- **v2:** Eine zusätzliche kommerzielle Lizenz ist nicht möglich, weil der Upstream-Code von Dritten unter AGPL steht. Abhilfe: eine kurze FAQ „AGPL im Unternehmen“ (unveränderter Betrieb verpflichtet zu nichts).
+- **v2:** Eine zusätzliche kommerzielle Lizenz ist nicht möglich, weil der Upstream-Code von Dritten unter AGPL steht. Abhilfe: die FAQ [„AGPL im Unternehmen“](docs/agpl-faq.md) (unveränderter Betrieb verpflichtet zu nichts).
 - **v3 (Neuentwicklung):** Duale Lizenzierung (AGPL + kommerzielle Lizenz) wird möglich, aber nur mit einer **CLA** für alle Beiträge ab Beginn von v3 und ohne übernommene Upstream-Inhalte (Übersetzungen, Logo). Die Lizenz ist entschieden: **v3 bleibt AGPL-3.0** (Abschnitt 6).
 
 **Mögliche Einnahmen ohne Paywall** (Entscheidung offen):
 
 | Modell | Passt zu | Voraussetzung |
 |---|---|---|
-| Gehostete Variante (Managed, EU-Hosting) | Firmen ohne eigenen Betrieb | Multi-Tenancy (vorhanden), Billing (vorhanden, Stripe-Gem modernisieren) |
+| Gehostete Variante (Managed, EU-Hosting) | Firmen ohne eigenen Betrieb | Multi-Tenancy (vorhanden); Abrechnung außerhalb der Software (Billing ist entfernt) |
 | Support und SLA | Mittelstand mit eigener Installation | Versionierung mit LTS, Ansprechpartner |
 | Kommerzielle Lizenz | AGPL-scheue Rechtsabteilungen | erst in v3, CLA |
 | Einrichtung und Integration (Dienstleistung) | SSO, Migration von Canny/UserVoice | Import-Funktion (#368) |

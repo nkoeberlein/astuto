@@ -1,6 +1,0 @@
-<%# Used to set I18n-js locale to Rails locale (read in javascript/translations/index.js.erb).
-    The nonce lets it pass the CSP; Turbolinks must not re-run it on page changes (new nonce each response). %>
-<%= javascript_tag nonce: true, data: { turbolinks_eval: false } do %>
-  var LOCALE = "<%= j I18n.locale.to_s %>";
-  var IS_PRODUCTION = <%= Rails.env.production? %>;
-<% end %>

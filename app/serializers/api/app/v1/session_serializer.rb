@@ -7,20 +7,26 @@ module Api::App::V1
         user: user && current_user(user),
         # Moderators see AI actions only when a provider is configured
         aiEnabled: user&.moderator? ? Ai::Client.enabled? : false,
+        # Badge on the moderation link in the header
+        pendingPostsCount: user&.moderator? ? Post.pending.count : nil,
         tenant: {
           siteName: tenant.site_name,
           siteLogo: tenant.site_logo,
           siteFavicon: tenant.site_favicon,
           locale: I18n.locale.to_s,
           oauthProviders: oauth_providers(oauth_start_url),
+          # Login with the company directory (POST /api/app/v1/session/ldap), when set up
+          ldapLabel: LdapConfig.find_by(enabled: true)&.then { |ldap| ldap.label if ldap.usable? },
+          hasChangelog: ChangelogEntry.published.exists?,
           settings: settings(tenant_setting)
         }
       }
     end
 
     # oauth_start_url: callable that returns the absolute start URL for an OAuth provider
+    # SAML single sign-on shows up as one more provider (id 0), started on the current host
     def self.oauth_providers(oauth_start_url)
-      OAuth.include_defaults.where(is_enabled: true).order(created_at: :asc).map do |o_auth|
+      providers = OAuth.include_defaults.where(is_enabled: true).order(created_at: :asc).map do |o_auth|
         {
           id: o_auth.id,
           name: o_auth.name,
@@ -28,10 +34,16 @@ module Api::App::V1
           startUrl: oauth_start_url.call(o_auth)
         }
       end
+      saml = SamlConfig.find_by(enabled: true)
+      providers.unshift({ id: 0, name: saml.label, logo: nil, startUrl: '/saml/start' }) if saml&.usable?
+      providers
     end
 
     def self.current_user(user)
-      { id: user.id, email: user.email, fullName: user.full_name_or_email, role: user.role, avatarUrl: user.gravatar_url }
+      {
+        id: user.id, email: user.email, fullName: user.full_name_or_email, role: user.role, avatarUrl: user.avatar_url,
+        twoFactorSetupRequired: user.two_factor_setup_required?
+      }
     end
 
     def self.settings(s)

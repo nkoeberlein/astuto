@@ -6,14 +6,48 @@ export type Session = Schemas['Session']
 export type OAuthProvider = Schemas['OAuthProvider']
 export type Board = Schemas['Board']
 export type PostStatus = Schemas['PostStatus']
+export type Tag = Schemas['Tag']
+export type TagInput = Schemas['TagInput']
 export type PostListItem = Schemas['PostListItem']
 export type PostPage = Schemas['PostPage']
+export type MyPost = Schemas['MyPost']
+export type ChangelogEntry = Schemas['ChangelogEntry']
+export type WidgetSettings = Schemas['WidgetSettings']
+export type UpdateWidgetSettings = Schemas['UpdateWidgetSettings']
+export type ChangelogEntryInput = Schemas['ChangelogEntryInput']
 export type Post = Schemas['Post']
 export type Comment = Schemas['Comment']
 export type Author = Schemas['Author']
 export type Roadmap = Schemas['Roadmap']
 export type RoadmapColumn = Schemas['RoadmapColumn']
 export type RoadmapPost = Schemas['RoadmapPost']
+export type ModerationPost = Schemas['ModerationPost']
+export type ModerationQueue = Schemas['ModerationQueue']
+export type ModerationUser = Schemas['ModerationUser']
+export type ModerationUserPage = Schemas['ModerationUserPage']
+export type UserRole = ModerationUser['role']
+export type UserStatus = ModerationUser['status']
+export type GeneralSettings = Schemas['GeneralSettings']
+export type AuditEvent = Schemas['AuditEvent']
+export type SamlSettings = Schemas['SamlSettings']
+export type LdapSettings = Schemas['LdapSettings']
+export type UpdateLdapSettings = Schemas['UpdateLdapSettings']
+export type LdapLoginInput = Schemas['LdapLoginInput']
+export type UpdateSamlSettings = Schemas['UpdateSamlSettings']
+export type AuditChange = Schemas['AuditChange']
+export type UpdateGeneralSettings = Schemas['UpdateGeneralSettings']
+export type CustomLink = Schemas['CustomLink']
+export type BoardInput = Schemas['BoardInput']
+export type PostStatusInput = Schemas['PostStatusInput']
+export type OAuthSettings = Schemas['OAuthSettings']
+export type OAuthInput = Schemas['OAuthInput']
+export type Webhook = Schemas['Webhook']
+export type WebhookInput = Schemas['WebhookInput']
+export type WebhookHeader = Schemas['WebhookHeader']
+export type WebhookDelivery = Schemas['WebhookDelivery']
+export type Invitation = Schemas['Invitation']
+export type Profile = Schemas['Profile']
+export type UpdateProfile = Schemas['UpdateProfile']
 export type Translations = { [key: string]: string | Translations }
 
 export class ApiError extends Error {
@@ -33,10 +67,19 @@ export function setCsrfToken(token: string) {
   csrfToken = token
 }
 
+// The widget (/embed) signs in with an access token instead of the session cookie, which
+// browsers drop in iframes on other sites (see Api::App::BaseController)
+let bearerToken: string | undefined
+
+export function setBearerToken(token: string | undefined) {
+  bearerToken = token
+}
+
 const headers: Middleware = {
   onRequest({ request }) {
     request.headers.set('Accept', 'application/json')
     if (request.method !== 'GET' && csrfToken) request.headers.set('X-CSRF-Token', csrfToken)
+    if (bearerToken) request.headers.set('Authorization', `Bearer ${bearerToken}`)
     return request
   },
 }

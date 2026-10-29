@@ -56,8 +56,8 @@ RSpec.describe Post, type: :model do
   it 'has a method that returns posts with status in array' do
     post_status1 = FactoryBot.create(:post_status)
     post_status2 = FactoryBot.create(:post_status)
-    post1 = FactoryBot.create(:post, post_status: post_status1)
-    post2 = FactoryBot.create(:post, post_status: post_status2)
+    FactoryBot.create(:post, post_status: post_status1)
+    FactoryBot.create(:post, post_status: post_status2)
     post
 
     expected = Post.where(post_status_id: [post_status1.id, post_status2.id])

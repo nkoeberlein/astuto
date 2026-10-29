@@ -1,0 +1,19 @@
+<%= render 'user_mailer/opening', user_name: @user.full_name_or_email %>
+
+<p>
+  <%= t('mailers.user.notify_follower_of_changelog_entry.body_html', title: @entry.title) %>:
+</p>
+
+<ul>
+  <% @posts.each do |post| %>
+    <li><%= link_to post.title, get_url_for(method(:post_url), resource: post) %></li>
+  <% end %>
+</ul>
+
+<p>
+  <%= link_to t('mailers.user.notify_follower_of_changelog_entry.read_entry'), get_url_for(method(:changelog_url), options: { anchor: "entry-#{@entry.id}" }) %>
+</p>
+
+<%= render 'user_mailer/closing' %>
+
+<%= render 'user_mailer/unsubscribe_from_site' %>

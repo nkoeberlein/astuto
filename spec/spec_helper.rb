@@ -20,15 +20,7 @@ RSpec.configure do |config|
   config.before(:each) do
     Current.tenant = FactoryBot.create(:tenant)
     Current.tenant.tenant_setting = FactoryBot.create(:tenant_setting)
-    Current.tenant.tenant_billing = FactoryBot.create(:tenant_billing)
   end
-
-  # Compile fresh assets before system specs (needed to get the changes)
-  # Uncomment lines below, or use ./script/rspec-compile-assets.sh only when needed
-  # config.before(:all, type: :system, js: true) do
-  #   Rails.application.load_tasks
-  #   Rake::Task["assets:precompile"].invoke("--silent")
-  # end
 
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest

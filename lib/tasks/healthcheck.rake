@@ -2,7 +2,7 @@ require 'rake'
 require 'net/http'
 require 'uri'
 
-task :healthcheck, [:port] do |t, args|
+task :healthcheck, [:port] do |_t, args|
   port = args[:port] || 3000
 
   # Make the HTTP request to the health endpoint
@@ -15,6 +15,6 @@ rescue
   exit_code = 1
 
 ensure
-  puts "Healthcheck returned: #{exit_code.to_s}"
+  puts "Healthcheck returned: #{exit_code}"
   exit(exit_code)
 end

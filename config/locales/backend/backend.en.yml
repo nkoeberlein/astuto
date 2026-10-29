@@ -1,4 +1,21 @@
 en:
+  widget:
+    errors:
+      disabled: 'The widget is not turned on.'
+      invalid_token: 'The visitor token is invalid or expired.'
+      linked_elsewhere: 'This email address belongs to another account.'
+      no_account: 'There is no account for this visitor.'
+      staff_account: 'Moderators and admins sign in on the feedback site, not through the widget.'
+      blocked: 'This account is blocked.'
+  webhook_templates:
+    new_post: 'New feedback in %{board}: %{post}'
+    new_post_pending_approval: 'Feedback waiting for approval in %{board}: %{post}'
+    delete_post: 'Post #%{id} was deleted'
+    post_status_change: '%{post} is now: %{status}'
+    new_comment: '%{author} commented on %{post}'
+    new_vote: '%{author} voted for %{post}'
+    new_user: 'New user: %{user}'
+    open: 'Open'
   errors:
     unknown: 'An unknown error occurred'
     unauthorized: 'You are not authorized'
@@ -6,6 +23,7 @@ en:
     not_logged_in: 'You must be logged in to access this page'
     not_enough_privileges: 'You do not have the privilegies to access this page'
     user_blocked_or_deleted: 'You cannot access your account because it has been blocked or deleted.'
+    user_pending_approval: 'Your account waits for approval by an administrator. You get an email when you can sign in.'
     o_auth_login_error: 'There was an error logging in with %{name}. Please contact the site administrator or try a different provider.'
     board:
       update_order: 'There was an error in reordering boards'
@@ -15,6 +33,15 @@ en:
     user_full_name: 'Anonymous User'
     deleted_user_full_name: 'Deleted User'
   mailers:
+    admin:
+      test_email:
+        subject: '[%{site_name}] Test email'
+        body: 'This test email from %{site_name} arrived, so sending emails works.'
+        details: 'Sent with %{delivery_method} from %{from}.'
+      user_pending_approval:
+        subject: '[%{site_name}] New account waits for approval: %{name}'
+        body_html: '<strong>%{name}</strong> (%{email}) signed up and waits for your approval.'
+        review: 'Review in Moderation › Users'
     devise:
       welcome_greeting: 'Welcome to %{site_name}, %{email}!'
       opening_greeting: 'Hello %{email}!'
@@ -50,11 +77,26 @@ en:
       notify_follower_of_post_status_change:
         subject: '[%{site_name}] Status change on post "%{post}"'
         body_html: 'There is a status update on the post you are following <b>%{post}</b>'
+      notify_follower_of_changelog_entry:
+        subject: '[%{site_name}] New in the changelog: %{title}'
+        body_html: 'The changelog has a new entry, <strong>%{title}</strong>. It delivers feedback you follow'
+        read_entry: 'Read the changelog'
+      account_approved:
+        subject: '[%{site_name}] Your account is approved'
+        body_html: 'An administrator approved your account. You can sign in now.'
+        sign_in: 'Sign in'
       recap:
         subject: '[%{site_name}] %{frequency} recap of feedback space activity'
         body_html: 'Here is the %{frequency} recap of activities in your feedback space'
         published_posts_count_html: 'New published feedback: %{count}'
         pending_posts_count_html: 'New feedback pending approval: %{count}'
+        status_changes_title: 'Status changes of posts you follow'
+        no_status: 'no status'
+        top_posts_title: 'Most voted in this period'
+        period_votes:
+          one: '%{count} new vote'
+          other: '%{count} new votes'
+        more_posts: 'and %{count} more'
   activerecord:
     models:
       board:
@@ -82,7 +124,31 @@ en:
         one: 'Webhook'
         other: 'Webhooks'
     attributes:
+      ldap_config:
+        enabled: 'Use LDAP login'
+        label: 'Name of the account on the login page'
+        host: 'Server'
+        port: 'Port'
+        encryption: 'Encryption'
+        verify_certificate: 'Check the server certificate'
+        base_dn: 'Base DN'
+        bind_dn: 'Service account (bind DN)'
+        bind_password: 'Password of the service account'
+        user_filter: 'User filter'
+        email_attribute: 'Attribute with the email address'
+        name_attribute: 'Attribute with the name'
+        auto_create_users: 'Create an account on the first login'
+      saml_config:
+        enabled: 'Use SAML single sign-on'
+        label: 'Button text'
+        idp_entity_id: 'Identity provider entity ID (issuer)'
+        idp_sso_url: 'Single sign-on URL of the identity provider'
+        idp_cert: 'Signing certificate of the identity provider'
+        email_attribute: 'Attribute with the email address'
+        name_attribute: 'Attribute with the name'
+        auto_create_users: 'Create an account on the first login'
       board:
+        visibility: 'Visibility'
         name: 'Name'
         description: 'Description'
         order: 'Order'
@@ -136,10 +202,14 @@ en:
         brand_display: 'Display'
         use_browser_locale: 'Use browser language'
         is_private: 'Private site'
+        use_gravatar: 'Show avatars from Gravatar'
+        require_two_factor_for_staff: 'Require two-factor authentication for admins and moderators'
         email_registration_policy: 'Email registration policy'
         allowed_email_domains: 'Allowed email domains'
         allow_anonymous_feedback: 'Allow anonymous feedback'
         feedback_approval_policy: 'Feedback approval policy'
+        require_user_approval: 'Approve new accounts'
+        trusted_after_posts: 'Trusted after approved posts'
         show_vote_count: 'Show vote count to users'
         show_vote_button_in_board: 'Show vote buttons in board page'
         hide_unused_statuses_in_filter_by_status: 'Hide unused statuses in filter by status'
@@ -180,3 +250,64 @@ en:
         taken: 'is already in use'
         too_short: 'is too short (minimum %{count} characters)'
         too_long: 'is too long (maximum %{count} characters)'
+  instance_admin:
+    title: 'Instance admin'
+    tenants:
+      title: 'Feedback spaces'
+      new: 'New feedback space'
+      create: 'Create feedback space'
+      site_name: 'Name'
+      subdomain: 'Subdomain'
+      subdomain_hint: 'Letters, digits and hyphens. The address becomes <subdomain>.%{host}.'
+      owner_email: 'Owner email'
+      owner_name: 'Owner name'
+      locale: 'Language'
+      address: 'Address'
+      status: 'Status'
+      users: 'Users'
+      posts: 'Posts'
+      created: 'Created'
+      actions: 'Actions'
+      edit: 'Edit'
+      save: 'Save'
+      back: 'Back to the list'
+      block: 'Block'
+      unblock: 'Unblock'
+      empty: 'No feedback spaces yet.'
+      statuses:
+        active: 'Active'
+        pending: 'Pending'
+        blocked: 'Blocked'
+      custom_domain: 'Custom domain'
+      custom_domain_hint: 'Optional. Add a CNAME record pointing the domain to %{target} first. Leave empty to remove it.'
+      created_title: '%{site_name} is ready'
+      owner_credentials: 'Login of the owner. The password is shown only now:'
+      password_hint: 'Send it to the owner on a safe channel and ask them to change it after the first login.'
+      updated: '%{subdomain} saved.'
+      blocked: '%{subdomain} is blocked. Its pages show a notice; the data stays.'
+      unblocked: '%{subdomain} is active again.'
+      deleted: '%{subdomain} and all its data are deleted.'
+      delete_title: 'Delete feedback space'
+      delete_warning: 'Deletes boards, posts, comments, votes, users, webhooks and settings of this feedback space. This cannot be undone. To keep the data, block it instead.'
+      confirm_label: 'Type "%{subdomain}" to confirm'
+      confirm_mismatch: 'The subdomain did not match. Nothing was deleted.'
+      delete: 'Delete permanently'
+  pending_tenant:
+    title: 'Verify your email address'
+    body: 'Please check your email inbox (and your spam folder) and click the activation link.'
+    help: 'Need help? Contact the administrator of this instance.'
+  two_factor:
+    invalid_code: 'The code is not valid. Use the current code from your authenticator app or an unused backup code.'
+    login_expired: 'The login took too long. Please enter your email and password again.'
+    setup_required: 'This feedback space requires two-factor authentication for admins and moderators. Set it up in your profile settings first.'
+    already_enabled: 'Two-factor authentication is already on.'
+    not_enabled: 'Two-factor authentication is off.'
+  saml:
+    metadata_invalid: 'This is not SAML identity provider metadata (XML with a SingleSignOnService).'
+  ldap:
+    invalid_login: 'Invalid login name or password for your %{label}.'
+    not_found: 'No unique entry found for this login name. Check the base DN and the user filter.'
+  post:
+    merge:
+      same_post: 'A post cannot be merged into itself.'
+      already_merged: 'One of the posts has already been merged.'

@@ -7,7 +7,7 @@ module Api
       # List posts
       def index
         posts = Post
-          .includes(:board, :post_status, :user)
+          .includes(:board, :post_status, :user, :tags)
           .order(created_at: :desc)
           .limit(params[:limit] || 20)
           .offset(params[:offset] || 0)
@@ -20,14 +20,15 @@ module Api
         render json: posts.as_json(only: POST_JSON_ATTRIBUTES, include: {
           board: { only: BOARD_JSON_ATTRIBUTES },
           post_status: { only: POST_STATUS_JSON_ATTRIBUTES },
-          user: { only: USER_JSON_ATTRIBUTES }
+          user: { only: USER_JSON_ATTRIBUTES },
+          tags: { only: TAG_JSON_ATTRIBUTES }
         })
       end
 
       # Get a post by id
       def show
         post = Post
-          .includes(:board, :post_status, :user)
+          .includes(:board, :post_status, :user, :tags)
           .find_by(id: params[:id])
 
         unless post
@@ -39,7 +40,8 @@ module Api
         render json: post.as_json(only: POST_JSON_ATTRIBUTES, include: {
           board: { only: BOARD_JSON_ATTRIBUTES },
           post_status: { only: POST_STATUS_JSON_ATTRIBUTES },
-          user: { only: USER_JSON_ATTRIBUTES }
+          user: { only: USER_JSON_ATTRIBUTES },
+          tags: { only: TAG_JSON_ATTRIBUTES }
         })
       end
 
@@ -69,6 +71,7 @@ module Api
         authorize([:api, post])
 
         if post.update(post_update_params)
+          audit('post.update', post, changes: post.saved_changes) if post.user_id != current_user.id && post.saved_changes?
           render json: { id: post.id }, status: :ok
         else
           render json: { errors: post.errors.full_messages }, status: :unprocessable_entity
@@ -86,6 +89,7 @@ module Api
         authorize([:api, post])
 
         post.destroy!
+        audit('post.delete', post) if post.user_id != current_user.id
 
         render json: { id: post.id }, status: :ok
       end
@@ -101,6 +105,7 @@ module Api
         authorize([:api, post])
 
         post.update!(post_update_board_params)
+        audit('post.update', post, changes: post.saved_changes) if post.saved_changes?
 
         render json: { id: post.id }, status: :ok
       end
@@ -132,6 +137,7 @@ module Api
         end
 
         status_change_workflow.notify_followers if status_change_workflow
+        audit('post.update', post, changes: post.saved_changes) if post.saved_changes?
 
         render json: { id: post.id }, status: :ok
       end
@@ -151,6 +157,7 @@ module Api
         authorize([:api, post])
 
         post.update!(approval_status: 'approved')
+        audit('post.update', post, changes: post.saved_changes)
 
         render json: { id: post.id }, status: :ok
       end
@@ -170,6 +177,7 @@ module Api
         authorize([:api, post])
 
         post.update!(approval_status: 'rejected')
+        audit('post.update', post, changes: post.saved_changes)
 
         render json: { id: post.id }, status: :ok
       end
@@ -178,11 +186,11 @@ module Api
 
         def post_params
           params.require(:title)
-          params.permit(:title, :description, :board_id)
+          params.permit(:title, :description, :board_id, :source_url, :source_label)
         end
 
         def post_update_params
-          params.permit(:title, :description)
+          params.permit(:title, :description, :source_url, :source_label)
         end
 
         def post_update_board_params

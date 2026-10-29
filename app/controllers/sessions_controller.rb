@@ -1,21 +1,18 @@
 class SessionsController < Devise::SessionsController
   # Needed to have Current.tenant available in Devise's controllers
   prepend_before_action :load_tenant_data
-  before_action :load_oauths, only: [:new]
-  before_action :set_page_title, only: [:new]
+  # No password logins here (they would skip two-factor authentication)
+  skip_before_action :allow_params_authentication!, only: :create
 
+  # The login page is part of the v2 frontend; Devise and confirmation links still land here
   def new
-    # Update return_to path if not coming from Devise user pages
-    if request.referer.present? && !request.referer.include?('/users')
-      session[:return_to] = request.referer
-    end
-    
-    super
+    flash.keep
+    redirect_to spa_login_path
   end
 
-  private
-
-    def set_page_title
-      @page_title = t('common.forms.auth.log_in')
-    end
+  # Logins go through the v2 page and /api/app/v1/session (which knows two-factor
+  # authentication); a form posting here lands on the login page
+  def create
+    redirect_to spa_login_path
+  end
 end

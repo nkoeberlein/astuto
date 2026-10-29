@@ -8,7 +8,7 @@ module Api::App::V1
       {
         id: user.id,
         fullName: user.full_name.presence || I18n.t('defaults.user_full_name'),
-        avatarUrl: user.gravatar_url
+        avatarUrl: user.avatar_url
       }
     end
   end

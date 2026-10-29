@@ -1,0 +1,105 @@
+# Astuto Evolution. PostgreSQL (and Redis for the optional worker) run outside this chart,
+# e.g. a managed database or a separate chart. See docs/operations.md.
+
+image:
+  repository: ghcr.io/nkoeberlein/astuto-evo
+  # Defaults to the chart's appVersion
+  tag: ""
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+# Public address, e.g. https://feedback.example.com (links in emails, OAuth callbacks)
+baseUrl: ""
+
+# Several feedback spaces on subdomains of the baseUrl host (docs/multi-tenancy.md)
+multiTenancy: false
+
+database:
+  host: ""
+  port: 5432
+  user: astuto
+  name: astuto
+
+# Secrets. Either set them here (the chart creates a Secret) or name your own Secret in
+# existingSecret with the same keys: SECRET_KEY_BASE, POSTGRES_PASSWORD and, if used,
+# EMAIL_SMTP_PASS, REDIS_PASSWORD, ADMIN_PASSWORD, INSTANCE_ADMIN_PASSWORD, METRICS_TOKEN, AI_API_KEY.
+existingSecret: ""
+secrets:
+  # Required; keep it unchanged across upgrades (sessions, API keys, encrypted webhook settings)
+  secretKeyBase: ""
+  databasePassword: ""
+  smtpPassword: ""
+  redisPassword: ""
+  # Password of the first admin on a fresh database (otherwise random, printed in the log)
+  adminPassword: ""
+  # Instance admin page /instance (multi-tenancy only)
+  instanceAdminPassword: ""
+  # Bearer token for /metrics (Prometheus); empty switches the endpoint off
+  metricsToken: ""
+  aiApiKey: ""
+
+# Further non-secret settings as environment variables, e.g.
+#   EMAIL_SMTP_HOST: smtp.example.com
+#   EMAIL_MAIL_FROM: feedback@example.com
+#   ADMIN_EMAIL: you@example.com
+config: {}
+
+# Extra container env entries (valueFrom etc.)
+extraEnv: []
+
+web:
+  replicaCount: 1
+  resources:
+    requests:
+      cpu: 100m
+      memory: 384Mi
+    limits:
+      memory: 768Mi
+  podAnnotations: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+# Background jobs with Sidekiq (webhooks with retries, recap emails). Without it, jobs run
+# inside the web process and recap emails are not sent.
+worker:
+  enabled: false
+  # redis:// or rediss:// URL; the password goes in secrets.redisPassword
+  redisUrl: ""
+  replicaCount: 1
+  resources:
+    requests:
+      cpu: 50m
+      memory: 256Mi
+    limits:
+      memory: 512Mi
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  # With multiTenancy add the wildcard host (*.feedback.example.com) too
+  hosts:
+    - host: feedback.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+  #  - secretName: feedback-tls
+  #    hosts:
+  #      - feedback.example.com
+
+# Prometheus Operator ServiceMonitor for /metrics (needs secrets.metricsToken or existingSecret)
+serviceMonitor:
+  enabled: false
+  interval: 60s
+
+podSecurityContext: {}
+securityContext: {}

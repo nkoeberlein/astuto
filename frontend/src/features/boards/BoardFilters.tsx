@@ -1,6 +1,7 @@
+import { useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import type { PostStatus } from '@/api/client'
-import { type PostFilters, SORT_OPTIONS, type SortBy } from '@/api/queries'
+import { type PostFilters, SORT_OPTIONS, type SortBy, tagsQuery } from '@/api/queries'
 import { FilterChip } from '@/components/FilterChip'
 import { Input } from '@/components/ui/input'
 import {
@@ -22,6 +23,8 @@ type Props = {
 export function BoardFilters({ filters, statuses, onChange }: Props) {
   const { t } = useI18n()
   const [search, setSearch] = useState(filters.search)
+  const { data: tags = [] } = useQuery(tagsQuery)
+  const tagIds = filters.tagIds ?? []
 
   // Debounce typing before updating the URL
   useEffect(() => {
@@ -68,6 +71,22 @@ export function BoardFilters({ filters, statuses, onChange }: Props) {
               color={status.color}
             >
               {status.name}
+            </FilterChip>
+          ))}
+        </fieldset>
+      )}
+
+      {tags.length > 0 && (
+        <fieldset className="flex flex-wrap gap-2">
+          <legend className="sr-only">{t('board.filter_box.tags')}</legend>
+          {tags.map((tag) => (
+            <FilterChip
+              key={tag.id}
+              active={tagIds.includes(tag.id)}
+              onClick={() => onChange({ tagIds: toggleId(tagIds, tag.id) })}
+              color={tag.color}
+            >
+              {tag.name}
             </FilterChip>
           ))}
         </fieldset>

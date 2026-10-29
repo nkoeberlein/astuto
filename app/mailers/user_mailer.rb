@@ -43,17 +43,37 @@ class UserMailer < ApplicationMailer
     )
   end
 
-  def recap(frequency:, user:, published_posts_count:, pending_posts_count:)
+  # A changelog entry delivers posts the person follows (SaveChangelogEntryWorkflow)
+  def notify_follower_of_changelog_entry(user:, entry:)
     Current.tenant = user.tenant
-
-    @frequency = frequency
     @user = user
-    @published_posts_count = published_posts_count
-    @pending_posts_count = pending_posts_count
+    @entry = entry
+    @posts = entry.posts.where(approval_status: 'approved', id: user.follows.select(:post_id)).on_boards_visible_to(user).order(:title).to_a
 
     mail(
       to: user.email,
-      subject: t('mailers.user.recap.subject', site_name: site_name, frequency: frequency)
+      subject: t('mailers.user.notify_follower_of_changelog_entry.subject', site_name: site_name, title: entry.title)
+    )
+  end
+
+  # An admin approved the account (#362)
+  def account_approved(user:)
+    Current.tenant = user.tenant
+    @user = user
+    mail(to: user.email, subject: t('mailers.user.account_approved.subject', site_name: site_name))
+  end
+
+  # frequency: "daily", "weekly" or "monthly"; from/to: the period (see SendRecapEmails)
+  def recap(user:, frequency:, from:, to:)
+    Current.tenant = user.tenant
+
+    @user = user
+    @frequency = t("common.forms.auth.recap_notification_frequency_#{frequency}")
+    @digest = RecapDigest.new(user: user, from: from, to: to)
+
+    mail(
+      to: user.email,
+      subject: t('mailers.user.recap.subject', site_name: site_name, frequency: @frequency)
     )
   end
 

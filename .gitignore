@@ -32,17 +32,17 @@
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 
-/public/packs
-/public/packs-test
-/node_modules
-/yarn-error.log
-yarn-debug.log*
-.yarn-integrity
 
-/app/assets/builds/*
-!/app/assets/builds/.keep
 
 # Ignore Swagger spec file
 /swagger/*
 # v2 frontend build output (frontend/ -> public/next)
 /public/next
+
+# Playwright output
+/frontend/playwright-report
+/frontend/test-results
+/frontend/e2e/.auth
+
+# Local Redis dumps
+dump.rdb

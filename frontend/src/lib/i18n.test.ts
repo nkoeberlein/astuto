@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { translate } from './i18n'
+import { textDirection, translate } from './i18n'
 
 const translations = {
   board: { sort_by_box: { newest: 'Newest' } },
@@ -24,5 +24,14 @@ describe('translate', () => {
   it('returns the key when a translation is missing', () => {
     expect(translate(translations, 'board.missing')).toBe('board.missing')
     expect(translate(translations, 'board.sort_by_box')).toBe('board.sort_by_box')
+  })
+})
+
+describe('textDirection', () => {
+  it('knows right-to-left languages, also with a region', () => {
+    expect(textDirection('ar')).toBe('rtl')
+    expect(textDirection('he-IL')).toBe('rtl')
+    expect(textDirection('de')).toBe('ltr')
+    expect(textDirection('zh-CN')).toBe('ltr')
   })
 })

@@ -4,10 +4,47 @@
   <%= t('mailers.user.recap.body_html', frequency: @frequency.downcase) %>:
 </p>
 
-<ul>
-  <li><%= t('mailers.user.recap.published_posts_count_html', count: @published_posts_count) %></li>
-  <li><%= t('mailers.user.recap.pending_posts_count_html', count: @pending_posts_count) %></li>
-</ul>
+<% if @digest.pending_posts_count.to_i.positive? %>
+  <p>
+    <%= link_to t('mailers.user.recap.pending_posts_count_html', count: @digest.pending_posts_count), get_url_for(method(:moderation_feedback_url)) %>
+  </p>
+<% end %>
+
+<% if @digest.status_changes.any? %>
+  <h3><%= t('mailers.user.recap.status_changes_title') %></h3>
+  <ul>
+    <% @digest.status_changes.each do |change| %>
+      <li>
+        <%= link_to change.post.title, get_url_for(method(:post_url), resource: change.post) %>:
+        <strong><%= change.post_status&.name || t('mailers.user.recap.no_status') %></strong>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+
+<% if @digest.new_posts_count.positive? %>
+  <h3><%= t('mailers.user.recap.published_posts_count_html', count: @digest.new_posts_count) %></h3>
+  <ul>
+    <% @digest.new_posts.each do |post| %>
+      <li><%= link_to post.title, get_url_for(method(:post_url), resource: post) %></li>
+    <% end %>
+  </ul>
+  <% if @digest.new_posts_count > @digest.new_posts.size %>
+    <p><%= t('mailers.user.recap.more_posts', count: @digest.new_posts_count - @digest.new_posts.size) %></p>
+  <% end %>
+<% end %>
+
+<% if @digest.top_posts.any? %>
+  <h3><%= t('mailers.user.recap.top_posts_title') %></h3>
+  <ul>
+    <% @digest.top_posts.each do |post| %>
+      <li>
+        <%= link_to post.title, get_url_for(method(:post_url), resource: post) %>
+        (<%= t('mailers.user.recap.period_votes', count: post.period_votes.to_i) %>)
+      </li>
+    <% end %>
+  </ul>
+<% end %>
 
 <p>
   <%= link_to t('mailers.user.learn_more'), get_url_for(method(:root_url)) %>

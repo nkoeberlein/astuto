@@ -6,13 +6,14 @@ class BoardPostsQuery
 
   Result = Struct.new(:posts, :page, :has_more, keyword_init: true)
 
-  def initialize(board:, user: nil, search: nil, sort_by: nil, post_status_ids: nil, page: 1, per_page: Rails.application.posts_per_page)
+  def initialize(board:, user: nil, search: nil, sort_by: nil, post_status_ids: nil, tag_ids: nil, page: 1, per_page: Rails.application.posts_per_page)
     @board = board
     @user = user
     @search = search
     @sort_by = sort_by.presence || Current.tenant&.tenant_setting&.default_post_sorting || 'trending'
     @sort_by = SORT_OPTIONS.include?(@sort_by) ? @sort_by : 'trending'
     @post_status_ids = post_status_ids
+    @tag_ids = Array(tag_ids).map(&:to_i).select(&:positive?)
     @page = [page.to_i, 1].max
     @per_page = per_page
   end
@@ -40,6 +41,8 @@ class BoardPostsQuery
         .search_by_name_or_description(@search)
         .order_by(@sort_by)
 
+      # Posts with any of the tags
+      posts = posts.where(id: PostTag.where(tag_id: @tag_ids).select(:post_id)) if @tag_ids.any?
       return posts if @post_status_ids.blank?
 
       # "0" stands for posts without a status

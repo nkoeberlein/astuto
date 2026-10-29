@@ -16,7 +16,8 @@ module Mcp
       Tools::GetRoadmap,
       Tools::CreatePost,
       Tools::UpdatePostStatus,
-      Tools::AddComment
+      Tools::AddComment,
+      Tools::MergePosts
     ].freeze
 
     def self.build(user:)

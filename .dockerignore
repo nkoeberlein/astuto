@@ -1,7 +1,5 @@
 **/node_modules
 .git
 public/assets
-public/packs
-public/packs-test
 tmp
 public/next

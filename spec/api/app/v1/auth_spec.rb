@@ -31,6 +31,17 @@ RSpec.describe 'api/app/v1 authentication (Devise JSON & OAuth)', type: :request
         end
       end
 
+      response(202, 'password correct, two-factor code needed (POST /api/app/v1/session/two_factor)') do
+        schema '$ref' => '#/components/schemas/TwoFactorRequired'
+        let(:login_input) { { email: user.email, password: 'password123' } }
+        before do
+          user.start_two_factor_setup!
+          user.enable_two_factor!(ROTP::TOTP.new(user.reload.otp_secret).now)
+        end
+
+        run_test!
+      end
+
       response(401, 'invalid email or password') do
         schema '$ref' => '#/components/schemas/Error'
         let(:login_input) { { email: user.email, password: 'wrong' } }

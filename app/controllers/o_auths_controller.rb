@@ -3,21 +3,16 @@ class OAuthsController < ApplicationController
   include OAuthsHelper
   include ApplicationHelper
   include Devise::Controllers::Rememberable
-
-  before_action :authenticate_admin, only: [:index, :create, :update, :destroy]
+  include TwoFactorLogin
 
   TOKEN_STATE_SEPARATOR = ','
 
-  # [subdomain.]base_url/o_auths/:id/start?reason=login|test|tenantsignup[&return_to=/local/path]
+  # [subdomain.]base_url/o_auths/:id/start?reason=login|test[&return_to=/local/path]
   # Generates authorize url with required parameters and redirects to provider
   def start
-    if params[:reason] == 'tenantsignup'
-      @o_auth = OAuth.include_only_defaults.friendly.find(params[:id])
-    else
-      @o_auth = OAuth.include_defaults.friendly.find(params[:id])
-    end
+    @o_auth = OAuth.include_defaults.friendly.find(params[:id])
 
-    return if params[:reason] != 'test' and not @o_auth.is_enabled?
+    return oauth_login_failed(@o_auth.name) if params[:reason] != 'test' and not @o_auth.is_enabled?
 
     # Generate random state + other query params
     tenant_domain = Current.tenant ? Current.tenant_or_raise!.subdomain : "null"
@@ -29,7 +24,7 @@ class OAuthsController < ApplicationController
         secure: request.ssl?,
         same_site: :lax
       }
-      cookie_options[:domain] = ".#{request.domain}" if Rails.application.multi_tenancy? && request.domain.present?
+      cookie_options[:domain] = oauth_cookie_domain if oauth_cookie_domain
       cookies[:token_state] = cookie_options
 
       # Page to return to after sign-in. It travels in a cookie (like token_state)
@@ -49,25 +44,24 @@ class OAuthsController < ApplicationController
   # [subdomain.]base_url/o_auths/:id/callback
   # Exchange authorization code for access token, fetch user info and sign in/up
   def callback
-    reason, tenant_domain, token_state = params[:state].split(TOKEN_STATE_SEPARATOR, 3)
+    reason, tenant_domain, _ = params[:state].split(TOKEN_STATE_SEPARATOR, 3)
 
     unless reason == "test"
-      return unless cookies[:token_state] == params[:state]
-      cookies.delete(:token_state, domain: ".#{request.domain}")
+      # Started on a custom domain: the callback runs on the subdomain (or login.) host, where
+      # the browser has no token_state cookie. Finish on the custom domain, which has it.
+      return redirect_to_custom_domain_callback(tenant_domain) if cookies[:token_state] != params[:state] && custom_domain_callback?(tenant_domain)
+      return oauth_login_failed unless cookies[:token_state] == params[:state]
+      cookies.delete(:token_state, domain: oauth_cookie_domain)
       return_to = cookies[:oauth_return_to]
-      cookies.delete(:oauth_return_to, domain: ".#{request.domain}")
+      cookies.delete(:oauth_return_to, domain: oauth_cookie_domain)
     end
 
     # if it is a default oauth, tenant is not yet set
     Current.tenant ||= Tenant.find_by(subdomain: tenant_domain)
 
-    if reason == 'tenantsignup'
-      @o_auth = OAuth.include_only_defaults.friendly.find(params[:id])
-    else
-      @o_auth = OAuth.include_defaults.friendly.find(params[:id])
-    end
+    @o_auth = OAuth.include_defaults.friendly.find(params[:id])
 
-    return if reason != 'test' and not @o_auth.is_enabled?
+    return oauth_login_failed(@o_auth.name) if reason != 'test' and not @o_auth.is_enabled?
 
     user_profile = OAuthExchangeAuthCodeForProfileWorkflow.new(
       authorization_code: params[:code],
@@ -109,29 +103,6 @@ class OAuthsController < ApplicationController
 
       render 'o_auths/test', layout: false
 
-    elsif reason == 'tenantsignup'
-
-      @o_auths = OAuth.unscoped.where(tenant_id: nil, is_enabled: true)
-
-      @user_email = query_path_from_object(user_profile, @o_auth.json_user_email_path)
-      if not @o_auth.json_user_name_path.blank?
-        @user_name = query_path_from_object(user_profile, @o_auth.json_user_name_path)
-        @user_name = @user_name || I18n.t('defaults.user_full_name')
-      end
-
-      @o_auth_login_completed = (not @user_email.blank?)
-
-      if not @o_auth_login_completed
-        flash[:alert] = I18n.t('errors.o_auth_login_error', name: @o_auth.name)
-        redirect_to signup_url
-        return
-      end
-
-      session[:o_auth_sign_up] = "#{@user_email},#{@user_name}"
-
-      @page_title = "Create your feedback space"
-      render 'tenants/new'
-
     else
 
       flash[:alert] = I18n.t('errors.unknown')
@@ -149,7 +120,13 @@ class OAuthsController < ApplicationController
 
     user = User.find(params[:user_id])
 
-    if user.oauth_token == params[:token]
+    if user.oauth_token == params[:token] && user.two_factor_enabled?
+      # The provider vouched for the account; the code still has to come from the person
+      user.invalidate_oauth_token
+      start_two_factor_login(user, remember: true)
+      target = SafeUrl.local_path?(params[:return_to]) ? params[:return_to] : nil
+      redirect_to spa_login_path({ two_factor: 1, redirect: target }.compact)
+    elsif user.oauth_token == params[:token]
       sign_in user
       remember_me user
       user.invalidate_oauth_token
@@ -157,77 +134,41 @@ class OAuthsController < ApplicationController
 
       redirect_to SafeUrl.local_path?(params[:return_to]) ? params[:return_to] : after_sign_in_path_for(user)
     else
-      flash[:alert] = I18n.t('errors.o_auth_login_error', name: @o_auth.name)
+      flash[:alert] = I18n.t('errors.o_auth_login_error', name: 'OAuth')
       redirect_to new_user_session_path
-    end
-  end
-
-  ### CRUD actions ###
-
-  def index
-    authorize OAuth
-
-    @o_auths = OAuth
-      .include_all_defaults
-      .order(tenant_id: :asc, created_at: :asc)
-
-    render json: to_json_custom(@o_auths)
-  end
-
-  def create
-    @o_auth = OAuth.new
-    @o_auth.assign_attributes(o_auth_params)
-    authorize @o_auth
-
-    if @o_auth.save
-      render json: to_json_custom(@o_auth), status: :created
-    else
-      render json: {
-        error: @o_auth.errors.full_messages
-      }, status: :unprocessable_entity
-    end
-  end
-
-  def update
-    @o_auth = OAuth.find(params[:id])
-    authorize @o_auth
-
-    if @o_auth.update(o_auth_params)
-      render json: to_json_custom(@o_auth)
-    else
-      render json: {
-        error: @o_auth.errors.full_messages
-      }, status: :unprocessable_entity
-    end
-  end
-
-  def destroy
-    @o_auth = OAuth.find(params[:id])
-    authorize @o_auth
-
-    if @o_auth.destroy
-      render json: {
-        id: params[:id]
-      }, status: :accepted
-    else
-      render json: {
-        error: @o_auth.errors.full_messages
-      }, status: :unprocessable_entity
     end
   end
 
   private
 
-    def to_json_custom(o_auth)
-      o_auth.as_json(
-        methods: [:callback_url, :default_o_auth_is_enabled],
-        except: [:client_secret]
-      )
+    # Wrong or missing state (an old or foreign link, cookies blocked) or a disabled provider
+    def oauth_login_failed(name = 'OAuth')
+      flash[:alert] = I18n.t('errors.o_auth_login_error', name: name)
+      redirect_to get_url_for(method(:new_user_session_url)), allow_other_host: true
     end
 
-    def o_auth_params
-      params
-        .require(:o_auth)
-        .permit(policy(@o_auth).permitted_attributes)
+    # Subdomains share the cookies with login.<BASE_URL host>, where default providers call back.
+    # A custom domain gets a host-only cookie (".#{request.domain}" could be ".co.uk").
+    def oauth_cookie_domain
+      return unless Rails.application.multi_tenancy?
+
+      base_host = Rails.application.base_url_host.downcase
+      host = request.host.to_s.downcase
+      ".#{base_host}" if host == base_host || host.end_with?(".#{base_host}")
+    end
+
+    def custom_domain_callback?(tenant_domain)
+      tenant = Tenant.find_by(subdomain: tenant_domain)
+      tenant&.custom_domain.present? && request.host.to_s.downcase != tenant.custom_domain
+    end
+
+    # Same path and query (code, state) on the custom domain. The provider's redirect_uri stays
+    # the subdomain URL (OAuth#callback_url), so the code exchange there still matches.
+    def redirect_to_custom_domain_callback(tenant_domain)
+      tenant = Tenant.find_by(subdomain: tenant_domain)
+      url = Current.set(tenant: tenant) do
+        get_url_for(method(:o_auth_callback_url), resource: params[:id], options: request.query_parameters.symbolize_keys)
+      end
+      redirect_to url, allow_other_host: true
     end
 end

@@ -1,0 +1,6 @@
+<label for="tenant_locale"><%= t('instance_admin.tenants.locale') %></label>
+<select id="tenant_locale" name="tenant[locale]">
+  <% I18n.available_locales.map(&:to_s).each do |code| %>
+    <option value="<%= code %>" <%= 'selected' if code == selected %>><%= code %></option>
+  <% end %>
+</select>

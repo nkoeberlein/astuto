@@ -46,7 +46,8 @@ class OAuthSignInUserWorkflow
             full_name: full_name,
             password: Devise.friendly_token,
             has_set_password: false,
-            status: 'active'
+            # Invited people are expected; everyone else may have to wait for approval (#362)
+            status: Invitation.where(email: email, accepted_at: nil).exists? ? 'active' : TenantSetting.first_or_create.status_for_new_user
           )
           user.skip_confirmation
           user.save
@@ -60,8 +61,9 @@ class OAuthSignInUserWorkflow
         end
       end
 
+      NotifyAdminsOfPendingUser.call(user) if user&.pending_approval? && user.saved_change_to_id?
       return user
-    rescue => error
+    rescue
       return nil
     end
   end

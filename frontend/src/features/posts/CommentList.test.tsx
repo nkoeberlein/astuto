@@ -69,6 +69,7 @@ describe('CommentList', () => {
         fullName: 'Ada Lovelace',
         role: 'user',
         avatarUrl: 'https://example.com/a.png',
+        twoFactorSetupRequired: false,
       },
     })
     expect(screen.getByText('Edit')).toBeInTheDocument()

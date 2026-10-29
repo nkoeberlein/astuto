@@ -10,4 +10,9 @@ if ENV["RAILS_HOSTS"].present?
   ENV["RAILS_HOSTS"].split(",").each do |host|
     Rails.application.config.hosts << host.strip
   end
+
+  # Multi-tenancy: custom domains of feedback spaces are allowed too, without listing each one
+  if ENV["MULTI_TENANCY"] == "true"
+    Rails.application.config.hosts << ->(host) { TenantHosts.known?(host) }
+  end
 end
