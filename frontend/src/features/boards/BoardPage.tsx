@@ -1,4 +1,5 @@
 import { useSuspenseInfiniteQuery, useSuspenseQuery } from '@tanstack/react-query'
+import { Rss } from 'lucide-react'
 import type { Board } from '@/api/client'
 import {
   boardPostsQuery,
@@ -41,6 +42,15 @@ export function BoardPage({ board, filters, onFiltersChange }: Props) {
             <div className="text-sm text-muted-foreground">
               <Markdown>{board.description}</Markdown>
             </div>
+          )}
+          {!session.tenant.settings.isPrivate && (
+            <a
+              href={`/boards/${encodeURIComponent(board.slug)}/feed`}
+              className="inline-flex items-center gap-1 pt-1 text-xs text-muted-foreground hover:text-foreground"
+            >
+              <Rss className="size-3" aria-hidden />
+              {t('board.rss_feed')}
+            </a>
           )}
         </div>
 

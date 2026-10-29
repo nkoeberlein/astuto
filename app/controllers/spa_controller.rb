@@ -77,6 +77,9 @@ class SpaController < ActionController::Base
       html = html.sub(/<html[^>]*>/) { %(<html lang="#{ERB::Util.html_escape(locale)}" dir="#{direction}">) }
 
       result = html.sub(%r{<title>.*?</title>}m) { "<title>#{escaped_title}</title>\n    #{meta_tags.join("\n    ")}" }
+      if (feed = feed_link(setting))
+        result = result.sub('</head>') { "    #{feed}\n  </head>" }
+      end
       if tenant.site_favicon.present?
         escaped_favicon = ERB::Util.html_escape(tenant.site_favicon)
         result = result.sub(%r{<link rel="icon"[^>]*>}) { %(<link rel="icon" href="#{escaped_favicon}" />) }
@@ -114,6 +117,8 @@ class SpaController < ActionController::Base
         ["#{I18n.t('header.menu.moderation', default: 'Moderation')} · #{site_name}", site_name]
       when %r{\Asite_settings/}
         ["#{I18n.t('header.menu.site_settings', default: 'Site settings')} · #{site_name}", site_name]
+      when 'my-feedback'
+        ["#{I18n.t('my_feedback.title', default: 'My feedback')} · #{site_name}", site_name]
       when 'profile'
         ["#{I18n.t('header.menu.profile_settings', default: 'Profile settings')} · #{site_name}", site_name]
       when 'login'
@@ -131,6 +136,21 @@ class SpaController < ActionController::Base
       else
         [site_name, site_name]
       end
+    end
+
+    # Lets browsers and feed readers find the board feed (FeedsController)
+    def feed_link(setting)
+      return if setting.is_private
+
+      slug = page_path[%r{\Aboards/([^/]+)\z}, 1]
+      return unless slug
+
+      board = Board.friendly.find(slug)
+      title = ERB::Util.html_escape(board.name)
+      href = ERB::Util.html_escape(board_feed_path(board))
+      %(<link rel="alternate" type="application/rss+xml" title="#{title}" href="#{href}" />)
+    rescue ActiveRecord::RecordNotFound
+      nil
     end
 
     def plain_excerpt(markdown)

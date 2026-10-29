@@ -24,6 +24,7 @@ Issue numbers refer to the archived [astuto/astuto](https://github.com/astuto/as
 - Legacy webhook endpoints `PUT /webhooks/:id/test` and `PUT /webhooks_preview` checked no permissions: anyone, even without an account, could fire a feedback space's webhooks with test data and read the target's response. Both now require an admin.
 
 ### Features
+- **RSS feed per board:** `/boards/<board>/feed` lists the 30 newest approved posts (status as category), linked on the board page and announced to browsers and feed readers. Public feedback spaces only.
 - **Trust levels:** new approval policy "Require approval for anonymous feedback and the first posts of each account". After a set number of approved posts (default 3) an account's new posts appear right away; rejected posts do not count.
 - **My feedback** (#429): signed-in people find the posts they created, voted for or follow at `/my-feedback` (icon in the header), most recently updated first, so status changes show up on top. Own posts appear also while they wait for approval, were rejected or merged, with a note.
 - **Translate feedback with AI:** moderators translate a post or a comment into the language of the interface with the configured AI provider (link "Translate" under the description and each comment). The translation appears next to the original, marked as AI translation, and is not stored; repeat clicks come from a one-week cache.

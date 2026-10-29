@@ -117,6 +117,7 @@ de:
   blocked_tenant:
     title: 'Dieser Feedback-Bereich wurde blockiert'
   board:
+    rss_feed: 'RSS-Feed'
     new_post:
       status: 'Anfangsstatus (nur Moderatoren)'
       submit_button: 'Feedback senden'

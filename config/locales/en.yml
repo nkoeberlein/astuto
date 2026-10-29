@@ -116,6 +116,7 @@ en:
   blocked_tenant:
     title: 'This feedback space has been blocked'
   board:
+    rss_feed: 'RSS feed'
     new_post:
       submit_button: 'Submit feedback'
       submit_anonymous_button: 'Submit anonymously'
