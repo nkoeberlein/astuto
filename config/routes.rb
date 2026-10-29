@@ -28,6 +28,8 @@ Rails.application.routes.draw do
     get '/embedded_roadmap', to: 'spa#show', as: :embedded_roadmap
     get '/boards/:id', to: 'spa#show', format: false, as: :board
     get '/boards/:id/feed', to: 'feeds#board', format: false, as: :board_feed
+    get '/robots.txt', to: 'seo#robots', format: false, as: :robots
+    get '/sitemap.xml', to: 'seo#sitemap', format: false, as: :sitemap
     get '/posts/:id', to: 'spa#show', format: false, as: :post
     get '/login', to: 'spa#show', as: :spa_login
     get '/register', to: 'spa#show', as: :spa_register

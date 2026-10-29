@@ -24,6 +24,7 @@ Issue numbers refer to the archived [astuto/astuto](https://github.com/astuto/as
 - Legacy webhook endpoints `PUT /webhooks/:id/test` and `PUT /webhooks_preview` checked no permissions: anyone, even without an account, could fire a feedback space's webhooks with test data and read the target's response. Both now require an admin.
 
 ### Features
+- **Sitemap and robots.txt:** `/sitemap.xml` lists home, roadmap, boards and approved posts of public feedback spaces for search engines. `robots.txt` is generated: it names the sitemap, keeps crawlers out of API, moderation, settings and account pages, and out of private spaces entirely.
 - **Recap emails for everyone:** the daily, weekly or monthly recap (profile, off by default) now goes to everyone who chose it, not only moderators. It lists new feedback, the most voted posts of the period and status changes of posts you follow; moderators also see how much feedback waits for approval. Nothing is sent when nothing happened.
 - **RSS feed per board:** `/boards/<board>/feed` lists the 30 newest approved posts (status as category), linked on the board page and announced to browsers and feed readers. Public feedback spaces only.
 - **Trust levels:** new approval policy "Require approval for anonymous feedback and the first posts of each account". After a set number of approved posts (default 3) an account's new posts appear right away; rejected posts do not count.
