@@ -9,7 +9,9 @@ class SpaController < ActionController::Base
     response.headers['Cache-Control'] = 'no-cache'
 
     if INDEX.exist?
-      html = inject_meta_tags(INDEX.read)
+      tenant = get_tenant_from_request(request)
+      html = tenant ? inject_meta_tags(INDEX.read, tenant) : INDEX.read
+      allow_iframe_embedding if tenant && embedded_roadmap?
       render html: html.html_safe, layout: false, content_type: 'text/html'
     else
       render plain: 'The v2 frontend is not built. Run `npm run build` in frontend/ or use the Vite dev server (port 5173).', status: :not_found
@@ -18,10 +20,18 @@ class SpaController < ActionController::Base
 
   private
 
-    def inject_meta_tags(html)
-      tenant = get_tenant_from_request(request)
-      return html unless tenant
+    # Other sites may show the roadmap in an iframe (like the legacy /embedded_roadmap).
+    # All other pages keep X-Frame-Options: SAMEORIGIN against clickjacking.
+    def embedded_roadmap?
+      params[:path].to_s == 'embedded_roadmap' && TenantSetting.first_or_create.roadmap_enabled?
+    end
 
+    def allow_iframe_embedding
+      response.headers.delete('X-Frame-Options')
+    end
+
+    # Also sets Current.tenant and the locale for the rest of the request
+    def inject_meta_tags(html, tenant)
       Current.tenant = tenant
       I18n.locale = tenant.locale.presence || I18n.default_locale
       setting = TenantSetting.first_or_create
@@ -72,7 +82,7 @@ class SpaController < ActionController::Base
         else
           [site_name, site_name]
         end
-      when 'roadmap'
+      when 'roadmap', 'embedded_roadmap'
         ["#{I18n.t('roadmap.title', default: 'Roadmap')} · #{site_name}", site_name]
       when 'login'
         ["#{I18n.t('common.forms.auth.log_in', default: 'Log in')} · #{site_name}", site_name]

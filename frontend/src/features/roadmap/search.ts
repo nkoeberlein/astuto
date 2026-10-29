@@ -47,3 +47,60 @@ export function filterRoadmap(
       return { ...column, posts, postsCount: posts.length, hiddenCount: 0 }
     })
 }
+
+// Extra URL params of the embedded roadmap, the same as in the legacy UI so existing embeds keep
+// working: ?show_boards=1,2&show_statuses=3&show_board_filter=false&show_status_filter=false
+export type EmbeddedRoadmapSearch = RoadmapSearch & {
+  show_boards?: string
+  show_statuses?: string
+  show_board_filter?: boolean
+  show_status_filter?: boolean
+}
+
+// What the embedding site allows: empty id lists mean all boards or statuses
+export type RoadmapScope = {
+  boardIds: number[]
+  statusIds: number[]
+  showBoardFilter: boolean
+  showStatusFilter: boolean
+}
+
+export function validateEmbeddedRoadmapSearch(
+  search: Record<string, unknown>,
+): EmbeddedRoadmapSearch {
+  return {
+    ...validateRoadmapSearch(search),
+    show_boards: asText(search.show_boards),
+    show_statuses: asText(search.show_statuses),
+    show_board_filter: asFlag(search.show_board_filter),
+    show_status_filter: asFlag(search.show_status_filter),
+  }
+}
+
+export function scopeFromEmbeddedSearch(search: EmbeddedRoadmapSearch): RoadmapScope {
+  return {
+    boardIds: parseIds(search.show_boards),
+    statusIds: parseIds(search.show_statuses),
+    showBoardFilter: search.show_board_filter !== false,
+    showStatusFilter: search.show_status_filter !== false,
+  }
+}
+
+// Columns and posts outside the scope are left out before the visitor's filters apply.
+// With a board scope the server's post count no longer fits, so it becomes the visible count.
+export function scopeRoadmap(columns: RoadmapColumn[], scope: RoadmapScope): RoadmapColumn[] {
+  return columns
+    .filter((column) => !scope.statusIds.length || scope.statusIds.includes(column.status.id))
+    .map((column) => {
+      if (!scope.boardIds.length) return column
+      const posts = column.posts.filter((post) => scope.boardIds.includes(post.boardId))
+      return { ...column, posts, postsCount: posts.length }
+    })
+}
+
+// "true"/"false" from the URL (booleans too, in case the search was set in code)
+function asFlag(value: unknown): boolean | undefined {
+  if (value === true || value === 'true') return true
+  if (value === false || value === 'false') return false
+  return undefined
+}

@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as Embedded_roadmapRouteImport } from './routes/embedded_roadmap'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as RoadmapRouteImport } from './routes/roadmap'
@@ -21,6 +22,11 @@ import { Route as PostsPostSlugRouteImport } from './routes/posts.$postSlug'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const Embedded_roadmapRoute = Embedded_roadmapRouteImport.update({
+  id: '/embedded_roadmap',
+  path: '/embedded_roadmap',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -61,6 +67,7 @@ const PostsPostSlugRoute = PostsPostSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/embedded_roadmap': typeof Embedded_roadmapRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/roadmap': typeof RoadmapRoute
@@ -71,6 +78,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/embedded_roadmap': typeof Embedded_roadmapRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/roadmap': typeof RoadmapRoute
@@ -82,6 +90,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/embedded_roadmap': typeof Embedded_roadmapRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/roadmap': typeof RoadmapRoute
@@ -94,6 +103,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/embedded_roadmap'
     | '/login'
     | '/register'
     | '/roadmap'
@@ -104,6 +114,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/embedded_roadmap'
     | '/login'
     | '/register'
     | '/roadmap'
@@ -114,6 +125,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/embedded_roadmap'
     | '/login'
     | '/register'
     | '/roadmap'
@@ -125,6 +137,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  Embedded_roadmapRoute: typeof Embedded_roadmapRoute
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
   RoadmapRoute: typeof RoadmapRoute
@@ -141,6 +154,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/embedded_roadmap': {
+      id: '/embedded_roadmap'
+      path: '/embedded_roadmap'
+      fullPath: '/embedded_roadmap'
+      preLoaderRoute: typeof Embedded_roadmapRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -197,6 +217,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  Embedded_roadmapRoute: Embedded_roadmapRoute,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
   RoadmapRoute: RoadmapRoute,

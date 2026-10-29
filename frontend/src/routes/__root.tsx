@@ -1,6 +1,6 @@
 import type { QueryClient } from '@tanstack/react-query'
 import { useQuery, useSuspenseQuery } from '@tanstack/react-query'
-import { createRootRouteWithContext, Outlet } from '@tanstack/react-router'
+import { createRootRouteWithContext, Outlet, useMatches } from '@tanstack/react-router'
 import { useEffect } from 'react'
 import type { Session } from '@/api/client'
 import { boardsQuery, sessionQuery, translationsQuery } from '@/api/queries'
@@ -11,6 +11,13 @@ import { escapeCustomCss } from '@/lib/custom-css'
 import { I18nProvider } from '@/lib/i18n'
 
 export type RouterContext = { queryClient: QueryClient }
+
+declare module '@tanstack/react-router' {
+  interface StaticDataRouteOption {
+    // Page for an iframe on another site: no header and footer
+    embedded?: boolean
+  }
+}
 
 export const Route = createRootRouteWithContext<RouterContext>()({
   loader: async ({ context: { queryClient } }) => {
@@ -28,6 +35,7 @@ function RootLayout() {
   const { data: session } = useSuspenseQuery(sessionQuery)
   const { data: translations } = useSuspenseQuery(translationsQuery(session.tenant.locale))
   const { tenant } = session
+  const embedded = useMatches({ select: (matches) => matches.some((m) => m.staticData.embedded) })
 
   useEffect(() => {
     document.documentElement.lang = tenant.locale
@@ -43,13 +51,19 @@ function RootLayout() {
       {tenant.settings.customCss && (
         <style data-astuto-custom-css>{escapeCustomCss(tenant.settings.customCss)}</style>
       )}
-      <div className="flex min-h-dvh flex-col">
-        <HeaderWithBoards />
-        <main className="w-full flex-1 px-4 py-6 sm:px-6 lg:px-10">
+      {embedded ? (
+        <main className="w-full px-4 py-4">
           <Outlet />
         </main>
-        <SiteFooter showPoweredBy={tenant.settings.showPoweredBy} />
-      </div>
+      ) : (
+        <div className="flex min-h-dvh flex-col">
+          <HeaderWithBoards />
+          <main className="w-full flex-1 px-4 py-6 sm:px-6 lg:px-10">
+            <Outlet />
+          </main>
+          <SiteFooter showPoweredBy={tenant.settings.showPoweredBy} />
+        </div>
+      )}
     </I18nProvider>
   )
 }

@@ -5,6 +5,9 @@ Issue numbers refer to the archived [astuto/astuto](https://github.com/astuto/as
 
 ## [Unreleased]
 
+### Features
+- v2 frontend: embeddable roadmap at `/next/embedded_roadmap` for an iframe on another site, without header and footer; posts open in a new tab. It takes the legacy embed parameters (`show_boards`, `show_statuses`, `show_board_filter=false`, `show_status_filter=false`), so existing embed codes keep working after the switch from `/next` to `/`. Only this page may be framed by other sites, and only while the roadmap is enabled.
+
 ## [2.0.0-alpha.3] – 2026-10-26
 
 Image: `ghcr.io/nkoeberlein/astuto-evo:2.0.0-alpha.3` (amd64 + arm64).

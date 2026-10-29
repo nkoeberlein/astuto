@@ -110,7 +110,7 @@ Die häufigsten Probleme aus den Upstream-Issues: HTTPS hinter Reverse Proxy (#4
 4. ✅ Board-Seite (Suche, Sortierung, Statusfilter, Mehr laden) und Post-Detail mit Kommentaren
 5. ✅ Schreibende Aktionen: Post anlegen (auch anonym, mit Freigabe-Regeln und Spam-Schutz), Vote (optimistisch), Kommentar und Antwort, Moderator-Updates, Follow, Bearbeiten/Löschen, Statuswechsel; CSRF-Fluss getestet
 6. ✅ Roadmap-Seite, serverseitige Meta-Tags
-7. Auth-Seiten (Login, Registrierung, Passwort, OAuth) und eingebettete Roadmap
+7. ✅ Auth-Seiten (Login, Registrierung, Passwort, OAuth) und eingebettete Roadmap
 8. Moderation und Site Settings
 9. Altes Frontend und dessen Gems/Pakete entfernen (`react-rails`, `i18n-js`, Webpack, Bootstrap)
 

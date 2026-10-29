@@ -4,6 +4,9 @@ import {
   filterRoadmap,
   filtersFromRoadmapSearch,
   roadmapSearchFromFilters,
+  scopeFromEmbeddedSearch,
+  scopeRoadmap,
+  validateEmbeddedRoadmapSearch,
   validateRoadmapSearch,
 } from './search'
 
@@ -76,5 +79,49 @@ describe('filterRoadmap', () => {
     expect(result[0]?.posts.map((p) => p.id)).toEqual([1])
     expect(result[0]?.postsCount).toBe(1)
     expect(result[0]?.hiddenCount).toBe(0)
+  })
+})
+
+describe('embedded roadmap', () => {
+  const columns = [column(1, [post(1, 10), post(2, 20)], 5), column(2, [post(3, 20)])]
+
+  it('reads the legacy embed params', () => {
+    const search = validateEmbeddedRoadmapSearch({
+      show_boards: '10,20',
+      show_statuses: 2,
+      show_board_filter: 'false',
+      show_status_filter: 'yes',
+      sort: 'recently_updated',
+    })
+    expect(search).toMatchObject({ show_board_filter: false, show_status_filter: undefined })
+    expect(scopeFromEmbeddedSearch(search)).toEqual({
+      boardIds: [10, 20],
+      statusIds: [2],
+      showBoardFilter: false,
+      showStatusFilter: true,
+    })
+  })
+
+  it('shows everything and both filters without params', () => {
+    expect(scopeFromEmbeddedSearch(validateEmbeddedRoadmapSearch({}))).toEqual({
+      boardIds: [],
+      statusIds: [],
+      showBoardFilter: true,
+      showStatusFilter: true,
+    })
+  })
+
+  it('leaves out columns and posts outside the scope', () => {
+    const scope = { boardIds: [20], statusIds: [1], showBoardFilter: true, showStatusFilter: true }
+    const result = scopeRoadmap(columns, scope)
+    expect(result).toHaveLength(1)
+    expect(result[0]?.posts.map((p) => p.id)).toEqual([2])
+    // The server count includes posts of other boards
+    expect(result[0]?.postsCount).toBe(1)
+  })
+
+  it('keeps the server count without a board scope', () => {
+    const scope = { boardIds: [], statusIds: [], showBoardFilter: true, showStatusFilter: true }
+    expect(scopeRoadmap(columns, scope)).toEqual(columns)
   })
 })

@@ -117,7 +117,7 @@ Empfehlung (roadmap.md, Abschnitt 3): getrenntes Frontend mit React 19 + TS 7 + 
 - [x] Schreibende Endpunkte + UI: Post anlegen (anonym, Freigabe-Policy, Honeypot + Mindestzeit), Vote (idempotent, optimistisch), Kommentar/Antwort (Antworten nur im selben Post), Moderator-Update, Follow; CSRF-Fluss mit aktiviertem Schutz getestet
 - [x] Posts und Kommentare bearbeiten/löschen, Status ändern (Moderation) im neuen Frontend (`PATCH/DELETE /api/app/v1/posts/:id`, `PATCH/DELETE /api/app/v1/posts/:post_id/comments/:id`, `PostPage.tsx`, `CommentList.tsx`)
 - [x] Roadmap-Seite (`/next/roadmap`, `GET /api/app/v1/roadmap`): Spalten je Status, Board- und Status-Filter in der URL, Startseite ohne Root-Board zeigt die Roadmap wie im alten UI
-- [ ] Einbettbare Roadmap (`/embedded_roadmap`) im neuen Frontend
+- [x] Einbettbare Roadmap (`/next/embedded_roadmap`) im neuen Frontend: ohne Header/Footer, Posts im neuen Tab, alte Parameter `show_boards`, `show_statuses`, `show_board_filter`, `show_status_filter`; nur diese Seite ist für fremde iframes freigegeben (`SpaController`), und nur bei aktiver Roadmap
 - [x] Login/Registrierung/Passwort als SPA-Seiten (Devise-JSON: `POST/DELETE /api/app/v1/session`, `POST /api/app/v1/registration`, `POST/PATCH /api/app/v1/password`), OAuth-Buttons (`/next/login`, `/next/register`, `/next/password/forgot`, `/next/password/reset`)
 - [x] CI: OpenAPI neu erzeugen und gegen `frontend/src/api/schema.d.ts` vergleichen (Drift-Check in `run-tests.yml`, nutzt die beim Image-Build erzeugte OpenAPI-Datei; in der CI noch nicht gelaufen)
 - [x] Meta-Tags (Titel, Beschreibung, Open Graph) für öffentliche Seiten serverseitig in `SpaController` (`spec/requests/spa_meta_tags_spec.rb`)
