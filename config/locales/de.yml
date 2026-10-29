@@ -74,6 +74,8 @@ de:
       approve: 'Freigeben'
       reject: 'Ablehnen'
       copy_to_clipboard: 'Copy to clipboard'
+      move_up: 'Nach oben'
+      move_down: 'Nach unten'
     datetime:
       now: 'gerade eben'
       minutes:
@@ -230,6 +232,8 @@ de:
       form:
         name: 'Boardname'
         description: 'Boardbeschreibung (optional)'
+        slug: 'URL (optional)'
+        slug_help: 'Teil der Board-Adresse, z. B. /boards/feature-requests. Leer lassen, um sie aus dem Namen zu erzeugen.'
     post_statuses:
       title: 'Status'
       empty: 'Es existiert kein Status. Erstelle unten eine!'

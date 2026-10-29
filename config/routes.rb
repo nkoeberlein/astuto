@@ -110,10 +110,13 @@ Rails.application.routes.draw do
           resource :registration, only: [:create]
           resource :password, only: [:create, :update]
           resources :translations, only: [:show], param: :locale, constraints: { locale: /[A-Za-z-]+/ }
-          resources :boards, only: [:index, :show] do
+          resources :boards, only: [:index, :show, :create, :update, :destroy] do
+            put :reorder, on: :collection
             resources :posts, only: [:index, :create]
           end
-          resources :post_statuses, only: [:index]
+          resources :post_statuses, only: [:index, :create, :update, :destroy] do
+            put :reorder, on: :collection
+          end
           resource :roadmap, only: [:show]
           resources :posts, only: [:show, :update, :destroy] do
             resources :comments, only: [:index, :create, :update, :destroy]

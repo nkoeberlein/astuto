@@ -21,13 +21,5 @@ module Api::App::V1::Moderation
         feedbackApprovalPolicy: tenant_setting.feedback_approval_policy
       }
     end
-
-    private
-
-      def require_moderator
-        return render_error(:unauthorized, I18n.t('errors.not_logged_in')) unless user_signed_in?
-
-        render_error(:forbidden, I18n.t('errors.unauthorized')) unless current_user.moderator?
-      end
   end
 end

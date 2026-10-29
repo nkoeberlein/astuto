@@ -10,9 +10,10 @@ import { UserAvatar } from '@/components/UserAvatar'
 import { Button } from '@/components/ui/button'
 import { formatRelativeTime } from '@/lib/format'
 import { useI18n } from '@/lib/i18n'
+import { excerpt } from '@/lib/text'
 import { cn } from '@/lib/utils'
 import { ModerationNav } from './ModerationNav'
-import { excerpt, type ModerationTab, postsInTab } from './queue'
+import { type ModerationTab, postsInTab } from './queue'
 
 // Feedback queue (legacy: /moderation/feedback): approve or reject posts waiting for approval
 export function FeedbackModerationPage({ tab }: { tab: ModerationTab }) {

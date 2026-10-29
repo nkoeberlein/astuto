@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { ModerationPost, ModerationQueue } from '@/api/client'
-import { applyModeration, excerpt, postsInTab } from './queue'
+import { applyModeration, postsInTab } from './queue'
 
 const post = (id: number, approvalStatus: ModerationPost['approvalStatus']): ModerationPost => ({
   id,
@@ -43,16 +43,5 @@ describe('applyModeration', () => {
 
   it('ignores posts that are not in the queue', () => {
     expect(applyModeration(queue, 99, 'approved')).toBe(queue)
-  })
-})
-
-describe('excerpt', () => {
-  it('strips Markdown marks and shortens long text', () => {
-    expect(excerpt('## **Dark** mode\n\n- for [all](https://x.y) pages ![logo](a.png)')).toBe(
-      'Dark mode for all pages logo',
-    )
-    expect(excerpt('Buy now! (really)')).toBe('Buy now! (really)')
-    expect(excerpt('a'.repeat(250))).toHaveLength(201)
-    expect(excerpt(null)).toBe('')
   })
 })

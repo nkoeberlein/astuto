@@ -201,7 +201,49 @@ export interface paths {
             };
         };
         put?: never;
-        post?: never;
+        /** Create a board (admins) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["BoardInput"];
+                };
+            };
+            responses: {
+                /** @description created at the end, slug from the name */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Board"];
+                    };
+                };
+                /** @description moderators cannot create boards */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description duplicate name */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
         delete?: never;
         options?: never;
         head?: never;
@@ -213,8 +255,7 @@ export interface paths {
             query?: never;
             header?: never;
             path: {
-                /** @description Board id or slug */
-                id: string;
+                id: number;
             };
             cookie?: never;
         };
@@ -224,8 +265,7 @@ export interface paths {
                 query?: never;
                 header?: never;
                 path: {
-                    /** @description Board id or slug */
-                    id: string;
+                    id: number;
                 };
                 cookie?: never;
             };
@@ -253,10 +293,63 @@ export interface paths {
         };
         put?: never;
         post?: never;
-        delete?: never;
+        /** Delete a board and its posts (admins) */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description deleted, the other boards move up */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description moderators cannot delete boards */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
         options?: never;
         head?: never;
-        patch?: never;
+        /** Update a board (admins) */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["BoardInput"];
+                };
+            };
+            responses: {
+                /** @description renamed with a custom slug */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Board"];
+                    };
+                };
+            };
+        };
         trace?: never;
     };
     "/api/app/v1/post_statuses": {
@@ -294,7 +387,43 @@ export interface paths {
             };
         };
         put?: never;
-        post?: never;
+        /** Create a status (admins) */
+        post: {
+            parameters: {
+                query?: {
+                    /** @description Optional board id or slug to filter out unused statuses when hideUnusedStatusesInFilterByStatus is enabled */
+                    board_id?: string;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["PostStatusInput"];
+                };
+            };
+            responses: {
+                /** @description created */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PostStatus"];
+                    };
+                };
+                /** @description invalid color */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
         delete?: never;
         options?: never;
         head?: never;
@@ -1267,6 +1396,168 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/app/v1/boards/reorder": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Reorder boards (admins) */
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["Reorder"];
+                };
+            };
+            responses: {
+                /** @description boards in the new order */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Board"][];
+                    };
+                };
+                /** @description ids missing a board */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/post_statuses/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete a status (admins); its posts keep existing without one */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description deleted */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /** Update a status (admins) */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["PostStatusInput"];
+                };
+            };
+            responses: {
+                /** @description updated */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PostStatus"];
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/api/app/v1/post_statuses/reorder": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Reorder statuses (admins) */
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["Reorder"];
+                };
+            };
+            responses: {
+                /** @description statuses in the new order */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PostStatus"][];
+                    };
+                };
+                /** @description duplicate ids */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/app/v1/site_settings/general": {
         parameters: {
             query?: never;
@@ -1728,6 +2019,22 @@ export interface components {
         CustomLink: {
             label: string;
             url: string;
+        };
+        BoardInput: {
+            name?: string;
+            description?: string | null;
+            /** @description URL part; blank generates one from the name */
+            slug?: string | null;
+        };
+        PostStatusInput: {
+            name?: string;
+            /** @description Hex color, e.g. #0077cc */
+            color?: string;
+            showInRoadmap?: boolean;
+        };
+        Reorder: {
+            /** @description Every id, in the new order */
+            ids: number[];
         };
         VoteState: {
             liked: boolean;

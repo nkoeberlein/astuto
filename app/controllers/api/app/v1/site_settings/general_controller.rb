@@ -57,12 +57,6 @@ module Api::App::V1::SiteSettings
 
     private
 
-      def require_admin
-        return render_error(:unauthorized, I18n.t('errors.not_logged_in')) unless user_signed_in?
-
-        render_error(:forbidden, I18n.t('errors.unauthorized')) unless current_user.admin?
-      end
-
       # snake_case changes from the camelCase body, limited to fields the policy permits
       def changes_for(fields, permitted)
         permitted_names = permitted.map { |entry| entry.is_a?(Hash) ? entry.keys.first.to_s : entry.to_s }

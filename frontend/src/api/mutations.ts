@@ -8,10 +8,14 @@ import { applyModeration } from '@/features/moderation/queue'
 import { replaceUser } from '@/features/moderation/users'
 import {
   api,
+  type Board,
+  type BoardInput,
   type Comment,
   type GeneralSettings,
   type Post,
   type PostPage,
+  type PostStatus,
+  type PostStatusInput,
   type Schemas,
   type Session,
   setCsrfToken,
@@ -19,10 +23,12 @@ import {
   unwrap,
 } from './client'
 import {
+  boardsQuery,
   commentsQuery,
   generalSettingsQuery,
   moderationPostsQuery,
   postQuery,
+  postStatusesQuery,
   sessionQuery,
 } from './queries'
 
@@ -369,4 +375,92 @@ export function useResetPassword() {
       ),
     onSuccess: (result) => applySession(queryClient, result.session),
   })
+}
+
+// Boards and statuses (site settings, admins). Every change reloads the lists that show them.
+function useInvalidateListsAfterChange() {
+  const queryClient = useQueryClient()
+  return () => {
+    void queryClient.invalidateQueries({ queryKey: ['boards'] })
+    void queryClient.invalidateQueries({ queryKey: ['postStatuses'] })
+    void queryClient.invalidateQueries({ queryKey: ['roadmap'] })
+    void queryClient.invalidateQueries({ queryKey: ['posts'] })
+  }
+}
+
+export function useBoardMutations() {
+  const queryClient = useQueryClient()
+  const onSettled = useInvalidateListsAfterChange()
+  return {
+    create: useMutation({
+      mutationFn: (board: BoardInput) => unwrap(api.POST('/api/app/v1/boards', { body: board })),
+      onSettled,
+    }),
+    update: useMutation({
+      mutationFn: ({ id, ...board }: BoardInput & { id: number }) =>
+        unwrap(
+          api.PATCH('/api/app/v1/boards/{id}', {
+            params: { path: { id } },
+            body: board,
+          }),
+        ),
+      onSettled,
+    }),
+    remove: useMutation({
+      mutationFn: (id: number) =>
+        unwrap(api.DELETE('/api/app/v1/boards/{id}', { params: { path: { id } } })),
+      onSettled,
+    }),
+    reorder: useMutation({
+      mutationFn: (ids: number[]) =>
+        unwrap(api.PUT('/api/app/v1/boards/reorder', { body: { ids } })),
+      // The new order shows at once; a failure reloads the saved one
+      onMutate: (ids) => {
+        queryClient.setQueryData<Board[]>(
+          boardsQuery.queryKey,
+          (boards) => boards && sortByIds(boards, ids),
+        )
+      },
+      onSettled,
+    }),
+  }
+}
+
+export function usePostStatusMutations() {
+  const queryClient = useQueryClient()
+  const onSettled = useInvalidateListsAfterChange()
+  return {
+    create: useMutation({
+      mutationFn: (status: PostStatusInput) =>
+        unwrap(api.POST('/api/app/v1/post_statuses', { body: status })),
+      onSettled,
+    }),
+    update: useMutation({
+      mutationFn: ({ id, ...status }: PostStatusInput & { id: number }) =>
+        unwrap(
+          api.PATCH('/api/app/v1/post_statuses/{id}', { params: { path: { id } }, body: status }),
+        ),
+      onSettled,
+    }),
+    remove: useMutation({
+      mutationFn: (id: number) =>
+        unwrap(api.DELETE('/api/app/v1/post_statuses/{id}', { params: { path: { id } } })),
+      onSettled,
+    }),
+    reorder: useMutation({
+      mutationFn: (ids: number[]) =>
+        unwrap(api.PUT('/api/app/v1/post_statuses/reorder', { body: { ids } })),
+      onMutate: (ids) => {
+        queryClient.setQueryData<PostStatus[]>(
+          postStatusesQuery.queryKey,
+          (statuses) => statuses && sortByIds(statuses, ids),
+        )
+      },
+      onSettled,
+    }),
+  }
+}
+
+function sortByIds<T extends { id: number }>(items: T[], ids: number[]): T[] {
+  return [...items].sort((a, b) => ids.indexOf(a.id) - ids.indexOf(b.id))
 }

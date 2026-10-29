@@ -60,12 +60,6 @@ module Api::App::V1::Moderation
 
     private
 
-      def require_moderator
-        return render_error(:unauthorized, I18n.t('errors.not_logged_in')) unless user_signed_in?
-
-        render_error(:forbidden, I18n.t('errors.unauthorized')) unless current_user.moderator?
-      end
-
       # Nobody changes themselves or the owner; deleted accounts stay as they are
       def manageable?(user)
         user.id != current_user.id && !user.owner? && !user.deleted? && UserPolicy.new(current_user, user).update?

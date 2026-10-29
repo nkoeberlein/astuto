@@ -126,6 +126,12 @@ module Swagger
           hideUnusedStatusesInFilterByStatus: BOOLEAN, showPoweredBy: BOOLEAN
         }, required: []),
         CustomLink: object({ label: STRING, url: STRING }),
+        BoardInput: object({
+          name: STRING, description: NULLABLE_STRING,
+          slug: NULLABLE_STRING.merge(description: 'URL part; blank generates one from the name')
+        }, required: []),
+        PostStatusInput: object({ name: STRING, color: STRING.merge(description: 'Hex color, e.g. #0077cc'), showInRoadmap: BOOLEAN }, required: []),
+        Reorder: object({ ids: { type: :array, items: INTEGER, description: 'Every id, in the new order' } }),
         VoteState: object({ liked: BOOLEAN, likesCount: INTEGER }),
         FollowState: object({ followed: BOOLEAN }),
         Summary: object({ summary: STRING }),

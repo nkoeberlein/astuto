@@ -23,6 +23,8 @@ export type UserStatus = ModerationUser['status']
 export type GeneralSettings = Schemas['GeneralSettings']
 export type UpdateGeneralSettings = Schemas['UpdateGeneralSettings']
 export type CustomLink = Schemas['CustomLink']
+export type BoardInput = Schemas['BoardInput']
+export type PostStatusInput = Schemas['PostStatusInput']
 export type Translations = { [key: string]: string | Translations }
 
 export class ApiError extends Error {

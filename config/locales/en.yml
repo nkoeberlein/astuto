@@ -90,6 +90,8 @@ en:
       reject: 'Reject'
       copy_to_clipboard: 'Copy to clipboard'
       preview: 'Preview'
+      move_up: 'Move up'
+      move_down: 'Move down'
     datetime:
       now: 'just now'
       minutes:
@@ -256,6 +258,8 @@ en:
       form:
         name: 'Board name'
         description: 'Board description (optional)'
+        slug: 'URL (optional)'
+        slug_help: 'Part of the board address, e.g. /boards/feature-requests. Leave empty to generate it from the name.'
     post_statuses:
       title: 'Statuses'
       empty: 'There are no statuses. Create one below!'

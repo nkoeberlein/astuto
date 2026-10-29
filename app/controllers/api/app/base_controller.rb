@@ -39,6 +39,30 @@ module Api
           render_error(:unauthorized, I18n.t('errors.not_logged_in')) unless user_signed_in?
         end
 
+        def require_moderator
+          return render_error(:unauthorized, I18n.t('errors.not_logged_in')) unless user_signed_in?
+
+          render_error(:forbidden, I18n.t('errors.unauthorized')) unless current_user.moderator?
+        end
+
+        def require_admin
+          return render_error(:unauthorized, I18n.t('errors.not_logged_in')) unless user_signed_in?
+
+          render_error(:forbidden, I18n.t('errors.unauthorized')) unless current_user.admin?
+        end
+
+        # Sets the "order" column of an Orderable model from a full list of ids (first = 0).
+        # Returns false unless the list contains every record exactly once.
+        def apply_order(model, ids)
+          ids = Array(ids).map(&:to_i)
+          return false unless ids.uniq.size == ids.size && ids.sort == model.pluck(:id).sort
+
+          model.transaction do
+            ids.each_with_index { |id, index| model.where(id: id).update_all(order: index, updated_at: Time.current) }
+          end
+          true
+        end
+
         # Posts that are not approved are only visible to moderators
         def find_visible_post(id)
           post = Post.friendly.find(id)

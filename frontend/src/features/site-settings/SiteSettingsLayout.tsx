@@ -3,11 +3,12 @@ import { ExternalLink } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { useI18n } from '@/lib/i18n'
 
+// Sections rebuilt in the v2 frontend
+const V2_SECTIONS = ['general', 'boards', 'post_statuses'] as const
+
 // Sections still in the legacy UI open there until they are rebuilt
 const LEGACY_SECTIONS = [
   'authentication',
-  'boards',
-  'post_statuses',
   'roadmap',
   'invitations',
   'appearance',
@@ -25,17 +26,19 @@ export function SiteSettingsLayout({ children }: { children: ReactNode }) {
       <nav aria-label={t('site_settings.menu.title')} className="space-y-3">
         <h1 className="text-2xl font-semibold tracking-tight">{t('site_settings.menu.title')}</h1>
         <ul className="-mx-1 flex gap-1 overflow-x-auto md:flex-col md:overflow-visible">
-          <li>
-            <Link
-              to="/site_settings/general"
-              className={itemClass}
-              activeProps={{
-                className: 'bg-primary/10 font-semibold text-primary ring-1 ring-primary/20',
-              }}
-            >
-              {t('site_settings.menu.general')}
-            </Link>
-          </li>
+          {V2_SECTIONS.map((section) => (
+            <li key={section}>
+              <Link
+                to={`/site_settings/${section}`}
+                className={itemClass}
+                activeProps={{
+                  className: 'bg-primary/10 font-semibold text-primary ring-1 ring-primary/20',
+                }}
+              >
+                {t(`site_settings.menu.${section}`)}
+              </Link>
+            </li>
+          ))}
           {LEGACY_SECTIONS.map((section) => (
             <li key={section}>
               <a href={`/site_settings/${section}`} className={itemClass}>
