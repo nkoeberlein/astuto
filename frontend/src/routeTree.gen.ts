@@ -21,6 +21,7 @@ import { Route as PasswordForgotRouteImport } from './routes/password.forgot'
 import { Route as PasswordResetRouteImport } from './routes/password.reset'
 import { Route as PostsPostSlugRouteImport } from './routes/posts.$postSlug'
 import { Route as Site_settingsAppearanceRouteImport } from './routes/site_settings.appearance'
+import { Route as Site_settingsAuthenticationRouteImport } from './routes/site_settings.authentication'
 import { Route as Site_settingsBoardsRouteImport } from './routes/site_settings.boards'
 import { Route as Site_settingsGeneralRouteImport } from './routes/site_settings.general'
 import { Route as Site_settingsPost_statusesRouteImport } from './routes/site_settings.post_statuses'
@@ -86,6 +87,12 @@ const Site_settingsAppearanceRoute = Site_settingsAppearanceRouteImport.update({
   path: '/site_settings/appearance',
   getParentRoute: () => rootRouteImport,
 } as any)
+const Site_settingsAuthenticationRoute =
+  Site_settingsAuthenticationRouteImport.update({
+    id: '/site_settings/authentication',
+    path: '/site_settings/authentication',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const Site_settingsBoardsRoute = Site_settingsBoardsRouteImport.update({
   id: '/site_settings/boards',
   path: '/site_settings/boards',
@@ -121,6 +128,7 @@ export interface FileRoutesByFullPath {
   '/password/reset': typeof PasswordResetRoute
   '/posts/$postSlug': typeof PostsPostSlugRoute
   '/site_settings/appearance': typeof Site_settingsAppearanceRoute
+  '/site_settings/authentication': typeof Site_settingsAuthenticationRoute
   '/site_settings/boards': typeof Site_settingsBoardsRoute
   '/site_settings/general': typeof Site_settingsGeneralRoute
   '/site_settings/post_statuses': typeof Site_settingsPost_statusesRoute
@@ -139,6 +147,7 @@ export interface FileRoutesByTo {
   '/password/reset': typeof PasswordResetRoute
   '/posts/$postSlug': typeof PostsPostSlugRoute
   '/site_settings/appearance': typeof Site_settingsAppearanceRoute
+  '/site_settings/authentication': typeof Site_settingsAuthenticationRoute
   '/site_settings/boards': typeof Site_settingsBoardsRoute
   '/site_settings/general': typeof Site_settingsGeneralRoute
   '/site_settings/post_statuses': typeof Site_settingsPost_statusesRoute
@@ -158,6 +167,7 @@ export interface FileRoutesById {
   '/password/reset': typeof PasswordResetRoute
   '/posts/$postSlug': typeof PostsPostSlugRoute
   '/site_settings/appearance': typeof Site_settingsAppearanceRoute
+  '/site_settings/authentication': typeof Site_settingsAuthenticationRoute
   '/site_settings/boards': typeof Site_settingsBoardsRoute
   '/site_settings/general': typeof Site_settingsGeneralRoute
   '/site_settings/post_statuses': typeof Site_settingsPost_statusesRoute
@@ -178,6 +188,7 @@ export interface FileRouteTypes {
     | '/password/reset'
     | '/posts/$postSlug'
     | '/site_settings/appearance'
+    | '/site_settings/authentication'
     | '/site_settings/boards'
     | '/site_settings/general'
     | '/site_settings/post_statuses'
@@ -196,6 +207,7 @@ export interface FileRouteTypes {
     | '/password/reset'
     | '/posts/$postSlug'
     | '/site_settings/appearance'
+    | '/site_settings/authentication'
     | '/site_settings/boards'
     | '/site_settings/general'
     | '/site_settings/post_statuses'
@@ -214,6 +226,7 @@ export interface FileRouteTypes {
     | '/password/reset'
     | '/posts/$postSlug'
     | '/site_settings/appearance'
+    | '/site_settings/authentication'
     | '/site_settings/boards'
     | '/site_settings/general'
     | '/site_settings/post_statuses'
@@ -233,6 +246,7 @@ export interface RootRouteChildren {
   PasswordResetRoute: typeof PasswordResetRoute
   PostsPostSlugRoute: typeof PostsPostSlugRoute
   Site_settingsAppearanceRoute: typeof Site_settingsAppearanceRoute
+  Site_settingsAuthenticationRoute: typeof Site_settingsAuthenticationRoute
   Site_settingsBoardsRoute: typeof Site_settingsBoardsRoute
   Site_settingsGeneralRoute: typeof Site_settingsGeneralRoute
   Site_settingsPost_statusesRoute: typeof Site_settingsPost_statusesRoute
@@ -325,6 +339,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Site_settingsAppearanceRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/site_settings/authentication': {
+      id: '/site_settings/authentication'
+      path: '/site_settings/authentication'
+      fullPath: '/site_settings/authentication'
+      preLoaderRoute: typeof Site_settingsAuthenticationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/site_settings/boards': {
       id: '/site_settings/boards'
       path: '/site_settings/boards'
@@ -369,6 +390,7 @@ const rootRouteChildren: RootRouteChildren = {
   PasswordResetRoute: PasswordResetRoute,
   PostsPostSlugRoute: PostsPostSlugRoute,
   Site_settingsAppearanceRoute: Site_settingsAppearanceRoute,
+  Site_settingsAuthenticationRoute: Site_settingsAuthenticationRoute,
   Site_settingsBoardsRoute: Site_settingsBoardsRoute,
   Site_settingsGeneralRoute: Site_settingsGeneralRoute,
   Site_settingsPost_statusesRoute: Site_settingsPost_statusesRoute,

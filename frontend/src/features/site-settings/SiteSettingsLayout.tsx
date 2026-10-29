@@ -4,10 +4,17 @@ import type { ReactNode } from 'react'
 import { useI18n } from '@/lib/i18n'
 
 // Sections rebuilt in the v2 frontend
-const V2_SECTIONS = ['general', 'boards', 'post_statuses', 'roadmap', 'appearance'] as const
+const V2_SECTIONS = [
+  'general',
+  'boards',
+  'post_statuses',
+  'roadmap',
+  'authentication',
+  'appearance',
+] as const
 
 // Sections still in the legacy UI open there until they are rebuilt
-const LEGACY_SECTIONS = ['authentication', 'invitations', 'appearance', 'webhooks'] as const
+const LEGACY_SECTIONS = ['invitations', 'webhooks'] as const
 
 const itemClass =
   'flex items-center justify-between gap-2 whitespace-nowrap rounded-lg px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground'

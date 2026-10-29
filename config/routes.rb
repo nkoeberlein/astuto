@@ -130,6 +130,9 @@ Rails.application.routes.draw do
           end
           namespace :site_settings do
             resource :general, only: [:show, :update], controller: 'general'
+            resources :o_auths, only: [:index, :create, :update, :destroy] do
+              put :default, on: :member
+            end
           end
         end
       end

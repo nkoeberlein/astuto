@@ -6,6 +6,7 @@ Issue numbers refer to the archived [astuto/astuto](https://github.com/astuto/as
 ## [Unreleased]
 
 ### Features
+- v2 frontend: site settings › Authentication at `/next/site_settings/authentication`: email registration rules (everyone, certain domains, nobody) and OAuth providers – create, edit, switch on or off, test in a popup, copy the callback URL, delete; default providers of the instance can be switched on or off per feedback space. The client secret is never sent to the browser; leaving it empty when editing keeps the current one. New endpoints under `/api/app/v1/site_settings/o_auths`.
 - v2 frontend: site settings › Appearance at `/next/site_settings/appearance`: custom CSS with live preview before saving (`customCss` in `GET/PATCH /api/app/v1/site_settings/general`).
 - v2 frontend: site settings › Roadmap at `/next/site_settings/roadmap`: move statuses into or out of the roadmap, and build the embed code for `/next/embedded_roadmap` (filters, boards, statuses) with a copy button.
 - v2 frontend: site settings › Boards and › Statuses at `/next/site_settings/boards` and `/next/site_settings/post_statuses` (admins): create, edit (boards with their URL slug, statuses with color and roadmap flag), delete after a confirmation, and reorder with up/down buttons that also work with the keyboard. New app API endpoints: `POST/PATCH/DELETE /api/app/v1/boards(/:id)`, `PUT /api/app/v1/boards/reorder`, and the same for `/api/app/v1/post_statuses`.

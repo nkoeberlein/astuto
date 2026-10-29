@@ -107,6 +107,8 @@ module Swagger
           collapseBoardsInHeader: { type: :string, enum: %w[no_collapse always_collapse] },
           mailLogoSize: INTEGER, showVoteCount: BOOLEAN, showVoteButtonInBoard: BOOLEAN,
           hideUnusedStatusesInFilterByStatus: BOOLEAN, showPoweredBy: BOOLEAN, customCss: NULLABLE_STRING,
+          emailRegistrationPolicy: { type: :string, enum: %w[all_allowed custom_domains_allowed none_allowed] },
+          allowedEmailDomains: NULLABLE_STRING.merge(description: 'Comma-separated, for custom_domains_allowed'),
           multiTenancy: BOOLEAN.merge(description: 'Custom domains only exist with MULTI_TENANCY=true'),
           availableLocales: { type: :array, items: STRING }
         }),
@@ -123,7 +125,9 @@ module Swagger
           roadmapEnabled: BOOLEAN, showRoadmapInHeader: BOOLEAN,
           collapseBoardsInHeader: { type: :string, enum: %w[no_collapse always_collapse] },
           mailLogoSize: INTEGER, showVoteCount: BOOLEAN, showVoteButtonInBoard: BOOLEAN,
-          hideUnusedStatusesInFilterByStatus: BOOLEAN, showPoweredBy: BOOLEAN, customCss: NULLABLE_STRING
+          hideUnusedStatusesInFilterByStatus: BOOLEAN, showPoweredBy: BOOLEAN, customCss: NULLABLE_STRING,
+          emailRegistrationPolicy: { type: :string, enum: %w[all_allowed custom_domains_allowed none_allowed] },
+          allowedEmailDomains: NULLABLE_STRING
         }, required: []),
         CustomLink: object({ label: STRING, url: STRING }),
         BoardInput: object({
@@ -132,6 +136,20 @@ module Swagger
         }, required: []),
         PostStatusInput: object({ name: STRING, color: STRING.merge(description: 'Hex color, e.g. #0077cc'), showInRoadmap: BOOLEAN }, required: []),
         Reorder: object({ ids: { type: :array, items: INTEGER, description: 'Every id, in the new order' } }),
+        OAuthSettings: object({
+          id: INTEGER, name: STRING, logo: NULLABLE_STRING,
+          isEnabled: BOOLEAN.merge(description: 'For default providers: switched on for this feedback space'),
+          isDefault: BOOLEAN.merge(description: 'Set up by the instance; only isEnabled can be changed'),
+          clientId: NULLABLE_STRING, authorizeUrl: NULLABLE_STRING, tokenUrl: NULLABLE_STRING, profileUrl: NULLABLE_STRING,
+          scope: NULLABLE_STRING, jsonUserNamePath: NULLABLE_STRING, jsonUserEmailPath: NULLABLE_STRING,
+          callbackUrl: STRING, testUrl: STRING
+        }),
+        OAuthInput: object({
+          name: STRING, logo: NULLABLE_STRING, isEnabled: BOOLEAN, clientId: STRING,
+          clientSecret: STRING.merge(description: 'Write-only; blank on update keeps the current secret'),
+          authorizeUrl: STRING, tokenUrl: STRING, profileUrl: STRING, scope: STRING,
+          jsonUserNamePath: NULLABLE_STRING, jsonUserEmailPath: STRING
+        }, required: []),
         VoteState: object({ liked: BOOLEAN, likesCount: INTEGER }),
         FollowState: object({ followed: BOOLEAN }),
         Summary: object({ summary: STRING }),

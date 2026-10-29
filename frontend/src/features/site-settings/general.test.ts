@@ -28,6 +28,8 @@ const settings: GeneralSettings = {
   hideUnusedStatusesInFilterByStatus: false,
   showPoweredBy: true,
   customCss: null,
+  emailRegistrationPolicy: 'all_allowed',
+  allowedEmailDomains: null,
   multiTenancy: false,
   availableLocales: ['en', 'de'],
 }

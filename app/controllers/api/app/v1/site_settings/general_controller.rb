@@ -9,7 +9,7 @@ module Api::App::V1::SiteSettings
       is_private allow_anonymous_feedback feedback_approval_policy login_only_with_oauth
       logo_links_to logo_custom_url roadmap_enabled show_roadmap_in_header collapse_boards_in_header
       mail_logo_size show_vote_count show_vote_button_in_board hide_unused_statuses_in_filter_by_status
-      show_powered_by custom_css
+      show_powered_by custom_css email_registration_policy allowed_email_domains
     ].freeze
 
     before_action :require_admin
@@ -102,6 +102,8 @@ module Api::App::V1::SiteSettings
           hideUnusedStatusesInFilterByStatus: s.hide_unused_statuses_in_filter_by_status,
           showPoweredBy: s.show_powered_by,
           customCss: s.custom_css,
+          emailRegistrationPolicy: s.email_registration_policy,
+          allowedEmailDomains: s.allowed_email_domains,
           multiTenancy: Rails.application.multi_tenancy?,
           availableLocales: I18n.available_locales.map(&:to_s)
         }

@@ -290,6 +290,7 @@ de:
       learn_more: 'Erfahren Sie, wie man das Aussehen anpassen kann'
     authentication:
       title: 'Authentifizierung'
+      empty: 'Noch keine OAuth-Anbieter.'
       learn_more: 'Erfahren Sie, wie Sie eigene OAuth Anbieter konfigurieren'
       email_registration_subtitle: 'Email registration'
       email_registration_policy_all: 'Anyone can register with email'

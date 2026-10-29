@@ -12,6 +12,7 @@ import {
   type BoardInput,
   type Comment,
   type GeneralSettings,
+  type OAuthInput,
   type Post,
   type PostPage,
   type PostStatus,
@@ -463,4 +464,45 @@ export function usePostStatusMutations() {
 
 function sortByIds<T extends { id: number }>(items: T[], ids: number[]): T[] {
   return [...items].sort((a, b) => ids.indexOf(a.id) - ids.indexOf(b.id))
+}
+
+// OAuth providers (site settings, admins). The login page lists the enabled ones via the session.
+export function useOAuthMutations() {
+  const queryClient = useQueryClient()
+  const onSettled = () => {
+    void queryClient.invalidateQueries({ queryKey: ['siteSettings', 'oAuths'] })
+    void queryClient.invalidateQueries({ queryKey: sessionQuery.queryKey })
+  }
+  return {
+    create: useMutation({
+      mutationFn: (oAuth: OAuthInput) =>
+        unwrap(api.POST('/api/app/v1/site_settings/o_auths', { body: oAuth })),
+      onSettled,
+    }),
+    update: useMutation({
+      mutationFn: ({ id, ...oAuth }: OAuthInput & { id: number }) =>
+        unwrap(
+          api.PATCH('/api/app/v1/site_settings/o_auths/{id}', {
+            params: { path: { id } },
+            body: oAuth,
+          }),
+        ),
+      onSettled,
+    }),
+    remove: useMutation({
+      mutationFn: (id: number) =>
+        unwrap(api.DELETE('/api/app/v1/site_settings/o_auths/{id}', { params: { path: { id } } })),
+      onSettled,
+    }),
+    setDefaultEnabled: useMutation({
+      mutationFn: ({ id, enabled }: { id: number; enabled: boolean }) =>
+        unwrap(
+          api.PUT('/api/app/v1/site_settings/o_auths/{id}/default', {
+            params: { path: { id } },
+            body: { enabled },
+          }),
+        ),
+      onSettled,
+    }),
+  }
 }

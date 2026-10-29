@@ -317,6 +317,7 @@ en:
       learn_more: 'Learn how to customize appearance'
     authentication:
       title: 'Authentication'
+      empty: 'There are no OAuth providers yet.'
       learn_more: 'Learn how to configure custom OAuth providers'
       email_registration_subtitle: 'Email registration'
       email_registration_policy_all: 'Anyone can register with email'

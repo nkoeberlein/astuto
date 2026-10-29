@@ -166,3 +166,9 @@ export const generalSettingsQuery = queryOptions({
   queryKey: ['siteSettings', 'general'],
   queryFn: () => unwrap(api.GET('/api/app/v1/site_settings/general')),
 })
+
+// Site settings › Authentication: own and default OAuth providers (admins)
+export const oAuthSettingsQuery = queryOptions({
+  queryKey: ['siteSettings', 'oAuths'],
+  queryFn: () => unwrap(api.GET('/api/app/v1/site_settings/o_auths')),
+})

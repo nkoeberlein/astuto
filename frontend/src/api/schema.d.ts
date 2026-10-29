@@ -1654,6 +1654,212 @@ export interface paths {
         };
         trace?: never;
     };
+    "/api/app/v1/site_settings/o_auths": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** OAuth providers (admins) */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description own and default providers, never the client secret */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["OAuthSettings"][];
+                    };
+                };
+                /** @description moderators are not admins */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        /** Create an OAuth provider (admins) */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["OAuthInput"];
+                };
+            };
+            responses: {
+                /** @description created */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["OAuthSettings"];
+                    };
+                };
+                /** @description missing required fields */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/app/v1/site_settings/o_auths/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete an OAuth provider (admins) */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description deleted */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /** Update an OAuth provider (admins) */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["OAuthInput"];
+                };
+            };
+            responses: {
+                /** @description blank secret keeps the current one */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["OAuthSettings"];
+                    };
+                };
+                /** @description default providers cannot be edited */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/api/app/v1/site_settings/o_auths/{id}/default": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        get?: never;
+        /** Switch a default provider on or off for this feedback space (admins) */
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        enabled: boolean;
+                    };
+                };
+            };
+            responses: {
+                /** @description switched on */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["OAuthSettings"];
+                    };
+                };
+                /** @description not a default provider */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/app/v1/posts/{post_id}/summary": {
         parameters: {
             query?: never;
@@ -1982,6 +2188,10 @@ export interface components {
             hideUnusedStatusesInFilterByStatus: boolean;
             showPoweredBy: boolean;
             customCss: string | null;
+            /** @enum {string} */
+            emailRegistrationPolicy: "all_allowed" | "custom_domains_allowed" | "none_allowed";
+            /** @description Comma-separated, for custom_domains_allowed */
+            allowedEmailDomains: string | null;
             /** @description Custom domains only exist with MULTI_TENANCY=true */
             multiTenancy: boolean;
             availableLocales: string[];
@@ -2017,6 +2227,9 @@ export interface components {
             hideUnusedStatusesInFilterByStatus?: boolean;
             showPoweredBy?: boolean;
             customCss?: string | null;
+            /** @enum {string} */
+            emailRegistrationPolicy?: "all_allowed" | "custom_domains_allowed" | "none_allowed";
+            allowedEmailDomains?: string | null;
         };
         CustomLink: {
             label: string;
@@ -2037,6 +2250,38 @@ export interface components {
         Reorder: {
             /** @description Every id, in the new order */
             ids: number[];
+        };
+        OAuthSettings: {
+            id: number;
+            name: string;
+            logo: string | null;
+            /** @description For default providers: switched on for this feedback space */
+            isEnabled: boolean;
+            /** @description Set up by the instance; only isEnabled can be changed */
+            isDefault: boolean;
+            clientId: string | null;
+            authorizeUrl: string | null;
+            tokenUrl: string | null;
+            profileUrl: string | null;
+            scope: string | null;
+            jsonUserNamePath: string | null;
+            jsonUserEmailPath: string | null;
+            callbackUrl: string;
+            testUrl: string;
+        };
+        OAuthInput: {
+            name?: string;
+            logo?: string | null;
+            isEnabled?: boolean;
+            clientId?: string;
+            /** @description Write-only; blank on update keeps the current secret */
+            clientSecret?: string;
+            authorizeUrl?: string;
+            tokenUrl?: string;
+            profileUrl?: string;
+            scope?: string;
+            jsonUserNamePath?: string | null;
+            jsonUserEmailPath?: string;
         };
         VoteState: {
             liked: boolean;
