@@ -99,7 +99,7 @@ Issue-Nummern beziehen sich auf `astuto/astuto`. Phasen siehe [roadmap.md](roadm
 - [x] astuto.io-spezifische Teile entfernt: Promo-Banner, Zertifikats-API `ASTUTO_CNAME_API_*` (ersetzt durch `/custom_domain_check` für Caddys On-Demand-TLS), CNAME-Hinweis auf `cname.astuto.io`, Kontaktadresse auf der Seite „E-Mail bestätigen“
 - [x] Mailer-Standardabsender: `EMAIL_MAIL_FROM`, sonst `noreply@<Host aus BASE_URL>` (`Rails.application.default_mail_from`); Reply-To fällt auf den Absender zurück
 - [x] Tenants per Rake verwalten: `bin/rails tenants:create|list|block|unblock`
-- [ ] OAuth-Login auf Custom Domains: Callback läuft auf der Subdomain, der `token_state`-Cookie der Custom Domain kommt dort nicht an (#472). Lösung: Zustand signiert im `state`-Parameter statt im Cookie
+- [x] OAuth-Login auf Custom Domains (#472): Callback auf der Subdomain leitet ohne Cookie auf denselben Callback der Custom Domain weiter (Bindung an den Browser bleibt); Cookie-Domain aus dem `BASE_URL`-Host statt `request.domain`, auf Custom Domains host-only; falscher `state` führt zur Login-Seite statt zu einem 500. Im Browser mit Mock-IdP geprüft
 - [x] Ungenutzte Übersetzungsschlüssel des alten Frontends entfernt (52 Schlüssel in allen 19 Sprachen, ca. 1.100 Zeilen; gingen mit `/api/app/v1/translations` an den Browser)
 - [x] Instanz-Admin-Oberfläche für Tenants (#76): `/instance` auf dem `BASE_URL`-Host, HTTP Basic mit `INSTANCE_ADMIN_PASSWORD` (Nutzer gehören je zu einem Tenant, ein Instanz-Konto gibt es nicht), serverseitig gerendert ohne JavaScript; anlegen (Passwort des Eigentümers wird einmal angezeigt), Name/Domain/Sprache ändern, sperren, löschen mit Bestätigung. Gemeinsame Logik mit dem Rake-Task in `CreateTenantWorkflow`
 

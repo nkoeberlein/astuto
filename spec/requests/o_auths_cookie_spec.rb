@@ -78,4 +78,60 @@ RSpec.describe 'OAuth token_state cookie (#472, #478)', type: :request do
       expect(response.location).not_to include('evil.com')
     end
   end
+
+  describe 'multi-tenancy and custom domains (#472)' do
+    let(:acme) { Tenant.create!(site_name: 'Acme', subdomain: 'acme', status: 'active', custom_domain: 'ideas.acme.co.uk') }
+    let(:acme_o_auth) do
+      Current.set(tenant: acme) do
+        FactoryBot.create(:o_auth, tenant: acme, is_enabled: true, authorize_url: 'https://idp.example.com/oauth/authorize')
+      end
+    end
+    let(:user) { Current.set(tenant: acme) { FactoryBot.create(:user, tenant: acme).tap(&:confirm) } }
+
+    before do
+      allow(Rails.application).to receive(:multi_tenancy?).and_return(true)
+      allow(Rails.application).to receive(:base_url).and_return('https://feedback.example.com')
+      Current.set(tenant: acme) { TenantSetting.create!(tenant: acme) }
+    end
+
+    def set_cookies
+      Array(response.headers['Set-Cookie']).join("\n")
+    end
+
+    it 'shares the cookie with the BASE_URL host on subdomains and keeps it host-only on custom domains' do
+      host! 'acme.feedback.example.com'
+      get o_auth_start_path(acme_o_auth, reason: 'login')
+      expect(set_cookies).to match(/token_state=.*domain=\.feedback\.example\.com/i)
+
+      host! 'ideas.acme.co.uk'
+      get o_auth_start_path(acme_o_auth, reason: 'login')
+      expect(set_cookies).to include('token_state=')
+      expect(set_cookies).not_to match(/domain=/i)
+    end
+
+    it 'finishes a login started on the custom domain there' do
+      state = "login,acme,abc123"
+
+      # The provider calls back on the subdomain, where the browser has no cookie
+      host! 'acme.feedback.example.com'
+      get o_auth_callback_path(acme_o_auth, state: state, code: 'the-code')
+      expect(response.location).to start_with("https://ideas.acme.co.uk/o_auths/#{acme_o_auth.to_param}/callback?")
+      expect(response.location).to include('code=the-code', "state=#{CGI.escape(state)}")
+
+      # On the custom domain the cookie is there and the login goes on
+      exchange = instance_double(OAuthExchangeAuthCodeForProfileWorkflow, run: {})
+      allow(OAuthExchangeAuthCodeForProfileWorkflow).to receive(:new).and_return(exchange)
+      allow(OAuthSignInUserWorkflow).to receive(:new).and_return(instance_double(OAuthSignInUserWorkflow, run: user))
+      host! 'ideas.acme.co.uk'
+      get o_auth_callback_path(acme_o_auth, state: state, code: 'the-code'), headers: { 'Cookie' => "token_state=#{CGI.escape(state)}" }
+      expect(response.location).to start_with('https://ideas.acme.co.uk/o_auths/sign_in_from_oauth_token')
+    end
+
+    it 'sends a callback with a foreign state back to the login page, without a loop' do
+      host! 'ideas.acme.co.uk'
+      get o_auth_callback_path(acme_o_auth, state: 'login,acme,abc123', code: 'the-code'), headers: { 'Cookie' => 'token_state=login%2Cacme%2Cother' }
+      expect(response.location).to eq('https://ideas.acme.co.uk/users/sign_in')
+      expect(flash[:alert]).to be_present
+    end
+  end
 end

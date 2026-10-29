@@ -116,10 +116,9 @@ add the domain and a certificate there.
 
 Links in emails always use the custom domain when one is set.
 
-**Known limitation:** OAuth login (GitHub, Keycloak, ...) does not work when the feedback space is
-opened on its custom domain, because the callback runs on the subdomain and the browser does not
-send the login state cookie there (upstream #472). Use the subdomain address for OAuth logins, or
-email and password.
+OAuth login works on both addresses. Providers always call back on the subdomain (or on
+`login.<BASE_URL host>` for the instance's default providers), so register that callback URL with
+the provider; a login started on the custom domain is finished there automatically.
 
 ## Languages and emails
 

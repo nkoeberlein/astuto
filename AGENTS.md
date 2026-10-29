@@ -39,7 +39,7 @@ Astuto Evolution: community continuation of Astuto, a self-hosted customer feedb
 - The production image build generates API docs with `RAILS_ENV=test` without test gems installed: gems in the test group must not be auto-required (`require: false`).
 - Postgres ≥ 18 images store data under `/var/lib/postgresql/<major>/docker`; see `UPGRADING.md`.
 - Behind a reverse proxy, `X-Forwarded-Proto` must be set or OAuth callbacks use `http` (upstream #478).
-- OAuth `token_state` cookie uses `domain: ".#{request.domain}"`, which breaks on multi-part TLDs and IPs (upstream #472).
+- OAuth `token_state` cookie: domain `.<BASE_URL host>` on subdomains (shared with `login.`, where default providers call back), host-only on custom domains; a callback without the cookie continues on the tenant's custom domain (#472).
 - Webhook bodies are Liquid templates that must render valid JSON; use the `escape_json` filter.
 - Content Security Policy (`config/initializers/content_security_policy.rb`): no inline `<script>` without `javascript_tag nonce: true`, no inline event handlers (`onclick=` etc.), no `eval`. `spec/system/content_security_policy_spec.rb` fails on browser console violations.
 - `public/**/index.html` is never served for bare directories (`public_file_server.index_name`), so `/next/` reaches the redirect to `/`.

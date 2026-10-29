@@ -11,7 +11,7 @@ class OAuthsController < ApplicationController
   def start
     @o_auth = OAuth.include_defaults.friendly.find(params[:id])
 
-    return if params[:reason] != 'test' and not @o_auth.is_enabled?
+    return oauth_login_failed(@o_auth.name) if params[:reason] != 'test' and not @o_auth.is_enabled?
 
     # Generate random state + other query params
     tenant_domain = Current.tenant ? Current.tenant_or_raise!.subdomain : "null"
@@ -23,7 +23,7 @@ class OAuthsController < ApplicationController
         secure: request.ssl?,
         same_site: :lax
       }
-      cookie_options[:domain] = ".#{request.domain}" if Rails.application.multi_tenancy? && request.domain.present?
+      cookie_options[:domain] = oauth_cookie_domain if oauth_cookie_domain
       cookies[:token_state] = cookie_options
 
       # Page to return to after sign-in. It travels in a cookie (like token_state)
@@ -46,10 +46,13 @@ class OAuthsController < ApplicationController
     reason, tenant_domain, token_state = params[:state].split(TOKEN_STATE_SEPARATOR, 3)
 
     unless reason == "test"
-      return unless cookies[:token_state] == params[:state]
-      cookies.delete(:token_state, domain: ".#{request.domain}")
+      # Started on a custom domain: the callback runs on the subdomain (or login.) host, where
+      # the browser has no token_state cookie. Finish on the custom domain, which has it.
+      return redirect_to_custom_domain_callback(tenant_domain) if cookies[:token_state] != params[:state] && custom_domain_callback?(tenant_domain)
+      return oauth_login_failed unless cookies[:token_state] == params[:state]
+      cookies.delete(:token_state, domain: oauth_cookie_domain)
       return_to = cookies[:oauth_return_to]
-      cookies.delete(:oauth_return_to, domain: ".#{request.domain}")
+      cookies.delete(:oauth_return_to, domain: oauth_cookie_domain)
     end
 
     # if it is a default oauth, tenant is not yet set
@@ -57,7 +60,7 @@ class OAuthsController < ApplicationController
 
     @o_auth = OAuth.include_defaults.friendly.find(params[:id])
 
-    return if reason != 'test' and not @o_auth.is_enabled?
+    return oauth_login_failed(@o_auth.name) if reason != 'test' and not @o_auth.is_enabled?
 
     user_profile = OAuthExchangeAuthCodeForProfileWorkflow.new(
       authorization_code: params[:code],
@@ -128,4 +131,37 @@ class OAuthsController < ApplicationController
       redirect_to new_user_session_path
     end
   end
+
+  private
+
+    # Wrong or missing state (an old or foreign link, cookies blocked) or a disabled provider
+    def oauth_login_failed(name = 'OAuth')
+      flash[:alert] = I18n.t('errors.o_auth_login_error', name: name)
+      redirect_to get_url_for(method(:new_user_session_url)), allow_other_host: true
+    end
+
+    # Subdomains share the cookies with login.<BASE_URL host>, where default providers call back.
+    # A custom domain gets a host-only cookie (".#{request.domain}" could be ".co.uk").
+    def oauth_cookie_domain
+      return unless Rails.application.multi_tenancy?
+
+      base_host = Rails.application.base_url_host.downcase
+      host = request.host.to_s.downcase
+      ".#{base_host}" if host == base_host || host.end_with?(".#{base_host}")
+    end
+
+    def custom_domain_callback?(tenant_domain)
+      tenant = Tenant.find_by(subdomain: tenant_domain)
+      tenant&.custom_domain.present? && request.host.to_s.downcase != tenant.custom_domain
+    end
+
+    # Same path and query (code, state) on the custom domain. The provider's redirect_uri stays
+    # the subdomain URL (OAuth#callback_url), so the code exchange there still matches.
+    def redirect_to_custom_domain_callback(tenant_domain)
+      tenant = Tenant.find_by(subdomain: tenant_domain)
+      url = Current.set(tenant: tenant) do
+        get_url_for(method(:o_auth_callback_url), resource: params[:id], options: request.query_parameters.symbolize_keys)
+      end
+      redirect_to url, allow_other_host: true
+    end
 end
