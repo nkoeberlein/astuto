@@ -41,6 +41,19 @@ test.describe('admin journey', () => {
       await comment.fill('A comment from the e2e test')
       await page.getByRole('button', { name: COMMENT_SUBMIT }).click()
       await expect(page.getByText('A comment from the e2e test')).toBeVisible()
+
+      // Edit the post (#210), then delete it: the board page opens again
+      // The post's own Edit and Delete are in the sidebar (comments have their own buttons)
+      const postActions = page.getByRole('complementary')
+      await postActions.getByRole('button', { name: 'Edit', exact: true }).click()
+      await page.locator('#edit-post-title').fill(`${postTitle} (edited)`)
+      await page.getByRole('button', { name: 'Save' }).click()
+      await expect(
+        page.getByRole('heading', { name: `${postTitle} (edited)`, level: 1 }),
+      ).toBeVisible()
+      await postActions.getByRole('button', { name: 'Delete', exact: true }).click()
+      await expect(page).toHaveURL(/\/boards\//)
+      await expect(page.getByRole('link', { name: postTitle })).toHaveCount(0)
     } finally {
       // Clean up: deleting the board deletes its posts
       await page.goto('/site_settings/boards')
