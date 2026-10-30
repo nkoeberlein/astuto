@@ -22,14 +22,14 @@ fr:
         body: 'Vous pouvez confirmer l''email de votre compte en cliquant sur le lien ci-dessous :'
         action: 'Confirmer mon compte'
       email_changed:
-        body: "Nous vous contactons pour vous informer que votre adresse e-mail va être changée en %{email}."
-        body2: "Nous vous contactons pour vous informer que votre adresse électronique a été changée en %{email}."
+        body: 'Nous vous contactons pour vous informer que votre adresse e-mail va être changée en %{email}.'
+        body2: 'Nous vous contactons pour vous informer que votre adresse électronique a été changée en %{email}.'
       password_change:
-        body: "Nous vous contactons pour vous informer que votre mot de passe a été modifié."
+        body: 'Nous vous contactons pour vous informer que votre mot de passe a été modifié.'
       reset_password:
         body: 'Quelqu''un a demandé un lien pour changer votre mot de passe. Vous pouvez le faire en cliquant sur le lien ci-dessous.'
-        body2: "Si vous ne l'avez pas demandé, veuillez ignorer cet e-mail."
-        body3: "Votre mot de passe ne changera pas tant que vous n'aurez pas accédé au lien ci-dessus et créé un nouveau mot de passe."
+        body2: 'Si vous ne l''avez pas demandé, veuillez ignorer cet e-mail.'
+        body3: 'Votre mot de passe ne changera pas tant que vous n''aurez pas accédé au lien ci-dessus et créé un nouveau mot de passe.'
         action: 'Changer mon mot de passe'
     user:
       opening_greeting: 'Bonjour %{name} !'
@@ -73,11 +73,15 @@ fr:
       user:
         one: 'Utilisateur'
         other: 'Utilisateurs'
+      webhook:
+        one: 'Webhook'
+        other: 'Webhooks'
     attributes:
       board:
         name: 'Nom'
         description: 'Description'
         order: 'Ordre'
+        visibility: 'Visibilité'
       comment:
         body: 'Corps'
         is_post_update: 'Publication mise à jour'
@@ -123,6 +127,7 @@ fr:
         subdomain: 'Sous-domaine'
         locale: 'Langue'
         custom_domain: 'Domaine personnalisé'
+        site_favicon: 'URL de la favicon'
       tenant_setting:
         brand_display: 'Affichage'
         use_browser_locale: 'Use browser language'
@@ -141,6 +146,15 @@ fr:
         show_roadmap_in_header: 'Afficher le lien de la roadmap dans l''en-tête'
         collapse_boards_in_header: 'Fusionner les tableaux dans l''en-tête'
         custom_css: 'Custom CSS'
+        use_gravatar: 'Afficher les avatars de Gravatar'
+        require_two_factor_for_staff: 'Exiger l''authentification à deux facteurs pour les administrateurs et les modérateurs'
+        require_user_approval: 'Approuver les nouveaux comptes'
+        trusted_after_posts: 'Compte de confiance après des publications approuvées'
+        roadmap_enabled: 'Activer la roadmap'
+        default_post_sorting: 'Tri par défaut des publications'
+        custom_links: 'Liens personnalisés dans l''en-tête'
+        login_only_with_oauth: 'Afficher uniquement la connexion OAuth'
+        mail_logo_size: 'Taille du logo dans les e-mails'
       user:
         email: 'Email'
         full_name: 'Nom complet'
@@ -148,6 +162,39 @@ fr:
         password_confirmation: 'Confirmer le mot de passe'
         role: 'Rôle'
         notifications_enabled: 'Notifications activées'
+        recap_notification_frequency: 'Fréquence du récapitulatif'
+      ldap_config:
+        enabled: 'Connexion LDAP'
+        label: 'Nom du compte sur la page de connexion'
+        host: 'Serveur'
+        port: 'Port'
+        encryption: 'Chiffrement'
+        verify_certificate: 'Vérifier le certificat du serveur'
+        base_dn: 'Base DN'
+        bind_dn: 'Compte de service (bind DN)'
+        bind_password: 'Mot de passe du compte de service'
+        user_filter: 'Filtre utilisateur'
+        email_attribute: 'Attribut contenant l''adresse e-mail'
+        name_attribute: 'Attribut contenant le nom'
+        auto_create_users: 'Créer un compte à la première connexion'
+      saml_config:
+        enabled: 'Authentification unique SAML'
+        label: 'Texte du bouton'
+        idp_entity_id: 'ID d''entité du fournisseur d''identité (issuer)'
+        idp_sso_url: 'URL d''authentification unique du fournisseur d''identité'
+        idp_cert: 'Certificat de signature du fournisseur d''identité'
+        email_attribute: 'Attribut contenant l''adresse e-mail'
+        name_attribute: 'Attribut contenant le nom'
+        auto_create_users: 'Créer un compte à la première connexion'
+      webhook:
+        name: 'Nom'
+        description: 'Description'
+        is_enabled: 'Activé'
+        trigger: 'Déclencheur'
+        url: 'URL'
+        http_body: 'Corps de la requête HTTP'
+        http_method: 'Méthode HTTP'
+        http_headers: 'En-têtes de la requête HTTP'
     errors:
       messages:
         invalid: 'est invalide'

@@ -22,14 +22,14 @@ sv:
         body: 'You can confirm your account email through the link below:'
         action: 'Bekräfta mitt konto'
       email_changed:
-        body: "We're contacting you to notify you that your email is being changed to %{email}."
-        body2: "We're contacting you to notify you that your email has been changed to %{email}."
+        body: 'We''re contacting you to notify you that your email is being changed to %{email}.'
+        body2: 'We''re contacting you to notify you that your email has been changed to %{email}.'
       password_change:
-        body: "We're contacting you to notify you that your password has been changed."
+        body: 'We''re contacting you to notify you that your password has been changed.'
       reset_password:
         body: 'Someone has requested a link to change your password. You can do this through the link below.'
-        body2: "If you didn't request this, please ignore this email."
-        body3: "Your password won't change until you access the link above and create a new one."
+        body2: 'If you didn''t request this, please ignore this email.'
+        body3: 'Your password won''t change until you access the link above and create a new one.'
         action: 'Ändra mitt lösenord'
     user:
       opening_greeting: 'Hej %{name}!'
@@ -73,11 +73,15 @@ sv:
       user:
         one: 'Användare'
         other: 'Användare'
+      webhook:
+        one: 'Webhook'
+        other: 'Webhooks'
     attributes:
       board:
         name: 'Namn'
         description: 'Beskrivning'
         order: 'Order'
+        visibility: 'Synlighet'
       comment:
         body: 'Body'
         is_post_update: 'Post update'
@@ -123,6 +127,7 @@ sv:
         subdomain: 'Subdomain'
         locale: 'Språk'
         custom_domain: 'Custom domain'
+        site_favicon: 'Favicon-URL'
       tenant_setting:
         brand_display: 'Display'
         use_browser_locale: 'Use browser language'
@@ -141,6 +146,15 @@ sv:
         show_roadmap_in_header: 'Show roadmap link in header'
         collapse_boards_in_header: 'Collapse boards in header'
         custom_css: 'Custom CSS'
+        use_gravatar: 'Visa profilebilder från Gravatar'
+        require_two_factor_for_staff: 'Kräv tvåstegsverifiering för administratörer och moderatorer'
+        require_user_approval: 'Godkänn nya konton'
+        trusted_after_posts: 'Betrodd efter godkända inlägg'
+        roadmap_enabled: 'Aktivera roadmappen'
+        default_post_sorting: 'Standardsortering av inlägg'
+        custom_links: 'Egna länkar i sidhuvudet'
+        login_only_with_oauth: 'Visa endast OAuth-inloggning'
+        mail_logo_size: 'Logostorlek i mejl'
       user:
         email: 'Email'
         full_name: 'Full name'
@@ -148,6 +162,39 @@ sv:
         password_confirmation: 'Password confirmation'
         role: 'Roll'
         notifications_enabled: 'Notifications enabled'
+        recap_notification_frequency: 'Frekvens för sammanfattningar'
+      ldap_config:
+        enabled: 'Använd LDAP-inloggning'
+        label: 'Namnet på kontot på inloggningssidan'
+        host: 'Server'
+        port: 'Port'
+        encryption: 'Kryptering'
+        verify_certificate: 'Kontrollera serverns certifikat'
+        base_dn: 'Bas-DN'
+        bind_dn: 'Tjänstekonto (bind-DN)'
+        bind_password: 'Lösenordet för tjänstekontot'
+        user_filter: 'Användarfilter'
+        email_attribute: 'Attributet med e-postadressen'
+        name_attribute: 'Attributet med namnet'
+        auto_create_users: 'Skapa ett konto vid första inloggningen'
+      saml_config:
+        email_attribute: 'Attributet med e-postadressen'
+        name_attribute: 'Attributet med namnet'
+        auto_create_users: 'Skapa ett konto vid första inloggningen'
+        enabled: 'Använd SAML enkel inloggning'
+        label: 'Knapptext'
+        idp_entity_id: 'Identitetsleverantörens entity-ID (issuer)'
+        idp_sso_url: 'URL för enkel inloggning hos identitetsleverantören'
+        idp_cert: 'Signeringscertifikatet för identitetsleverantören'
+      webhook:
+        description: 'Beskrivning'
+        is_enabled: 'Aktiverad'
+        trigger: 'Utlösare'
+        url: 'URL'
+        http_body: 'HTTP-requestbrödtext'
+        http_method: 'HTTP-metod'
+        http_headers: 'HTTP-requestheaders'
+        name: 'Namn'
     errors:
       messages:
         invalid: 'is invalid'

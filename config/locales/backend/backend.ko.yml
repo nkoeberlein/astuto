@@ -22,14 +22,14 @@ ko:
         body: 'You can confirm your account email through the link below:'
         action: 'Confirm my account'
       email_changed:
-        body: "We're contacting you to notify you that your email is being changed to %{email}."
-        body2: "We're contacting you to notify you that your email has been changed to %{email}."
+        body: 'We''re contacting you to notify you that your email is being changed to %{email}.'
+        body2: 'We''re contacting you to notify you that your email has been changed to %{email}.'
       password_change:
-        body: "We're contacting you to notify you that your password has been changed."
+        body: 'We''re contacting you to notify you that your password has been changed.'
       reset_password:
         body: 'Someone has requested a link to change your password. You can do this through the link below.'
-        body2: "If you didn't request this, please ignore this email."
-        body3: "Your password won't change until you access the link above and create a new one."
+        body2: 'If you didn''t request this, please ignore this email.'
+        body3: 'Your password won''t change until you access the link above and create a new one.'
         action: 'Change my password'
     user:
       opening_greeting: 'Hello %{name}!'
@@ -54,23 +54,34 @@ ko:
     models:
       board:
         other: 'Boards'
+        one: '보드'
       comment:
         other: 'Comments'
+        one: '댓글'
       like:
         other: 'Votes'
+        one: '투표'
       o_auth:
         other: 'OAuths'
+        one: 'OAuth'
       post_status:
         other: 'Statuses'
+        one: '상태'
       post:
         other: 'Posts'
+        one: '게시물'
       user:
         other: 'Users'
+        one: '사용자'
+      webhook:
+        one: 'Webhook'
+        other: 'Webhook'
     attributes:
       board:
         name: 'Name'
         description: 'Description'
         order: 'Order'
+        visibility: '공개 범위'
       comment:
         body: 'Body'
         is_post_update: 'Post update'
@@ -116,6 +127,7 @@ ko:
         subdomain: 'Subdomain'
         locale: 'Language'
         custom_domain: 'Custom domain'
+        site_favicon: '파비콘 URL'
       tenant_setting:
         brand_display: 'Display'
         use_browser_locale: 'Use browser language'
@@ -134,6 +146,15 @@ ko:
         show_roadmap_in_header: 'Show roadmap link in header'
         collapse_boards_in_header: 'Collapse boards in header'
         custom_css: 'Custom CSS'
+        use_gravatar: 'Gravatar 아바타 표시'
+        require_two_factor_for_staff: '관리자와 운영자에게 2단계 인증 필수'
+        require_user_approval: '신규 계정 승인제'
+        trusted_after_posts: '승인된 게시물이 이 수를 넘으면 신뢰 사용자로 전환'
+        roadmap_enabled: '로드맵 사용'
+        default_post_sorting: '게시물 기본 정렬'
+        custom_links: '헤더 사용자 링크'
+        login_only_with_oauth: 'OAuth 로그인만 표시'
+        mail_logo_size: '이메일 로고 크기'
       user:
         email: 'Email'
         full_name: 'Full name'
@@ -141,6 +162,39 @@ ko:
         password_confirmation: 'Password confirmation'
         role: 'Role'
         notifications_enabled: 'Notifications enabled'
+        recap_notification_frequency: '요약 알림 빈도'
+      ldap_config:
+        enabled: 'LDAP 로그인 사용'
+        label: '로그인 페이지의 계정 이름'
+        host: '서버'
+        port: '포트'
+        encryption: '암호화'
+        verify_certificate: '서버 인증서 검사'
+        base_dn: 'Base DN'
+        bind_dn: '서비스 계정(bind DN)'
+        bind_password: '서비스 계정 비밀번호'
+        user_filter: '사용자 필터'
+        email_attribute: '이메일 주소 속성'
+        name_attribute: '이름 속성'
+        auto_create_users: '첫 로그인 시 계정 생성'
+      saml_config:
+        enabled: 'SAML 싱글 사인온 사용'
+        label: '버튼 문구'
+        idp_entity_id: 'IdP의 Entity ID(issuer)'
+        idp_sso_url: 'IdP 싱글 사인온 URL'
+        idp_cert: 'IdP 서명 인증서'
+        email_attribute: '이메일 주소 속성'
+        name_attribute: '이름 속성'
+        auto_create_users: '첫 로그인 시 계정 생성'
+      webhook:
+        name: '이름'
+        description: '설명'
+        is_enabled: '사용'
+        trigger: '트리거'
+        url: 'URL'
+        http_body: 'HTTP 요청 본문'
+        http_method: 'HTTP 메서드'
+        http_headers: 'HTTP 요청 헤더'
     errors:
       messages:
         invalid: 'is invalid'

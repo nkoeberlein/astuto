@@ -5,6 +5,13 @@ Issue numbers refer to the archived [astuto/astuto](https://github.com/astuto/as
 
 ## [Unreleased]
 
+### Changed
+- All locales are complete: the missing keys (~500 per language, mostly the new site settings, moderation, widget and changelog texts) are translated for `cs`, `de`, `el`, `es`, `fr`, `hi`, `it`, `nl`, `pl`, `pt`, `ru`, `sr`, `sv`, `tr`, `vi` and `zh-CN`, and **Japanese and Korean are enabled**. Fixing placeholder mismatches in older Devise translations on the way. Machine-translated as a base — native review through the translation platform is still welcome.
+- The Rails framework strings (dates, numbers, plural forms) come from the `rails-i18n` gem instead of falling back to English.
+
+### Fixes
+- Some older Devise translations (es, fr, ko, ru, zh-CN) lacked the `%{authentication_keys}`/`%{resource}` placeholders.
+
 ## [2.0.0-beta.1] – 2026-10-30
 
 ### Removed

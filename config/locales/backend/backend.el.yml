@@ -22,14 +22,14 @@ el:
         body: 'You can confirm your account email through the link below:'
         action: 'Confirm my account'
       email_changed:
-        body: "We're contacting you to notify you that your email is being changed to %{email}."
-        body2: "We're contacting you to notify you that your email has been changed to %{email}."
+        body: 'We''re contacting you to notify you that your email is being changed to %{email}.'
+        body2: 'We''re contacting you to notify you that your email has been changed to %{email}.'
       password_change:
-        body: "We're contacting you to notify you that your password has been changed."
+        body: 'We''re contacting you to notify you that your password has been changed.'
       reset_password:
         body: 'Someone has requested a link to change your password. You can do this through the link below.'
-        body2: "If you didn't request this, please ignore this email."
-        body3: "Your password won't change until you access the link above and create a new one."
+        body2: 'If you didn''t request this, please ignore this email.'
+        body3: 'Your password won''t change until you access the link above and create a new one.'
         action: 'Change my password'
     user:
       opening_greeting: 'Hello %{name}!'
@@ -73,11 +73,15 @@ el:
       user:
         one: 'User'
         other: 'Users'
+      webhook:
+        one: 'Webhook'
+        other: 'Webhooks'
     attributes:
       board:
         name: 'Name'
         description: 'Description'
         order: 'Order'
+        visibility: 'Ορατότητα'
       comment:
         body: 'Body'
         is_post_update: 'Post update'
@@ -123,6 +127,7 @@ el:
         subdomain: 'Subdomain'
         locale: 'Language'
         custom_domain: 'Custom domain'
+        site_favicon: 'URL του favicon'
       tenant_setting:
         brand_display: 'Display'
         use_browser_locale: 'Use browser language'
@@ -141,6 +146,15 @@ el:
         show_roadmap_in_header: 'Show roadmap link in header'
         collapse_boards_in_header: 'Collapse boards in header'
         custom_css: 'Custom CSS'
+        use_gravatar: 'Εμφάνιση εικόνων από το Gravatar'
+        require_two_factor_for_staff: 'Υποχρεωτική διπαραμετρική (2FA) πιστοποίηση για διαχειριστές και διαχειριστές κοινότητας (moderators)'
+        require_user_approval: 'Έγκριση των νέων λογαριασμών'
+        trusted_after_posts: 'Aξιόπιστος μετά από εγκεκριμένες αναρτήσεις'
+        roadmap_enabled: 'Ενεργοποίηση roadmap'
+        default_post_sorting: 'Προεπιλεγμένη ταξινόμηση αναρτήσεων'
+        custom_links: 'Προσαρμοσμένοι σύνδεσμοι στην κεφαλίδα'
+        login_only_with_oauth: 'Εμφάνιση μόνο σύνδεσης μέσω OAuth'
+        mail_logo_size: 'Μέγεθος του λογοτύπου στα email'
       user:
         email: 'Email'
         full_name: 'Full name'
@@ -148,6 +162,39 @@ el:
         password_confirmation: 'Password confirmation'
         role: 'Role'
         notifications_enabled: 'Notifications enabled'
+        recap_notification_frequency: 'Συχνότητα περιλήψεων'
+      ldap_config:
+        enabled: 'Σύνδεση με LDAP'
+        label: 'Όνομα του λογαριασμού στη σελίδα σύνδεσης'
+        host: 'Διακομιστής'
+        port: 'Θύρα'
+        encryption: 'Κρυπτογράφηση'
+        verify_certificate: 'Έλεγχος του πιστοποιητικού του διακομιστή'
+        base_dn: 'Base DN'
+        bind_dn: 'Λογαριασμός υπηρεσίας (bind DN)'
+        bind_password: 'Κωδικός του λογαριασμού υπηρεσίας'
+        user_filter: 'Φίλτρο χρηστών'
+        email_attribute: 'Χαρακτηριστικό με τη διεύθυνση email'
+        name_attribute: 'Χαρακτηριστικό με το όνομα'
+        auto_create_users: 'Δημιουργία λογαριασμού στην πρώτη σύνδεση'
+      saml_config:
+        enabled: 'Ενιαία σύνδεση (SSO) με SAML'
+        label: 'Κείμενο του κουμπιού'
+        idp_entity_id: 'Entity ID του πάροχου ταυτότητας (issuer)'
+        idp_sso_url: 'URL ενιαίας σύνδεσης του πάροχου ταυτότητας'
+        idp_cert: 'Πιστοποιητικό υπογραφής του πάροχου ταυτότητας'
+        email_attribute: 'Χαρακτηριστικό με τη διεύθυνση email'
+        name_attribute: 'Χαρακτηριστικό με το όνομα'
+        auto_create_users: 'Δημιουργία λογαριασμού στην πρώτη σύνδεση'
+      webhook:
+        name: 'Όνομα'
+        description: 'Περιγραφή'
+        is_enabled: 'Ενεργό'
+        trigger: 'Εναύσματος (trigger)'
+        url: 'URL'
+        http_body: 'Σώμα του HTTP αιτήματος'
+        http_method: 'HTTP μέθοδος'
+        http_headers: 'Κεφαλίδες του HTTP αιτήματος'
     errors:
       messages:
         invalid: 'is invalid'

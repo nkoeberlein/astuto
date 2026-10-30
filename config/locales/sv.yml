@@ -15,7 +15,7 @@ sv:
         new_password_confirmation: 'New password confirmation'
         current_password: 'Current password'
         notifications_enabled: 'Notifications enabled'
-        notifications_enabled_help: "if disabled, you won't receive any notification"
+        notifications_enabled_help: 'if disabled, you won''t receive any notification'
         waiting_confirmation: 'Currently waiting confirmation for %{email}'
         no_password_set: 'You must set a password to update your profile'
         set_password: 'Set password'
@@ -28,14 +28,34 @@ sv:
         profile_settings: 'Profilinställningar'
         cancel_account: 'Cancel account'
         forgot_password: 'Glömt ditt lösenord?'
-        confirmation_instructions_not_received: "Didn't receive confirmation instructions?"
-        unlock_instructions_not_received: "Didn't receive unlock instructions?"
+        confirmation_instructions_not_received: 'Didn''t receive confirmation instructions?'
+        unlock_instructions_not_received: 'Didn''t receive unlock instructions?'
         send_reset_password_instructions: 'Send me reset password instructions'
         resend_confirmation_instructions: 'Resend confirmation instructions'
         resend_unlock_instructions: 'Resend unlock instructions'
         change_password: 'Ändra lösenord'
         password_help: '%{count} characters minimum'
         email_registration_not_allowed: 'Email registration not allowed'
+        notifications: 'Notiser'
+        recap_notification_frequency_daily: 'Dagligen'
+        recap_notification_frequency_weekly: 'Veckovis'
+        recap_notification_frequency_monthly: 'Månadsvis'
+        recap_notification_frequency_help: 'En sammanfattning via mejl: ny feedback, de mest röstade inläggen och statusändringar för inlägg du följer (moderatorer: även feedback som väntar på godkännande). Ingenting skickas när inget hänt.'
+        log_in_with_email: 'Logga in med mejl och lösenord i stället'
+        login_name: 'Inloggningsnamn'
+        ldap_info: 'Logga in med din %{label}.'
+        my_data: 'Min data'
+        my_data_help: 'Ladda ner allt de här feedbackutrymmet lagrar om dig: profil, inlägg, kommentarer, röster och följda inlägg (JSON).'
+        download_my_data: 'Ladda ner min data'
+        oauth_only_info: 'Logga in och registrera dig med någon av OAuth-leverantörerna nedan. Mejlinloggning är avstängd på den här sajten.'
+      api_key:
+        title: 'API-nyckel'
+        current_api_key_help: 'Du har redan skapat en API-nyckel och av säkerhetsskäl kan den inte visas igen. Om du tappat bort den kan du skapa en ny nedan.'
+        generate_api_key: 'Skapa API-nyckel'
+        generated_api_key_help: 'Spara den här API-nyckeln på en trygg plats, du kan inte se den igen.'
+        generated_api_key_successfully: 'API-nyckeln skapades!'
+        confirm_generate_new_api_key: 'Vill du skapa en ny API-nyckel? Den gamla blir ogiltig.'
+        api_key_learn_more: 'Lär dig använda API:t'
     no_status: 'No status'
     select_placeholder: 'Select...'
     loading: 'Loading...'
@@ -56,6 +76,11 @@ sv:
       approve: 'Approve'
       reject: 'Reject'
       copy_to_clipboard: 'Copy to clipboard'
+      preview: 'Förhandsvisning'
+      move_up: 'Flytta upp'
+      move_down: 'Flytta ner'
+    errors:
+      not_found: 'Sidan hittades inte'
   header:
     menu:
       site_settings: 'Site settings'
@@ -63,9 +88,18 @@ sv:
       profile_header: 'Profil'
       profile_settings: 'Profilinställningar'
       sign_out: 'Logga ut'
+      my_feedback: 'Min feedback'
     log_in: 'Logga in/Registrera dig'
   roadmap:
     title: 'Roadmap'
+    empty: 'Roadmappen är tom.'
+    filter_by_board: 'Filtrera efter tavla'
+    more_posts:
+      one: '+ %{count} inlägg till'
+      other: '+ %{count} inlägg till'
+    sort_by:
+      most_voted: 'Flest röster'
+      recently_updated: 'Senast uppdaterad'
   blocked_tenant:
     title: 'This feedback space has been blocked'
   board:
@@ -80,10 +114,13 @@ sv:
       anonymous_submission_help: 'You are posting anonymously'
       non_anonymous_submission_help: 'You are posting as %{name}'
       submit_pending: 'Your feedback has been submitted and is now pending moderator approval!'
+      status: 'Initial status (bara moderatorer)'
+      similar_posts_title: 'Liknande inlägg finns redan — rösta på ett i stället?'
     search_box:
       title: 'Sök'
     filter_box:
       title: 'Filter by status'
+      tags: 'Filtrera efter tagg'
     sort_by_box:
       title: 'Sortera efter'
       trending: 'Trending'
@@ -92,6 +129,8 @@ sv:
       oldest: 'Oldest'
     posts_list:
       empty: 'There are no posts'
+      load_more: 'Ladda fler'
+    rss_feed: 'RSS-flöde'
   post:
     published_by: 'Published by'
     published_anonymously: 'Published anonymously'
@@ -101,18 +140,54 @@ sv:
       title: 'Likes'
     action_box:
       follow_button: 'Follow post'
-      following_description: "you're receiving notifications about new updates on this post"
-      not_following_description: "you won't receive notifications about this post"
+      following_description: 'you''re receiving notifications about new updates on this post'
+      not_following_description: 'you won''t receive notifications about this post'
     comments:
       title: 'Aktivitet'
       post_update_badge: 'Uppdatera'
       reply_button: 'Svara'
+      empty: 'Det finns inga kommentarer ännu'
     new_comment:
       body_placeholder: 'Lämna en kommentar'
       submit_button: 'Skicka'
       is_post_update: 'Mark as update'
       user_notification: 'Users that follow this post will be notified'
       not_logged_in: 'You need to log in to post comments'
+    merge:
+      same_post: 'Ett inlägg kan inte slås ihop med sig självt.'
+      already_merged: 'Ett av inläggen är redan sammanslaget.'
+      button: 'Slå ihop med annat inlägg'
+      search: 'Sök inlägget att behålla'
+      help: 'Röster, följare och kommentarer flyttas till inlägget du väljer; det här leder sedan dit. Det går inte att ångra.'
+      into_this: 'Slå ihop hit'
+      confirmation: 'Slå ihop det här inlägget med "%{target}"? Röster, följare och kommentarer flyttas dit. Det går inte att ångra.'
+      merged_from: 'Sammanslaget från:'
+    in_changelog: 'I ändringsloggen:'
+    source:
+      label: 'Källa'
+      url: 'Länk till källan'
+      title: 'Källa'
+    ai_translation:
+      button: 'Översätt'
+      loading: 'Översätter…'
+      hide: 'Dölj översättning'
+      label: 'AI-översättning'
+      hint: 'Texten skickas till den konfigurerade AI-leverantören.'
+    ai_suggestion:
+      button: 'Föreslå tavla och taggar'
+      loading: 'Tänker…'
+      hint: 'Rubrik och beskrivning skickas till den konfigurerade AI-leverantören.'
+      board: 'Tavla:'
+      tags: 'Taggar:'
+      none: 'Inget förslag: inget passar bättre än vad inlägget redan har.'
+      apply: 'Använd'
+    ai_summary:
+      title: 'AI-sammanfattning'
+      button: 'Sammanfatta diskussionen'
+      loading: 'Sammanfattar…'
+      hint: 'Rubrik, beskrivning och kommentarer skickas till den konfigurerade AI-leverantören.'
+    tags:
+      title: 'Taggar'
   site_settings:
     menu:
       title: 'Site settings'
@@ -123,6 +198,10 @@ sv:
       roadmap: 'Roadmap'
       invitations: 'Invitations'
       appearance: 'Utseende'
+      tags: 'Taggar'
+      widget: 'Widget'
+      audit_log: 'Granskningslogg'
+      webhooks: 'Webhooks'
     info_box:
       up_to_date: 'All changes saved'
       dirty: 'Changes not saved'
@@ -132,7 +211,7 @@ sv:
       brand_setting_name: 'Name only'
       brand_setting_logo: 'Logo only'
       brand_setting_none: 'None'
-      use_browser_locale_help: "If you enable this setting, the feedback space will be displayed in the user's browser preferred language. If the language is not available, the default language will be used."
+      use_browser_locale_help: 'If you enable this setting, the feedback space will be displayed in the user''s browser preferred language. If the language is not available, the default language will be used.'
       subtitle_privacy: 'Privacy'
       is_private_help: 'If you enable this setting, only logged in users will be able to see the content of the feedback space.'
       subtitle_moderation: 'Moderation'
@@ -153,12 +232,35 @@ sv:
       show_vote_count_help: 'If you enable this setting, users will be able to see the vote count of posts. This may incentivize users to vote on already popular posts, leading to a snowball effect.'
       show_vote_button_in_board_help: 'If you enable this setting, users will be able to vote posts from the board page. This may incentivize users to vote on more posts, leading to a higher number of votes but of lower significance.'
       hide_unused_statuses_in_filter_by_status_help: 'If you enable this setting, only statuses that are assigned to at least one post in that board will be shown in the filter by status sidebar filter.'
+      test_email: 'Skicka testmejl'
+      test_email_help: 'Skickar ett mejl till %{email} för att kontrollera mejlinställningarna (EMAIL_*-miljövariabler).'
+      test_email_sent: 'Testmejl skickat till %{email} (%{method}, från %{from}). Kolla inkorgen och spamfilen.'
+      use_gravatar_help: 'Profilbilder kommer från gravatar.com: alla besökares webbläsare frågar gravatar.com varje bild med en hash av mejladressen. Stäng av för att visa initialer i stället och skicka inget till tredjepart.'
+      require_two_factor_for_staff_help: 'Administratörer och moderatorer måste ställa in tvåstegsverifiering innan de kan moderera eller ändra inställningar. API-nycklar påverkas inte.'
+      subtitle_authentication: 'Autentisering'
+      subtitle_mail: 'Mejl'
+      feedback_approval_policy_new_users_require_approval: 'Kräv godkännande för anonym feedback och de första inläggen per konto'
+      require_user_approval_help: 'Registreringar via mejl eller OAuth väntar tills en administratör godkänner dem under Moderation › Användare; administratörer får ett mejl för varje. Inbjudna och inloggningar via SAML, LDAP eller widgeten godkänns automatiskt.'
+      trusted_after_posts_help: 'Efter så här många godkända inlägg godkänns kontots nya inlägg automatiskt. Avslagna inlägg räknas inte.'
+      roadmap_enabled_help: 'Om du stänger av inställningen blir roadmappsidan otillgänglig och länken tas bort från sidhuvudet.'
+      default_post_sorting_help: 'Inlägg sorteras så här när en tavla öppnas utan uttrycklig sortering.'
+      custom_links_help: 'Extra länkar i sidhuvudet, en per rad: Etikett|URL. Exempel: Dokumentation|https://example.com/docs'
+      login_only_with_oauth_help: 'Om du aktiverar inställningen döljs inloggning med mejl och lösenord samt mejlregistrering. Användare kan bara logga in och registrera sig med OAuth-leverantörer. Länkar för lösenordsåterställning förblir tillgängliga.'
+      mail_logo_size_help: 'Storlek i pixlar för logotypen i utgående mejl.'
     boards:
       title: 'Boards'
       empty: 'There are no boards. Create one below!'
       form:
         name: 'Board name'
         description: 'Board description (optional)'
+        visibility: 'Vem kan se det'
+        visibility_help: 'Tavlans inlägg döljs överallt för personer som inte får se dem: listor, roadmap, sökning, flöden, sitemap, mejl. Moderatorer och administratörer ser alltid alla tavlor.'
+        slug: 'URL (valfritt)'
+        slug_help: 'Del av tavans adress, t.ex. /boards/feature-requests. Lämna tomt för att generera den från namnet.'
+      visibility:
+        everyone: 'Alla'
+        signed_in: 'Bara inloggade'
+        staff: 'Bara moderatorer och administratörer'
     post_statuses:
       title: 'Statuses'
       empty: 'There are no statuses. Create one below!'
@@ -173,6 +275,8 @@ sv:
       show_board_filter: 'Show board filter'
       show_post_status_filter: 'Show status filter'
       embed_help: 'You can embed the roadmap in your website by copying the code above.'
+      help_buttons: 'Använd pilknappen för att flytta en status in i eller ut ur roadmappen. För att skapa statusar eller ändra ordningen, gå till Webbplatsinställningar > Statusar.'
+      embed_scope_help: 'Välj tavlor eller statusar för att visa bara dem; inget valt visar alla.'
     invitations:
       new_invitations_title: 'New invitations'
       past_invitations_title: 'Invitations'
@@ -181,16 +285,7 @@ sv:
       subject: 'Email subject'
       subject_default: 'We value your feedback! Join us in shaping %{name}!'
       body: 'Email body'
-      body_default: |
-        Hello!
-
-        We truly appreciate your experience with %{name} and would love to hear your feedback. Your insights help us improve and continue delivering the best possible service.
-
-        Click the link below to share your thoughts and make your voice heard:
-
-        %link%
-
-        Have a great day!
+      body_default: "Hello!\n\nWe truly appreciate your experience with %{name} and would love to hear your feedback. Your insights help us improve and continue delivering the best possible service.\n\nClick the link below to share your thoughts and make your voice heard:\n\n%link%\n\nHave a great day!\n"
       send:
         one: 'Send invitation'
         other: 'Send %{count} invitations'
@@ -207,6 +302,8 @@ sv:
       accepted: 'Accepted'
       sent_at: 'Sent %{when}'
       accepted_at: 'Accepted %{when}'
+      skipped: 'Inte skickade (redan registrerade, redan antagna eller ogiltiga): %{emails}'
+      expired: 'Utgått'
     appearance:
       title: 'Appearance'
       learn_more: 'Learn how to customize appearance'
@@ -234,6 +331,162 @@ sv:
         subtitle_oauth_config: 'OAuth configuration'
         subtitle_user_profile_config: 'User profile configuration'
         client_secret_help: 'hidden for security purposes'
+        profile_headers: 'Extra headers för profilrequesten (valfritt)'
+      ldap:
+        title: 'LDAP / Active Directory'
+        intro: 'Låt personer logga in med inloggningsnamnet och lösenordet i företagskatalogen (OpenLDAP, Active Directory, FreeIPA, ...). Astuto söker posten med tjänstekontot och kontrollerar lösenordet genom att binda som posten.'
+        encryption_start_tls: 'StartTLS (port 389)'
+        encryption_simple_tls: 'LDAPS (port 636)'
+        encryption_plain: 'Ingen (bara i ett betrott nätverk)'
+        bind_dn_help: 'Lämna tomt för att söka anonymbt, om katalogen tillåter det.'
+        bind_password_set: 'Ett lösenord är sparat. Lämna tomt för att behålla det.'
+        user_filter_help: '%{login} står för vad personer skriver. Active Directory: (sAMAccountName=%{login}), OpenLDAP: (uid=%{login}).'
+        test_login: 'Testa med ett inloggningsnamn'
+        test_help: 'Kontrollerar anslutning, tjänstekonto och filter med sparade inställningar; inget lösenord behövs.'
+        test_found: 'Hittade:'
+      saml:
+        title: 'SAML enkel inloggning'
+        intro: 'Låt personer logga in med företagets identitetsleverantör (Microsoft Entra ID, Okta, Keycloak, ADFS, Google Workspace, ...). Registrera Astuto där som en applikation med de två värdena nedan, klistra sedan in identitetsleverantörens metadata eller fyll i dess fält.'
+        sp_entity_id: 'Entity-ID / metadata-URL'
+        acs_url: 'Svars-URL (Assertion Consumer Service)'
+        metadata: 'Metadata-XML från identitetsleverantören'
+        import_metadata: 'Fyll i från metadata'
+        email_attribute_help: 'Lämna tomt för att använda de vanliga attributnamnen, sedan NameID.'
+        auto_create_help: 'Annars kan bara personer som redan har ett konto (till exempel via en inbjudan) logga in.'
+      empty: 'Inga OAuth-leverantörer ännu.'
+    webhooks:
+      title: 'Webhooks'
+      signing:
+        rotate: 'Ny hemlighet'
+        title: 'Signatur'
+        help: 'Varje request har X-Astuto-Signature: sha256=HMAC-SHA256(secret, "<X-Astuto-Timestamp>.<body>"). Kontrollera den på mottagarsidan för att vara säker på att requesten kommer från det här feedbackutrymmet.'
+        rotate_confirmation: 'Mottagare som kontrollerar signaturen behöver den nya hemligheten direkt. Fortsätta?'
+      deliveries:
+        title: 'Senaste leveranser'
+        show: 'Leveranser'
+        empty: 'Inga leveranser ännu.'
+        success: 'Levererad'
+        failure: 'Misslyckad'
+        test: 'Test'
+        last: 'Senaste leverans: %{status} %{when}'
+      learn_more: 'Lär dig konfigurera och använda webhooks'
+      empty: 'Det finns inga webhooks.'
+      triggers:
+        new_post: 'Nytt inlägg'
+        new_post_pending_approval: 'Nytt inlägg (väntar på godkännande)'
+        delete_post: 'Radera inlägg'
+        post_status_change: 'Ändring av inläggsstatus'
+        new_comment: 'Ny kommentar'
+        new_vote: 'Ny röst'
+        new_user: 'Ny användare'
+      form:
+        title_new: 'Ny webhook'
+        title_edit: 'Redigera webhook'
+        add_header: 'Lägg till header'
+        header_n_key: 'Header %{n} nyckel'
+        header_n_value: 'Header %{n} värde'
+        template_variables_selector_placeholder: 'Välj mallvariabel...'
+        templates_label: 'Fyll i för'
+        templates_help: 'Sätter metod, Content-Type-header och en meddelandetext för vald utlösare. Använd inkommande webhook-URL från chattverktyget som URL.'
+        templates_confirm: 'Ersätta den aktuella texten?'
+      test_page:
+        title: 'Webhooktestresultat'
+    tags:
+      form:
+        name: 'Namn'
+        color: 'Färg'
+      empty: 'Inga taggar ännu. Taggar grupperar inlägg över tavlor, t.ex. per produktområde; moderatorer lägger dem på inlägg och besökare filtrerar på dem.'
+      delete_confirmation: 'Radera den här taggen? Den tas bort från alla inlägg.'
+      title: 'Taggar'
+    audit_log:
+      categories:
+        changelog: 'Ändringslogg'
+        user: 'Användare'
+        post: 'Inlägg'
+        comment: 'Kommentarer'
+        board: 'Tavlor'
+        post_status: 'Statusar'
+        site_settings: 'Allmänt'
+        o_auth: 'Inloggningsleverantörer'
+        saml: 'SAML'
+        ldap: 'LDAP'
+        invitation: 'Inbjudningar'
+        api_key: 'API-nycklar'
+        tag: 'Taggar'
+        widget: 'Widget'
+        webhook: 'Webhooks'
+      description: 'Ändringar av administratörer och moderatorer: moderering, användare, tavlor, statusar, inställningar, inloggningsleverantörer, webhooks, inbjudningar och API-nycklar. Posterna sparas i ett år.'
+      filter: 'Filtrera efter område'
+      all: 'Alla'
+      empty: 'Inga poster ännu.'
+      load_more: 'Visa äldre poster'
+      unknown_actor: 'Någon'
+      value_yes: 'ja'
+      value_no: 'nej'
+      filtered: '(dolt)'
+      invitations_sent:
+        one: '1 inbjudan'
+        other: '%{count} inbjudningar'
+      sources:
+        api: 'REST-API'
+        mcp: 'MCP'
+      actions:
+        tag_create: 'skapade taggen'
+        tag_update: 'ändrade taggen'
+        tag_delete: 'raderade taggen'
+        tag_reorder: 'ordnade om taggarna'
+        post_create_for_author: 'postade för:'
+        post_update: 'ändrade inlägget'
+        post_delete: 'raderade inlägget'
+        post_merge: 'slog ihop:'
+        comment_update: 'redigerade en kommentar'
+        comment_delete: 'raderade en kommentar'
+        user_create: 'skapade användaren'
+        user_update: 'ändrade användaren'
+        user_export: 'laddade ner data för'
+        user_delete: 'raderade kontot för'
+        user_two_factor_enable: 'aktiverade tvåstegsverifiering:'
+        user_two_factor_disable: 'stängde av tvåstegsverifiering:'
+        board_create: 'skapade tavlorna'
+        board_update: 'ändrade tavlorna'
+        board_delete: 'raderade tavlorna'
+        board_reorder: 'ordnade om tavlorna'
+        post_status_create: 'skapade statusen'
+        post_status_update: 'ändrade statusen'
+        post_status_delete: 'raderade statusen'
+        post_status_reorder: 'ordnade om statusarna'
+        changelog_create: 'skrev ändringsloggsposten'
+        changelog_update: 'ändrade ändringsloggsposten'
+        changelog_publish: 'publicerade ändringsloggsposten'
+        changelog_delete: 'raderade ändringsloggsposten'
+        site_settings_update: 'ändrade webbplatsinställningarna'
+        o_auth_create: 'lade till inloggningsleverantören'
+        o_auth_update: 'ändrade inloggningsleverantören'
+        o_auth_delete: 'tog bort inloggningsleverantören'
+        saml_update: 'ändrade SAML enkel inloggning:'
+        ldap_update: 'ändrade LDAP-inloggningen:'
+        widget_update: 'ändrade widgetinställningarna'
+        widget_rotate_secret: 'skapade en ny widgethemlighet'
+        webhook_create: 'skapade webhooket'
+        webhook_update: 'ändrade webhooket'
+        webhook_delete: 'raderade webhooket'
+        webhook_rotate_secret: 'skapade en ny signeringshemlighet för webhooket'
+        invitation_send: 'skickade'
+        api_key_create: 'skapade en ny API-nyckel för'
+    widget:
+      intro: 'En feedbackknapp för din egen webbplats eller app. Den öppnar tavlor, roadmap och ändringslogg i en panel. Inloggade besökare i din app röstar och postar med eget konto: din server signerar en kort besökartoken med hemligheten nedan.'
+      enabled: 'Slå på widgeten'
+      allowed_origins: 'Webbplatser som får visa widgeten'
+      allowed_origins_help: 'En origin per rad, t.ex. https://app.example.com. Tomt: valfri webbplats.'
+      auto_create_users: 'Skapa konto för nya besökare'
+      auto_create_users_help: 'Annars loggas bara personer med befintligt konto (samma mejladress) in. Moderatorer och administratörer loggas aldrig in via widgeten.'
+      install_title: 'Installation'
+      install_intro: 'Lägg till det här på dina sidor; ersätt VISITOR_TOKEN med en token från din server, eller utelämna data-token för anonyma besökare.'
+      token_intro: 'Din server signerar besökartoken med den här hemligheten. Behåll den på servern, aldrig i webbläsaren.'
+      rotate_confirm: 'Skapa en ny hemlighet? Token signerade med den aktuella slutar fungera.'
+      token_rules: 'Claims: email (krävs), name, id (ditt användar-id, länkar kontot även när mejladressen ändras). Bara HS256; token får upphöra inom en dag.'
+      title: 'Widget'
+      rotate: 'Ny hemlighet'
   moderation:
     menu:
       feedback: 'Feedback'
@@ -245,10 +498,10 @@ sv:
     users:
       block: 'Block'
       unblock: 'Unblock'
-      block_confirmation: "%{name} won't be able to log in until it is unblocked. Are you sure?"
-      unblock_confirmation: "%{name} will be able to log in and submit feedback. Are you sure?"
-      role_to_moderator_confirmation: "%{name} will be able to manage posts and users. Proceed only if you trust this person. Are you sure?"
-      role_to_admin_confirmation: "%{name} will be able to manage boards, posts, statuses, users and more. Proceed only if you trust this person. Are you sure?"
+      block_confirmation: '%{name} won''t be able to log in until it is unblocked. Are you sure?'
+      unblock_confirmation: '%{name} will be able to log in and submit feedback. Are you sure?'
+      role_to_moderator_confirmation: '%{name} will be able to manage posts and users. Proceed only if you trust this person. Are you sure?'
+      role_to_admin_confirmation: '%{name} will be able to manage boards, posts, statuses, users and more. Proceed only if you trust this person. Are you sure?'
       role_user: 'User'
       role_moderator: 'Moderator'
       role_admin: 'Administrator'
@@ -256,3 +509,241 @@ sv:
       status_active: 'Active'
       status_blocked: 'Blocked'
       status_deleted: 'Deleted'
+      status_pending_approval: 'Väntar på godkännande'
+      export_data: 'Ladda ner data (GDPR)'
+      delete_account: 'Radera konto'
+      delete_account_confirmation: 'Radera %{name}s konto? Inlägg och kommentarer finns kvar och visar "Raderad användare". Det går inte att ångra.'
+      approve: 'Godkänn'
+      search_placeholder: 'Sök på namn eller mejl'
+      filter_all_statuses: 'Alla statusar'
+      filter_all_roles: 'Alla roller'
+      empty: 'Inga användare hittades'
+  number:
+    currency:
+      format:
+        negative_format: '-%u%n'
+    human:
+      storage_units:
+        units:
+          zb: 'ZB'
+  errors:
+    messages:
+      too_long:
+        one: 'är för lång (högst %{count} tecken)'
+        other: 'är för långt (högst %{count} tecken)'
+      password_too_long: 'är för långt'
+      too_short:
+        one: 'är för kort (minst %{count} tecken)'
+        other: 'är för kort (minst %{count} tecken)'
+      wrong_length:
+        one: 'har fel längd (ska vara %{count} tecken)'
+        other: 'har fel längd (ska vara %{count} tecken)'
+      in: 'måste vara in %{count}'
+    user_pending_approval: 'Ditt konto väntar på godkännande av en administratör. Du får ett mejl när du kan logga in.'
+    unavailable_session: "Session %{id} finns inte längre i minnet.\n\nOm du kör på en server med flera processer (som Unicorn eller Puma) lagrar inte processen\nden här förfrågningen hamnade hos %{id} i minnet. Sätt antalet processer/workers till ett (1) eller använd en annan server i utvecklingsläge.\n"
+    unacceptable_request: "En version som stöds förväntas i Accept-headern.\n"
+    connection_refused: "Kunde inte ansluta till webbkonsolens middleware.\nKontrollera att en Rails-server för utveckling körs.\n"
+  datetime:
+    relative:
+      future: 'om %{time}'
+      past: 'för %{time} sedan'
+  helpers:
+    page_entries_info:
+      entry:
+        other: 'inlägg'
+        one: 'inlägg'
+        zero: 'inlägg'
+      one_page:
+        display_entries:
+          zero: 'Inga %{entry_name} hittades'
+          one: 'Visar <b>1</b> %{entry_name}'
+          other: 'Visar <b>alla %{count}</b> %{entry_name}'
+      more_pages:
+        display_entries: 'Visar %{entry_name} <b>%{first}–%{last}</b> av <b>%{total}</b> totalt'
+  flash:
+    actions:
+      create:
+        notice: '%{resource_name} skapades.'
+      update:
+        notice: '%{resource_name} uppdaterades.'
+      destroy:
+        notice: '%{resource_name} raderades.'
+        alert: '%{resource_name} kunde inte raderas.'
+  widget:
+    errors:
+      disabled: 'Widgeten är inte påslagen.'
+      invalid_token: 'Besökartoken är ogiltig eller har upphört att gälla.'
+      linked_elsewhere: 'Den här e-postadressen hör till ett annat konto.'
+      no_account: 'Det finns inget konto för den här besökaren.'
+      staff_account: 'Moderatorer och administratörer loggar in på feedbacksajten, inte via widgeten.'
+      blocked: 'Kontot är blockerat.'
+    tabs:
+      feedback: 'Feedback'
+      roadmap: 'Roadmap'
+      changelog: 'Ändringslogg'
+    close: 'Stäng'
+    board: 'Tavla'
+    signed_in_as: 'Inloggad som %{name}'
+    open_site: 'Öppna feedbacksajten'
+  webhook_templates:
+    new_post: 'Ny feedback i %{board}: %{post}'
+    new_post_pending_approval: 'Feedback som väntar på godkännande i %{board}: %{post}'
+    delete_post: 'Inlägg #%{id} raderades'
+    post_status_change: '%{post} är nu: %{status}'
+    new_comment: '%{author} kommenterade %{post}'
+    new_vote: '%{author} röstade för %{post}'
+    new_user: 'Ny användare: %{user}'
+    open: 'Öppna'
+  mailers:
+    admin:
+      test_email:
+        subject: '[%{site_name}] Testmejl'
+        body: 'Det här testmejlet från %{site_name} kom fram, så utskicket fungerar.'
+        details: 'Skickat med %{delivery_method} från %{from}.'
+      user_pending_approval:
+        subject: '[%{site_name}] Nytt konto väntar på godkännande: %{name}'
+        body_html: '<strong>%{name}</strong> (%{email}) registrerade sig och väntar på ditt godkännande.'
+        review: 'Granska under Moderation › Användare'
+    user:
+      notify_follower_of_changelog_entry:
+        subject: '[%{site_name}] Nytt i ändringsloggen: %{title}'
+        body_html: 'Ändringsloggen har en ny post, <strong>%{title}</strong>. Den levererar feedback du följer'
+        read_entry: 'Läs ändringsloggen'
+      account_approved:
+        subject: '[%{site_name}] Ditt konto är godkänt'
+        body_html: 'En administratör godkände ditt konto. Du kan logga in nu.'
+        sign_in: 'Logga in'
+      recap:
+        subject: '[%{site_name}] %{frequency} sammanfattning av aktiviteten i feedbackutrymmet'
+        body_html: 'Här är den %{frequency} sammanfattningen av aktiviteten i ditt feedbackutrymme'
+        published_posts_count_html: 'Ny publicerad feedback: %{count}'
+        pending_posts_count_html: 'Ny feedback som väntar på godkännande: %{count}'
+        status_changes_title: 'Statusändringar för inlägg du följer'
+        no_status: 'ingen status'
+        top_posts_title: 'Flest röster under perioden'
+        period_votes:
+          one: '%{count} ny röst'
+          other: '%{count} nya röster'
+        more_posts: 'och %{count} till'
+  instance_admin:
+    title: 'Instansadministration'
+    tenants:
+      title: 'Feedbackutrymmen'
+      new: 'Nytt feedbackutrymme'
+      create: 'Skapa feedbackutrymme'
+      subdomain: 'Underdomän'
+      subdomain_hint: 'Bokstäver, siffror och bindestreck. Adressen blir <underdomän>.%{host}.'
+      owner_email: 'Ägarens e-post'
+      owner_name: 'Ägarens namn'
+      locale: 'Språk'
+      address: 'Adress'
+      status: 'Status'
+      created: 'Skapad'
+      actions: 'Åtgärder'
+      edit: 'Redigera'
+      save: 'Spara'
+      back: 'Tillbaka till listan'
+      block: 'Blockera'
+      unblock: 'Avblockera'
+      empty: 'Inga feedbackutrymmen ännu.'
+      statuses:
+        active: 'Aktiv'
+        pending: 'Väntar'
+        blocked: 'Blockerad'
+      custom_domain: 'Egen domän'
+      custom_domain_hint: 'Valfritt. Lägg först till en CNAME-post som pekar domänen till %{target}. Lämna tomt för att ta bort den.'
+      created_title: '%{site_name} är klart'
+      owner_credentials: 'Ägarens inloggning. Lösenordet visas bara nu:'
+      password_hint: 'Skicka det till ägaren över en säker kanal och be hen ändra det efter första inloggningen.'
+      updated: '%{subdomain} sparades.'
+      blocked: '%{subdomain} är blockerat. Sidorna visar en notis; datan finns kvar.'
+      unblocked: '%{subdomain} är aktivt igen.'
+      deleted: '%{subdomain} och alla dess data är raderade.'
+      delete_title: 'Radera feedbackutrymme'
+      delete_warning: 'Raderar tavlor, inlägg, kommentarer, röster, användare, webhooks och inställningar för det här feedbackutrymmet. Det går inte att ångra. Vill du behålla datan, blockera det i stället.'
+      confirm_label: 'Skriv "%{subdomain}" för att bekräfta'
+      confirm_mismatch: 'Underdomänen stämde inte. Inget raderades.'
+      delete: 'Radera permanent'
+      site_name: 'Namn'
+      users: 'Användare'
+      posts: 'Inlägg'
+  pending_tenant:
+    title: 'Bekräfta din e-postadress'
+    body: 'Kolla din inkorg (och spamfilen) och klicka på aktiveringslänken.'
+    help: 'Behöver du hjälp? Kontakta administratören för den här instansen.'
+  two_factor:
+    invalid_code: 'Koden är inte giltig. Använd den aktuella koden från din autentiseringsapp eller en oanvänd säkerhetskod.'
+    login_expired: 'Inloggningen tog för lång tid. Ange din e-post och ditt lösenord igen.'
+    setup_required: 'Det här feedbackutrymmet kräver tvåstegsverifiering för administratörer och moderatorer. Ställ in det först i dina profilinställningar.'
+    already_enabled: 'Twostegsverifiering är redan på.'
+    not_enabled: 'Twostegsverifiering är avstängd.'
+    login_title: 'Twostegsverifiering'
+    intro: 'Skydda ditt konto med ett andra steg: efter lösenordet anger du en kod från en autentiseringsapp (till exempel Aegis, Google Authenticator, Microsoft Authenticator eller 1Password).'
+    set_up: 'Ställ in tvåstegsverifiering'
+    scan_help: 'Skanna QR-koden med din autentiseringsapp och ange sedan den sexsiffriga kod som appen visar.'
+    qr_code_alt: 'QR-kod för autentiseringsappen'
+    manual_entry: 'Eller ange den här nyckeln manuellt:'
+    code: 'Kod'
+    turn_on: 'Slå på'
+    code_for_changes: 'Ange en aktuell kod för att skapa nya säkerhetskoder.'
+    new_backup_codes: 'Skapa nya säkerhetskoder'
+    turn_off: 'Stäng av tvåstegsverifiering'
+    turn_off_confirmation: 'Stänga av tvåstegsverifiering? Ditt konto skyddas bara av lösenordet.'
+    backup_codes: 'Säkerhetskoder'
+    backup_codes_help: 'förvara säkerhetskoderna på en trygg plats. Var och en loggar in dig en gång om telefonen inte är till hands. De visas bara nu.'
+    saved_codes: 'Jag har sparat koderna'
+    required_notice: 'Det här feedbackutrymmet kräver tvåstegsverifiering för administratörer och moderatorer.'
+    login_help: 'Ange koden från din autentiseringsapp, eller en av dina säkerhetskoder.'
+    verify: 'Verifiera'
+    start_over: 'Logga in med annat konto'
+    enabled:
+      one: 'På. 1 säkerhetskod kvar.'
+      other: 'På. %{count} säkerhetskoder kvar.'
+    title: 'Twostegsverifiering'
+  saml:
+    metadata_invalid: 'Det här är inte SAML-metadata för en identitetsleverantör (XML med en SingleSignOnService).'
+  ldap:
+    invalid_login: 'Ogiltigt inloggningsnamn eller lösenord för din %{label}.'
+    not_found: 'Ingen unik post hittades för det här inloggningsnamnet. Kontrollera bas-DN och användarfiltret.'
+  my_feedback:
+    title: 'Min feedback'
+    filters:
+      created: 'Postade'
+      voted: 'Röstade'
+      followed: 'Följer'
+    empty:
+      created: 'Du har inte postat någon feedback ännu.'
+      voted: 'Du har inte röstat på något inlägg ännu.'
+      followed: 'Du följer inget inlägg ännu.'
+    approval:
+      rejected: 'Avslagen'
+      merged: 'Sammanslaget'
+      pending: 'Väntar på godkännande'
+  changelog:
+    empty: 'Ingenting här ännu.'
+    new_entry: 'Ny post'
+    draft: 'Utkast'
+    delivers: 'Levererar:'
+    form:
+      title: 'Rubrik'
+      body: 'Text (Markdown)'
+      posts: 'Levererade inlägg'
+      posts_help: 'Följare till de här inläggen får ett mejl när posten publiceras för första gången.'
+      search_posts: 'Sök inlägg'
+      add_post: 'Lägg till'
+      remove_post: 'Ta bort'
+      save_draft: 'Spara utkast'
+      publish: 'Publicera'
+      unpublish: 'Tillbaka till utkast'
+      ai_draft: 'Skriv utkast med AI'
+      ai_draft_loading: 'Skriver…'
+      ai_draft_hint: 'Rubriker och beskrivningar för levererade inlägg skickas till den konfigurerade AI-leverantören.'
+    title: 'Ändringslogg'
+    rss_feed: 'RSS-flöde'
+  views:
+    pagination:
+      first: '&laquo; Första'
+      last: 'Sista &raquo;'
+      previous: '&lsaquo; Föregående'
+      next: 'Nästa &rsaquo;'
+      truncate: '&hellip;'

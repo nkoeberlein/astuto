@@ -22,14 +22,14 @@ nl:
         body: 'You can confirm your account email through the link below:'
         action: 'Confirm my account'
       email_changed:
-        body: "We're contacting you to notify you that your email is being changed to %{email}."
-        body2: "We're contacting you to notify you that your email has been changed to %{email}."
+        body: 'We''re contacting you to notify you that your email is being changed to %{email}.'
+        body2: 'We''re contacting you to notify you that your email has been changed to %{email}.'
       password_change:
-        body: "We're contacting you to notify you that your password has been changed."
+        body: 'We''re contacting you to notify you that your password has been changed.'
       reset_password:
         body: 'Someone has requested a link to change your password. You can do this through the link below.'
-        body2: "If you didn't request this, please ignore this email."
-        body3: "Your password won't change until you access the link above and create a new one."
+        body2: 'If you didn''t request this, please ignore this email.'
+        body3: 'Your password won''t change until you access the link above and create a new one.'
         action: 'Change my password'
     user:
       opening_greeting: 'Hello %{name}!'
@@ -73,11 +73,15 @@ nl:
       user:
         one: 'User'
         other: 'Users'
+      webhook:
+        one: 'Webhook'
+        other: 'Webhooks'
     attributes:
       board:
         name: 'Name'
         description: 'Description'
         order: 'Order'
+        visibility: 'Zichtbaarheid'
       comment:
         body: 'Body'
         is_post_update: 'Post update'
@@ -123,6 +127,7 @@ nl:
         subdomain: 'Subdomain'
         locale: 'Language'
         custom_domain: 'Custom domain'
+        site_favicon: 'Favicon-URL'
       tenant_setting:
         brand_display: 'Display'
         use_browser_locale: 'Use browser language'
@@ -141,6 +146,15 @@ nl:
         show_roadmap_in_header: 'Show roadmap link in header'
         collapse_boards_in_header: 'Collapse boards in header'
         custom_css: 'Custom CSS'
+        use_gravatar: 'Avatars van Gravatar tonen'
+        require_two_factor_for_staff: 'Tweestapsverificatie vereisen voor beheerders en moderatoren'
+        require_user_approval: 'Nieuwe accounts goedkeuren'
+        trusted_after_posts: 'Vertrouwd na goedgekeurde berichten'
+        roadmap_enabled: 'Roadmap inschakelen'
+        default_post_sorting: 'Standaardsortering van berichten'
+        custom_links: 'Eigen koppelingen in de kop'
+        login_only_with_oauth: 'Alleen OAuth-login tonen'
+        mail_logo_size: 'Logogrootte in e-mails'
       user:
         email: 'Email'
         full_name: 'Full name'
@@ -148,6 +162,39 @@ nl:
         password_confirmation: 'Password confirmation'
         role: 'Role'
         notifications_enabled: 'Notifications enabled'
+        recap_notification_frequency: 'Frequentie van het overzicht'
+      ldap_config:
+        enabled: 'LDAP-login gebruiken'
+        label: 'Naam van het account op de inlogpagina'
+        host: 'Server'
+        port: 'Poort'
+        encryption: 'Versleuteling'
+        verify_certificate: 'Servercertificaat controleren'
+        base_dn: 'Base DN'
+        bind_dn: 'Serviceaccount (bind DN)'
+        bind_password: 'Wachtwoord van het serviceaccount'
+        user_filter: 'Gebruikersfilter'
+        email_attribute: 'Attribuut met het e-mailadres'
+        name_attribute: 'Attribuut met de naam'
+        auto_create_users: 'Account aanmaken bij eerste login'
+      saml_config:
+        enabled: 'SAML single sign-on gebruiken'
+        label: 'Knoptekst'
+        idp_entity_id: 'Entity-ID van de identity provider (issuer)'
+        idp_sso_url: 'Single sign-on-URL van de identity provider'
+        idp_cert: 'Ondertekeningscertificaat van de identity provider'
+        email_attribute: 'Attribuut met het e-mailadres'
+        name_attribute: 'Attribuut met de naam'
+        auto_create_users: 'Account aanmaken bij eerste login'
+      webhook:
+        name: 'Naam'
+        description: 'Omschrijving'
+        is_enabled: 'Actief'
+        trigger: 'Trigger'
+        url: 'URL'
+        http_body: 'HTTP-aanvraagbody'
+        http_method: 'HTTP-methode'
+        http_headers: 'HTTP-aanvraagheaders'
     errors:
       messages:
         invalid: 'is invalid'

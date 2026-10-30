@@ -22,14 +22,14 @@ zh-CN:
         body: '您可以通过以下链接确认您账户的电子邮箱：'
         action: '确认我的账户'
       email_changed:
-        body: "我们正在联系您，以通知您的邮箱正在变更至 %{email}"
-        body2: "我们正在联系您，以通知您的邮箱已变更至 %{email}"
+        body: '我们正在联系您，以通知您的邮箱正在变更至 %{email}'
+        body2: '我们正在联系您，以通知您的邮箱已变更至 %{email}'
       password_change:
-        body: "我们正在联系您，以通知您的密码已被修改。"
+        body: '我们正在联系您，以通知您的密码已被修改。'
       reset_password:
         body: '有人正在请求修改您的密码，你可以通过下面的连接完成此操作。'
-        body2: "如果您未提出此请求，请忽略本邮件。"
-        body3: "在您访问以上链接并创建一个新密码前，您的密码不会更改。"
+        body2: '如果您未提出此请求，请忽略本邮件。'
+        body3: '在您访问以上链接并创建一个新密码前，您的密码不会更改。'
         action: '修改我的密码'
     user:
       opening_greeting: '您好 %{name}！'
@@ -54,23 +54,34 @@ zh-CN:
     models:
       board:
         other: '版块'
+        one: '看板'
       comment:
         other: '评论'
+        one: '评论'
       like:
         other: '投票'
+        one: '投票'
       o_auth:
         other: 'OAuth 授权'
+        one: 'OAuth'
       post_status:
         other: '状态'
+        one: '状态'
       post:
         other: '帖子'
+        one: '帖子'
       user:
         other: '用户'
+        one: '用户'
+      webhook:
+        one: 'Webhook'
+        other: 'Webhook'
     attributes:
       board:
         name: '名称'
         description: '描述'
         order: '排序'
+        visibility: '可见性'
       comment:
         body: '内容'
         is_post_update: '帖子更新'
@@ -116,6 +127,7 @@ zh-CN:
         subdomain: '子域名'
         locale: '语言'
         custom_domain: 'Custom domain'
+        site_favicon: '网站图标 URL'
       tenant_setting:
         brand_display: '显示模式'
         use_browser_locale: 'Use browser language'
@@ -134,6 +146,15 @@ zh-CN:
         show_roadmap_in_header: '在页眉显示开发路线图链接'
         collapse_boards_in_header: '折叠页眉中的版块'
         custom_css: '自定义 CSS'
+        use_gravatar: '显示来自 Gravatar 的头像'
+        require_two_factor_for_staff: '要求管理员和版主使用两步验证'
+        require_user_approval: '批准新账号'
+        trusted_after_posts: '发表获批帖子达到该数量后即受信任'
+        roadmap_enabled: '启用路线图'
+        default_post_sorting: '帖子默认排序'
+        custom_links: '页眉自定义链接'
+        login_only_with_oauth: '仅显示 OAuth 登录'
+        mail_logo_size: '邮件中的 Logo 大小'
       user:
         email: '电子邮箱'
         full_name: '姓名'
@@ -141,6 +162,39 @@ zh-CN:
         password_confirmation: '确认密码'
         role: '角色'
         notifications_enabled: '开启通知'
+        recap_notification_frequency: '摘要通知频率'
+      ldap_config:
+        enabled: '使用 LDAP 登录'
+        label: '登录页面上显示的账号名称'
+        host: '服务器'
+        port: '端口'
+        encryption: '加密'
+        verify_certificate: '校验服务器证书'
+        base_dn: 'Base DN'
+        bind_dn: '服务账号（bind DN）'
+        bind_password: '服务账号密码'
+        user_filter: '用户筛选器'
+        email_attribute: '包含电子邮箱地址的属性'
+        name_attribute: '包含名称的属性'
+        auto_create_users: '首次登录时创建账号'
+      saml_config:
+        enabled: '使用 SAML 单点登录'
+        label: '按钮文字'
+        idp_entity_id: '身份提供商的 entity ID（issuer）'
+        idp_sso_url: '身份提供商的单点登录 URL'
+        idp_cert: '身份提供商的签名证书'
+        email_attribute: '包含电子邮箱地址的属性'
+        name_attribute: '包含名称的属性'
+        auto_create_users: '首次登录时创建账号'
+      webhook:
+        name: '名称'
+        description: '描述'
+        is_enabled: '已启用'
+        trigger: '触发器'
+        url: 'URL'
+        http_body: 'HTTP 请求体'
+        http_method: 'HTTP 方法'
+        http_headers: 'HTTP 请求头'
     errors:
       messages:
         invalid: '无效'

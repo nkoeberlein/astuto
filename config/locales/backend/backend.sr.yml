@@ -22,14 +22,14 @@ sr:
         body: 'You can confirm your account email through the link below:'
         action: 'Confirm my account'
       email_changed:
-        body: "We're contacting you to notify you that your email is being changed to %{email}."
-        body2: "We're contacting you to notify you that your email has been changed to %{email}."
+        body: 'We''re contacting you to notify you that your email is being changed to %{email}.'
+        body2: 'We''re contacting you to notify you that your email has been changed to %{email}.'
       password_change:
-        body: "We're contacting you to notify you that your password has been changed."
+        body: 'We''re contacting you to notify you that your password has been changed.'
       reset_password:
         body: 'Someone has requested a link to change your password. You can do this through the link below.'
-        body2: "If you didn't request this, please ignore this email."
-        body3: "Your password won't change until you access the link above and create a new one."
+        body2: 'If you didn''t request this, please ignore this email.'
+        body3: 'Your password won''t change until you access the link above and create a new one.'
         action: 'Change my password'
     user:
       opening_greeting: 'Hello %{name}!'
@@ -80,11 +80,15 @@ sr:
         one: 'User'
         few: 'Users'
         other: 'Users'
+      webhook:
+        one: 'Webhook'
+        other: 'Webhook-ovi'
     attributes:
       board:
         name: 'Name'
         description: 'Description'
         order: 'Order'
+        visibility: 'Vidljivost'
       comment:
         body: 'Body'
         is_post_update: 'Post update'
@@ -130,6 +134,7 @@ sr:
         subdomain: 'Subdomain'
         locale: 'Language'
         custom_domain: 'Custom domain'
+        site_favicon: 'Adresa favicona'
       tenant_setting:
         brand_display: 'Display'
         use_browser_locale: 'Use browser language'
@@ -148,6 +153,15 @@ sr:
         show_roadmap_in_header: 'Show roadmap link in header'
         collapse_boards_in_header: 'Collapse boards in header'
         custom_css: 'Custom CSS'
+        use_gravatar: 'Prikazuj avatare sa Gravatara'
+        require_two_factor_for_staff: 'Zahtevaj dvo-faktorsku proveru od administratora i moderatora'
+        require_user_approval: 'Odobravaj nove naloge'
+        trusted_after_posts: 'Pouzdan nakon odobrenih objava'
+        roadmap_enabled: 'Uključi plan razvoja'
+        default_post_sorting: 'Podrazumevano raspoređivanje objava'
+        custom_links: 'Veze po meri u zaglavlju'
+        login_only_with_oauth: 'Prikazuj samo OAuth prijavu'
+        mail_logo_size: 'Veličina logotipa u e-porukama'
       user:
         email: 'Email'
         full_name: 'Full name'
@@ -155,6 +169,39 @@ sr:
         password_confirmation: 'Password confirmation'
         role: 'Role'
         notifications_enabled: 'Notifications enabled'
+        recap_notification_frequency: 'Učestalost sažetka'
+      ldap_config:
+        enabled: 'Koristi LDAP prijavu'
+        label: 'Naziv naloga na stranici za prijavu'
+        host: 'Server'
+        port: 'Port'
+        encryption: 'Šifrovanje'
+        verify_certificate: 'Proveri sertifikat servera'
+        base_dn: 'Base DN'
+        bind_dn: 'Servisni nalog (bind DN)'
+        bind_password: 'Lozinka servisnog naloga'
+        user_filter: 'Filter korisnika'
+        email_attribute: 'Atribut sa adresom e-pošte'
+        name_attribute: 'Atribut sa imenom'
+        auto_create_users: 'Napravi nalog pri prvom prijavljivanju'
+      saml_config:
+        enabled: 'Koristi SAML jedinstvenu prijavu'
+        label: 'Tekst dugmeta'
+        idp_entity_id: 'Entity ID dobavljača identiteta (issuer)'
+        idp_sso_url: 'Adresa jedinstvene prijave dobavljača identiteta'
+        idp_cert: 'Sertifikat za potpisivanje dobavljača identiteta'
+        email_attribute: 'Atribut sa adresom e-pošte'
+        name_attribute: 'Atribut sa imenom'
+        auto_create_users: 'Napravi nalog pri prvom prijavljivanju'
+      webhook:
+        name: 'Naziv'
+        description: 'Opis'
+        is_enabled: 'Uključen'
+        trigger: 'Okidač'
+        url: 'URL'
+        http_body: 'Telo HTTP zahteva'
+        http_method: 'HTTP metoda'
+        http_headers: 'Zaglavlja HTTP zahteva'
     errors:
       messages:
         invalid: 'is invalid'

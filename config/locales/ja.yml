@@ -15,7 +15,7 @@ ja:
         new_password_confirmation: 'New password confirmation'
         current_password: 'Current password'
         notifications_enabled: 'Notifications enabled'
-        notifications_enabled_help: "if disabled, you won't receive any notification"
+        notifications_enabled_help: 'if disabled, you won''t receive any notification'
         waiting_confirmation: 'Currently waiting confirmation for %{email}'
         no_password_set: 'You must set a password to update your profile'
         set_password: 'Set password'
@@ -28,14 +28,34 @@ ja:
         profile_settings: 'Profile settings'
         cancel_account: 'Cancel account'
         forgot_password: 'Forgot your password?'
-        confirmation_instructions_not_received: "Didn't receive confirmation instructions?"
-        unlock_instructions_not_received: "Didn't receive unlock instructions?"
+        confirmation_instructions_not_received: 'Didn''t receive confirmation instructions?'
+        unlock_instructions_not_received: 'Didn''t receive unlock instructions?'
         send_reset_password_instructions: 'Send me reset password instructions'
         resend_confirmation_instructions: 'Resend confirmation instructions'
         resend_unlock_instructions: 'Resend unlock instructions'
         change_password: 'Change password'
         password_help: '%{count} characters minimum'
         email_registration_not_allowed: 'Email registration not allowed'
+        notifications: '通知'
+        recap_notification_frequency_daily: '毎日'
+        recap_notification_frequency_weekly: '毎週'
+        recap_notification_frequency_monthly: '毎月'
+        recap_notification_frequency_help: 'メールでのまとめ:新しいフィードバック、投票の多い投稿、フォロー中の投稿のステータス変更（モデレーター:承認待ちのフィードバックも）。何もなければ送信しません。'
+        log_in_with_email: '代わりにメールアドレスとパスワードでログイン'
+        login_name: 'ログイン名'
+        ldap_info: '%{label} でログインしてください。'
+        my_data: '自分のデータ'
+        my_data_help: 'このフィードバックスペースが保存しているあなたの全データ（プロフィール、投稿、コメント、投票、フォロー中の投稿）を JSON でダウンロードします。'
+        download_my_data: '自分のデータをダウンロード'
+        oauth_only_info: '下の OAuth プロバイダーのいずれかでログイン・登録してください。このサイトではメールでのログインは無効です。'
+      api_key:
+        title: 'API キー'
+        current_api_key_help: 'API キーはすでに発行済みのため、セキュリティ上再表示できません。失くした場合は下で新しいキーを発行できます。'
+        generate_api_key: 'API キーを発行'
+        generated_api_key_help: 'この API キーは安全な場所に保管してください。再表示はできません。'
+        generated_api_key_successfully: 'API キーを発行しました！'
+        confirm_generate_new_api_key: '新しい API キーを発行しますか？旧キーは無効になります。'
+        api_key_learn_more: 'API の使い方を学ぶ'
     no_status: 'No status'
     select_placeholder: 'Select...'
     loading: 'Loading...'
@@ -56,6 +76,11 @@ ja:
       approve: 'Approve'
       reject: 'Reject'
       copy_to_clipboard: 'Copy to clipboard'
+      preview: 'プレビュー'
+      move_up: '上へ移動'
+      move_down: '下へ移動'
+    errors:
+      not_found: 'ページが見つかりません'
   header:
     menu:
       site_settings: 'Site settings'
@@ -63,9 +88,18 @@ ja:
       profile_header: 'Profile'
       profile_settings: 'Profile settings'
       sign_out: 'Sign out'
+      my_feedback: 'マイフィードバック'
     log_in: 'Log in / Sign up'
   roadmap:
     title: 'Roadmap'
+    empty: 'ロードマップは空です。'
+    filter_by_board: 'ボードで絞り込み'
+    more_posts:
+      one: '+ %{count} 件の投稿'
+      other: '+ %{count} 件の投稿'
+    sort_by:
+      most_voted: '投票順'
+      recently_updated: '更新順'
   blocked_tenant:
     title: 'This feedback space has been blocked'
   board:
@@ -80,10 +114,13 @@ ja:
       anonymous_submission_help: 'You are posting anonymously'
       non_anonymous_submission_help: 'You are posting as %{name}'
       submit_pending: 'Your feedback has been submitted and is now pending moderator approval!'
+      status: '初期ステータス（モデレーターのみ）'
+      similar_posts_title: '似た投稿がすでにあります。そちらへ投票しませんか？'
     search_box:
       title: 'Search'
     filter_box:
       title: 'Filter by status'
+      tags: 'タグで絞り込み'
     sort_by_box:
       title: 'Sort by'
       trending: 'Trending'
@@ -92,6 +129,8 @@ ja:
       oldest: 'Oldest'
     posts_list:
       empty: 'There are no posts'
+      load_more: 'もっと読み込む'
+    rss_feed: 'RSS フィード'
   post:
     published_by: 'Published by'
     published_anonymously: 'Published anonymously'
@@ -101,18 +140,54 @@ ja:
       title: 'Likes'
     action_box:
       follow_button: 'Follow post'
-      following_description: "you're receiving notifications about new updates on this post"
-      not_following_description: "you won't receive notifications about this post"
+      following_description: 'you''re receiving notifications about new updates on this post'
+      not_following_description: 'you won''t receive notifications about this post'
     comments:
       title: 'Activity'
       post_update_badge: 'Update'
       reply_button: 'Reply'
+      empty: 'コメントはまだありません'
     new_comment:
       body_placeholder: 'Leave a comment'
       submit_button: 'Submit'
       is_post_update: 'Mark as update'
       user_notification: 'Users that follow this post will be notified'
       not_logged_in: 'You need to log in to post comments'
+    merge:
+      same_post: '投稿をそれ自体には統合できません。'
+      already_merged: '対象の投稿の 1 つはすでに統合されています。'
+      button: '別の投稿へ統合'
+      search: '残す投稿を探す'
+      help: '投票・フォロワー・コメントは選択した投稿へ移ります。この投稿はそちらへのリンクになります。元に戻せません。'
+      into_this: 'こちらへ統合'
+      confirmation: 'この投稿を「%{target}」に統合しますか？投票・フォロワー・コメントがそちらへ移ります。元に戻せません。'
+      merged_from: '統合元:'
+    tags:
+      title: 'タグ'
+    in_changelog: '更新履歴:'
+    source:
+      title: 'ソース'
+      label: 'ソース'
+      url: 'ソースへのリンク'
+    ai_translation:
+      button: '翻訳'
+      loading: '翻訳中…'
+      hide: '翻訳を隠す'
+      label: 'AI 翻訳'
+      hint: 'テキストは設定された AI プロバイダーに送信されます。'
+    ai_suggestion:
+      button: 'ボードとタグを提案'
+      loading: '考えています…'
+      hint: 'タイトルと説明が設定された AI プロバイダーに送信されます。'
+      board: 'ボード:'
+      tags: 'タグ:'
+      none: '提案なし: 投稿にすでにあるものより適したものはありません。'
+      apply: '適用'
+    ai_summary:
+      title: 'AI 要約'
+      button: '議論を要約'
+      loading: '要約中…'
+      hint: 'タイトル・説明・コメントが設定された AI プロバイダーに送信されます。'
   site_settings:
     menu:
       title: 'Site settings'
@@ -123,6 +198,10 @@ ja:
       roadmap: 'Roadmap'
       invitations: 'Invitations'
       appearance: 'Appearance'
+      tags: 'タグ'
+      widget: 'ウィジェット'
+      webhooks: 'Webhook'
+      audit_log: '監査ログ'
     info_box:
       up_to_date: 'All changes saved'
       dirty: 'Changes not saved'
@@ -132,7 +211,7 @@ ja:
       brand_setting_name: 'Name only'
       brand_setting_logo: 'Logo only'
       brand_setting_none: 'None'
-      use_browser_locale_help: "If you enable this setting, the feedback space will be displayed in the user's browser preferred language. If the language is not available, the default language will be used."
+      use_browser_locale_help: 'If you enable this setting, the feedback space will be displayed in the user''s browser preferred language. If the language is not available, the default language will be used.'
       subtitle_privacy: 'Privacy'
       is_private_help: 'If you enable this setting, only logged in users will be able to see the content of the feedback space.'
       subtitle_moderation: 'Moderation'
@@ -153,12 +232,35 @@ ja:
       show_vote_count_help: 'If you enable this setting, users will be able to see the vote count of posts. This may incentivize users to vote on already popular posts, leading to a snowball effect.'
       show_vote_button_in_board_help: 'If you enable this setting, users will be able to vote posts from the board page. This may incentivize users to vote on more posts, leading to a higher number of votes but of lower significance.'
       hide_unused_statuses_in_filter_by_status_help: 'If you enable this setting, only statuses that are assigned to at least one post in that board will be shown in the filter by status sidebar filter.'
+      test_email: 'テストメールを送信'
+      test_email_help: '%{email} へテストメールを送り、メール設定（EMAIL_* 環境変数）を確認します。'
+      test_email_sent: '%{email} へテストメールを送信しました（%{method}、%{from} より）。受信箱と迷惑メールフォルダを確認してください。'
+      use_gravatar_help: 'プロフィール画像は gravatar.com から取得します。訪問者ごとのブラウザーが、メールアドレスのハッシュ付きで gravatar.com へ画像を要求します。無効にすると代わりに頭文字を表示し、第三者には何も送りません。'
+      require_two_factor_for_staff_help: '管理者とモデレーターはモデレーションや設定変更の前に二要素認証を設定する必要があります。API キーは対象外です。'
+      subtitle_authentication: '認証'
+      subtitle_mail: 'メール'
+      feedback_approval_policy_new_users_require_approval: '匿名のフィードバックと各アカウントの最初の投稿に承認を必須にする'
+      require_user_approval_help: 'メールまたは OAuth での登録は、管理者がモデレーション › ユーザーで承認するまで待たされます。管理者には登録ごとにメールが届きます。招待された人や SAML・LDAP・ウィジェットでのログインは自動的に承認されます。'
+      trusted_after_posts_help: '承認済み投稿がこの数を超えると、そのアカウントの新しい投稿は自動承認されます。却下された投稿はカウントしません。'
+      roadmap_enabled_help: '無効にするとロードマップのページが利用できなくなり、ヘッダーのリンクも削除されます。'
+      default_post_sorting_help: '明示的な並び順なしでボードを開いたときの投稿の並び順です。'
+      custom_links_help: 'ヘッダーに追加されるリンク。1 行に 1 件: ラベル|URL。例: ドキュメント|https://example.com/docs'
+      login_only_with_oauth_help: '有効にすると、メールとパスワードによるログインとメールでの登録が隠れます。ユーザーは OAuth プロバイダー経由でのみログイン・登録できます。パスワードリセットのリンクは引き続き利用可能です。'
+      mail_logo_size_help: '送信メールに表示するロゴのピクセルサイズ。'
     boards:
       title: 'Boards'
       empty: 'There are no boards. Create one below!'
       form:
         name: 'Board name'
         description: 'Board description (optional)'
+        visibility: '誰が見られるか'
+        visibility_help: 'ボードの投稿は、見る権限のない人にはあらゆる場所から隠されます: 一覧・ロードマップ・検索・フィード・サイトマップ・メール。モデレーターと管理者は常にすべてのボードを見られます。'
+        slug: 'URL（任意）'
+        slug_help: 'ボードの URL の一部。例: /boards/feature-requests。空にすると名前から生成します。'
+      visibility:
+        everyone: '全員'
+        signed_in: 'ログイン済みの人のみ'
+        staff: 'モデレーターと管理者のみ'
     post_statuses:
       title: 'Statuses'
       empty: 'There are no statuses. Create one below!'
@@ -173,6 +275,8 @@ ja:
       show_board_filter: 'Show board filter'
       show_post_status_filter: 'Show status filter'
       embed_help: 'You can embed the roadmap in your website by copying the code above.'
+      help_buttons: '矢印ボタンでステータスをロードマップに入れたり外したりします。ステータスの作成や並び替えは サイト設定 > ステータス で行います。'
+      embed_scope_help: '特定のボードやステータスだけを表示するには選択してください。未選択ならすべて表示されます。'
     invitations:
       new_invitations_title: 'New invitations'
       past_invitations_title: 'Invitations'
@@ -181,18 +285,10 @@ ja:
       subject: 'Email subject'
       subject_default: 'We value your feedback! Join us in shaping %{name}!'
       body: 'Email body'
-      body_default: |
-        Hello!
-
-        We truly appreciate your experience with %{name} and would love to hear your feedback. Your insights help us improve and continue delivering the best possible service.
-
-        Click the link below to share your thoughts and make your voice heard:
-
-        %link%
-
-        Have a great day!
+      body_default: "Hello!\n\nWe truly appreciate your experience with %{name} and would love to hear your feedback. Your insights help us improve and continue delivering the best possible service.\n\nClick the link below to share your thoughts and make your voice heard:\n\n%link%\n\nHave a great day!\n"
       send:
         other: 'Send %{count} invitations'
+        one: '招待を送る'
       submit_success: 'Invitations sent!'
       submit_failure: 'An error occurred while sending invitations'
       invalid_emails: 'Invalid email addresses: %{emails}'
@@ -206,6 +302,8 @@ ja:
       accepted: 'Accepted'
       sent_at: 'Sent %{when}'
       accepted_at: 'Accepted %{when}'
+      skipped: '未送信（登録済み・承認済み・無効）: %{emails}'
+      expired: '期限切れ'
     appearance:
       title: 'Appearance'
       learn_more: 'Learn how to customize appearance'
@@ -233,6 +331,162 @@ ja:
         subtitle_oauth_config: 'OAuth configuration'
         subtitle_user_profile_config: 'User profile configuration'
         client_secret_help: 'hidden for security purposes'
+        profile_headers: 'プロフィール取得リクエストの追加ヘッダー（任意）'
+      ldap:
+        title: 'LDAP / Active Directory'
+        intro: '社内ディレクトリー（OpenLDAP、Active Directory、FreeIPA など）のログイン名とパスワードでログインできるようにします。Astuto はサービスアカウントでエントリーを検索し、そのエントリーとしてバインドしてパスワードを検証します。'
+        encryption_start_tls: 'StartTLS（ポート 389）'
+        encryption_simple_tls: 'LDAPS（ポート 636）'
+        encryption_plain: 'なし（信頼されたネットワーク内のみ）'
+        bind_dn_help: 'ディレクトリーが許す場合、匿名検索用に空にします。'
+        bind_password_set: 'パスワードは保存済みです。維持するには空にします。'
+        user_filter_help: '%{login} は入力された内容です。Active Directory: (sAMAccountName=%{login})、OpenLDAP: (uid=%{login})。'
+        test_login: 'ログイン名でテスト'
+        test_help: '保存済みの設定で接続・サービスアカウント・フィルターを検証します。パスワードは不要です。'
+        test_found: '検索結果:'
+      saml:
+        title: 'SAML シングルサインオン'
+        intro: '会社の IdP（Microsoft Entra ID、Okta、Keycloak、ADFS、Google Workspace など）でログインできるようにします。下の 2 つの値で Astuto をアプリとして登録し、IdP のメタデータを貼り付けるか、各フィールドを埋めてください。'
+        sp_entity_id: 'Entity ID / メタデータ URL'
+        acs_url: '返答先 URL（Assertion Consumer Service）'
+        metadata: 'IdP のメタデータ XML'
+        import_metadata: 'メタデータから入力'
+        email_attribute_help: '空にすると通常の属性名が使われ、次に NameID が使われます。'
+        auto_create_help: '無効にすると、すでにアカウントがある人（たとえば招待経由）のみログインできます。'
+      empty: 'OAuth プロバイダーはまだありません。'
+    widget:
+      title: 'ウィジェット'
+      intro: '自サイト・アプリ向けのフィードバックボタン。パネル内でボード・ロードマップ・更新履歴を開きます。アプリにログイン済みの訪問者は自分のアカウントで投票・投稿します。サーバーが下のシークレットで短期の訪問者トークンに署名します。'
+      enabled: 'ウィジェットを有効化'
+      allowed_origins: 'ウィジェットを表示できるサイト'
+      allowed_origins_help: '1 行に 1 つの origin。例: https://app.example.com。空ならすべてのサイト。'
+      auto_create_users: '新しい訪問者のアカウントを作成する'
+      auto_create_users_help: '無効にすると、アカウントが既にある人（同一メール）だけがログインできます。モデレーターと管理者がウィジェット経由でログインすることはありません。'
+      install_title: '設置'
+      install_intro: 'サイトのページに次のコードを追加します。VISITOR_TOKEN はサーバーが発行したトークンに置き換えてください。匿名訪問者用には data-token を省略します。'
+      token_intro: 'サーバーはこのシークレットで訪問者トークンに署名します。ブラウザーではなくサーバーに保管してください。'
+      rotate: '新しいシークレット'
+      rotate_confirm: '新しいシークレットを作成しますか？現行のシークレットで署名したトークンは使えなくなります。'
+      token_rules: 'クレーム: email（必須）, name, id（ユーザー ID。メール変更後もアカウントを紐付ける）。HS256 のみ。トークンは 1 日以内に失効する必要があります。'
+    tags:
+      title: 'タグ'
+      empty: 'タグはまだありません。タグはボードをまたいで投稿を分類します（例: 製品領域別）。モデレーターが投稿に付け、訪問者はタグで絞り込めます。'
+      delete_confirmation: 'このタグを削除しますか？すべての投稿から外れます。'
+      form:
+        name: '名前'
+        color: '色'
+    audit_log:
+      description: '管理者とモデレーターの変更履歴: モデレーション、ユーザー、ボード、ステータス、設定、ログインプロバイダー、Webhook、招待、API キー。記録は 1 年間保存されます。'
+      filter: '領域で絞り込み'
+      all: 'すべて'
+      empty: '記録はまだありません。'
+      load_more: '古い記録を表示'
+      unknown_actor: '誰か'
+      value_yes: 'はい'
+      value_no: 'いいえ'
+      filtered: '（非表示）'
+      invitations_sent:
+        one: '招待 1 件'
+        other: '招待 %{count} 件'
+      categories:
+        tag: 'タグ'
+        post: '投稿'
+        comment: 'コメント'
+        user: 'ユーザー'
+        board: 'ボード'
+        post_status: 'ステータス'
+        changelog: '更新履歴'
+        site_settings: '一般'
+        o_auth: 'ログインプロバイダー'
+        saml: 'SAML'
+        ldap: 'LDAP'
+        widget: 'ウィジェット'
+        webhook: 'Webhook'
+        invitation: '招待'
+        api_key: 'API キー'
+      sources:
+        api: 'REST API'
+        mcp: 'MCP'
+      actions:
+        tag_create: 'がタグを作成'
+        tag_update: 'がタグを変更'
+        tag_delete: 'がタグを削除'
+        tag_reorder: 'がタグを並べ替え'
+        post_create_for_author: 'が代理投稿:'
+        post_update: 'が投稿を変更'
+        post_delete: 'が投稿を削除'
+        post_merge: 'が統合:'
+        comment_update: 'がコメントを編集'
+        comment_delete: 'がコメントを削除'
+        user_create: 'がユーザーを作成'
+        user_update: 'がユーザーを変更'
+        user_export: 'がユーザーのデータをダウンロード'
+        user_delete: 'がユーザーのアカウントを削除'
+        user_two_factor_enable: 'が二要素認証を有効化:'
+        user_two_factor_disable: 'が二要素認証を無効化:'
+        board_create: 'がボードを作成'
+        board_update: 'がボードを変更'
+        board_delete: 'がボードを削除'
+        board_reorder: 'がボードを並べ替え'
+        post_status_create: 'がステータスを作成'
+        post_status_update: 'がステータスを変更'
+        post_status_delete: 'がステータスを削除'
+        post_status_reorder: 'がステータスを並べ替え'
+        changelog_create: 'が更新履歴の記録を執筆'
+        changelog_update: 'が更新履歴の記録を変更'
+        changelog_publish: 'が更新履歴の記録を公開'
+        changelog_delete: 'が更新履歴の記録を削除'
+        site_settings_update: 'がサイト設定を変更'
+        o_auth_create: 'がログインプロバイダーを追加'
+        o_auth_update: 'がログインプロバイダーを変更'
+        o_auth_delete: 'がログインプロバイダーを削除'
+        saml_update: 'が SAML シングルサインオンを変更:'
+        ldap_update: 'が LDAP ログインを変更:'
+        widget_update: 'がウィジェット設定を変更'
+        widget_rotate_secret: 'がウィジェットの新しいシークレットを作成'
+        webhook_create: 'が Webhook を作成'
+        webhook_update: 'が Webhook を変更'
+        webhook_delete: 'が Webhook を削除'
+        webhook_rotate_secret: 'が Webhook の新しい署名シークレットを作成'
+        invitation_send: 'が送信'
+        api_key_create: 'が次のユーザーの API キーを発行:'
+    webhooks:
+      deliveries:
+        title: '最近の配信'
+        show: '配信'
+        empty: '配信はまだありません。'
+        success: '配信成功'
+        failure: '配信失敗'
+        test: 'テスト'
+        last: '最終配信: %{status} %{when}'
+      signing:
+        title: '署名'
+        help: 'リクエストには X-Astuto-Signature: sha256=HMAC-SHA256(secret, "<X-Astuto-Timestamp>.<body>") が付きます。受信側で検証すれば、リクエストがこのフィードバックスペースから来たものだと確認できます。'
+        rotate: '新しいシークレット'
+        rotate_confirmation: '署名を検証する受信側には新しいシークレットが直ちに必要です。続行しますか？'
+      title: 'Webhook'
+      learn_more: 'Webhook の設定方法と使い方を学ぶ'
+      empty: 'Webhook はありません。'
+      triggers:
+        new_post: '新しい投稿'
+        new_post_pending_approval: '新しい投稿（承認待ち）'
+        delete_post: '投稿の削除'
+        post_status_change: '投稿ステータスの変更'
+        new_comment: '新しいコメント'
+        new_vote: '新しい投票'
+        new_user: '新しいユーザー'
+      form:
+        title_new: '新しい Webhook'
+        title_edit: 'Webhook を編集'
+        add_header: 'ヘッダーを追加'
+        header_n_key: 'ヘッダー %{n} のキー'
+        header_n_value: 'ヘッダー %{n} の値'
+        template_variables_selector_placeholder: 'テンプレート変数を選択…'
+        templates_label: '入力する対象'
+        templates_help: '選択したトリガー用に、メソッド・Content-Type ヘッダー・メッセージ本文を設定します。URL にはチャットツールの受信 Webhook URL を使ってください。'
+        templates_confirm: '現在の本文を置き換えますか？'
+      test_page:
+        title: 'Webhook テストの結果'
   moderation:
     menu:
       feedback: 'Feedback'
@@ -244,10 +498,10 @@ ja:
     users:
       block: 'Block'
       unblock: 'Unblock'
-      block_confirmation: "%{name} won't be able to log in until it is unblocked. Are you sure?"
-      unblock_confirmation: "%{name} will be able to log in and submit feedback. Are you sure?"
-      role_to_moderator_confirmation: "%{name} will be able to manage posts and users. Proceed only if you trust this person. Are you sure?"
-      role_to_admin_confirmation: "%{name} will be able to manage boards, posts, statuses, users and more. Proceed only if you trust this person. Are you sure?"
+      block_confirmation: '%{name} won''t be able to log in until it is unblocked. Are you sure?'
+      unblock_confirmation: '%{name} will be able to log in and submit feedback. Are you sure?'
+      role_to_moderator_confirmation: '%{name} will be able to manage posts and users. Proceed only if you trust this person. Are you sure?'
+      role_to_admin_confirmation: '%{name} will be able to manage boards, posts, statuses, users and more. Proceed only if you trust this person. Are you sure?'
       role_user: 'User'
       role_moderator: 'Moderator'
       role_admin: 'Administrator'
@@ -255,3 +509,281 @@ ja:
       status_active: 'Active'
       status_blocked: 'Blocked'
       status_deleted: 'Deleted'
+      export_data: 'データをダウンロード（GDPR）'
+      delete_account: 'アカウントを削除'
+      delete_account_confirmation: '%{name} のアカウントを削除しますか？投稿とコメントは残り「削除済みユーザー」と表示されます。元に戻せません。'
+      status_pending_approval: '承認待ち'
+      approve: '承認'
+      search_placeholder: '名前またはメールで検索'
+      filter_all_statuses: 'すべてのステータス'
+      filter_all_roles: 'すべてのロール'
+      empty: 'ユーザーが見つかりません'
+  number:
+    human:
+      storage_units:
+        units:
+          byte:
+            one: 'バイト'
+            other: 'バイト'
+  errors:
+    messages:
+      too_long:
+        one: 'が長すぎます（最大 %{count} 文字）'
+        other: 'が長すぎます（最大 %{count} 文字）'
+      too_short:
+        one: 'が短すぎます（最低 %{count} 文字）'
+        other: 'が短すぎます（最低 %{count} 文字）'
+      wrong_length:
+        one: 'の長さが正しくありません（%{count} 文字にしてください）'
+        other: 'の長さが正しくありません（%{count} 文字にしてください）'
+      not_saved:
+        one: '1 件のエラーにより、この %{resource} を保存できません:'
+    template:
+      header:
+        one: '%{count} 件のエラーにより、この %{model} を保存できません'
+        other: '%{count} 件のエラーにより、この %{model} を保存できません'
+    user_pending_approval: 'あなたのアカウントは管理者の承認待ちです。ログインできるようになるとメールが届きます。'
+    unavailable_session: "セッション %{id} はメモリー上に残っていません。\n\nマルチプロセスのサーバー（Unicorn や Puma など）で実行している場合、このリクエストを\n処理したプロセスは %{id} をメモリーに保持していません。プロセス/ワーカー数を 1 にするか、開発環境では別のサーバーを使ってください。\n"
+    unacceptable_request: "Accept ヘッダーには対応しているバージョンが必要です。\n"
+    connection_refused: "Web Console ミドルウェアに接続できませんでした。\nRails の開発サーバーが動いていることを確認してください。\n"
+  datetime:
+    distance_in_words:
+      less_than_x_seconds:
+        one: '%{count} 秒未満'
+        other: '%{count} 秒未満'
+      x_seconds:
+        one: '%{count} 秒'
+        other: '%{count} 秒'
+      less_than_x_minutes:
+        one: '1 分未満'
+        other: '%{count} 分未満'
+      x_minutes:
+        one: '%{count} 分'
+        other: '%{count} 分'
+      about_x_hours:
+        one: '約 %{count} 時間'
+        other: '約 %{count} 時間'
+      x_days:
+        one: '%{count} 日'
+        other: '%{count} 日'
+      about_x_months:
+        one: '約 %{count} か月'
+        other: '約 %{count} か月'
+      x_months:
+        one: '%{count} か月'
+        other: '%{count} か月'
+      about_x_years:
+        one: '約 %{count} 年'
+        other: '約 %{count} 年'
+      over_x_years:
+        one: '%{count} 年以上'
+        other: '%{count} 年以上'
+      almost_x_years:
+        one: '%{count} 年弱'
+        other: '%{count} 年弱'
+      x_years:
+        one: '%{count} 年'
+        other: '%{count} 年'
+    relative:
+      future: '%{time}後'
+      past: '%{time}前'
+  helpers:
+    page_entries_info:
+      entry:
+        zero: '件'
+        one: '件'
+        other: '件'
+      one_page:
+        display_entries:
+          zero: '%{entry_name} は見つかりません'
+          one: '<b>1</b> 件の %{entry_name} を表示中'
+          other: '全 <b>%{count}</b> 件の %{entry_name} を表示中'
+      more_pages:
+        display_entries: '全 <b>%{total}</b> 件中 %{entry_name} <b>%{first}–%{last}</b> を表示中'
+  flash:
+    actions:
+      create:
+        notice: '%{resource_name} を作成しました。'
+      update:
+        notice: '%{resource_name} を更新しました。'
+      destroy:
+        notice: '%{resource_name} を削除しました。'
+        alert: '%{resource_name} を削除できませんでした。'
+  widget:
+    errors:
+      disabled: 'ウィジェットは有効化されていません。'
+      invalid_token: '訪問者トークンが無効か期限切れです。'
+      linked_elsewhere: 'このメールアドレスは別のアカウントに属しています。'
+      no_account: 'この訪問者のアカウントはありません。'
+      staff_account: 'モデレーターと管理者はフィードバックサイトからログインしてください。ウィジェットからはできません。'
+      blocked: 'このアカウントはブロックされています。'
+    tabs:
+      feedback: 'フィードバック'
+      roadmap: 'ロードマップ'
+      changelog: '更新履歴'
+    close: '閉じる'
+    board: 'ボード'
+    signed_in_as: '%{name} としてログイン中'
+    open_site: 'フィードバックサイトを開く'
+  webhook_templates:
+    new_post: '%{board} に新しいフィードバック: %{post}'
+    new_post_pending_approval: '%{board} に承認待ちのフィードバック: %{post}'
+    delete_post: '投稿 #%{id} が削除されました'
+    post_status_change: '%{post} のステータスは「%{status}」になりました'
+    new_comment: '%{author} が %{post} にコメントしました'
+    new_vote: '%{author} が %{post} に投票しました'
+    new_user: '新しいユーザー: %{user}'
+    open: '開く'
+  mailers:
+    admin:
+      test_email:
+        subject: '[%{site_name}] テストメール'
+        body: '%{site_name} からのこのテストメールが届きました。メール送信は正常に動作しています。'
+        details: '%{delivery_method} で %{from} から送信。'
+      user_pending_approval:
+        subject: '[%{site_name}] 承認待ちの新規アカウント: %{name}'
+        body_html: '<strong>%{name}</strong>（%{email}）が登録し、あなたの承認を待っています。'
+        review: 'モデレーション › ユーザー で確認'
+    user:
+      notify_follower_of_changelog_entry:
+        subject: '[%{site_name}] 更新履歴の新着: %{title}'
+        body_html: '更新履歴に新しい記録 <strong>%{title}</strong> が追加されました。フォロー中のフィードバックの実装状況をお伝えします'
+        read_entry: '更新履歴を読む'
+      account_approved:
+        subject: '[%{site_name}] アカウントが承認されました'
+        body_html: '管理者がアカウントを承認しました。ログインできます。'
+        sign_in: 'ログイン'
+      recap:
+        subject: '[%{site_name}] フィードバックスペースの活動まとめ（%{frequency}）'
+        body_html: 'フィードバックスペースの %{frequency} の活動まとめです'
+        published_posts_count_html: '公開された新しいフィードバック: %{count}'
+        pending_posts_count_html: '承認待ちの新しいフィードバック: %{count}'
+        status_changes_title: 'フォロー中の投稿のステータス変更'
+        no_status: 'ステータスなし'
+        top_posts_title: 'この期間の人気の投稿'
+        period_votes:
+          one: '新しい投票 %{count} 件'
+          other: '新しい投票 %{count} 件'
+        more_posts: 'ほか %{count} 件'
+  instance_admin:
+    title: 'インスタンス管理'
+    tenants:
+      title: 'フィードバックスペース'
+      new: '新しいフィードバックスペース'
+      create: 'フィードバックスペースを作成'
+      site_name: '名前'
+      subdomain: 'サブドメイン'
+      subdomain_hint: '英字・数字・ハイフン。アドレスは <サブドメイン>.%{host} になります。'
+      owner_email: 'オーナーのメールアドレス'
+      owner_name: 'オーナーの名前'
+      locale: '言語'
+      address: 'アドレス'
+      status: 'ステータス'
+      users: 'ユーザー'
+      posts: '投稿'
+      created: '作成日'
+      actions: '操作'
+      edit: '編集'
+      save: '保存'
+      back: '一覧に戻る'
+      block: 'ブロック'
+      unblock: 'ブロック解除'
+      empty: 'フィードバックスペースはまだありません。'
+      statuses:
+        active: 'アクティブ'
+        pending: '保留'
+        blocked: 'ブロック中'
+      custom_domain: '独自ドメイン'
+      custom_domain_hint: '任意。先にドメインを %{target} に向ける CNAME レコードを追加してください。削除するには空のままにします。'
+      created_title: '%{site_name} の準備ができました'
+      owner_credentials: 'オーナーのログイン情報。パスワードは今だけ表示されます:'
+      password_hint: '安全な経路でオーナーに送り、初回ログイン後に変更するよう依頼してください。'
+      updated: '%{subdomain} を保存しました。'
+      blocked: '%{subdomain} をブロックしました。ページにはお知らせが表示され、データは残ります。'
+      unblocked: '%{subdomain} が再度アクティブになりました。'
+      deleted: '%{subdomain} とそのデータをすべて削除しました。'
+      delete_title: 'フィードバックスペースの削除'
+      delete_warning: 'このフィードバックスペースのボード、投稿、コメント、投票、ユーザー、Webhook、設定を削除します。元に戻せません。データを残したい場合は削除ではなくブロックしてください。'
+      confirm_label: '確認のため「%{subdomain}」と入力してください'
+      confirm_mismatch: 'サブドメインが一致しませんでした。何も削除していません。'
+      delete: '完全に削除する'
+  pending_tenant:
+    title: 'メールアドレスを確認してください'
+    body: 'メールの受信箱（迷惑メールフォルダも）を確認し、有効化リンクをクリックしてください。'
+    help: 'お困りですか？このインスタンスの管理者に連絡してください。'
+  two_factor:
+    invalid_code: 'コードが正しくありません。認証アプリの現在のコードか、未使用のバックアップコードを使ってください。'
+    login_expired: 'ログインに時間がかかりすぎました。もう一度メールアドレスとパスワードを入力してください。'
+    setup_required: 'このフィードバックスペースでは管理者とモデレーターに二要素認証が必須です。先にプロフィール設定で設定してください。'
+    already_enabled: '二要素認証はすでに有効です。'
+    not_enabled: '二要素認証は無効です。'
+    title: '二要素認証'
+    intro: '第二段階でアカウントを保護しましょう。パスワードの後に、認証アプリ（Aegis、Google Authenticator、Microsoft Authenticator、1Password など）のコードを入力します。'
+    set_up: '二要素認証を設定する'
+    scan_help: '認証アプリで QR コードをスキャンし、表示される 6 桁のコードを入力してください。'
+    qr_code_alt: '認証アプリ用の QR コード'
+    manual_entry: 'またはこのキーを手入力してください:'
+    code: 'コード'
+    turn_on: '有効化'
+    code_for_changes: '新しいバックアップコードを作成するには、現在有効なコードを入力してください。'
+    new_backup_codes: '新しいバックアップコードを作成'
+    turn_off: '二要素認証を無効にする'
+    turn_off_confirmation: '二要素認証を無効にしますか？アカウントはパスワードのみで保護されることになります。'
+    backup_codes: 'バックアップコード'
+    backup_codes_help: 'このバックアップコードは安全な場所に保管してください。スマートフォンが手元にないとき、各コードで 1 回だけログインできます。今だけ表示されます。'
+    saved_codes: 'コードを保存しました'
+    required_notice: 'このフィードバックスペースでは管理者とモデレーターに二要素認証が必須です。'
+    login_title: '二要素認証'
+    login_help: '認証アプリのコードか、バックアップコードのいずれかを入力してください。'
+    verify: '確認'
+    start_over: '別のアカウントでログイン'
+    enabled:
+      one: '有効。バックアップコードが残り 1 件です。'
+      other: '有効。バックアップコードが残り %{count} 件です。'
+  saml:
+    metadata_invalid: 'SAML IdP のメタデータではありません（SingleSignOnService を含む XML）。'
+  ldap:
+    invalid_login: '%{label} のログイン名またはパスワードが正しくありません。'
+    not_found: 'このログイン名に一意なエントリーが見つかりませんでした。Base DN とユーザーフィルターを確認してください。'
+  my_feedback:
+    title: 'マイフィードバック'
+    filters:
+      created: '投稿した'
+      voted: '投票した'
+      followed: 'フォロー中'
+    empty:
+      created: 'まだフィードバックを投稿していません。'
+      voted: 'まだ投稿に投票していません。'
+      followed: 'まだ投稿をフォローしていません。'
+    approval:
+      pending: '承認待ち'
+      rejected: '却下'
+      merged: '統合済み'
+  changelog:
+    title: '更新履歴'
+    empty: 'まだ何もありません。'
+    new_entry: '新しい記録'
+    draft: '下書き'
+    delivers: '取り上げた投稿:'
+    rss_feed: 'RSS フィード'
+    form:
+      title: 'タイトル'
+      body: '本文 (Markdown)'
+      posts: '取り上げる投稿'
+      posts_help: 'これらの投稿のフォロワーは、記録の初回公開時にメールを受け取ります。'
+      search_posts: '投稿を探す'
+      add_post: '追加'
+      remove_post: '削除'
+      save_draft: '下書きを保存'
+      publish: '公開'
+      unpublish: '下書きへ戻す'
+      ai_draft: 'AI で本文を下書き'
+      ai_draft_loading: '執筆中…'
+      ai_draft_hint: '取り上げた投稿のタイトルと説明が設定された AI プロバイダーに送信されます。'
+  views:
+    pagination:
+      first: '&laquo; 最初'
+      last: '最後 &raquo;'
+      previous: '&lsaquo; 前'
+      next: '次 &rsaquo;'
+      truncate: '&hellip;'

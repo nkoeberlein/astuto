@@ -15,7 +15,7 @@ vi:
         new_password_confirmation: 'Xác nhận mật khẩu mới'
         current_password: 'Mật khẩu hiện tại'
         notifications_enabled: 'Thông báo đã bật'
-        notifications_enabled_help: "Nếu tắt, bạn sẽ không nhận được thông báo nào"
+        notifications_enabled_help: 'Nếu tắt, bạn sẽ không nhận được thông báo nào'
         waiting_confirmation: 'Currently waiting confirmation for %{email}'
         no_password_set: 'You must set a password to update your profile'
         set_password: 'Set password'
@@ -28,14 +28,34 @@ vi:
         profile_settings: 'Thông tin cá nhân'
         cancel_account: 'Hủy tài khoản'
         forgot_password: 'Quên mật khẩu?'
-        confirmation_instructions_not_received: "Không nhận được hướng dẫn xác nhận?"
-        unlock_instructions_not_received: "Không nhận được hướng dẫn mở khóa?"
+        confirmation_instructions_not_received: 'Không nhận được hướng dẫn xác nhận?'
+        unlock_instructions_not_received: 'Không nhận được hướng dẫn mở khóa?'
         send_reset_password_instructions: 'Gửi hướng dẫn đặt lại mật khẩu'
         resend_confirmation_instructions: 'Gửi lại hướng dẫn xác nhận'
         resend_unlock_instructions: 'Gửi lại hướng dẫn mở khóa'
         change_password: 'Đổi mật khẩu'
         password_help: 'Ít nhất %{count} ký từ'
         email_registration_not_allowed: 'Email registration not allowed'
+        notifications: 'Thông báo'
+        recap_notification_frequency_daily: 'Hằng ngày'
+        recap_notification_frequency_weekly: 'Hằng tuần'
+        recap_notification_frequency_monthly: 'Hằng tháng'
+        recap_notification_frequency_help: 'Bản tổng hợp qua email: phản hồi mới, các bài nhiều phiếu nhất và thay đổi trạng thái của bài đang theo dõi (điều hành viên: cả phản hồi chờ phê duyệt). Không gửi gì khi không có gì xảy ra.'
+        log_in_with_email: 'Đăng nhập bằng email và mật khẩu thay thế'
+        login_name: 'Tên đăng nhập'
+        ldap_info: 'Đăng nhập bằng %{label} của bạn.'
+        my_data: 'Dữ liệu của tôi'
+        my_data_help: 'Tải về mọi thứ không gian phản hồi này lưu về bạn: hồ sơ, bài đăng, bình luận, phiếu bình chọn và bài đang theo dõi (JSON).'
+        download_my_data: 'Tải về dữ liệu của tôi'
+        oauth_only_info: 'Đăng nhập và đăng ký bằng một trong các nhà cung cấp OAuth bên dưới. Đăng nhập email đã tắt trên trang này.'
+      api_key:
+        title: 'Khóa API'
+        current_api_key_help: 'Bạn đã tạo khóa API và vì lý do bảo mật không thể hiển thị lại. Nếu làm mất, bạn có thể tạo khóa mới bên dưới.'
+        generate_api_key: 'Tạo khóa API'
+        generated_api_key_help: 'Giữ khóa API này ở nơi an toàn, bạn sẽ không xem lại được.'
+        generated_api_key_successfully: 'Khóa API đã được tạo thành công!'
+        confirm_generate_new_api_key: 'Tạo khóa API mới? Khóa cũ sẽ bị vô hiệu.'
+        api_key_learn_more: 'Tìm hiểu cách dùng API'
     no_status: 'Không có trạng thái'
     select_placeholder: 'Select...'
     loading: 'Đang tải...'
@@ -56,6 +76,11 @@ vi:
       approve: 'Approve'
       reject: 'Reject'
       copy_to_clipboard: 'Copy to clipboard'
+      preview: 'Xem trước'
+      move_up: 'Chuyển lên'
+      move_down: 'Chuyển xuống'
+    errors:
+      not_found: 'Không tìm thấy trang'
   header:
     menu:
       site_settings: 'Cài đặt trang'
@@ -63,9 +88,18 @@ vi:
       profile_header: 'Profile'
       profile_settings: 'Thông tin cá nhân'
       sign_out: 'Đăng xuất'
+      my_feedback: 'Phản hồi của tôi'
     log_in: 'Đăng nhập / Đăng ký'
   roadmap:
     title: 'Lộ trình'
+    empty: 'Lộ trình đang trống.'
+    filter_by_board: 'Lọc theo bảng'
+    more_posts:
+      one: '+ %{count} bài nữa'
+      other: '+ %{count} bài nữa'
+    sort_by:
+      most_voted: 'Nhiều phiếu nhất'
+      recently_updated: 'Vừa cập nhật'
   blocked_tenant:
     title: 'Không gian phản hồi này đã bị chặn'
   board:
@@ -80,10 +114,13 @@ vi:
       anonymous_submission_help: 'You are posting anonymously'
       non_anonymous_submission_help: 'You are posting as %{name}'
       submit_pending: 'Your feedback has been submitted and is now pending moderator approval!'
+      status: 'Trạng thái ban đầu (chỉ điều hành viên)'
+      similar_posts_title: 'Đã có bài tương tự — bình chọn một bài trong số đó thay vì đăng mới?'
     search_box:
       title: 'Tim kiếm'
     filter_box:
       title: 'Lọc theo trạng thái'
+      tags: 'Lọc theo thẻ'
     sort_by_box:
       title: 'Sort by'
       trending: 'Trending'
@@ -92,6 +129,8 @@ vi:
       oldest: 'Oldest'
     posts_list:
       empty: 'Không có phản hồi nào'
+      load_more: 'Tải thêm'
+    rss_feed: 'Nguồn RSS'
   post:
     published_by: 'Đăng bởi'
     published_anonymously: 'Published anonymously'
@@ -101,18 +140,54 @@ vi:
       title: 'Thích'
     action_box:
       follow_button: 'Theo dõi phản hồi'
-      following_description: "you're receiving notifications about new updates on this post"
-      not_following_description: "you won't receive notifications about this post"
+      following_description: 'you''re receiving notifications about new updates on this post'
+      not_following_description: 'you won''t receive notifications about this post'
     comments:
       title: 'Hoạt động'
       post_update_badge: 'Cập nhật'
       reply_button: 'Trả lời'
+      empty: 'Chưa có bình luận'
     new_comment:
       body_placeholder: 'Để lại bình luận'
       submit_button: 'Gửi'
       is_post_update: 'Đánh dấu là cập nhật'
       user_notification: 'Người dùng theo dõi bài viết này sẽ nhận thông báo'
       not_logged_in: 'Bạn cần đăng nhập để gửi bình luận'
+    merge:
+      same_post: 'Một bài không thể gộp vào chính nó.'
+      already_merged: 'Một trong các bài đã được gộp.'
+      button: 'Gộp vào bài khác'
+      search: 'Tìm bài sẽ giữ lại'
+      help: 'Phiếu bình chọn, người theo dõi và bình luận chuyển sang bài bạn chọn; bài này sau đó dẫn tới đó. Không thể hoàn tác.'
+      into_this: 'Gộp vào đây'
+      confirmation: 'Gộp bài này vào "%{target}"? Phiếu bình chọn, người theo dõi và bình luận chuyển sang đó. Không thể hoàn tác.'
+      merged_from: 'Được gộp từ:'
+    tags:
+      title: 'Thẻ'
+    in_changelog: 'Trong nhật ký thay đổi:'
+    source:
+      title: 'Nguồn'
+      label: 'Nguồn'
+      url: 'Liên kết tới nguồn'
+    ai_translation:
+      button: 'Dịch'
+      loading: 'Đang dịch…'
+      hide: 'Ẩn bản dịch'
+      label: 'Bản dịch AI'
+      hint: 'Nội dung được gửi tới nhà cung cấp AI đã cấu hình.'
+    ai_suggestion:
+      button: 'Gợi ý bảng và thẻ'
+      loading: 'Đang suy nghĩ…'
+      hint: 'Tiêu đề và mô tả được gửi tới nhà cung cấp AI đã cấu hình.'
+      board: 'Bảng:'
+      tags: 'Thẻ:'
+      none: 'Không có gợi ý: không có gì phù hợp hơn những gì bài đang có.'
+      apply: 'Áp dụng'
+    ai_summary:
+      title: 'Tóm tắt bằng AI'
+      button: 'Tóm tắt thảo luận'
+      loading: 'Đang tóm tắt…'
+      hint: 'Tiêu đề, mô tả và bình luận được gửi tới nhà cung cấp AI đã cấu hình.'
   site_settings:
     menu:
       title: 'Cài đặt trang'
@@ -123,6 +198,10 @@ vi:
       roadmap: 'Lộ trình'
       invitations: 'Invitations'
       appearance: 'Appearance'
+      tags: 'Thẻ'
+      widget: 'Tiện ích'
+      webhooks: 'Webhook'
+      audit_log: 'Nhật ký kiểm tra'
     info_box:
       up_to_date: 'Tất cả thay đổi đã được lưu'
       dirty: 'Chưa lưu các thay đổi'
@@ -132,7 +211,7 @@ vi:
       brand_setting_name: 'Chỉ tên'
       brand_setting_logo: 'Chỉ logo'
       brand_setting_none: 'Không có'
-      use_browser_locale_help: "If you enable this setting, the feedback space will be displayed in the user's browser preferred language. If the language is not available, the default language will be used."
+      use_browser_locale_help: 'If you enable this setting, the feedback space will be displayed in the user''s browser preferred language. If the language is not available, the default language will be used.'
       subtitle_privacy: 'Privacy'
       is_private_help: 'If you enable this setting, only logged in users will be able to see the content of the feedback space.'
       subtitle_moderation: 'Moderation'
@@ -153,12 +232,35 @@ vi:
       show_vote_count_help: 'Nếu bạn bật tùy chọn này, người dùng sẽ thấy số phiếu bầu của các bài viết. Điều này có thể khuyến khích người dùng bình chọn cho những bài viết đã phổ biến, dẫn đến hiệu ứng tuyết.'
       show_vote_button_in_board_help: 'Nếu bạn bật tùy chọn này, người dùng sẽ có thể bình chọn cho các bài viết từ trang bảng. Điều này có thể khuyến khích người dùng bình chọn cho nhiều bài viết hơn, dẫn đến một số lượng phiếu bầu cao hơn nhưng ý nghĩa thấp hơn.'
       hide_unused_statuses_in_filter_by_status_help: 'If you enable this setting, only statuses that are assigned to at least one post in that board will be shown in the filter by status sidebar filter.'
+      test_email: 'Gửi email kiểm tra'
+      test_email_help: 'Gửi email tới %{email} để kiểm tra thiết lập email (biến môi trường EMAIL_*).'
+      test_email_sent: 'Email kiểm tra đã gửi tới %{email} (%{method}, từ %{from}). Kiểm tra hộp thư đến và thư mục spam.'
+      use_gravatar_help: 'Ảnh hồ sơ đến từ gravatar.com: trình duyệt của mỗi khách truy cập hỏi gravatar.com cho từng hình, kèm bản băm của địa chỉ email. Tắt để hiện chữ cái đầu thay thế và không gửi gì cho bên thứ ba.'
+      require_two_factor_for_staff_help: 'Quản trị viên và điều hành viên phải thiết lập xác thực hai bước trước khi có thể điều duyệt hoặc đổi thiết lập. Khóa API không bị ảnh hưởng.'
+      subtitle_authentication: 'Xác thực'
+      subtitle_mail: 'Email'
+      feedback_approval_policy_new_users_require_approval: 'Yêu cầu phê duyệt cho phản hồi ẩn danh và các bài đầu tiên của mỗi tài khoản'
+      require_user_approval_help: 'Đăng ký qua email hoặc OAuth chờ quản trị viên phê duyệt tại Điều hành › Người dùng; quản trị viên nhận một email cho mỗi hồ sơ. Người được mời và đăng nhập qua SAML, LDAP hoặc tiện ích được duyệt tự động.'
+      trusted_after_posts_help: 'Sau số bài được phê duyệt này, bài mới của tài khoản được duyệt tự động. Bài bị từ chối không tính.'
+      roadmap_enabled_help: 'Nếu tắt thiết lập này, trang lộ trình trở nên không truy cập được và liên kết bị gỡ khỏi đầu trang.'
+      default_post_sorting_help: 'Bài đăng được sắp theo cách này khi mở bảng mà không có cách sắp rõ ràng.'
+      custom_links_help: 'Liên kết thêm trong đầu trang, mỗi dòng một mục: Nhãn|URL. Ví dụ: Tai lieu|https://example.com/docs'
+      login_only_with_oauth_help: 'Bật thiết lập này sẽ ẩn đăng nhập bằng email và mật khẩu cũng như đăng ký email. Người dùng chỉ đăng nhập và đăng ký qua nhà cung cấp OAuth. Liên kết đặt lại mật khẩu vẫn còn.'
+      mail_logo_size_help: 'Cỡ logo tính bằng pixel hiển thị trong thư đi.'
     boards:
       title: 'Bảng'
       empty: 'Không có bảng nào. Tạo mới dưới đây!'
       form:
         name: 'Tên bảng'
         description: 'Mô tả bảng (tùy chọn)'
+        visibility: 'Ai có thể xem'
+        visibility_help: 'Bài đăng của bảng bị ẩn ở mọi nơi với người không được xem: danh sách, lộ trình, tìm kiếm, nguồn dữ liệu, sơ đồ trang, email. Điều hành viên và quản trị viên luôn xem mọi bảng.'
+        slug: 'URL (tùy chọn)'
+        slug_help: 'Phần của địa chỉ bảng, ví dụ /boards/feature-requests. Để trống sẽ sinh từ tên.'
+      visibility:
+        everyone: 'Mọi người'
+        signed_in: 'Chỉ người đã đăng nhập'
+        staff: 'Chỉ điều hành viên và quản trị viên'
     post_statuses:
       title: 'Trạng thái'
       empty: 'Không có trạng thái nào. Tạo mới dưới đây!'
@@ -173,6 +275,8 @@ vi:
       show_board_filter: 'Show board filter'
       show_post_status_filter: 'Show status filter'
       embed_help: 'You can embed the roadmap in your website by copying the code above.'
+      help_buttons: 'Dùng nút mũi tên để đưa trạng thái vào hoặc ra khỏi lộ trình. Tạo trạng thái hay đổi thứ tự ở Thiết lập trang > Trạng thái.'
+      embed_scope_help: 'Chọn bảng hoặc trạng thái để chỉ hiện những phần đó; không chọn thì hiện tất cả.'
     invitations:
       new_invitations_title: 'New invitations'
       past_invitations_title: 'Invitations'
@@ -181,18 +285,10 @@ vi:
       subject: 'Email subject'
       subject_default: 'We value your feedback! Join us in shaping %{name}!'
       body: 'Email body'
-      body_default: |
-        Hello!
-
-        We truly appreciate your experience with %{name} and would love to hear your feedback. Your insights help us improve and continue delivering the best possible service.
-
-        Click the link below to share your thoughts and make your voice heard:
-
-        %link%
-
-        Have a great day!
+      body_default: "Hello!\n\nWe truly appreciate your experience with %{name} and would love to hear your feedback. Your insights help us improve and continue delivering the best possible service.\n\nClick the link below to share your thoughts and make your voice heard:\n\n%link%\n\nHave a great day!\n"
       send:
         other: 'Send %{count} invitations'
+        one: 'Gửi thư mời'
       submit_success: 'Invitations sent!'
       submit_failure: 'An error occurred while sending invitations'
       invalid_emails: 'Invalid email addresses: %{emails}'
@@ -206,6 +302,8 @@ vi:
       accepted: 'Accepted'
       sent_at: 'Sent %{when}'
       accepted_at: 'Accepted %{when}'
+      skipped: 'Chưa gửi (đã đăng ký, đã chấp nhận hoặc không hợp lệ): %{emails}'
+      expired: 'Đã hết hạn'
     appearance:
       title: 'Appearance'
       learn_more: 'Learn how to customize appearance'
@@ -233,6 +331,162 @@ vi:
         subtitle_oauth_config: 'Cấu hình OAuth'
         subtitle_user_profile_config: 'Cấu hình Thông tin người dùng'
         client_secret_help: 'đã ẩn vì mục đích bảo mật'
+        profile_headers: 'Tiêu đề thêm cho yêu cầu hồ sơ (tùy chọn)'
+      ldap:
+        title: 'LDAP / Active Directory'
+        intro: 'Cho phép người dùng đăng nhập bằng tên đăng nhập và mật khẩu trong danh bạ của công ty (OpenLDAP, Active Directory, FreeIPA, ...). Astuto tìm mục bằng tài khoản dịch vụ và kiểm tra mật khẩu qua kết nối với tư cách mục đó.'
+        encryption_start_tls: 'StartTLS (cổng 389)'
+        encryption_simple_tls: 'LDAPS (cổng 636)'
+        encryption_plain: 'Không (chỉ trong mạng tin cậy)'
+        bind_dn_help: 'Để trống để tìm ẩn danh, nếu danh bạ cho phép.'
+        bind_password_set: 'Đã lưu một mật khẩu. Để trống để giữ nguyên.'
+        user_filter_help: '%{login} đại diện cho nội dung người ta nhập. Active Directory: (sAMAccountName=%{login}), OpenLDAP: (uid=%{login}).'
+        test_login: 'Kiểm tra bằng tên đăng nhập'
+        test_help: 'Kiểm tra kết nối, tài khoản dịch vụ và bộ lọc bằng thiết lập đã lưu; không cần mật khẩu.'
+        test_found: 'Đã tìm thấy:'
+      saml:
+        title: 'Đăng nhập một lần SAML'
+        intro: 'Cho phép người dùng đăng nhập bằng nhà cung cấp định danh công ty (Microsoft Entra ID, Okta, Keycloak, ADFS, Google Workspace, ...). Đăng ký Astuto ở đó với hai giá trị bên dưới, rồi dán dữ liệu mô tả của nhà cung cấp hoặc điền các trường của họ.'
+        sp_entity_id: 'Entity ID / URL dữ liệu mô tả'
+        acs_url: 'URL phản hồi (Assertion Consumer Service)'
+        metadata: 'XML dữ liệu mô tả của nhà cung cấp định danh'
+        import_metadata: 'Điền từ dữ liệu mô tả'
+        email_attribute_help: 'Để trống để dùng tên thuộc tính thông thường, sau đó là NameID.'
+        auto_create_help: 'Nếu không, chỉ người đã có tài khoản (ví dụ qua thư mời) mới đăng nhập được.'
+      empty: 'Chưa có nhà cung cấp OAuth nào.'
+    widget:
+      title: 'Tiện ích'
+      intro: 'Nút phản hồi cho website hoặc ứng dụng của riêng bạn. Nó mở bảng, lộ trình và nhật ký thay đổi trong một khung. Khách truy cập đã đăng nhập của ứng dụng bình chọn và đăng bằng tài khoản riêng: máy chủ của bạn ký một mã khách ngắn bằng khóa bí mật dưới đây.'
+      enabled: 'Bật tiện ích'
+      allowed_origins: 'Các trang được phép hiện tiện ích'
+      allowed_origins_help: 'Mỗi origin một dòng, ví dụ https://app.example.com. Trống: mọi trang.'
+      auto_create_users: 'Tạo tài khoản cho khách truy cập mới'
+      auto_create_users_help: 'Nếu không, chỉ người đã có tài khoản (trùng email) mới được đăng nhập. Điều hành viên và quản trị viên không bao giờ đăng nhập qua tiện ích.'
+      install_title: 'Cài đặt'
+      install_intro: 'Thêm đoạn này vào các trang của bạn; thay VISITOR_TOKEN bằng mã từ máy chủ, hoặc bỏ data-token cho khách ẩn danh.'
+      token_intro: 'Máy chủ của bạn ký mã khách bằng khóa bí mật này. Giữ nó trên máy chủ, không bao giờ trong trình duyệt.'
+      rotate: 'Khóa bí mật mới'
+      rotate_confirm: 'Tạo khóa bí mật mới? Các mã được ký bằng khóa hiện tại sẽ ngừng hoạt động.'
+      token_rules: 'Claims: email (bắt buộc), name, id (mã người dùng của bạn, liên kết tài khoản cả khi đổi email). Chỉ HS256; mã phải hết hạn trong vòng một ngày.'
+    tags:
+      title: 'Thẻ'
+      empty: 'Chưa có thẻ. Thẻ gom bài đăng giữa các bảng, ví dụ theo mảng sản phẩm; điều hành viên gắn thẻ lên bài, khách truy cập lọc theo thẻ.'
+      delete_confirmation: 'Xóa thẻ này? Nó sẽ bị gỡ khỏi mọi bài đăng.'
+      form:
+        name: 'Tên'
+        color: 'Màu'
+    audit_log:
+      description: 'Thay đổi của quản trị viên và điều hành viên: điều duyệt, người dùng, bảng, trạng thái, thiết lập, nhà cung cấp đăng nhập, webhook, thư mời và khóa API. Bản ghi lưu một năm.'
+      filter: 'Lọc theo khu vực'
+      all: 'Tất cả'
+      empty: 'Chưa có bản ghi nào.'
+      load_more: 'Xem các bản ghi cũ hơn'
+      unknown_actor: 'Ai đó'
+      value_yes: 'có'
+      value_no: 'không'
+      filtered: '(ẩn)'
+      invitations_sent:
+        one: '1 thư mời'
+        other: '%{count} thư mời'
+      categories:
+        tag: 'Thẻ'
+        post: 'Bài đăng'
+        comment: 'Bình luận'
+        user: 'Người dùng'
+        board: 'Bảng'
+        post_status: 'Trạng thái'
+        changelog: 'Nhật ký thay đổi'
+        site_settings: 'Chung'
+        o_auth: 'Nhà cung cấp đăng nhập'
+        saml: 'SAML'
+        ldap: 'LDAP'
+        widget: 'Tiện ích'
+        webhook: 'Webhook'
+        invitation: 'Thư mời'
+        api_key: 'Khóa API'
+      sources:
+        api: 'REST API'
+        mcp: 'MCP'
+      actions:
+        tag_create: 'đã tạo thẻ'
+        tag_update: 'đã đổi thẻ'
+        tag_delete: 'đã xóa thẻ'
+        tag_reorder: 'đã sắp lại thẻ'
+        post_create_for_author: 'đăng giúp:'
+        post_update: 'đã đổi bài đăng'
+        post_delete: 'đã xóa bài đăng'
+        post_merge: 'đã gộp:'
+        comment_update: 'đã sửa bình luận'
+        comment_delete: 'đã xóa bình luận'
+        user_create: 'đã tạo người dùng'
+        user_update: 'đã đổi người dùng'
+        user_export: 'đã tải dữ liệu của'
+        user_delete: 'đã xóa tài khoản của'
+        user_two_factor_enable: 'đã bật xác thực hai bước cho:'
+        user_two_factor_disable: 'đã tắt xác thực hai bước cho:'
+        board_create: 'đã tạo bảng'
+        board_update: 'đã đổi bảng'
+        board_delete: 'đã xóa bảng'
+        board_reorder: 'đã sắp lại bảng'
+        post_status_create: 'đã tạo trạng thái'
+        post_status_update: 'đã đổi trạng thái'
+        post_status_delete: 'đã xóa trạng thái'
+        post_status_reorder: 'đã sắp lại trạng thái'
+        changelog_create: 'đã viết bản ghi nhật ký thay đổi'
+        changelog_update: 'đã đổi bản ghi nhật ký thay đổi'
+        changelog_publish: 'đã công khai bản ghi nhật ký thay đổi'
+        changelog_delete: 'đã xóa bản ghi nhật ký thay đổi'
+        site_settings_update: 'đã đổi thiết lập trang'
+        o_auth_create: 'đã thêm nhà cung cấp đăng nhập'
+        o_auth_update: 'đã đổi nhà cung cấp đăng nhập'
+        o_auth_delete: 'đã bỏ nhà cung cấp đăng nhập'
+        saml_update: 'đã đổi đăng nhập một lần SAML:'
+        ldap_update: 'đã đổi đăng nhập LDAP:'
+        widget_update: 'đã đổi thiết lập tiện ích'
+        widget_rotate_secret: 'đã tạo khóa bí mật mới cho tiện ích'
+        webhook_create: 'đã tạo webhook'
+        webhook_update: 'đã đổi webhook'
+        webhook_delete: 'đã xóa webhook'
+        webhook_rotate_secret: 'đã tạo khóa ký mới cho webhook'
+        invitation_send: 'đã gửi'
+        api_key_create: 'đã tạo khóa API mới cho'
+    webhooks:
+      deliveries:
+        title: 'Các lần gửi gần đây'
+        show: 'Các lần gửi'
+        empty: 'Chưa có lần gửi nào.'
+        success: 'Đã gửi'
+        failure: 'Thất bại'
+        test: 'Kiểm tra'
+        last: 'Gần nhất: %{status} %{when}'
+      signing:
+        title: 'Chữ ký'
+        help: 'Mỗi yêu cầu mang X-Astuto-Signature: sha256=HMAC-SHA256(secret, "<X-Astuto-Timestamp>.<body>"). Kiểm tra ở phía nhận để chắc chắn yêu cầu đến từ không gian phản hồi này.'
+        rotate: 'Khóa bí mật mới'
+        rotate_confirmation: 'Phía nhận kiểm tra chữ ký cần khóa bí mật mới ngay lập tức. Tiếp tục?'
+      title: 'Webhook'
+      learn_more: 'Tìm hiểu cách cấu hình và dùng webhook'
+      empty: 'Chưa có webhook nào.'
+      triggers:
+        new_post: 'Bài mới'
+        new_post_pending_approval: 'Bài mới (chờ phê duyệt)'
+        delete_post: 'Xóa bài'
+        post_status_change: 'Đổi trạng thái bài'
+        new_comment: 'Bình luận mới'
+        new_vote: 'Lượt bình chọn mới'
+        new_user: 'Người dùng mới'
+      form:
+        title_new: 'Webhook mới'
+        title_edit: 'Sửa webhook'
+        add_header: 'Thêm tiêu đề'
+        header_n_key: 'Khóa tiêu đề %{n}'
+        header_n_value: 'Giá trị tiêu đề %{n}'
+        template_variables_selector_placeholder: 'Chọn một biến mẫu…'
+        templates_label: 'Điền cho'
+        templates_help: 'Đặt phương thức, tiêu đề Content-Type và nội dung thông điệp cho bộ kích hoạt đã chọn. URL dùng địa chỉ webhook đến của công cụ trò chuyện.'
+        templates_confirm: 'Thay nội dung hiện tại?'
+      test_page:
+        title: 'Kết quả kiểm tra webhook'
   moderation:
     menu:
       feedback: 'Feedback'
@@ -244,10 +498,10 @@ vi:
     users:
       block: 'Block'
       unblock: 'Unblock'
-      block_confirmation: "%{name} won't be able to log in until it is unblocked. Are you sure?"
-      unblock_confirmation: "%{name} will be able to log in and submit feedback. Are you sure?"
-      role_to_moderator_confirmation: "%{name} will be able to manage posts and users. Proceed only if you trust this person. Are you sure?"
-      role_to_admin_confirmation: "%{name} will be able to manage boards, posts, statuses, users and more. Proceed only if you trust this person. Are you sure?"
+      block_confirmation: '%{name} won''t be able to log in until it is unblocked. Are you sure?'
+      unblock_confirmation: '%{name} will be able to log in and submit feedback. Are you sure?'
+      role_to_moderator_confirmation: '%{name} will be able to manage posts and users. Proceed only if you trust this person. Are you sure?'
+      role_to_admin_confirmation: '%{name} will be able to manage boards, posts, statuses, users and more. Proceed only if you trust this person. Are you sure?'
       role_user: 'User'
       role_moderator: 'Moderator'
       role_admin: 'Administrator'
@@ -255,3 +509,289 @@ vi:
       status_active: 'Active'
       status_blocked: 'Blocked'
       status_deleted: 'Deleted'
+      export_data: 'Tải dữ liệu (GDPR)'
+      delete_account: 'Xóa tài khoản'
+      delete_account_confirmation: 'Xóa tài khoản của %{name}? Bài đăng và bình luận còn lại và hiển thị "Người dùng đã xóa". Không thể hoàn tác.'
+      status_pending_approval: 'Chờ phê duyệt'
+      approve: 'Phê duyệt'
+      search_placeholder: 'Tìm theo tên hoặc email'
+      filter_all_statuses: 'Mọi trạng thái'
+      filter_all_roles: 'Mọi vai trò'
+      empty: 'Không tìm thấy người dùng'
+  number:
+    format:
+      round_mode: 'default'
+    currency:
+      format:
+        negative_format: '-%u%n'
+    human:
+      storage_units:
+        units:
+          pb: 'PB'
+          eb: 'EB'
+          zb: 'ZB'
+  errors:
+    messages:
+      model_invalid: 'Xác thực thất bại: %{errors}'
+      too_long:
+        one: 'quá dài (tối đa %{count} ký tự)'
+        other: 'quá dài (tối đa %{count} ký tự)'
+      password_too_long: 'quá dài'
+      too_short:
+        one: 'quá ngắn (tối thiểu %{count} ký tự)'
+        other: 'quá ngắn (tối thiểu %{count} ký tự)'
+      wrong_length:
+        one: 'độ dài sai (phải là %{count} ký tự)'
+        other: 'độ dài sai (phải là %{count} ký tự)'
+      in: 'phải thuộc %{count}'
+      not_saved:
+        one: '1 lỗi khiến %{resource} này không thể được lưu:'
+    template:
+      header:
+        one: '%{count} lỗi khiến %{model} này không thể được lưu'
+        other: '%{count} lỗi khiến %{model} này không thể được lưu'
+    user_pending_approval: 'Tài khoản của bạn đang chờ quản trị viên phê duyệt. Bạn sẽ nhận được email khi có thể đăng nhập.'
+    unavailable_session: "Phiên %{id} không còn trong bộ nhớ.\n\nNếu bạn chạy máy chủ đa tiến trình (như Unicorn hoặc Puma), tiến trình tiếp nhận\nyêu cầu này không giữ %{id} trong bộ nhớ. Đặt số tiến trình/worker về một (1) hoặc dùng máy chủ khác trong môi trường phát triển.\n"
+    unacceptable_request: "Yêu cầu một phiên bản được hỗ trợ trong tiêu đề Accept.\n"
+    connection_refused: "Không thể kết nối tới middleware Web Console.\nVui lòng đảm bảo một máy chủ Rails phát triển đang chạy.\n"
+  datetime:
+    distance_in_words:
+      less_than_x_seconds:
+        one: 'chưa tới %{count} giây'
+        other: 'chưa tới %{count} giây'
+      x_seconds:
+        one: '%{count} giây'
+        other: '%{count} giây'
+      less_than_x_minutes:
+        one: 'chưa tới một phút'
+        other: 'chưa tới %{count} phút'
+      x_minutes:
+        one: '%{count} phút'
+        other: '%{count} phút'
+      about_x_hours:
+        one: 'khoảng %{count} giờ'
+        other: 'khoảng %{count} giờ'
+      x_days:
+        one: '%{count} ngày'
+        other: '%{count} ngày'
+      about_x_months:
+        one: 'khoảng %{count} tháng'
+        other: 'khoảng %{count} tháng'
+      x_months:
+        one: '%{count} tháng'
+        other: '%{count} tháng'
+      about_x_years:
+        one: 'khoảng %{count} năm'
+        other: 'khoảng %{count} năm'
+      over_x_years:
+        one: 'trên %{count} năm'
+        other: 'trên %{count} năm'
+      almost_x_years:
+        one: 'gần %{count} năm'
+        other: 'gần %{count} năm'
+      x_years:
+        one: '%{count} năm'
+        other: '%{count} năm'
+    relative:
+      future: 'trong %{time}'
+      past: '%{time} trước'
+  helpers:
+    page_entries_info:
+      entry:
+        zero: 'mục'
+        one: 'mục'
+        other: 'mục'
+      one_page:
+        display_entries:
+          zero: 'Không tìm thấy %{entry_name} nào'
+          one: 'Đang hiển thị <b>1</b> %{entry_name}'
+          other: 'Đang hiển thị <b>tất cả %{count}</b> %{entry_name}'
+      more_pages:
+        display_entries: 'Đang hiển thị %{entry_name} <b>%{first}–%{last}</b> trên tổng <b>%{total}</b>'
+  flash:
+    actions:
+      create:
+        notice: '%{resource_name} đã được tạo thành công.'
+      update:
+        notice: '%{resource_name} đã được cập nhật thành công.'
+      destroy:
+        notice: '%{resource_name} đã được xóa thành công.'
+        alert: 'Không thể xóa %{resource_name}.'
+  widget:
+    errors:
+      disabled: 'Tiện ích chưa được bật.'
+      invalid_token: 'Mã của khách truy cập không hợp lệ hoặc đã hết hạn.'
+      linked_elsewhere: 'Địa chỉ email này thuộc về tài khoản khác.'
+      no_account: 'Chưa có tài khoản cho khách truy cập này.'
+      staff_account: 'Điều hành viên và quản trị viên đăng nhập trên trang phản hồi, không qua tiện ích.'
+      blocked: 'Tài khoản này đã bị khóa.'
+    tabs:
+      feedback: 'Phản hồi'
+      roadmap: 'Lộ trình'
+      changelog: 'Nhật ký thay đổi'
+    close: 'Đóng'
+    board: 'Bảng'
+    signed_in_as: 'Đã đăng nhập với tư cách %{name}'
+    open_site: 'Mở trang phản hồi'
+  webhook_templates:
+    new_post: 'Phản hồi mới trên %{board}: %{post}'
+    new_post_pending_approval: 'Phản hồi đang chờ phê duyệt trên %{board}: %{post}'
+    delete_post: 'Bài #%{id} đã bị xóa'
+    post_status_change: '%{post} giờ là: %{status}'
+    new_comment: '%{author} đã bình luận về %{post}'
+    new_vote: '%{author} đã bình chọn %{post}'
+    new_user: 'Người dùng mới: %{user}'
+    open: 'Mở'
+  mailers:
+    admin:
+      test_email:
+        subject: '[%{site_name}] Email kiểm tra'
+        body: 'Email kiểm tra từ %{site_name} đã đến nên việc gửi email hoạt động tốt.'
+        details: 'Gửi bằng %{delivery_method} từ %{from}.'
+      user_pending_approval:
+        subject: '[%{site_name}] Tài khoản mới chờ phê duyệt: %{name}'
+        body_html: '<strong>%{name}</strong> (%{email}) đã đăng ký và đang chờ bạn phê duyệt.'
+        review: 'Xem tại Điều hành › Người dùng'
+    user:
+      notify_follower_of_changelog_entry:
+        subject: '[%{site_name}] Mới trong nhật ký thay đổi: %{title}'
+        body_html: 'Nhật ký thay đổi có bản ghi mới, <strong>%{title}</strong>. Nó chuyển giao phản hồi mà bạn theo dõi'
+        read_entry: 'Đọc nhật ký thay đổi'
+      account_approved:
+        subject: '[%{site_name}] Tài khoản của bạn đã được phê duyệt'
+        body_html: 'Quản trị viên đã phê duyệt tài khoản của bạn. Bạn có thể đăng nhập ngay bây giờ.'
+        sign_in: 'Đăng nhập'
+      recap:
+        subject: '[%{site_name}] Bản tổng hợp %{frequency} hoạt động của không gian phản hồi'
+        body_html: 'Đây là bản tổng hợp %{frequency} hoạt động trong không gian phản hồi của bạn'
+        published_posts_count_html: 'Phản hồi mới đã công khai: %{count}'
+        pending_posts_count_html: 'Phản hồi mới chờ phê duyệt: %{count}'
+        status_changes_title: 'Thay đổi trạng thái của các bài bạn theo dõi'
+        no_status: 'không có trạng thái'
+        top_posts_title: 'Được bình chọn nhiều nhất trong kỳ'
+        period_votes:
+          one: '%{count} phiếu mới'
+          other: '%{count} phiếu mới'
+        more_posts: 'và %{count} mục nữa'
+  instance_admin:
+    title: 'Quản trị thể chế'
+    tenants:
+      title: 'Không gian phản hồi'
+      new: 'Không gian phản hồi mới'
+      create: 'Tạo không gian phản hồi'
+      site_name: 'Tên'
+      subdomain: 'Tên miền phụ'
+      subdomain_hint: 'Chữ, số và gạch nối. Địa chỉ sẽ là <tenmienphu>.%{host}.'
+      owner_email: 'Email của chủ sở hữu'
+      owner_name: 'Tên chủ sở hữu'
+      locale: 'Ngôn ngữ'
+      address: 'Địa chỉ'
+      status: 'Trạng thái'
+      users: 'Người dùng'
+      posts: 'Bài đăng'
+      created: 'Đã tạo'
+      actions: 'Hành động'
+      edit: 'Sửa'
+      save: 'Lưu'
+      back: 'Quay lại danh sách'
+      block: 'Khóa'
+      unblock: 'Mở khóa'
+      empty: 'Chưa có không gian phản hồi nào.'
+      statuses:
+        active: 'Hoạt động'
+        pending: 'Đang chờ'
+        blocked: 'Đã khóa'
+      custom_domain: 'Tên miền riêng'
+      custom_domain_hint: 'Không bắt buộc. Trước tiên hãy thêm bản ghi CNAME trỏ tên miền tới %{target}. Để trống sẽ xóa nó.'
+      created_title: '%{site_name} đã sẵn sàng'
+      owner_credentials: 'Thông tin đăng nhập của chủ sở hữu. Mật khẩu chỉ hiển thị lúc này:'
+      password_hint: 'Gửi cho chủ sở hữu qua kênh an toàn và đề nghị đổi sau lần đăng nhập đầu tiên.'
+      updated: 'Đã lưu %{subdomain}.'
+      blocked: '%{subdomain} đã bị khóa. Các trang hiển thị thông báo; dữ liệu được giữ lại.'
+      unblocked: '%{subdomain} hoạt động trở lại.'
+      deleted: '%{subdomain} và toàn bộ dữ liệu đã bị xóa.'
+      delete_title: 'Xóa không gian phản hồi'
+      delete_warning: 'Xóa các bảng, bài đăng, bình luận, phiếu bình chọn, người dùng, webhook và thiết lập của không gian phản hồi này. Không thể hoàn tác. Để giữ dữ liệu, hãy khóa thay vì xóa.'
+      confirm_label: 'Nhập "%{subdomain}" để xác nhận'
+      confirm_mismatch: 'Tên miền phụ không khớp. Không xóa gì cả.'
+      delete: 'Xóa vĩnh viễn'
+  pending_tenant:
+    title: 'Xác minh địa chỉ email của bạn'
+    body: 'Vui lòng kiểm tra hộp thư đến (và thư mục spam) rồi nhấp vào liên kết kích hoạt.'
+    help: 'Cần trợ giúp? Liên hệ quản trị viên của thể chế này.'
+  two_factor:
+    invalid_code: 'Mã không hợp lệ. Hãy dùng mã hiện tại từ ứng dụng xác thực hoặc một mã dự phòng chưa dùng.'
+    login_expired: 'Đăng nhập quá lâu. Vui lòng nhập lại email và mật khẩu.'
+    setup_required: 'Không gian phản hồi này yêu cầu xác thực hai bước cho quản trị viên và điều hành viên. Hãy thiết lập trong cài đặt hồ sơ trước.'
+    already_enabled: 'Xác thực hai bước vốn đã bật.'
+    not_enabled: 'Xác thực hai bước đang tắt.'
+    title: 'Xác thực hai bước'
+    intro: 'Bảo vệ tài khoản bằng bước thứ hai: sau mật khẩu, nhập mã từ ứng dụng xác thực (ví dụ Aegis, Google Authenticator, Microsoft Authenticator hoặc 1Password).'
+    set_up: 'Thiết lập xác thực hai bước'
+    scan_help: 'Quét mã QR bằng ứng dụng xác thực, rồi nhập mã sáu chữ số mà ứng dụng hiển thị.'
+    qr_code_alt: 'Mã QR cho ứng dụng xác thực'
+    manual_entry: 'Hoặc nhập tay khóa này:'
+    code: 'Mã'
+    turn_on: 'Bật'
+    code_for_changes: 'Nhập mã hiện tại để tạo mã dự phòng mới.'
+    new_backup_codes: 'Tạo mã dự phòng mới'
+    turn_off: 'Tắt xác thực hai bước'
+    turn_off_confirmation: 'Tắt xác thực hai bước? Tài khoản sẽ chỉ được bảo vệ bằng mật khẩu.'
+    backup_codes: 'Mã dự phòng'
+    backup_codes_help: 'Giữ các mã dự phòng này ở nơi an toàn. Mỗi mã cho phép đăng nhập một lần khi không có điện thoại. Chỉ hiển thị lúc này.'
+    saved_codes: 'Tôi đã lưu mã'
+    required_notice: 'Không gian phản hồi này yêu cầu xác thực hai bước cho quản trị viên và điều hành viên.'
+    login_title: 'Xác thực hai bước'
+    login_help: 'Nhập mã từ ứng dụng xác thực, hoặc một mã dự phòng của bạn.'
+    verify: 'Xác minh'
+    start_over: 'Đăng nhập bằng tài khoản khác'
+    enabled:
+      one: 'Đang bật. Còn 1 mã dự phòng.'
+      other: 'Đang bật. Còn %{count} mã dự phòng.'
+  saml:
+    metadata_invalid: 'Đây không phải là dữ liệu mô tả (metadata) SAML của nhà cung cấp định danh (XML có SingleSignOnService).'
+  ldap:
+    invalid_login: 'Tên đăng nhập hoặc mật khẩu không hợp lệ cho %{label} của bạn.'
+    not_found: 'Không tìm thấy bản ghi duy nhất cho tên đăng nhập này. Kiểm tra base DN và bộ lọc người dùng.'
+  my_feedback:
+    title: 'Phản hồi của tôi'
+    filters:
+      created: 'Đã đăng'
+      voted: 'Đã bình chọn'
+      followed: 'Đang theo dõi'
+    empty:
+      created: 'Bạn chưa đăng phản hồi nào.'
+      voted: 'Bạn chưa bình chọn bài nào.'
+      followed: 'Bạn chưa theo dõi bài nào.'
+    approval:
+      pending: 'Chờ phê duyệt'
+      rejected: 'Bị từ chối'
+      merged: 'Đã gộp'
+  changelog:
+    title: 'Nhật ký thay đổi'
+    empty: 'Chưa có gì ở đây.'
+    new_entry: 'Bản ghi mới'
+    draft: 'Bản nháp'
+    delivers: 'Chuyển giao:'
+    rss_feed: 'Nguồn RSS'
+    form:
+      title: 'Tiêu đề'
+      body: 'Nội dung (Markdown)'
+      posts: 'Bài đã chuyển giao'
+      posts_help: 'Người theo dõi các bài này nhận một email khi bản ghi được công khai lần đầu.'
+      search_posts: 'Tìm bài'
+      add_post: 'Thêm'
+      remove_post: 'Bỏ'
+      save_draft: 'Lưu bản nháp'
+      publish: 'Công khai'
+      unpublish: 'Về bản nháp'
+      ai_draft: 'Thảo nháp nội dung bằng AI'
+      ai_draft_loading: 'Đang viết…'
+      ai_draft_hint: 'Tiêu đề và mô tả của các bài được chuyển giao sẽ gửi tới nhà cung cấp AI đã cấu hình.'
+  views:
+    pagination:
+      first: '&laquo; Đầu'
+      last: 'Cuối &raquo;'
+      previous: '&lsaquo; Trước'
+      next: 'Sau &rsaquo;'
+      truncate: '&hellip;'

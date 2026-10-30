@@ -15,7 +15,7 @@ es:
         new_password_confirmation: 'Confirmación de nueva contraseña'
         current_password: 'Contraseña actual'
         notifications_enabled: 'Notificaciones habilitadas'
-        notifications_enabled_help: "si está deshabilitado, no recibirás ninguna notificación"
+        notifications_enabled_help: 'si está deshabilitado, no recibirás ninguna notificación'
         waiting_confirmation: 'Esperando confirmación de %{email}'
         no_password_set: 'Debe indicar una contraseña para actualizar su perfil'
         set_password: 'Configure contraseña'
@@ -28,14 +28,34 @@ es:
         profile_settings: 'Configuración de perfil'
         cancel_account: 'Cancelar cuenta'
         forgot_password: '¿Olvidaste tu contraseña?'
-        confirmation_instructions_not_received: "¿No recibiste instrucciones de confirmación?"
-        unlock_instructions_not_received: "¿No recibiste instrucciones de desbloqueo?"
+        confirmation_instructions_not_received: '¿No recibiste instrucciones de confirmación?'
+        unlock_instructions_not_received: '¿No recibiste instrucciones de desbloqueo?'
         send_reset_password_instructions: 'Envíame instrucciones para restablecer la contraseña'
         resend_confirmation_instructions: 'Reenviar instrucciones de confirmación'
         resend_unlock_instructions: 'Reenviar instrucciones de desbloqueo'
         change_password: 'Cambiar contraseña'
         password_help: 'mínimo %{count} caracteres'
         email_registration_not_allowed: 'Email registration not allowed'
+        notifications: 'Notificaciones'
+        recap_notification_frequency_daily: 'Diario'
+        recap_notification_frequency_weekly: 'Semanal'
+        recap_notification_frequency_monthly: 'Mensual'
+        recap_notification_frequency_help: 'Un resumen por correo: feedback nuevo, las publicaciones más votadas y cambios de estado de las que sigues (moderadores: también el feedback pendiente de aprobación). No se envía nada si no ha pasado nada.'
+        log_in_with_email: 'Iniciar sesión mejor con correo y contraseña'
+        login_name: 'Nombre de usuario'
+        ldap_info: 'Inicia sesión con tu %{label}.'
+        my_data: 'Mis datos'
+        my_data_help: 'Descarga todo lo que este espacio de feedback guarda sobre ti: perfil, publicaciones, comentarios, votos y publicaciones seguidas (JSON).'
+        download_my_data: 'Descargar mis datos'
+        oauth_only_info: 'Inicia sesión y regístrate con uno de los proveedores OAuth de abajo. El inicio de sesión por correo está desactivado en este sitio.'
+      api_key:
+        title: 'Clave API'
+        current_api_key_help: 'Ya has generado una clave API y, por seguridad, no se puede mostrar de nuevo. Si la perdiste, puedes generar una nueva abajo.'
+        generate_api_key: 'Generar clave API'
+        generated_api_key_help: 'Guarda esta clave API en un lugar seguro, porque no podrás volver a verla.'
+        generated_api_key_successfully: '¡Clave API generada con éxito!'
+        confirm_generate_new_api_key: '¿Seguro que quieres generar una nueva clave API? La anterior quedará invalidada.'
+        api_key_learn_more: 'Aprende a usar la API'
     no_status: 'Sin estado'
     select_placeholder: 'Select...'
     loading: 'Cargando...'
@@ -56,6 +76,11 @@ es:
       approve: 'Approve'
       reject: 'Reject'
       copy_to_clipboard: 'Copy to clipboard'
+      preview: 'Vista previa'
+      move_up: 'Subir'
+      move_down: 'Bajar'
+    errors:
+      not_found: 'Página no encontrada'
   header:
     menu:
       site_settings: 'Configuración del sitio'
@@ -63,9 +88,18 @@ es:
       profile_header: 'Perfil'
       profile_settings: 'Configuración de perfil'
       sign_out: 'Cerrar sesión'
+      my_feedback: 'Mi feedback'
     log_in: 'Iniciar sesión / Registrarse'
   roadmap:
     title: 'Hoja de ruta'
+    empty: 'La hoja de ruta está vacía.'
+    filter_by_board: 'Filtrar por tablero'
+    more_posts:
+      one: '+ %{count} publicación más'
+      other: '+ %{count} publicaciones más'
+    sort_by:
+      most_voted: 'Más votadas'
+      recently_updated: 'Actualizadas recientemente'
   blocked_tenant:
     title: 'Este espacio de retroalimentación ha sido bloqueado'
   board:
@@ -80,10 +114,13 @@ es:
       anonymous_submission_help: 'You are posting anonymously'
       non_anonymous_submission_help: 'You are posting as %{name}'
       submit_pending: 'Your feedback has been submitted and is now pending moderator approval!'
+      status: 'Estado inicial (solo moderadores)'
+      similar_posts_title: 'Ya existen publicaciones similares: ¿votas por alguna?'
     search_box:
       title: 'Buscar'
     filter_box:
       title: 'Filtrar por estado'
+      tags: 'Filtrar por etiqueta'
     sort_by_box:
       title: 'Ordenar por'
       trending: 'En tendencia'
@@ -92,6 +129,8 @@ es:
       oldest: 'Más antiguo'
     posts_list:
       empty: 'Aún no hay publicaciones'
+      load_more: 'Cargar más'
+    rss_feed: 'Canal RSS'
   post:
     published_by: 'Publicado por'
     published_anonymously: 'Published anonymously'
@@ -101,18 +140,54 @@ es:
       title: 'Me gusta'
     action_box:
       follow_button: 'Seguir publicación'
-      following_description: "estás recibiendo notificaciones sobre nuevas actualizaciones en esta publicación"
-      not_following_description: "no recibirás notificaciones sobre esta publicación"
+      following_description: 'estás recibiendo notificaciones sobre nuevas actualizaciones en esta publicación'
+      not_following_description: 'no recibirás notificaciones sobre esta publicación'
     comments:
       title: 'Actividad'
       post_update_badge: 'Actualización'
       reply_button: 'Responder'
+      empty: 'Aún no hay comentarios'
     new_comment:
       body_placeholder: 'Deja un comentario'
       submit_button: 'Enviar'
       is_post_update: 'Marcar como actualización'
       user_notification: 'Los usuarios que siguen esta publicación serán notificados'
       not_logged_in: 'Necesitas iniciar sesión para publicar comentarios'
+    merge:
+      same_post: 'Una publicación no puede fusionarse consigo misma.'
+      already_merged: 'Una de las publicaciones ya está fusionada.'
+      button: 'Fusionar en otra publicación'
+      search: 'Buscar la publicación que se conserva'
+      help: 'Los votos, seguidores y comentarios se trasladan a la publicación que elijas; esta pasará a enlazar allí. No se puede deshacer.'
+      into_this: 'Fusionar aquí'
+      confirmation: '¿Fusionar esta publicación en «%{target}»? Votos, seguidores y comentarios se trasladan allí. No se puede deshacer.'
+      merged_from: 'Fusionada desde:'
+    tags:
+      title: 'Etiquetas'
+    in_changelog: 'En el changelog:'
+    source:
+      title: 'Fuente'
+      label: 'Fuente'
+      url: 'Enlace a la fuente'
+    ai_translation:
+      button: 'Traducir'
+      loading: 'Traduciendo…'
+      hide: 'Ocultar traducción'
+      label: 'Traducción de IA'
+      hint: 'El texto se envía al proveedor de IA configurado.'
+    ai_suggestion:
+      button: 'Sugerir tablero y etiquetas'
+      loading: 'Pensando…'
+      hint: 'El título y la descripción se envían al proveedor de IA configurado.'
+      board: 'Tablero:'
+      tags: 'Etiquetas:'
+      none: 'Sin sugerencia: nada se ajusta mejor de lo que ya tiene la publicación.'
+      apply: 'Aplicar'
+    ai_summary:
+      title: 'Resumen de IA'
+      button: 'Resumir la discusión'
+      loading: 'Resumiendo…'
+      hint: 'El título, la descripción y los comentarios se envían al proveedor de IA configurado.'
   site_settings:
     menu:
       title: 'Configuración del sitio'
@@ -123,6 +198,10 @@ es:
       roadmap: 'Hoja de ruta'
       invitations: 'Invitations'
       appearance: 'Apariencia'
+      tags: 'Etiquetas'
+      widget: 'Widget'
+      webhooks: 'Webhooks'
+      audit_log: 'Registro de auditoría'
     info_box:
       up_to_date: 'Se han guardado todos los cambios'
       dirty: 'No se han guardado los cambios'
@@ -132,7 +211,7 @@ es:
       brand_setting_name: 'Solo el nombre'
       brand_setting_logo: 'Sólo Logo'
       brand_setting_none: 'Ninguno'
-      use_browser_locale_help: "If you enable this setting, the feedback space will be displayed in the user's browser preferred language. If the language is not available, the default language will be used."
+      use_browser_locale_help: 'If you enable this setting, the feedback space will be displayed in the user''s browser preferred language. If the language is not available, the default language will be used.'
       subtitle_privacy: 'Privacy'
       is_private_help: 'If you enable this setting, only logged in users will be able to see the content of the feedback space.'
       subtitle_moderation: 'Moderation'
@@ -153,12 +232,35 @@ es:
       show_vote_count_help: 'Si activa esta configuración, los usuarios podrán ver el recuento de votos de los mensajes. Esto puede incentivar a los usuarios a votar publicaciones ya populares, lo que provocaría un efecto bola de nieve.'
       show_vote_button_in_board_help: 'Si activas esta configuración, los usuarios podrán votar publicaciones desde la página del foro. Esto puede alentar a los usuarios a votar en más mensajes, lo que lleva a un mayor número de votos, pero de menor importancia.'
       hide_unused_statuses_in_filter_by_status_help: 'If you enable this setting, only statuses that are assigned to at least one post in that board will be shown in the filter by status sidebar filter.'
+      test_email: 'Enviar correo de prueba'
+      test_email_help: 'Envía un correo a %{email} para comprobar los ajustes de correo (variables de entorno EMAIL_*).'
+      test_email_sent: 'Correo de prueba enviado a %{email} (%{method}, desde %{from}). Revisa la bandeja de entrada y el spam.'
+      use_gravatar_help: 'Las imágenes de perfil vienen de gravatar.com: el navegador de cada visitante pide cada imagen a gravatar.com con un hash de la dirección de correo. Desactívalo para mostrar iniciales en su lugar y no enviar nada a terceros.'
+      require_two_factor_for_staff_help: 'Administradores y moderadores deben configurar la autenticación en dos pasos antes de poder moderar o cambiar ajustes. Las claves API no se ven afectadas.'
+      subtitle_authentication: 'Autenticación'
+      subtitle_mail: 'Correos'
+      feedback_approval_policy_new_users_require_approval: 'Exigir aprobación para el feedback anónimo y las primeras publicaciones de cada cuenta'
+      require_user_approval_help: 'Los registros por correo u OAuth esperan a que un administrador los apruebe en Moderación › Usuarios; los administradores reciben un correo por cada uno. Los invitados y los inicios de sesión por SAML, LDAP o el widget se aprueban automáticamente.'
+      trusted_after_posts_help: 'Tras esta cantidad de publicaciones aprobadas, las nuevas de la cuenta se aprueban automáticamente. Las rechazadas no cuentan.'
+      roadmap_enabled_help: 'Si desactivas este ajuste, la página de hoja de ruta deja de estar disponible y el enlace desaparece de la cabecera.'
+      default_post_sorting_help: 'Las publicaciones se ordenan así cuando se abre un tablero sin orden explícito.'
+      custom_links_help: 'Enlaces adicionales en la cabecera del sitio, uno por línea: Etiqueta|URL. Ejemplo: Docs|https://example.com/docs'
+      login_only_with_oauth_help: 'Si activas este ajuste, se ocultan el inicio de sesión con correo y contraseña y el registro por correo. Los usuarios solo pueden iniciar sesión y registrarse con proveedores OAuth. Los enlaces de restablecimiento de contraseña siguen disponibles.'
+      mail_logo_size_help: 'Tamaño en píxeles del logo mostrado en los correos salientes.'
     boards:
       title: 'Tableros'
       empty: 'No hay tableros. ¡Crea uno abajo!'
       form:
         name: 'Nombre del tablero'
         description: 'Descripción del tablero (opcional)'
+        visibility: 'Quién puede verlo'
+        visibility_help: 'Las publicaciones del tablero se ocultan en todas partes a quien no puede verlas: listas, hoja de ruta, búsqueda, canales, sitemap, correos. Moderadores y administradores siempre ven todos los tableros.'
+        slug: 'URL (opcional)'
+        slug_help: 'Parte de la dirección del tablero, p. ej. /boards/feature-requests. Déjalo vacío para generarla a partir del nombre.'
+      visibility:
+        everyone: 'Todo el mundo'
+        signed_in: 'Solo personas conectadas'
+        staff: 'Solo moderadores y administradores'
     post_statuses:
       title: 'Estados'
       empty: 'No hay estados. ¡Crea uno a continuación!'
@@ -173,6 +275,8 @@ es:
       show_board_filter: 'Show board filter'
       show_post_status_filter: 'Show status filter'
       embed_help: 'You can embed the roadmap in your website by copying the code above.'
+      help_buttons: 'Usa el botón de flecha para meter o sacar un estado de la hoja de ruta. Para crear estados o cambiar su orden, ve a Ajustes del sitio > Estados.'
+      embed_scope_help: 'Selecciona tableros o estados para mostrar solo esos; sin selección se muestran todos.'
     invitations:
       new_invitations_title: 'New invitations'
       past_invitations_title: 'Invitations'
@@ -181,16 +285,7 @@ es:
       subject: 'Email subject'
       subject_default: 'We value your feedback! Join us in shaping %{name}!'
       body: 'Email body'
-      body_default: |
-        Hello!
-
-        We truly appreciate your experience with %{name} and would love to hear your feedback. Your insights help us improve and continue delivering the best possible service.
-
-        Click the link below to share your thoughts and make your voice heard:
-
-        %link%
-
-        Have a great day!
+      body_default: "Hello!\n\nWe truly appreciate your experience with %{name} and would love to hear your feedback. Your insights help us improve and continue delivering the best possible service.\n\nClick the link below to share your thoughts and make your voice heard:\n\n%link%\n\nHave a great day!\n"
       send:
         one: 'Send invitation'
         other: 'Send %{count} invitations'
@@ -207,6 +302,8 @@ es:
       accepted: 'Accepted'
       sent_at: 'Sent %{when}'
       accepted_at: 'Accepted %{when}'
+      skipped: 'No enviadas (ya registradas, ya aceptadas o no válidas): %{emails}'
+      expired: 'Caducada'
     appearance:
       title: 'Apariencia'
       learn_more: 'Aprende cómo personalizar la apariencia'
@@ -234,6 +331,162 @@ es:
         subtitle_oauth_config: 'Configuración OAuth'
         subtitle_user_profile_config: 'Configuración del perfil de usuario'
         client_secret_help: 'oculto por motivos de seguridad'
+        profile_headers: 'Cabeceras extra para la petición de perfil (opcional)'
+      ldap:
+        title: 'LDAP / Active Directory'
+        intro: 'Permite que la gente inicie sesión con el nombre de usuario y la contraseña de tu directorio corporativo (OpenLDAP, Active Directory, FreeIPA, ...). Astuto busca la entrada con la cuenta de servicio y comprueba la contraseña enlazándose a esa entrada.'
+        encryption_start_tls: 'StartTLS (puerto 389)'
+        encryption_simple_tls: 'LDAPS (puerto 636)'
+        encryption_plain: 'Ninguno (solo dentro de una red de confianza)'
+        bind_dn_help: 'Déjalo vacío para buscar de forma anónima, si el directorio lo permite.'
+        bind_password_set: 'Hay una contraseña guardada. Déjalo vacío para conservarla.'
+        user_filter_help: '%{login} representa lo que la gente escribe. Active Directory: (sAMAccountName=%{login}), OpenLDAP: (uid=%{login}).'
+        test_login: 'Probar con un nombre de usuario'
+        test_help: 'Comprueba conexión, cuenta de servicio y filtro con la configuración guardada; no hace falta contraseña.'
+        test_found: 'Encontrado:'
+      saml:
+        title: 'Inicio de sesión único SAML'
+        intro: 'Permite que la gente inicie sesión con el proveedor de identidad de tu empresa (Microsoft Entra ID, Okta, Keycloak, ADFS, Google Workspace, ...). Registra ahí Astuto como aplicación con los dos valores de abajo, y después pega los metadatos del proveedor de identidad o rellena sus campos.'
+        sp_entity_id: 'ID de entidad / URL de metadatos'
+        acs_url: 'URL de respuesta (Assertion Consumer Service)'
+        metadata: 'Metadatos XML del proveedor de identidad'
+        import_metadata: 'Rellenar desde los metadatos'
+        email_attribute_help: 'Déjalo vacío para usar los nombres de atributo habituales y, en su defecto, el NameID.'
+        auto_create_help: 'Si no, solo pueden iniciar sesión las personas que ya tienen una cuenta (por ejemplo mediante una invitación).'
+      empty: 'Aún no hay proveedores OAuth.'
+    widget:
+      title: 'Widget'
+      intro: 'Un botón de feedback para tu web o aplicación. Abre tableros, hoja de ruta y changelog en un panel. Los visitantes conectados de tu app votan y publican con su propia cuenta: tu servidor firma un breve token de visitante con el secreto de abajo.'
+      enabled: 'Activar el widget'
+      allowed_origins: 'Sitios que pueden mostrar el widget'
+      allowed_origins_help: 'Un origen por línea, p. ej. https://app.example.com. Vacío: cualquier sitio.'
+      auto_create_users: 'Crear cuenta para los visitantes nuevos'
+      auto_create_users_help: 'Si no, solo inician sesión las personas que ya tienen cuenta (mismo correo). Moderadores y administradores nunca inician sesión por el widget.'
+      install_title: 'Instalación'
+      install_intro: 'Añade esto a las páginas de tu sitio; sustituye VISITOR_TOKEN por un token de tu servidor, o omite data-token para visitantes anónimos.'
+      token_intro: 'Tu servidor firma el token de visitante con este secreto. Guárdalo en el servidor, nunca en el navegador.'
+      rotate: 'Nuevo secreto'
+      rotate_confirm: '¿Crear un nuevo secreto? Los tokens firmados con el actual dejarán de funcionar.'
+      token_rules: 'Claims: email (obligatorio), name, id (tu ID de usuario, enlaza la cuenta aunque cambie el correo). Solo HS256; el token debe caducar en un día.'
+    tags:
+      title: 'Etiquetas'
+      empty: 'Aún no hay etiquetas. Las etiquetas agrupan publicaciones entre tableros, p. ej. por área de producto; los moderadores las ponen en las publicaciones y los visitantes filtran por ellas.'
+      delete_confirmation: '¿Eliminar esta etiqueta? Se quita de todas las publicaciones.'
+      form:
+        name: 'Nombre'
+        color: 'Color'
+    audit_log:
+      description: 'Cambios de administradores y moderadores: moderación, usuarios, tableros, estados, ajustes, proveedores de inicio de sesión, webhooks, invitaciones y claves API. Las entradas se conservan un año.'
+      filter: 'Filtrar por área'
+      all: 'Todo'
+      empty: 'Aún no hay entradas.'
+      load_more: 'Mostrar entradas anteriores'
+      unknown_actor: 'Alguien'
+      value_yes: 'sí'
+      value_no: 'no'
+      filtered: '(oculto)'
+      invitations_sent:
+        one: '1 invitación'
+        other: '%{count} invitaciones'
+      categories:
+        tag: 'Etiquetas'
+        post: 'Publicaciones'
+        comment: 'Comentarios'
+        user: 'Usuarios'
+        board: 'Tableros'
+        post_status: 'Estados'
+        changelog: 'Changelog'
+        site_settings: 'General'
+        o_auth: 'Proveedores de inicio de sesión'
+        saml: 'SAML'
+        ldap: 'LDAP'
+        widget: 'Widget'
+        webhook: 'Webhooks'
+        invitation: 'Invitaciones'
+        api_key: 'Claves API'
+      sources:
+        api: 'API REST'
+        mcp: 'MCP'
+      actions:
+        tag_create: 'creó la etiqueta'
+        tag_update: 'modificó la etiqueta'
+        tag_delete: 'eliminó la etiqueta'
+        tag_reorder: 'reordenó las etiquetas'
+        post_create_for_author: 'publicó por:'
+        post_update: 'modificó la publicación'
+        post_delete: 'eliminó la publicación'
+        post_merge: 'fusionó:'
+        comment_update: 'editó un comentario'
+        comment_delete: 'eliminó un comentario'
+        user_create: 'creó el usuario'
+        user_update: 'modificó el usuario'
+        user_export: 'descargó los datos de'
+        user_delete: 'eliminó la cuenta de'
+        user_two_factor_enable: 'activó la autenticación en dos pasos:'
+        user_two_factor_disable: 'desactivó la autenticación en dos pasos:'
+        board_create: 'creó el tablero'
+        board_update: 'modificó el tablero'
+        board_delete: 'eliminó el tablero'
+        board_reorder: 'reordenó los tableros'
+        post_status_create: 'creó el estado'
+        post_status_update: 'modificó el estado'
+        post_status_delete: 'eliminó el estado'
+        post_status_reorder: 'reordenó los estados'
+        changelog_create: 'escribió la entrada del changelog'
+        changelog_update: 'modificó la entrada del changelog'
+        changelog_publish: 'publicó la entrada del changelog'
+        changelog_delete: 'eliminó la entrada del changelog'
+        site_settings_update: 'modificó los ajustes del sitio'
+        o_auth_create: 'añadió el proveedor de inicio de sesión'
+        o_auth_update: 'modificó el proveedor de inicio de sesión'
+        o_auth_delete: 'quitó el proveedor de inicio de sesión'
+        saml_update: 'modificó el inicio de sesión único SAML:'
+        ldap_update: 'modificó el inicio de sesión LDAP:'
+        widget_update: 'modificó los ajustes del widget'
+        widget_rotate_secret: 'creó un nuevo secreto del widget'
+        webhook_create: 'creó el webhook'
+        webhook_update: 'modificó el webhook'
+        webhook_delete: 'eliminó el webhook'
+        webhook_rotate_secret: 'creó un nuevo secreto de firma para el webhook'
+        invitation_send: 'envió'
+        api_key_create: 'creó una nueva clave API para'
+    webhooks:
+      deliveries:
+        title: 'Entregas recientes'
+        show: 'Entregas'
+        empty: 'Aún no hay entregas.'
+        success: 'Entregado'
+        failure: 'Fallido'
+        test: 'Prueba'
+        last: 'Última entrega: %{status} %{when}'
+      signing:
+        title: 'Firma'
+        help: 'Cada petición lleva X-Astuto-Signature: sha256=HMAC-SHA256(secret, "<X-Astuto-Timestamp>.<body>"). Compruébala en el receptor para asegurarte de que la petición viene de este espacio de feedback.'
+        rotate: 'Nuevo secreto'
+        rotate_confirmation: 'Los receptores que comprueban la firma necesitan el nuevo secreto de inmediato. ¿Continuar?'
+      title: 'Webhooks'
+      learn_more: 'Aprende a configurar y usar los webhooks'
+      empty: 'No hay webhooks.'
+      triggers:
+        new_post: 'Publicación nueva'
+        new_post_pending_approval: 'Publicación nueva (pendiente de aprobación)'
+        delete_post: 'Eliminar publicación'
+        post_status_change: 'Cambio de estado de publicación'
+        new_comment: 'Comentario nuevo'
+        new_vote: 'Voto nuevo'
+        new_user: 'Usuario nuevo'
+      form:
+        title_new: 'Webhook nuevo'
+        title_edit: 'Editar webhook'
+        add_header: 'Añadir cabecera'
+        header_n_key: 'Clave de la cabecera %{n}'
+        header_n_value: 'Valor de la cabecera %{n}'
+        template_variables_selector_placeholder: 'Selecciona una variable de plantilla...'
+        templates_label: 'Rellenar para'
+        templates_help: 'Define el método, la cabecera Content-Type y un cuerpo de mensaje para el activador elegido. Usa como URL la dirección de webhook entrante de la herramienta de chat.'
+        templates_confirm: '¿Sustituir el cuerpo actual?'
+      test_page:
+        title: 'Resultados de la prueba del webhook'
   moderation:
     menu:
       feedback: 'Feedback'
@@ -245,10 +498,10 @@ es:
     users:
       block: 'Bloquear'
       unblock: 'Desbloquear'
-      block_confirmation: "%{name} no podrá iniciar sesión hasta que sea desbloqueado. ¿Estás seguro?"
-      unblock_confirmation: "%{name} podrá iniciar sesión y enviar comentarios. ¿Está seguro?"
-      role_to_moderator_confirmation: "%{name} podrá administrar las publicaciones y usuarios. Procede sólo si confías en esta persona. ¿Está seguro?"
-      role_to_admin_confirmation: "%{name} will have the same privileges as you, so they could even demote or block you. Proceed only if you really trust %{name}. Are you sure?"
+      block_confirmation: '%{name} no podrá iniciar sesión hasta que sea desbloqueado. ¿Estás seguro?'
+      unblock_confirmation: '%{name} podrá iniciar sesión y enviar comentarios. ¿Está seguro?'
+      role_to_moderator_confirmation: '%{name} podrá administrar las publicaciones y usuarios. Procede sólo si confías en esta persona. ¿Está seguro?'
+      role_to_admin_confirmation: '%{name} will have the same privileges as you, so they could even demote or block you. Proceed only if you really trust %{name}. Are you sure?'
       role_user: 'Usuario'
       role_moderator: 'Moderador'
       role_admin: 'Administrador'
@@ -256,3 +509,235 @@ es:
       status_active: 'Activo'
       status_blocked: 'Bloqueado'
       status_deleted: 'Eliminado'
+      export_data: 'Descargar datos (RGPD)'
+      delete_account: 'Eliminar cuenta'
+      delete_account_confirmation: '¿Eliminar la cuenta de %{name}? Las publicaciones y comentarios se mantienen y muestran «Usuario eliminado». No se puede deshacer.'
+      status_pending_approval: 'Pendiente de aprobación'
+      approve: 'Aprobar'
+      search_placeholder: 'Buscar por nombre o correo'
+      filter_all_statuses: 'Todos los estados'
+      filter_all_roles: 'Todos los roles'
+      empty: 'No se encontraron usuarios'
+  number:
+    currency:
+      format:
+        negative_format: '-%u%n'
+    human:
+      storage_units:
+        units:
+          zb: 'ZB'
+      decimal_units:
+        units:
+          million: 'Millón'
+          trillion: 'Billón'
+  errors:
+    messages:
+      password_too_long: 'es demasiado largo'
+    user_pending_approval: 'Tu cuenta espera la aprobación de un administrador. Recibirás un correo electrónico cuando puedas iniciar sesión.'
+    unavailable_session: "La sesión %{id} ya no está en memoria.\n\nSi ejecutas un servidor multiproceso (como Unicorn o Puma), el proceso que atendió esta solicitud no guarda %{id} en memoria. Reduce el número de procesos/workers a uno (1) o usa otro servidor en desarrollo.\n"
+    unacceptable_request: "Se espera una versión compatible en la cabecera Accept.\n"
+    connection_refused: "No se pudo conectar con el middleware de la Web Console.\nComprueba que un servidor Rails de desarrollo esté en ejecución.\n"
+  datetime:
+    relative:
+      future: 'en %{time}'
+      past: 'hace %{time}'
+  helpers:
+    page_entries_info:
+      entry:
+        zero: 'elementos'
+        one: 'elemento'
+        other: 'elementos'
+      one_page:
+        display_entries:
+          zero: 'No se encontraron %{entry_name}'
+          one: 'Mostrando <b>1</b> %{entry_name}'
+          other: 'Mostrando <b>las %{count}</b> %{entry_name}'
+      more_pages:
+        display_entries: 'Mostrando %{entry_name} <b>%{first}–%{last}</b> de <b>%{total}</b> en total'
+  flash:
+    actions:
+      create:
+        notice: '%{resource_name} se creó correctamente.'
+      update:
+        notice: '%{resource_name} se actualizó correctamente.'
+      destroy:
+        notice: '%{resource_name} se eliminó correctamente.'
+        alert: 'No se pudo eliminar %{resource_name}.'
+  widget:
+    errors:
+      disabled: 'El widget no está activado.'
+      invalid_token: 'El token de visitante no es válido o ha caducado.'
+      linked_elsewhere: 'Esta dirección de correo pertenece a otra cuenta.'
+      no_account: 'No existe una cuenta para este visitante.'
+      staff_account: 'Los moderadores y administradores inician sesión en el sitio de feedback, no a través del widget.'
+      blocked: 'Esta cuenta está bloqueada.'
+    tabs:
+      feedback: 'Feedback'
+      roadmap: 'Hoja de ruta'
+      changelog: 'Novedades'
+    close: 'Cerrar'
+    board: 'Tablero'
+    signed_in_as: 'Conectado como %{name}'
+    open_site: 'Abrir el sitio de feedback'
+  webhook_templates:
+    new_post: 'Nuevo feedback en %{board}: %{post}'
+    new_post_pending_approval: 'Feedback pendiente de aprobación en %{board}: %{post}'
+    delete_post: 'La publicación #%{id} se eliminó'
+    post_status_change: '%{post} es ahora: %{status}'
+    new_comment: '%{author} comentó en %{post}'
+    new_vote: '%{author} votó por %{post}'
+    new_user: 'Usuario nuevo: %{user}'
+    open: 'Abrir'
+  mailers:
+    admin:
+      test_email:
+        subject: '[%{site_name}] Correo de prueba'
+        body: 'Este correo de prueba de %{site_name} llegó, así que el envío de correos funciona.'
+        details: 'Enviado con %{delivery_method} desde %{from}.'
+      user_pending_approval:
+        subject: '[%{site_name}] Cuenta nueva pendiente de aprobación: %{name}'
+        body_html: '<strong>%{name}</strong> (%{email}) se registró y espera tu aprobación.'
+        review: 'Revisar en Moderación › Usuarios'
+    user:
+      notify_follower_of_changelog_entry:
+        subject: '[%{site_name}] Novedades en el changelog: %{title}'
+        body_html: 'El changelog tiene una entrada nueva, <strong>%{title}</strong>. Entrega el feedback que sigues'
+        read_entry: 'Leer el changelog'
+      account_approved:
+        subject: '[%{site_name}] Tu cuenta está aprobada'
+        body_html: 'Un administrador aprobó tu cuenta. Ya puedes iniciar sesión.'
+        sign_in: 'Iniciar sesión'
+      recap:
+        subject: '[%{site_name}] Resumen %{frequency} de la actividad del espacio de feedback'
+        body_html: 'Aquí tienes el resumen %{frequency} de la actividad de tu espacio de feedback'
+        published_posts_count_html: 'Feedback nuevo publicado: %{count}'
+        pending_posts_count_html: 'Feedback nuevo pendiente de aprobación: %{count}'
+        status_changes_title: 'Cambios de estado de las publicaciones que sigues'
+        no_status: 'sin estado'
+        top_posts_title: 'Las más votadas en este periodo'
+        period_votes:
+          one: '%{count} voto nuevo'
+          other: '%{count} votos nuevos'
+        more_posts: 'y %{count} más'
+  instance_admin:
+    title: 'Administración de la instancia'
+    tenants:
+      title: 'Espacios de feedback'
+      new: 'Nuevo espacio de feedback'
+      create: 'Crear espacio de feedback'
+      site_name: 'Nombre'
+      subdomain: 'Subdominio'
+      subdomain_hint: 'Letras, dígitos y guiones. La dirección será <subdominio>.%{host}.'
+      owner_email: 'Correo del propietario'
+      owner_name: 'Nombre del propietario'
+      locale: 'Idioma'
+      address: 'Dirección'
+      status: 'Estado'
+      users: 'Usuarios'
+      posts: 'Publicaciones'
+      created: 'Creado'
+      actions: 'Acciones'
+      edit: 'Editar'
+      save: 'Guardar'
+      back: 'Volver a la lista'
+      block: 'Bloquear'
+      unblock: 'Desbloquear'
+      empty: 'Aún no hay espacios de feedback.'
+      statuses:
+        active: 'Activo'
+        pending: 'Pendiente'
+        blocked: 'Bloqueado'
+      custom_domain: 'Dominio propio'
+      custom_domain_hint: 'Opcional. Añade primero un registro CNAME que apunte el dominio a %{target}. Déjalo vacío para quitarlo.'
+      created_title: '%{site_name} está listo'
+      owner_credentials: 'Datos de acceso del propietario. La contraseña se muestra solo ahora:'
+      password_hint: 'Envíala al propietario por un canal seguro y pídele que la cambie tras el primer inicio de sesión.'
+      updated: '%{subdomain} guardado.'
+      blocked: '%{subdomain} está bloqueado. Sus páginas muestran un aviso; los datos se conservan.'
+      unblocked: '%{subdomain} vuelve a estar activo.'
+      deleted: '%{subdomain} y todos sus datos se han eliminado.'
+      delete_title: 'Eliminar espacio de feedback'
+      delete_warning: 'Elimina tableros, publicaciones, comentarios, votos, usuarios, webhooks y ajustes de este espacio de feedback. No se puede deshacer. Para conservar los datos, bloquéalo en su lugar.'
+      confirm_label: 'Escribe "%{subdomain}" para confirmar'
+      confirm_mismatch: 'El subdominio no coincidió. No se eliminó nada.'
+      delete: 'Eliminar definitivamente'
+  pending_tenant:
+    title: 'Verifica tu dirección de correo'
+    body: 'Revisa tu bandeja de entrada (y la carpeta de spam) y haz clic en el enlace de activación.'
+    help: '¿Necesitas ayuda? Contacta con el administrador de esta instancia.'
+  two_factor:
+    invalid_code: 'El código no es válido. Usa el código actual de tu app de autenticación o un código de respaldo sin usar.'
+    login_expired: 'El inicio de sesión tardó demasiado. Introduce de nuevo tu correo y contraseña.'
+    setup_required: 'Este espacio de feedback exige autenticación en dos pasos para administradores y moderadores. Configúrala primero en los ajustes de tu perfil.'
+    already_enabled: 'La autenticación en dos pasos ya está activada.'
+    not_enabled: 'La autenticación en dos pasos está desactivada.'
+    title: 'Autenticación en dos pasos'
+    intro: 'Protege tu cuenta con un segundo paso: tras la contraseña, introduce un código de una app de autenticación (por ejemplo Aegis, Google Authenticator, Microsoft Authenticator o 1Password).'
+    set_up: 'Configurar la autenticación en dos pasos'
+    scan_help: 'Escanea el código QR con tu app de autenticación e introduce el código de seis dígitos que muestre.'
+    qr_code_alt: 'Código QR para la app de autenticación'
+    manual_entry: 'O introduce esta clave a mano:'
+    code: 'Código'
+    turn_on: 'Activar'
+    code_for_changes: 'Introduce un código actual para crear nuevos códigos de respaldo.'
+    new_backup_codes: 'Crear nuevos códigos de respaldo'
+    turn_off: 'Desactivar la autenticación en dos pasos'
+    turn_off_confirmation: '¿Desactivar la autenticación en dos pasos? Tu cuenta quedará protegida solo por la contraseña.'
+    backup_codes: 'Códigos de respaldo'
+    backup_codes_help: 'Guarda estos códigos de respaldo en un lugar seguro. Cada uno te conecta una vez si no tienes el teléfono a mano. Se muestran solo ahora.'
+    saved_codes: 'He guardado los códigos'
+    required_notice: 'Este espacio de feedback exige autenticación en dos pasos para administradores y moderadores.'
+    login_title: 'Autenticación en dos pasos'
+    login_help: 'Introduce el código de tu app de autenticación, o uno de tus códigos de respaldo.'
+    verify: 'Verificar'
+    start_over: 'Iniciar sesión con otra cuenta'
+    enabled:
+      one: 'Activado. Queda 1 código de respaldo.'
+      other: 'Activado. Quedan %{count} códigos de respaldo.'
+  saml:
+    metadata_invalid: 'No son metadatos SAML de un proveedor de identidad (XML con un SingleSignOnService).'
+  ldap:
+    invalid_login: 'Nombre de usuario o contraseña no válidos para tu %{label}.'
+    not_found: 'No se encontró una entrada única para este nombre de usuario. Revisa la base DN y el filtro de usuarios.'
+  my_feedback:
+    title: 'Mi feedback'
+    filters:
+      created: 'Publicadas'
+      voted: 'Votadas'
+      followed: 'Seguidas'
+    empty:
+      created: 'Todavía no has publicado ningún feedback.'
+      voted: 'Todavía no has votado ninguna publicación.'
+      followed: 'Todavía no sigues ninguna publicación.'
+    approval:
+      pending: 'Pendiente de aprobación'
+      rejected: 'Rechazada'
+      merged: 'Fusionada'
+  changelog:
+    title: 'Changelog'
+    empty: 'Aún no hay nada aquí.'
+    new_entry: 'Entrada nueva'
+    draft: 'Borrador'
+    delivers: 'Entrega:'
+    rss_feed: 'Canal RSS'
+    form:
+      title: 'Título'
+      body: 'Texto (Markdown)'
+      posts: 'Publicaciones entregadas'
+      posts_help: 'Los seguidores de estas publicaciones reciben un correo cuando la entrada se publica por primera vez.'
+      search_posts: 'Buscar publicaciones'
+      add_post: 'Añadir'
+      remove_post: 'Quitar'
+      save_draft: 'Guardar borrador'
+      publish: 'Publicar'
+      unpublish: 'Volver a borrador'
+      ai_draft: 'Redactar el texto con IA'
+      ai_draft_loading: 'Escribiendo…'
+      ai_draft_hint: 'Los títulos y descripciones de las publicaciones entregadas se envían al proveedor de IA configurado.'
+  views:
+    pagination:
+      first: '&laquo; Primera'
+      last: 'Última &raquo;'
+      previous: '&lsaquo; Anterior'
+      next: 'Siguiente &rsaquo;'
+      truncate: '&hellip;'
