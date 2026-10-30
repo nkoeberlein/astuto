@@ -81,7 +81,7 @@ services:
       ACTIVE_JOB_BACKEND: sidekiq
       REDIS_URL: redis://redis:6379/0
   worker:
-    image: ghcr.io/nkoeberlein/astuto-evo:2.0.0-alpha.3
+    image: ghcr.io/nkoeberlein/astuto-evo:2.0.0-beta.1
     command: bundle exec sidekiq
     environment:
       # everything the web container gets, plus:

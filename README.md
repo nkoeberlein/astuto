@@ -77,7 +77,7 @@ Upgrading an existing Astuto installation: see [UPGRADING.md](UPGRADING.md).
 
 ## Get started
 
-**2.0.0-alpha.3** is available as `ghcr.io/nkoeberlein/astuto-evo:2.0.0-alpha.3` (amd64 + arm64) for testing. It is an alpha: back up your database before trying it on existing data, and see [CHANGELOG.md](CHANGELOG.md) for what is done and what is missing.
+**2.0.0-beta.1** is available as `ghcr.io/nkoeberlein/astuto-evo:2.0.0-beta.1` (amd64 + arm64) for testing. It is a beta: back up your database before trying it on existing data, and see [CHANGELOG.md](CHANGELOG.md) for what is done and what is missing.
 
 To run it from source:
 

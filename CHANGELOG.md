@@ -5,6 +5,8 @@ Issue numbers refer to the archived [astuto/astuto](https://github.com/astuto/as
 
 ## [Unreleased]
 
+## [2.0.0-beta.1] – 2026-10-30
+
 ### Removed
 - Password logins through the old Devise form (`POST /users/sign_in`) and password changes through `PUT /users/password`; they redirect to the new pages. Logins go through the login page (`POST /api/app/v1/session`), which knows two-factor authentication.
 - **The old user interface** (React 16, Redux, Bootstrap, Turbolinks, webpack, Sass and the asset pipeline) and its JSON endpoints (`/posts`, `/boards`, `/posts/:id/comments`, `/likes`, `/follows`, `/post_status_changes`, `/users`, `/webhooks`, `/o_auths` CRUD, `/tenants`, `/invitations`, `/api_keys`). Integrations should use the REST API (`/api/v1`, API key) or MCP. Node.js is only needed to build `frontend/`.

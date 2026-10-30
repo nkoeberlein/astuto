@@ -3,7 +3,7 @@
 module AstutoProject
   NAME = 'Astuto Evolution'
   # Release version (SemVer); keep in sync with frontend/package.json and CHANGELOG.md
-  VERSION = '2.0.0-alpha.3'
+  VERSION = '2.0.0-beta.1'
   SHORT_NAME = 'Evo'
   REPOSITORY_URL = 'https://github.com/nkoeberlein/astuto-evo'
   ISSUES_URL = "#{REPOSITORY_URL}/issues"
