@@ -3,7 +3,7 @@ name: astuto-evolution
 description: Self-hosted customer feedback tool (boards, roadmap, votes, moderation, OAuth, webhooks, MCP)
 type: application
 version: 0.1.0
-appVersion: "2.0.0-alpha.3"
+appVersion: "2.0.0-beta.1"
 home: https://github.com/nkoeberlein/astuto-evo
 sources:
   - https://github.com/nkoeberlein/astuto-evo
