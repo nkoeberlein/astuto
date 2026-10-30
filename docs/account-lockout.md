@@ -1,48 +1,48 @@
-# Account lockout (schützt Konten gegen Brute-Force)
+# Account lockout (protects accounts against brute force)
 
-Das Anmelden mit E-Mail und Passwort nutzt Devise `:lockable`: Nach zu vielen
-fehlgeschlagenen Anmeldeversuchen wird **das einzelne Konto** gesperrt –
-unabhängig von der IP-Adresse und damit auch bei verteilten Angriffen wirksam.
-Das ergänzt das IP-basierte rack-attack-Limiting (`/posts`-Anti-Spam, geplante
-Regeln für `/api/v1` und `/mcp`), ersetzt es aber nicht.
+Signing in with email and password uses Devise `:lockable`: after too many
+failed login attempts **the individual account** is locked — independent of
+the IP address and therefore also effective against distributed attacks. This
+complements the IP-based rack-attack limiting (`/posts` anti-spam, planned
+rules for `/api/v1` and `/mcp`) but does not replace it.
 
-Betroffene Logins: das alte Formular (`/users/sign_in`) und die App-API
+Affected logins: the old form (`/users/sign_in`) and the app API
 (`POST /api/app/v1/session`).
 
-## Verhalten
+## Behaviour
 
-- Fehlversuche werden pro Konto gezählt; nach `LOCKABLE_MAXIMUM_ATTEMPTS`
-  Versuchen wird das Konto gesperrt.
-- Beim Sperren erhält die Person eine E-Mail mit einem Unlock-Link
-  (Unlock-Strategie `email` bzw. `both`).
-- Bei den Strategien `time` bzw. `both` erlaubt Devise die Anmeldung automatisch
-  wieder, sobald die Sperre älter als `LOCKABLE_UNLOCK_IN_HOURS` ist.
-- Ein erfolgreicher Login setzt den Fehlversuchs-Zähler zurück.
+- Failed attempts are counted per account; after `LOCKABLE_MAXIMUM_ATTEMPTS`
+  attempts the account is locked.
+- When the account is locked, the person receives an email with an unlock
+  link (unlock strategies `email` and `both`).
+- With the strategies `time` and `both`, Devise allows sign-in again
+  automatically once the lock is older than `LOCKABLE_UNLOCK_IN_HOURS`.
+- A successful login resets the failed-attempt counter.
 
-## Konfiguration
+## Configuration
 
-Alle Schwellwerte sind per Umgebungsvariable konfigurierbar:
+All thresholds are configurable via environment variables:
 
-| Variable                    | Standard            | Werte                             |
+| Variable                    | Default             | Values                            |
 |-----------------------------|---------------------|-----------------------------------|
 | `LOCKABLE_LOCK_STRATEGY`    | `failed_attempts`   | `failed_attempts`, `none`         |
 | `LOCKABLE_UNLOCK_STRATEGY`  | `both`              | `both`, `email`, `time`, `none`   |
-| `LOCKABLE_MAXIMUM_ATTEMPTS` | `10`                | Ganzzahl                          |
-| `LOCKABLE_UNLOCK_IN_HOURS`  | `2`                 | Ganzzahl (Stunden)                |
+| `LOCKABLE_MAXIMUM_ATTEMPTS` | `10`                | integer                           |
+| `LOCKABLE_UNLOCK_IN_HOURS`  | `2`                 | integer (hours)                   |
 
-Beschreibung:
+Description:
 
-- **`LOCKABLE_LOCK_STRATEGY`** – wie Konten gesperrt werden. `failed_attempts`
-  sperrt nach zu vielen Fehlversuchen, `none` deaktiviert den Schutz
-  vollständig (nur für Spezialfälle empfohlen).
-- **`LOCKABLE_UNLOCK_STRATEGY`** – wie gesperrte Konten wieder freikommen:
-  `both` = E-Mail mit Unlock-Link **und** automatische Freigabe nach der
-  konfigurierten Zeit, `email` = nur E-Mail, `time` = nur Zeitablauf, `none` =
-  weder noch (Freigabe nur manuell über die Datenbank, z. B. Administrator).
-- **`LOCKABLE_MAXIMUM_ATTEMPTS`** – Anzahl der fehlgeschlagenen Anmeldeversuche,
-  bevor das Konto gesperrt wird.
-- **`LOCKABLE_UNLOCK_IN_HOURS`** – Stunden bis zur automatischen Freigabe (nur
-  bei den Strategien `time` und `both` relevant).
+- **`LOCKABLE_LOCK_STRATEGY`** – how accounts are locked. `failed_attempts`
+  locks after too many failed attempts, `none` disables the protection
+  entirely (recommended only for special cases).
+- **`LOCKABLE_UNLOCK_STRATEGY`** – how locked accounts are released again:
+  `both` = email with an unlock link **and** automatic release after the
+  configured time, `email` = email only, `time` = time only, `none` = neither
+  (release only manually via the database, e.g. by an administrator).
+- **`LOCKABLE_MAXIMUM_ATTEMPTS`** – the number of failed login attempts
+  before the account is locked.
+- **`LOCKABLE_UNLOCK_IN_HOURS`** – hours until the automatic release (only
+  relevant for the strategies `time` and `both`).
 
-Die Werte werden beim Anwendungsstart eingelesen (`config/initializers/devise.rb`);
-Änderungen erfordern einen Neustart des Containers.
+The values are read at application start (`config/initializers/devise.rb`);
+changes require a container restart.
