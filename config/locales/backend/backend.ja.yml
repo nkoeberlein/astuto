@@ -22,14 +22,14 @@ ja:
         body: 'You can confirm your account email through the link below:'
         action: 'Confirm my account'
       email_changed:
-        body: "We're contacting you to notify you that your email is being changed to %{email}."
-        body2: "We're contacting you to notify you that your email has been changed to %{email}."
+        body: 'We''re contacting you to notify you that your email is being changed to %{email}.'
+        body2: 'We''re contacting you to notify you that your email has been changed to %{email}.'
       password_change:
-        body: "We're contacting you to notify you that your password has been changed."
+        body: 'We''re contacting you to notify you that your password has been changed.'
       reset_password:
         body: 'Someone has requested a link to change your password. You can do this through the link below.'
-        body2: "If you didn't request this, please ignore this email."
-        body3: "Your password won't change until you access the link above and create a new one."
+        body2: 'If you didn''t request this, please ignore this email.'
+        body3: 'Your password won''t change until you access the link above and create a new one.'
         action: 'Change my password'
     user:
       opening_greeting: 'Hello %{name}!'
@@ -54,23 +54,34 @@ ja:
     models:
       board:
         other: 'Boards'
+        one: 'ボード'
       comment:
         other: 'Comments'
+        one: 'コメント'
       like:
         other: 'Votes'
+        one: '投票'
       o_auth:
         other: 'OAuths'
+        one: 'OAuth'
       post_status:
         other: 'Statuses'
+        one: 'ステータス'
       post:
         other: 'Posts'
+        one: '投稿'
       user:
         other: 'Users'
+        one: 'ユーザー'
+      webhook:
+        one: 'Webhook'
+        other: 'Webhook'
     attributes:
       board:
         name: 'Name'
         description: 'Description'
         order: 'Order'
+        visibility: '公開範囲'
       comment:
         body: 'Body'
         is_post_update: 'Post update'
@@ -116,6 +127,7 @@ ja:
         subdomain: 'Subdomain'
         locale: 'Language'
         custom_domain: 'Custom domain'
+        site_favicon: 'ファビコン URL'
       tenant_setting:
         brand_display: 'Display'
         use_browser_locale: 'Use browser language'
@@ -134,6 +146,15 @@ ja:
         show_roadmap_in_header: 'Show roadmap link in header'
         collapse_boards_in_header: 'Collapse boards in header'
         custom_css: 'Custom CSS'
+        use_gravatar: 'Gravatar のアバターを表示する'
+        require_two_factor_for_staff: '管理者とモデレーターに二要素認証を必須にする'
+        require_user_approval: '新しいアカウントを承認制にする'
+        trusted_after_posts: '承認済み投稿がこの数を超えたら信頼済み'
+        roadmap_enabled: 'ロードマップを有効にする'
+        default_post_sorting: '投稿の既定の並び順'
+        custom_links: 'ヘッダーのカスタムリンク'
+        login_only_with_oauth: 'OAuth ログインだけを表示'
+        mail_logo_size: 'メール内のロゴサイズ'
       user:
         email: 'Email'
         full_name: 'Full name'
@@ -141,6 +162,39 @@ ja:
         password_confirmation: 'Password confirmation'
         role: 'Role'
         notifications_enabled: 'Notifications enabled'
+        recap_notification_frequency: 'まとめ通知の頻度'
+      ldap_config:
+        enabled: 'LDAP ログインを使う'
+        label: 'ログインページに表示するアカウント名'
+        host: 'サーバー'
+        port: 'ポート'
+        encryption: '暗号化'
+        verify_certificate: 'サーバー証明書を検証する'
+        base_dn: 'Base DN'
+        bind_dn: 'サービスアカウント（bind DN）'
+        bind_password: 'サービスアカウントのパスワード'
+        user_filter: 'ユーザーフィルター'
+        email_attribute: 'メールアドレスを表す属性'
+        name_attribute: '名前を表す属性'
+        auto_create_users: '初回ログイン時にアカウントを作成する'
+      saml_config:
+        enabled: 'SAML シングルサインオンを使う'
+        label: 'ボタンの文字'
+        idp_entity_id: 'IdP の entity ID（issuer）'
+        idp_sso_url: 'IdP のシングルサインオン URL'
+        idp_cert: 'IdP の署名証明書'
+        email_attribute: 'メールアドレスを表す属性'
+        name_attribute: '名前を表す属性'
+        auto_create_users: '初回ログイン時にアカウントを作成する'
+      webhook:
+        name: '名前'
+        description: '説明'
+        is_enabled: '有効'
+        trigger: 'トリガー'
+        url: 'URL'
+        http_body: 'HTTP リクエスト本文'
+        http_method: 'HTTP メソッド'
+        http_headers: 'HTTP リクエストヘッダー'
     errors:
       messages:
         invalid: 'is invalid'

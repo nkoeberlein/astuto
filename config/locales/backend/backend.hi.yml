@@ -22,14 +22,14 @@ hi:
         body: 'You can confirm your account email through the link below:'
         action: 'Confirm my account'
       email_changed:
-        body: "We're contacting you to notify you that your email is being changed to %{email}."
-        body2: "We're contacting you to notify you that your email has been changed to %{email}."
+        body: 'We''re contacting you to notify you that your email is being changed to %{email}.'
+        body2: 'We''re contacting you to notify you that your email has been changed to %{email}.'
       password_change:
-        body: "We're contacting you to notify you that your password has been changed."
+        body: 'We''re contacting you to notify you that your password has been changed.'
       reset_password:
         body: 'Someone has requested a link to change your password. You can do this through the link below.'
-        body2: "If you didn't request this, please ignore this email."
-        body3: "Your password won't change until you access the link above and create a new one."
+        body2: 'If you didn''t request this, please ignore this email.'
+        body3: 'Your password won''t change until you access the link above and create a new one.'
         action: 'Change my password'
     user:
       opening_greeting: 'Hello %{name}!'
@@ -73,11 +73,15 @@ hi:
       user:
         one: 'User'
         other: 'Users'
+      webhook:
+        one: 'Webhook'
+        other: 'Webhooks'
     attributes:
       board:
         name: 'Name'
         description: 'Description'
         order: 'Order'
+        visibility: 'दृश्यता'
       comment:
         body: 'Body'
         is_post_update: 'Post update'
@@ -123,6 +127,7 @@ hi:
         subdomain: 'Subdomain'
         locale: 'Language'
         custom_domain: 'Custom domain'
+        site_favicon: 'Favicon URL'
       tenant_setting:
         brand_display: 'Display'
         use_browser_locale: 'Use browser language'
@@ -141,6 +146,15 @@ hi:
         show_roadmap_in_header: 'Show roadmap link in header'
         collapse_boards_in_header: 'Collapse boards in header'
         custom_css: 'Custom CSS'
+        use_gravatar: 'Gravatar से अवतार दिखाएँ'
+        require_two_factor_for_staff: 'प्रशासकों और मॉडरेटरों से दो-चरणीय प्रमाणीकरण अपेक्षित करें'
+        require_user_approval: 'नए खातों की स्वीकृति करें'
+        trusted_after_posts: 'स्वीकृत पोस्टों के बाद विश्वसनीय'
+        roadmap_enabled: 'रोडमैप सक्रिय करें'
+        default_post_sorting: 'पोस्टों की डिफ़ॉल्ट क्रमविन्यास'
+        custom_links: 'हेडर में अपने लिंक'
+        login_only_with_oauth: 'केवल OAuth लॉगिन दिखाएँ'
+        mail_logo_size: 'ईमेल में लोगो का आकार'
       user:
         email: 'Email'
         full_name: 'Full name'
@@ -148,6 +162,39 @@ hi:
         password_confirmation: 'Password confirmation'
         role: 'Role'
         notifications_enabled: 'Notifications enabled'
+        recap_notification_frequency: 'सारांश सूचना की आवृत्ति'
+      ldap_config:
+        enabled: 'LDAP लॉगिन का उपयोग करें'
+        label: 'लॉगिन पृष्ठ पर खाते का नाम'
+        host: 'सर्वर'
+        port: 'पोर्ट'
+        encryption: 'कूटलेखन'
+        verify_certificate: 'सर्वर प्रमाणपत्र जाँचें'
+        base_dn: 'Base DN'
+        bind_dn: 'सेवा खाता (bind DN)'
+        bind_password: 'सेवा खाते का पासवर्ड'
+        user_filter: 'उपयोगकर्ता फ़िल्टर'
+        email_attribute: 'ईमेल पते वाला गुण'
+        name_attribute: 'नाम वाला गुण'
+        auto_create_users: 'पहले लॉगिन पर खाता बनाएँ'
+      saml_config:
+        enabled: 'SAML एकल साइन-ऑन का उपयोग करें'
+        label: 'बटन पाठ'
+        idp_entity_id: 'पहचान प्रदाता का entity ID (issuer)'
+        idp_sso_url: 'पहचान प्रदाता का एकल साइन-ऑन URL'
+        idp_cert: 'पहचान प्रदाता का हस्ताक्षर प्रमाणपत्र'
+        email_attribute: 'ईमेल पते वाला गुण'
+        name_attribute: 'नाम वाला गुण'
+        auto_create_users: 'पहले लॉगिन पर खाता बनाएँ'
+      webhook:
+        name: 'नाम'
+        description: 'विवरण'
+        is_enabled: 'सक्रिय'
+        trigger: 'ट्रिगर'
+        url: 'URL'
+        http_body: 'HTTP अनुरोध की विषयवस्तु'
+        http_method: 'HTTP विधि'
+        http_headers: 'HTTP अनुरोध के हेडर'
     errors:
       messages:
         invalid: 'is invalid'
@@ -156,3 +203,6 @@ hi:
         taken: 'is already in use'
         too_short: 'is too short (minimum %{count} characters)'
         too_long: 'is too long (maximum %{count} characters)'
+        restrict_dependent_destroy:
+          has_one: 'रिकॉर्ड नहीं मिटाया जा सकता, क्योंकि एक आश्रित %{record} मौजूद है'
+          has_many: 'रिकॉर्ड नहीं मिटाया जा सकता, क्योंकि आश्रित %{record} मौजूद हैं'

@@ -22,14 +22,14 @@ tr:
         body: 'You can confirm your account email through the link below:'
         action: 'Confirm my account'
       email_changed:
-        body: "We're contacting you to notify you that your email is being changed to %{email}."
-        body2: "We're contacting you to notify you that your email has been changed to %{email}."
+        body: 'We''re contacting you to notify you that your email is being changed to %{email}.'
+        body2: 'We''re contacting you to notify you that your email has been changed to %{email}.'
       password_change:
-        body: "We're contacting you to notify you that your password has been changed."
+        body: 'We''re contacting you to notify you that your password has been changed.'
       reset_password:
         body: 'Someone has requested a link to change your password. You can do this through the link below.'
-        body2: "If you didn't request this, please ignore this email."
-        body3: "Your password won't change until you access the link above and create a new one."
+        body2: 'If you didn''t request this, please ignore this email.'
+        body3: 'Your password won''t change until you access the link above and create a new one.'
         action: 'Change my password'
     user:
       opening_greeting: 'Hello %{name}!'
@@ -73,11 +73,15 @@ tr:
       user:
         one: 'User'
         other: 'Users'
+      webhook:
+        one: 'Webhook'
+        other: 'Webhooklar'
     attributes:
       board:
         name: 'Name'
         description: 'Description'
         order: 'Order'
+        visibility: 'Görünürlük'
       comment:
         body: 'Body'
         is_post_update: 'Post update'
@@ -123,6 +127,7 @@ tr:
         subdomain: 'Subdomain'
         locale: 'Language'
         custom_domain: 'Custom domain'
+        site_favicon: 'Favicon adresi'
       tenant_setting:
         brand_display: 'Display'
         use_browser_locale: 'Use browser language'
@@ -141,6 +146,15 @@ tr:
         show_roadmap_in_header: 'Show roadmap link in header'
         collapse_boards_in_header: 'Collapse boards in header'
         custom_css: 'Custom CSS'
+        use_gravatar: 'Avatarları Gravatar''dan göster'
+        require_two_factor_for_staff: 'Yöneticiler ve moderatörler için iki adımlı doğrulama zorunlu olsun'
+        require_user_approval: 'Yeni hesapları onayla'
+        trusted_after_posts: 'Onaylanmış gönderilerden sonra güvenilir'
+        roadmap_enabled: 'Yol haritasını etkinleştir'
+        default_post_sorting: 'Varsayılan gönderi sıralaması'
+        custom_links: 'Başlıktaki özel bağlantılar'
+        login_only_with_oauth: 'Yalnızca OAuth girişini göster'
+        mail_logo_size: 'E-postalardaki logo boyutu'
       user:
         email: 'Email'
         full_name: 'Full name'
@@ -148,6 +162,39 @@ tr:
         password_confirmation: 'Password confirmation'
         role: 'Role'
         notifications_enabled: 'Notifications enabled'
+        recap_notification_frequency: 'Özet bildirim sıklığı'
+      ldap_config:
+        enabled: 'LDAP girişini kullan'
+        label: 'Giriş sayfasındaki hesabın adı'
+        host: 'Sunucu'
+        port: 'Port'
+        encryption: 'Şifreleme'
+        verify_certificate: 'Sunucu sertifikasını doğrula'
+        base_dn: 'Base DN'
+        bind_dn: 'Servis hesabı (bind DN)'
+        bind_password: 'Servis hesabının şifresi'
+        user_filter: 'Kullanıcı filtresi'
+        email_attribute: 'E-posta adresini taşıyan öznitelik'
+        name_attribute: 'Adı taşıyan öznitelik'
+        auto_create_users: 'İlk girişte hesap oluştur'
+      saml_config:
+        enabled: 'SAML tekil oturum açmayı kullan'
+        label: 'Düğme metni'
+        idp_entity_id: 'Kimlik sağlayıcısının entity kimliği (issuer)'
+        idp_sso_url: 'Kimlik sağlayıcısının tekil oturum açma adresi'
+        idp_cert: 'Kimlik sağlayıcısının imza sertifikası'
+        email_attribute: 'E-posta adresini taşıyan öznitelik'
+        name_attribute: 'Adı taşıyan öznitelik'
+        auto_create_users: 'İlk girişte hesap oluştur'
+      webhook:
+        name: 'Ad'
+        description: 'Açıklama'
+        is_enabled: 'Etkin'
+        trigger: 'Tetikleyici'
+        url: 'URL'
+        http_body: 'HTTP istek gövdesi'
+        http_method: 'HTTP yöntemi'
+        http_headers: 'HTTP istek başlıkları'
     errors:
       messages:
         invalid: 'is invalid'

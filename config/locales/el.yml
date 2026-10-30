@@ -15,7 +15,7 @@ el:
         new_password_confirmation: 'New password confirmation'
         current_password: 'Current password'
         notifications_enabled: 'Notifications enabled'
-        notifications_enabled_help: "if disabled, you won't receive any notification"
+        notifications_enabled_help: 'if disabled, you won''t receive any notification'
         waiting_confirmation: 'Currently waiting confirmation for %{email}'
         no_password_set: 'You must set a password to update your profile'
         set_password: 'Set password'
@@ -28,14 +28,34 @@ el:
         profile_settings: 'Profile settings'
         cancel_account: 'Cancel account'
         forgot_password: 'Forgot your password?'
-        confirmation_instructions_not_received: "Didn't receive confirmation instructions?"
-        unlock_instructions_not_received: "Didn't receive unlock instructions?"
+        confirmation_instructions_not_received: 'Didn''t receive confirmation instructions?'
+        unlock_instructions_not_received: 'Didn''t receive unlock instructions?'
         send_reset_password_instructions: 'Send me reset password instructions'
         resend_confirmation_instructions: 'Resend confirmation instructions'
         resend_unlock_instructions: 'Resend unlock instructions'
         change_password: 'Change password'
         password_help: '%{count} characters minimum'
         email_registration_not_allowed: 'Email registration not allowed'
+        notifications: 'Ειδοποιήσεις'
+        recap_notification_frequency_daily: 'Καθημερινά'
+        recap_notification_frequency_weekly: 'Εβδομαδιαίως'
+        recap_notification_frequency_monthly: 'Μηνιαίως'
+        recap_notification_frequency_help: 'Σύνοψη με email: νέες ανατροφοδοτήσεις, οι πιο ψηφισμένες αναρτήσεις και οι αλλαγές κατάστασης αναρτήσεων που ακολουθείτε (moderators: και ανατροφοδοτήσεις σε αναμονή έγκρισης). Δεν αποστέλλεται τίποτα όταν δεν συνέβη τίποτα.'
+        log_in_with_email: 'Σύνδεση με email και κωδικό'
+        login_name: 'Όνομα σύνδεσης'
+        ldap_info: 'Συνδεθείτε με το %{label} σας.'
+        my_data: 'Τα δεδομένα μου'
+        my_data_help: 'Κατεβάστε όλα όσα κρατά αυτός ο χώρος ανατροφοδότησης για εσάς: προφίλ, αναρτήσεις, σχόλια, ψήφους και αναρτήσεις που ακολουθείτε (JSON).'
+        download_my_data: 'Λήψη των δεδομένων μου'
+        oauth_only_info: 'Συνδεθείτε και εγγραφείτε με έναν από τους παρακάτω παρόχους OAuth. Η σύνδεση με email είναι απενεργοποιημένη σε αυτόν τον ιστότοπο.'
+      api_key:
+        title: 'Κλειδί API'
+        current_api_key_help: 'Έχετε ήδη δημιουργήσει κλειδί API και για λόγους ασφαλείας δεν εμφανίζεται ξανά. Αν το χάσατε, μπορείτε να δημιουργήσετε νέο παρακάτω.'
+        generate_api_key: 'Δημιουργία κλειδιού API'
+        generated_api_key_help: 'Φυλάξτε αυτό το κλειδί API σε ασφαλές σημείο· δεν θα το δείτε ξανά.'
+        generated_api_key_successfully: 'Το κλειδί API δημιουργήθηκε επιτυχώς!'
+        confirm_generate_new_api_key: 'Δημιουργία νέου κλειδιού API; Το παλιό θα ακυρωθεί.'
+        api_key_learn_more: 'Μάθετε πώς να χρησιμοποιείτε το API'
     no_status: 'No status'
     select_placeholder: 'Select...'
     loading: 'Loading...'
@@ -56,6 +76,11 @@ el:
       approve: 'Approve'
       reject: 'Reject'
       copy_to_clipboard: 'Copy to clipboard'
+      preview: 'Προεπισκόπηση'
+      move_up: 'Μετακίνηση πάνω'
+      move_down: 'Μετακίνηση κάτω'
+    errors:
+      not_found: 'Η σελίδα δεν βρέθηκε'
   header:
     menu:
       site_settings: 'Site settings'
@@ -63,9 +88,18 @@ el:
       profile_header: 'Profile'
       profile_settings: 'Profile settings'
       sign_out: 'Sign out'
+      my_feedback: 'Η ανατροφοδότησή μου'
     log_in: 'Log in / Sign up'
   roadmap:
     title: 'Roadmap'
+    empty: 'Το roadmap είναι κενό.'
+    filter_by_board: 'Φίλτρο ανά πίνακα'
+    more_posts:
+      one: '+ %{count} ακόμη ανάρτηση'
+      other: '+ %{count} ακόμη αναρτήσεις'
+    sort_by:
+      most_voted: 'Οι περισσότερες ψήφοι'
+      recently_updated: 'Πρόσφατα ενημερωμένες'
   blocked_tenant:
     title: 'This feedback space has been blocked'
   board:
@@ -80,10 +114,13 @@ el:
       anonymous_submission_help: 'You are posting anonymously'
       non_anonymous_submission_help: 'You are posting as %{name}'
       submit_pending: 'Your feedback has been submitted and is now pending moderator approval!'
+      status: 'Αρχική κατάσταση (μόνο για moderators)'
+      similar_posts_title: 'Υπάρχουν ήδη παρόμοιες αναρτήσεις — να ψηφίσετε μία από αυτές;'
     search_box:
       title: 'Search'
     filter_box:
       title: 'Filter by status'
+      tags: 'Φίλτρο ανά ετικέτα'
     sort_by_box:
       title: 'Sort by'
       trending: 'Trending'
@@ -92,6 +129,8 @@ el:
       oldest: 'Oldest'
     posts_list:
       empty: 'There are no posts'
+      load_more: 'Φόρτωση περισσότερων'
+    rss_feed: 'Ροή RSS'
   post:
     published_by: 'Published by'
     published_anonymously: 'Published anonymously'
@@ -101,18 +140,54 @@ el:
       title: 'Likes'
     action_box:
       follow_button: 'Follow post'
-      following_description: "you're receiving notifications about new updates on this post"
-      not_following_description: "you won't receive notifications about this post"
+      following_description: 'you''re receiving notifications about new updates on this post'
+      not_following_description: 'you won''t receive notifications about this post'
     comments:
       title: 'Activity'
       post_update_badge: 'Update'
       reply_button: 'Reply'
+      empty: 'Δεν υπάρχουν ακόμη σχόλια'
     new_comment:
       body_placeholder: 'Leave a comment'
       submit_button: 'Submit'
       is_post_update: 'Mark as update'
       user_notification: 'Users that follow this post will be notified'
       not_logged_in: 'You need to log in to post comments'
+    merge:
+      same_post: 'Μια ανάρτηση δεν μπορεί να συγχωνευθεί στον εαυτό της.'
+      already_merged: 'Μία από τις αναρτήσεις έχει ήδη συγχωνευτεί.'
+      button: 'Συγχώνευση σε άλλη ανάρτηση'
+      search: 'Εύρεση της ανάρτησης που θα μείνει'
+      help: 'Οι ψήφοι, οι παρακολουθούντες και τα σχόλια μεταφέρονται στην ανάρτηση που διαλέγετε· η παρούσα οδηγεί ύστερα εκεί. Δεν μπορεί να αναιρεθεί.'
+      into_this: 'Συγχώνευση εδώ'
+      confirmation: 'Συγχώνευση αυτής της ανάρτησης σε "%{target}"; Οι ψήφοι, οι παρακολουθούντες και τα σχόλια μεταφέρονται. Δεν μπορεί να αναιρεθεί.'
+      merged_from: 'Συγχωνεύτηκε από:'
+    tags:
+      title: 'Ετικέτες'
+    in_changelog: 'Στο changelog:'
+    source:
+      title: 'Πηγή'
+      label: 'Πηγή'
+      url: 'Σύνδεση προς την πηγή'
+    ai_translation:
+      button: 'Μετάφραση'
+      loading: 'Μετάφραση…'
+      hide: 'Απόκρυψη μετάφρασης'
+      label: 'Μετάφραση AI'
+      hint: 'Το κείμενο αποστέλλεται στον διαμορφωμένο πάροχο AI.'
+    ai_suggestion:
+      button: 'Πρόταση πίνακα και ετικετών'
+      loading: 'Σκέφτομαι…'
+      hint: 'Τίτλος και περιγραφή αποστέλλονται στον διαμορφωμένο πάροχο AI.'
+      board: 'Πίνακας:'
+      tags: 'Ετικέτες:'
+      none: 'Καμία πρόταση: τίποτα δεν ταιριάζει καλύτερα από όσα ήδη έχει η ανάρτηση.'
+      apply: 'Εφαρμογή'
+    ai_summary:
+      title: 'Σύνοψη AI'
+      button: 'Σύνοψη της συζήτησης'
+      loading: 'Σύνοψη…'
+      hint: 'Τίτλος, περιγραφή και σχόλια αποστέλλονται στον διαμορφωμένο πάροχο AI.'
   site_settings:
     menu:
       title: 'Site settings'
@@ -123,6 +198,10 @@ el:
       roadmap: 'Roadmap'
       invitations: 'Invitations'
       appearance: 'Appearance'
+      tags: 'Ετικέτες'
+      widget: 'Widget'
+      webhooks: 'Webhooks'
+      audit_log: 'Αρχείο ελέγχου'
     info_box:
       up_to_date: 'All changes saved'
       dirty: 'Changes not saved'
@@ -132,7 +211,7 @@ el:
       brand_setting_name: 'Name only'
       brand_setting_logo: 'Logo only'
       brand_setting_none: 'None'
-      use_browser_locale_help: "If you enable this setting, the feedback space will be displayed in the user's browser preferred language. If the language is not available, the default language will be used."
+      use_browser_locale_help: 'If you enable this setting, the feedback space will be displayed in the user''s browser preferred language. If the language is not available, the default language will be used.'
       subtitle_privacy: 'Privacy'
       is_private_help: 'If you enable this setting, only logged in users will be able to see the content of the feedback space.'
       subtitle_moderation: 'Moderation'
@@ -153,12 +232,35 @@ el:
       show_vote_count_help: 'If you enable this setting, users will be able to see the vote count of posts. This may incentivize users to vote on already popular posts, leading to a snowball effect.'
       show_vote_button_in_board_help: 'If you enable this setting, users will be able to vote posts from the board page. This may incentivize users to vote on more posts, leading to a higher number of votes but of lower significance.'
       hide_unused_statuses_in_filter_by_status_help: 'If you enable this setting, only statuses that are assigned to at least one post in that board will be shown in the filter by status sidebar filter.'
+      test_email: 'Αποστολή δοκιμαστικού email'
+      test_email_help: 'Αποστέλλει email στο %{email} για τον έλεγχο των ρυθμίσεων email (μεταβλητές περιβάλλοντος EMAIL_*).'
+      test_email_sent: 'Δοκιμαστικό email απεστάλη στο %{email} (%{method}, από %{from}). Ελέγξτε τα εισερχόμενα και τα ανεπιθύμητα.'
+      use_gravatar_help: 'Οι εικόνες προφίλ προέρχονται από το gravatar.com: ο browser κάθε επισκέπτη ζητά από το gravatar.com κάθε εικόνα με ένα hash της διεύθυνσης email. Κλείνοντας το, εμφανίζονται αρχικά και δεν αποστέλλεται τίποτα σε τρίτους.'
+      require_two_factor_for_staff_help: 'Διαχειριστές και moderators πρέπει να ρυθμίσουν 2FA πριν μπορέσουν να διαμοιράσουν ή να αλλάξουν ρυθμίσεις. Τα κλειδιά API δεν επηρεάζονται.'
+      subtitle_authentication: 'Αυθεντικοποίηση'
+      subtitle_mail: 'Email'
+      feedback_approval_policy_new_users_require_approval: 'Απαιτείται έγκριση για ανώνυμη ανατροφοδότηση και τις πρώτες αναρτήσεις κάθε λογαριασμού'
+      require_user_approval_help: 'Εγγραφές μέσω email ή OAuth περιμένουν να τις εγκρίνει διαχειριστής στο Moderation › Χρήστες· οι διαχειριστές λαμβάνουν email για η καθεμία. Οι καλεσμένοι και οι συνδέσεις μέσω SAML, LDAP ή widget εγκρίνονται αυτόματα.'
+      trusted_after_posts_help: 'Μετά από τόσες εγκεκριμένες αναρτήσεις, οι νέες αναρτήσεις του λογαριασμού εγκρίνονται αυτόματα. Οι απορριφθείσες δεν μετράνε.'
+      roadmap_enabled_help: 'Αν το απενεργοποιήσετε, η σελίδα roadmap γίνεται απρόσβαστη και ο σύνδεσμος αφαιρείται από την κεφαλίδα.'
+      default_post_sorting_help: 'Οι αναρτήσεις ταξινομούνται έτσι όταν ανοίγει πίνακας χωρίς ρητή ταξινόμηση.'
+      custom_links_help: 'Πρόσθετοι σύνδεσμοι στην κεφαλίδα, ένας ανά γραμμή: Ετικέτα|URL. Παράδειγμα: Τεκμηρίωση|https://example.com/docs'
+      login_only_with_oauth_help: 'Αν το ενεργοποιήσετε, κρύβεται η σύνδεση με email και κωδικό καθώς και η εγγραφή μέσω email. Οι χρήστες συνδέονται και εγγράφονται μόνο με παρόχους OAuth. Οι σύνδεσμοι επαναφοράς κωδικού παραμένουν διαθέσιμοι.'
+      mail_logo_size_help: 'Μέγεθος σε εικονοστοιχεία του λογοτύπου στα εξερχόμενα email.'
     boards:
       title: 'Boards'
       empty: 'There are no boards. Create one below!'
       form:
         name: 'Board name'
         description: 'Board description (optional)'
+        visibility: 'Ποιος μπορεί να το δει'
+        visibility_help: 'Οι αναρτήσεις του πίνακα κρύβονται παντού από όσους δεν επιτρέπεται να τις δουν: λίστες, roadmap, αναζήτηση, ροές, sitemap, email. Moderators και διαχειριστές βλέπουν πάντα κάθε πίνακα.'
+        slug: 'URL (προαιρετικό)'
+        slug_help: 'Μέρος της διεύθυνσης του πίνακα, π.χ. /boards/feature-requests. Αφήστε κενό για δημιουργία από το όνομα.'
+      visibility:
+        everyone: 'Όλοι'
+        signed_in: 'Μόνο οι ενωμένοι'
+        staff: 'Μόνο moderators και διαχειριστές'
     post_statuses:
       title: 'Statuses'
       empty: 'There are no statuses. Create one below!'
@@ -173,6 +275,8 @@ el:
       show_board_filter: 'Show board filter'
       show_post_status_filter: 'Show status filter'
       embed_help: 'You can embed the roadmap in your website by copying the code above.'
+      help_buttons: 'Με το κουμπί βέλους μετακινείτε κατάσταση μέσα ή έξω από το roadmap. Δημιουργία καταστάσεων και αλλαγή σειράς στο Ρυθμίσεις ιστότοπου > Καταστάσεις.'
+      embed_scope_help: 'Επιλέξτε πίνακες ή καταστάσεις για εμφάνιση μόνο αυτών· χωρίς επιλογή εμφανίζονται όλα.'
     invitations:
       new_invitations_title: 'New invitations'
       past_invitations_title: 'Invitations'
@@ -181,16 +285,7 @@ el:
       subject: 'Email subject'
       subject_default: 'We value your feedback! Join us in shaping %{name}!'
       body: 'Email body'
-      body_default: |
-        Hello!
-
-        We truly appreciate your experience with %{name} and would love to hear your feedback. Your insights help us improve and continue delivering the best possible service.
-
-        Click the link below to share your thoughts and make your voice heard:
-
-        %link%
-
-        Have a great day!
+      body_default: "Hello!\n\nWe truly appreciate your experience with %{name} and would love to hear your feedback. Your insights help us improve and continue delivering the best possible service.\n\nClick the link below to share your thoughts and make your voice heard:\n\n%link%\n\nHave a great day!\n"
       send:
         one: 'Send invitation'
         other: 'Send %{count} invitations'
@@ -207,6 +302,8 @@ el:
       accepted: 'Accepted'
       sent_at: 'Sent %{when}'
       accepted_at: 'Accepted %{when}'
+      skipped: 'Δεν απεστάλησαν (ήδη εγγεγραμμένοι, ήδη αποδεκτοί ή άκυροι): %{emails}'
+      expired: 'Ληγμένα'
     appearance:
       title: 'Appearance'
       learn_more: 'Learn how to customize appearance'
@@ -234,6 +331,162 @@ el:
         subtitle_oauth_config: 'OAuth configuration'
         subtitle_user_profile_config: 'User profile configuration'
         client_secret_help: 'hidden for security purposes'
+        profile_headers: 'Πρόσθετες κεφαλίδες για το αίτημα προφίλ (προαιρετικά)'
+      ldap:
+        title: 'LDAP / Active Directory'
+        intro: 'Επιτρέψτε στους ανθρώπους να συνδέονται με όνομα και κωδικό από τον εταιρικό κατάλογο (OpenLDAP, Active Directory, FreeIPA, ...). Το Astuto αναζητά την εγγραφή με τον λογαριασμό υπηρεσίας και ελέγχει τον κωδικό με σύνδεση (bind) ως αυτή η εγγραφή.'
+        encryption_start_tls: 'StartTLS (θύρα 389)'
+        encryption_simple_tls: 'LDAPS (θύρα 636)'
+        encryption_plain: 'Καμία (μόνο εντός αξιόπιστου δικτύου)'
+        bind_dn_help: 'Αφήστε κενό για ανώνυμη αναζήτηση, αν ο κατάλογος το επιτρέπει.'
+        bind_password_set: 'Έχει αποθηκευτεί κωδικός. Αφήστε κενό για διατήρησή του.'
+        user_filter_help: '%{login} αντιπροσωπεύει ό,τι πληκτρολογούν οι άνθρωποι. Active Directory: (sAMAccountName=%{login}), OpenLDAP: (uid=%{login}).'
+        test_login: 'Δοκιμή με όνομα σύνδεσης'
+        test_help: 'Ελέγχει σύνδεση, λογαριασμό υπηρεσίας και φίλτρο με τις αποθηκευμένες ρυθμίσεις· δεν χρειάζεται κωδικός.'
+        test_found: 'Βρέθηκε:'
+      saml:
+        title: 'Ενιαία σύνδεση SAML'
+        intro: 'Επιτρέψτε στους ανθρώπους να συνδέονται με τον πάροχο ταυτότητας της εταιρείας (Microsoft Entra ID, Okta, Keycloak, ADFS, Google Workspace, ...). Εγγράψτε εκεί το Astuto ως εφαρμογή με τις δύο παρακάτω τιμές, έπειτα επικολλήστε τα μεταδεδομένα του παρόχου ή συμπληρώστε τα πεδία του.'
+        sp_entity_id: 'Entity ID / URL μεταδεδομένων'
+        acs_url: 'URL απάντησης (Assertion Consumer Service)'
+        metadata: 'XML μεταδεδομένων του πάροχου ταυτότητας'
+        import_metadata: 'Συμπλήρωση από μεταδεδομένα'
+        email_attribute_help: 'Αφήστε κενό για χρήση των συνηθισμένων ονομάτων χαρακτηριστικών, μετά NameID.'
+        auto_create_help: 'Διαφορετικά συνδέονται μόνο άτομα που έχουν ήδη λογαριασμό (π.χ. μέσω πρόσκλησης).'
+      empty: 'Δεν υπάρχουν ακόμη πάροχοι OAuth.'
+    widget:
+      title: 'Widget'
+      intro: 'Κουμπί ανατροφοδότησης για τον ιστότοπο ή την εφαρμογή σας. Ανοίγει πίνακες, roadmap και changelog σε πάνελ. Οι ενωμένοι επισκέπτες της εφαρμογής σας ψηφίζουν και αναρτούν βάσει του λογαριασμού τους: ο διακομιστής σας υπογράφει σύντομο επισκεπτόμενο token με το παρακάτω μυστικό.'
+      enabled: 'Ενεργοποίηση του widget'
+      allowed_origins: 'Ιστότοποι που επιτρέπεται να εμφανίζουν το widget'
+      allowed_origins_help: 'Ένα origin ανά γραμμή, π.χ. https://app.example.com. Κενό: κάθε ιστότοπος.'
+      auto_create_users: 'Δημιουργία λογαριασμών για νέους επισκέπτες'
+      auto_create_users_help: 'Διαφορετικά συνδέονται μόνο άτομα που έχουν ήδη λογαριασμό (ίδιο email). Moderators και διαχειριστές δεν συνδέονται ποτέ μέσω widget.'
+      install_title: 'Εγκατάσταση'
+      install_intro: 'Προσθέστε αυτό στις σελίδες του ιστότοπού σας· αντικαταστήστε το VISITOR_TOKEN με token από τον διακομιστή σας, ή αφήνετε έξο του data-token για ανώνυμους επισκέπτες.'
+      token_intro: 'Ο διακομιστής σας υπογράφει το token του επισκέπτη με αυτό το μυστικό. Κρατήστε το στον διακομιστή, ποτέ στον browser.'
+      rotate: 'Νέο μυστικό'
+      rotate_confirm: 'Να δημιουργηθεί νέο μυστικό; Τα token που υπογράφηκαν με το παρόν παύουν να λειτουργούν.'
+      token_rules: 'Claims: email (απαιτείται), name, id (το αναγνωριστικό χρήστη σας, συνδέει τον λογαριασμό ακόμη και αν αλλάξει το email). Μόνο HS256· το token πρέπει να λήξει εντός μίας ημέρας.'
+    tags:
+      title: 'Ετικέτες'
+      empty: 'Δεν υπάρχουν ακόμη ετικέτες. Οι ετικέτες ομάδοποιούν αναρτήσεις μεταξύ πινάκων, π.χ. ανά περιοχή προϊόντος· οι moderators τις βάζουν σε αναρτήσεις και οι επισκέπτες φιλτράρουν με βάση αυτές.'
+      delete_confirmation: 'Διαγραφή αυτής της ετικέτας; Αφαιρείται από όλες τις αναρτήσεις.'
+      form:
+        name: 'Όνομα'
+        color: 'Χρώμα'
+    audit_log:
+      description: 'Αλλαγές από διαχειριστές και moderators: διαποίηση (mediation), χρήστες, πίνακες, καταστάσεις, ρυθμίσεις, πάροχοι σύνδεσης, webhooks, προσκλήσεις και κλειδιά API. Οι καταχωρίσεις φυλάσσονται για ένα έτος.'
+      filter: 'Φίλτρο ανά τομέα'
+      all: 'Όλα'
+      empty: 'Δεν υπάρχουν ακόμη καταχωρίσεις.'
+      load_more: 'Εμφάνιση παλαιότερων καταχωρίσεων'
+      unknown_actor: 'Κάποιος'
+      value_yes: 'ναι'
+      value_no: 'όχι'
+      filtered: '(κρυμμένο)'
+      invitations_sent:
+        one: '1 πρόσκληση'
+        other: '%{count} προσκλήσεις'
+      categories:
+        tag: 'Ετικέτες'
+        post: 'Αναρτήσεις'
+        comment: 'Σχόλια'
+        user: 'Χρήστες'
+        board: 'Πίνακες'
+        post_status: 'Καταστάσεις'
+        changelog: 'Καταγραφάρι'
+        site_settings: 'Γενικά'
+        o_auth: 'Πάροχοι σύνδεσης'
+        saml: 'SAML'
+        ldap: 'LDAP'
+        widget: 'Widget'
+        webhook: 'Webhooks'
+        invitation: 'Προσκλήσεις'
+        api_key: 'Κλειδιά API'
+      sources:
+        api: 'REST API'
+        mcp: 'MCP'
+      actions:
+        tag_create: 'δημιούργησε την ετικέτα'
+        tag_update: 'άλλαξε την ετικέτα'
+        tag_delete: 'διαγράφησε την ετικέτα'
+        tag_reorder: 'αναδιάταξε τις ετικέτες'
+        post_create_for_author: 'ανάρτησε για λογαριασμό:'
+        post_update: 'άλλαξε την ανάρτηση'
+        post_delete: 'διαγράφησε την ανάρτηση'
+        post_merge: 'συγχώνευσε:'
+        comment_update: 'επεξεργάστηκε σχόλιο'
+        comment_delete: 'διαγράφησε σχόλιο'
+        user_create: 'δημιούργησε τον χρήστη'
+        user_update: 'άλλαξε τον χρήστη'
+        user_export: 'κατέβασε δεδομένα του'
+        user_delete: 'διαγράφησε τον λογαριασμό του'
+        user_two_factor_enable: 'ενεργοποίησε 2FA για:'
+        user_two_factor_disable: 'απενεργοποίησε 2FA για:'
+        board_create: 'δημιούργησε τον πίνακα'
+        board_update: 'άλλαξε τον πίνακα'
+        board_delete: 'διαγράφησε τον πίνακα'
+        board_reorder: 'αναδιάταξε τους πίνακες'
+        post_status_create: 'δημιούργησε την κατάσταση'
+        post_status_update: 'άλλαξε την κατάσταση'
+        post_status_delete: 'διαγράφησε την κατάσταση'
+        post_status_reorder: 'αναδιάταξε τις καταστάσεις'
+        changelog_create: 'έγραψε την καταχώρηση changelog'
+        changelog_update: 'άλλαξε την καταχώρηση changelog'
+        changelog_publish: 'δημοσίευσε την καταχώρηση changelog'
+        changelog_delete: 'διαγράφησε την καταχώρηση changelog'
+        site_settings_update: 'άλλαξε τις ρυθμίσεις του ιστότοπου'
+        o_auth_create: 'πρόσθεσε τον πάροχο σύνδεσης'
+        o_auth_update: 'άλλαξε τον πάροχο σύνδεσης'
+        o_auth_delete: 'αφαιρέσ τον πάροχο σύνδεσης'
+        saml_update: 'άλλαξε την ενιαία σύνδεση SAML:'
+        ldap_update: 'άλλαξε τη σύνδεση LDAP:'
+        widget_update: 'άλλαξε τις ρυθμίσεις του widget'
+        widget_rotate_secret: 'δημιούργησε νέο μυστικό widget'
+        webhook_create: 'δημιούργησε το webhook'
+        webhook_update: 'άλλαξε το webhook'
+        webhook_delete: 'διαγράφησε το webhook'
+        webhook_rotate_secret: 'δημιούργησε νέο κλειδί υπογραφής για το webhook'
+        invitation_send: 'απέστειλε'
+        api_key_create: 'δημιούργησε νέο κλειδί API για'
+    webhooks:
+      deliveries:
+        title: 'Πρόσφατες αποστολές'
+        show: 'Αποστολές'
+        empty: 'Δεν υπάρχουν ακόμη αποστολές.'
+        success: 'Παρακτήθηκε'
+        failure: 'Απέτυχε'
+        test: 'Δοκιμή'
+        last: 'Τελευταία αποστολή: %{status} %{when}'
+      signing:
+        title: 'Υπογραφή'
+        help: 'Κάθε αίτημα φέρει X-Astuto-Signature: sha256=HMAC-SHA256(secret, "<X-Astuto-Timestamp>.<body>"). Ελέγξτε το στην πλευρά παραλήπτη για βεβαιότητα ότι το αίτημα προέρχεται από κτλ. αυτόν τον χώρο.'
+        rotate: 'Νέο μυστικό'
+        rotate_confirmation: 'Οι παραλήπτες που ελέγχουν την υπογραφή χρειάζονται αμέσως το νέο μυστικό. Συνέχεια;'
+      title: 'Webhooks'
+      learn_more: 'Μάθετε πώς ρυθμίζονται και χρησιμοποιούνται τα webhooks'
+      empty: 'Δεν υπάρχουν webhooks.'
+      triggers:
+        new_post: 'Νέα ανάρτηση'
+        new_post_pending_approval: 'Νέα ανάρτηση (σε αναμονή έγκρισης)'
+        delete_post: 'Διαγραφή ανάρτησης'
+        post_status_change: 'Αλλαγή κατάστασης ανάρτησης'
+        new_comment: 'Νέο σχόλιο'
+        new_vote: 'Νέα ψήφος'
+        new_user: 'Νέος χρήστης'
+      form:
+        title_new: 'Νέο webhook'
+        title_edit: 'Επεξεργασία webhook'
+        add_header: 'Προσθήκη κεφαλίδας'
+        header_n_key: 'Κλειδί κεφαλίδας %{n}'
+        header_n_value: 'Τιμή κεφαλίδας %{n}'
+        template_variables_selector_placeholder: 'Επιλογή μεταβλητής template…'
+        templates_label: 'Συμπλήρωση για'
+        templates_help: 'Ορίζει μέθοδο, κεφαλίδα Content-Type και σώμα μηνύματος για το επιλεγμένο trigger. Ως URL χρησιμοποιήστε την incoming διεύθυνση webhook του εργαλείου chat.'
+        templates_confirm: 'Αντικατάσταση του παροντός σώματος;'
+      test_page:
+        title: 'Αποτελέσματα δοκιμής webhook'
   moderation:
     menu:
       feedback: 'Feedback'
@@ -245,10 +498,10 @@ el:
     users:
       block: 'Block'
       unblock: 'Unblock'
-      block_confirmation: "%{name} won't be able to log in until it is unblocked. Are you sure?"
-      unblock_confirmation: "%{name} will be able to log in and submit feedback. Are you sure?"
-      role_to_moderator_confirmation: "%{name} will be able to manage posts and users. Proceed only if you trust this person. Are you sure?"
-      role_to_admin_confirmation: "%{name} will be able to manage boards, posts, statuses, users and more. Proceed only if you trust this person. Are you sure?"
+      block_confirmation: '%{name} won''t be able to log in until it is unblocked. Are you sure?'
+      unblock_confirmation: '%{name} will be able to log in and submit feedback. Are you sure?'
+      role_to_moderator_confirmation: '%{name} will be able to manage posts and users. Proceed only if you trust this person. Are you sure?'
+      role_to_admin_confirmation: '%{name} will be able to manage boards, posts, statuses, users and more. Proceed only if you trust this person. Are you sure?'
       role_user: 'User'
       role_moderator: 'Moderator'
       role_admin: 'Administrator'
@@ -256,3 +509,234 @@ el:
       status_active: 'Active'
       status_blocked: 'Blocked'
       status_deleted: 'Deleted'
+      export_data: 'Λήψη δεδομένων (GDPR)'
+      delete_account: 'Διαγραφή λογαριασμού'
+      delete_account_confirmation: 'Διαγραφή λογαριασμού του/της %{name}; Οι αναρτήσεις και τα σχόλια παραμένουν και εμφανίζουν "Διαγραφέν χρήστη". Δεν μπορεί να αναιρεθεί.'
+      status_pending_approval: 'Στην αναμονή έγκρισης'
+      approve: 'Έγκριση'
+      search_placeholder: 'Ανά ζητήσι με όνομα ή email'
+      filter_all_statuses: 'Όλες οι καταστάσεις'
+      filter_all_roles: 'Όλοι οι ρόλοι'
+      empty: 'Δεν βρέθηκαν χρήστες'
+  number:
+    format:
+      round_mode: 'default'
+    currency:
+      format:
+        negative_format: '-%u%n'
+    human:
+      storage_units:
+        units:
+          zb: 'ZB'
+  errors:
+    messages:
+      password_too_long: 'είναι μεγάλο'
+      in: 'πρέπει να είναι σε %{count}'
+    user_pending_approval: 'Ο λογαριασμός σας περιμένει την έγκριση διαχειριστή. Θα λάβετε email όταν θα μπορείτε να συνδεθείτε.'
+    unavailable_session: "Η συνεδρία %{id} δεν είναι πλέον στη μνήμη.\n\nΑν εκτελείτε διακομιστή πολλών διεργασιών (όπως Unicorn ή Puma), η διεργασία που\nεξυπηρέτησε το αίτημα δεν κρατά %{id} στη μνήμη. Ορίστε τον αριθμό διεργασιών/εργατών σε μία (1) ή χρησιμοποιήστε άλλο διακομιστή στο περιβάλλον ανάπτυξης.\n"
+    unacceptable_request: "Στην κεφαλίδα Accept αναμένεται υποστηριζόμενη έκδοση.\n"
+    connection_refused: "Δεν ήταν δυνατή η σύνδεση με το middleware της Web Console.\nΒεβαιωθείτε ότι τρέχει διακομιστής Rails ανάπτυξης.\n"
+  datetime:
+    relative:
+      future: 'σε %{time}'
+      past: 'πριν %{time}'
+  helpers:
+    page_entries_info:
+      entry:
+        zero: 'καταχωρίσεις'
+        one: 'καταχώρηση'
+        other: 'καταχωρίσεις'
+      one_page:
+        display_entries:
+          zero: 'Δεν βρέθηκε %{entry_name}'
+          one: 'Εμφανίζεται <b>1</b> %{entry_name}'
+          other: 'Εμφανίζονται <b>όλες οι %{count}</b> %{entry_name}'
+      more_pages:
+        display_entries: 'Εμφανίζονται %{entry_name} <b>%{first}–%{last}</b> από σύνολο <b>%{total}</b>'
+  flash:
+    actions:
+      create:
+        notice: 'Το %{resource_name} δημιουργήθηκε επιτυχώς.'
+      update:
+        notice: 'Το %{resource_name} ενημερώθηκε επιτυχώς.'
+      destroy:
+        notice: 'Το %{resource_name} διαγράφηκε επιτυχώς.'
+        alert: 'Δεν κατέστη δυνατή η διαγραφή του %{resource_name}.'
+  widget:
+    errors:
+      disabled: 'Το widget δεν είναι ενεργοποιημένο.'
+      invalid_token: 'Το επισκεπτόμενο token είναι άκυρο ή έχει λήξει.'
+      linked_elsewhere: 'Η διεύθυνση email ανήκει σε άλλον λογαριασμό.'
+      no_account: 'Δεν υπάρχει λογαριασμός για αυτόν τον επισκέπτη.'
+      staff_account: 'Οι διαχειριστές/moderators συνδέονται στον ιστότοπο ανατροφοδότησης, όχι μέσω widget.'
+      blocked: 'Ο λογαριασμός αυτός είναι αποκλεισμένος.'
+    tabs:
+      feedback: 'Ανατροφοδότηση'
+      roadmap: 'Roadmap'
+      changelog: 'Καταγραφάρι'
+    close: 'Κλείσιμο'
+    board: 'Πίνακας'
+    signed_in_as: 'Έχετε συνδεθεί ως %{name}'
+    open_site: 'Άνοιγμα του ιστότοπου ανατροφοδότησης'
+  webhook_templates:
+    new_post: 'Νέα ανατροφοδότηση στον πίνακα %{board}: %{post}'
+    new_post_pending_approval: 'Στην αναμονή έγκρισης στον πίνακα %{board}: %{post}'
+    delete_post: 'Η ανάρτηση #%{id} διαγράφηκε'
+    post_status_change: '%{post} είναι τώρα: %{status}'
+    new_comment: '%{author} σχολίασε το %{post}'
+    new_vote: '%{author} ψήφισε το %{post}'
+    new_user: 'Νέος χρήστης: %{user}'
+    open: 'Άνοιγμα'
+  mailers:
+    admin:
+      test_email:
+        subject: '[%{site_name}] Δοκιμαστικό email'
+        body: 'Αυτό το δοκιμαστικό email από %{site_name} έφτασε — η αποστολή email λειτουργεί.'
+        details: 'Στάλθηκε με %{delivery_method} από %{from}.'
+      user_pending_approval:
+        subject: '[%{site_name}] Νέος λογαριασμός σε αναμονή έγκρισης: %{name}'
+        body_html: '<strong>%{name}</strong> (%{email}) εγγράφηκε και περιμένει την έγκρισή σας.'
+        review: 'Ελέγξτε στο Moderation › Χρήστες'
+    user:
+      notify_follower_of_changelog_entry:
+        subject: '[%{site_name}] Νεότερα στο changelog: %{title}'
+        body_html: 'Στο changelog υπάρχει νέα καταχώρηση, <strong>%{title}</strong>. Παραδίδει την ανατροφοδότηση που ακολουθείτε'
+        read_entry: 'Διαβάστε το changelog'
+      account_approved:
+        subject: '[%{site_name}] Ο λογαριασμός σας εγκρίθηκε'
+        body_html: 'Ένας διαχειριστής ενέκρινε τον λογαριασμό σας. Μπορείτε να συνδεθείτε τώρα.'
+        sign_in: 'Σύνδεση'
+      recap:
+        subject: '[%{site_name}] Περίληψη %{frequency} της δραστηριότητας στον χώρο ανατροφοδότησης'
+        body_html: 'Ιδού η %{frequency} σύνοψη της δραστηριότητας στον χώρο ανατροφοδότησής σας'
+        published_posts_count_html: 'Νέες δημοσιευμένες ανατροφοδοτήσεις: %{count}'
+        pending_posts_count_html: 'Νέες ανατροφοδοτήσεις στην αναμονή έγκρισης: %{count}'
+        status_changes_title: 'Αλλαγές κατάστασης των αναρτήσεων που ακολουθείτε'
+        no_status: 'χωρίς κατάσταση'
+        top_posts_title: 'Οι ψηφισμένες για αυτήν την περίοδο'
+        period_votes:
+          one: '%{count} νέα ψήφος'
+          other: '%{count} νέες ψήφοι'
+        more_posts: 'και %{count} ακόμη'
+  instance_admin:
+    title: 'Διαχείριση instance'
+    tenants:
+      title: 'Χώροι ανατροφοδότησης'
+      new: 'Νέος χώρος ανατροφοδότησης'
+      create: 'Δημιουργία χώρου ανατροφοδότησης'
+      site_name: 'Όνομα'
+      subdomain: 'Υποτομέας'
+      subdomain_hint: 'Γράμματα, ψηφία και παύλες. Η διεύθυνση γίνεται <subdomain>.%{host}.'
+      owner_email: 'Email ιδιοκτήτη'
+      owner_name: 'Όνομα ιδιοκτήτη'
+      locale: 'Γλώσσα'
+      address: 'Διεύθυνση'
+      status: 'Κατάσταση'
+      users: 'Χρήστες'
+      posts: 'Αναρτήσεις'
+      created: 'Δημιουργήθηκε'
+      actions: 'Ενέργειες'
+      edit: 'Επεξεργασία'
+      save: 'Αποθήκευση'
+      back: 'Πίσω στη λίστα'
+      block: 'Αποκλεισμός'
+      unblock: 'Άρση αποκλεισμού'
+      empty: 'Δεν υπάρχουν ακόμη χώροι ανατροφοδότησης.'
+      statuses:
+        active: 'Ενεργός'
+        pending: 'Σε αναμονή'
+        blocked: 'Αποκλεισμένος'
+      custom_domain: 'Προσαρμοσμένος τομέας'
+      custom_domain_hint: 'Προαιρετικά. Προσθέστε πρώτα εγγραφή CNAME που δείχνει τον τομέα προς %{target}. Αφήστε κενό για αφαίρεση.'
+      created_title: 'Το %{site_name} είναι έτοιμο'
+      owner_credentials: 'Στοιχεία σύνδεσης του ιδιοκτήτη. Ο κωδικός εμφανίζεται μόνο τώρα:'
+      password_hint: 'Στείλτε το στον ιδιοκτήτη με ασφαλές κανάλι και ζητήστε να το αλλάξει μετά την πρώτη σύνδεση.'
+      updated: 'Το %{subdomain} αποθηκεύτηκε.'
+      blocked: 'Το %{subdomain} αποκλείστηκε. Οι σελίδες του εμφανίζουν ενημέρωση· τα δεδομένα διατηρούνται.'
+      unblocked: 'Το %{subdomain} είναι ξανά ενεργό.'
+      deleted: 'Το %{subdomain} και όλα τα δεδομένα του διαγράφηκαν.'
+      delete_title: 'Διαγραφή χώρου ανατροφοδότησης'
+      delete_warning: 'Διαγράφει πίνακες, αναρτήσεις, σχόλια, ψήφους, χρήστες, webhooks και ρυθμίσεις αυτού του χώρου ανατροφοδότησης. Δεν μπορεί να αναιρεθεί. Για να κρατήσετε τα δεδομένα, αποκλείστε το αντί αυτού.'
+      confirm_label: 'Πληκτρολογήστε "%{subdomain}" για επιβεβαίωση'
+      confirm_mismatch: 'Ο υποτομέας δεν ταίριαξε. Δεν διαγράφηκε τίποτα.'
+      delete: 'Οριστική διαγραφή'
+  pending_tenant:
+    title: 'Επαληθεύστε τη διεύθυνση email'
+    body: 'Ελέγξτε τα εισερχόμενα (και τα ανεπιθύμητα) και πατήστε τον σύνδεσμο ενεργοποίησης.'
+    help: 'Χρειάζεστε βοήθεια; Επικοινωνήστε με τον διαχειριστή αυτής της εγκατάστασης.'
+  two_factor:
+    invalid_code: 'Ο κωδικός δεν είναι έγκυρος. Χρησιμοποιήστε τρέχοντα κωδικό από την εφαρμογή ελέγχου ή μη χρησιμοποιημένο εφεδρικό κωδικό.'
+    login_expired: 'Η σύνδεση πήρε υπερβολικά πολύ. Εισάγετε ξανά email και κωδικό.'
+    setup_required: 'Αυτός ο χώρος ανατροφοδότησης απαιτεί πιστοποίηση δύο παραγόντων από διαχειριστές και moderators. Ρυθμίστε το πρώτα στο προφίλ σας.'
+    already_enabled: 'Η πιστοποίηση δύο παραγόντων είναι ήδη ενεργή.'
+    not_enabled: 'Η πιστοποίηση δύο παραγόντων είναι απενεργοποιημένη.'
+    title: 'Πιστοποίηση δύο παραγόντων (2FA)'
+    intro: 'Προστατευθείτε με δεύτερο βήμα: μετά τον κωδικό, εισάγετε κωδικό από εφαρμογή ταυτοποίησης (π.χ. Aegis, Google Authenticator, Microsoft Authenticator ή 1Password).'
+    set_up: 'Ρύθμιση πιστοποίησης 2FA'
+    scan_help: 'Σαρώστε το QR με την εφαρμογή ταυτοποίησης και μετά εισάγετε τον εξάψηφιο κωδικό που δείχνει.'
+    qr_code_alt: 'QR για εφαρμογή ταυτοποίησης'
+    manual_entry: 'Ή εισάγετε με το χέρι αυτό το κλειδί:'
+    code: 'Κωδικός'
+    turn_on: 'Ενεργοποίηση'
+    code_for_changes: 'Εισάγετε τρέχοντα κωδικό για δημιουργία νέων εφεδρικών κωδικών.'
+    new_backup_codes: 'Δημιουργία νέων εφεδρικών κωδικών'
+    turn_off: 'Απενεργοποίηση 2FA'
+    turn_off_confirmation: 'Απενεργοποίηση της πιστοποίησης 2FA; Ο λογαριασμός θα προστατεύεται μόνον από τον κωδικό.'
+    backup_codes: 'Εφεδρικοί κωδικοί'
+    backup_codes_help: 'Φυλάξτε τους εφεδρικούς κωδικούς με ασφάλεια. Ο καθένας σας συνδέει μία φορά αν το τηλέφωνο δεν είναι διαθέσιμο. Εμφανίζονται μόνο τώρα.'
+    saved_codes: 'Αποθήκευσα τους κωδικούς'
+    required_notice: 'Αυτός ο χώρος ανατροφοδότησης απαιτεί 2FA από διαχειριστές και moderators.'
+    login_title: 'Πιστοποίηση 2FA'
+    login_help: 'Εισάγετε κωδικό από την εφαρμογή ταυτοποίησης ή έναν εφεδρικό κωδικό.'
+    verify: 'Επαλήθευση'
+    start_over: 'Σύνδεση με άλλο λογαριασμό'
+    enabled:
+      one: 'Ενεργή. Απομένει 1 εφεδρικός κωδικός.'
+      other: 'Ενεργή. Απομένουν %{count} εφεδρικοί κωδικοί.'
+  saml:
+    metadata_invalid: 'Δεν είναι μεταδεδομένα SAML παρόχου ταυτότητας (XML με SingleSignOnService).'
+  ldap:
+    invalid_login: 'Άκυρο όνομα σύνδεσης ή κωδικός για το %{label} σας.'
+    not_found: 'Δεν βρέθηκε μοναδική καταχώρηση για αυτό το όνομα σύνδεσης. Ελέγξτε το base DN και το φίλτρο χρηστών.'
+  my_feedback:
+    title: 'Η ανατροφοδότησή μου'
+    filters:
+      created: 'Δημοσιευμένες'
+      voted: 'Ψηφισμένες'
+      followed: 'Ακολουθούμενες'
+    empty:
+      created: 'Δεν έχετε δημοσιεύσει ακόμη καμία ανατροφοδότηση.'
+      voted: 'Δεν έχετε ψηφίσει ακόμη καμία ανάρτηση.'
+      followed: 'Δεν ακολουθείτε ακόμη καμία ανάρτηση.'
+    approval:
+      pending: 'Στην αναμονή έγκρισης'
+      rejected: 'Απορρίφθηκε'
+      merged: 'Συγχωνεύτηκε'
+  changelog:
+    title: 'Καταγραφάρι'
+    empty: 'Δεν υπάρχει ακόμη τίποτα εδώ.'
+    new_entry: 'Νέα καταχώρηση'
+    draft: 'Σχέδιο'
+    delivers: 'Παραδίδει:'
+    rss_feed: 'Ροή RSS'
+    form:
+      title: 'Τίτλος'
+      body: 'Κείμενο (Markdown)'
+      posts: 'Αναρτήσεις που παραδίδονται'
+      posts_help: 'Οι παρακολουθούντες αυτές τις αναρτήσεις λαμβάνουν email όταν δημοσιαφτεί η καταχώρηση για πρώτη φορά.'
+      search_posts: 'Εύρεση αναρτήσεων'
+      add_post: 'Προσθήκη'
+      remove_post: 'Αφαίρεση'
+      save_draft: 'Αποθήκευση σχεδίου'
+      publish: 'Δημοσίευση'
+      unpublish: 'Επιστροφή σε σχέδιο'
+      ai_draft: 'Σχέδιο κειμένου με AI'
+      ai_draft_loading: 'Γράφω…'
+      ai_draft_hint: 'Τίτλοι και περιγραφές των παραδομένων αναρτήσεων αποστέλλονται στον διαμορφωμένο πάροχο AI.'
+  views:
+    pagination:
+      first: '&laquo; Πρώτη'
+      last: 'Τελευταία &raquo;'
+      previous: '&lsaquo; Προηγούμενη'
+      next: 'Επομένη &rsaquo;'
+      truncate: '&hellip;'

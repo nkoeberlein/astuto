@@ -15,7 +15,7 @@ cs:
         new_password_confirmation: 'New password confirmation'
         current_password: 'Current password'
         notifications_enabled: 'Notifications enabled'
-        notifications_enabled_help: "if disabled, you won't receive any notification"
+        notifications_enabled_help: 'if disabled, you won''t receive any notification'
         waiting_confirmation: 'Currently waiting confirmation for %{email}'
         no_password_set: 'You must set a password to update your profile'
         set_password: 'Set password'
@@ -28,14 +28,34 @@ cs:
         profile_settings: 'Profile settings'
         cancel_account: 'Cancel account'
         forgot_password: 'Forgot your password?'
-        confirmation_instructions_not_received: "Didn't receive confirmation instructions?"
-        unlock_instructions_not_received: "Didn't receive unlock instructions?"
+        confirmation_instructions_not_received: 'Didn''t receive confirmation instructions?'
+        unlock_instructions_not_received: 'Didn''t receive unlock instructions?'
         send_reset_password_instructions: 'Send me reset password instructions'
         resend_confirmation_instructions: 'Resend confirmation instructions'
         resend_unlock_instructions: 'Resend unlock instructions'
         change_password: 'Change password'
         password_help: '%{count} characters minimum'
         email_registration_not_allowed: 'Email registration not allowed'
+        notifications: 'Notifikace'
+        recap_notification_frequency_daily: 'Denně'
+        recap_notification_frequency_weekly: 'Týdně'
+        recap_notification_frequency_monthly: 'Měsíčně'
+        recap_notification_frequency_help: 'Souhrn e-mailem: nová zpětná vazba, nejvíce hlasované příspěvky a změny stavů sledovaných příspěvků (moderátoři: i zpětná vazba čekající na schválení). Nic se neposílá, když se nic nestalo.'
+        log_in_with_email: 'Přihlásit se raději e-mailem a heslem'
+        login_name: 'Přihlašovací jméno'
+        ldap_info: 'Přihlaste se svým %{label}.'
+        my_data: 'Moje data'
+        my_data_help: 'Stáhněte si vše, co tento prostor zpětné vazby o vás ukládá: profil, příspěvky, komentáře, hlasy a sledované příspěvky (JSON).'
+        download_my_data: 'Stáhnout moje data'
+        oauth_only_info: 'Přihlašujte a registrujte se některým z OAuth poskytovatelů níže. Přihlášení e-mailem je na tomto webu zakázáno.'
+      api_key:
+        title: 'API klíč'
+        current_api_key_help: 'API klíč už máte vygenerovaný a z bezpečnostních důvodů jej nelze znovu zobrazit. Pokud jste ho ztratili, níže si můžete vygenerovat nový.'
+        generate_api_key: 'Vygenerovat API klíč'
+        generated_api_key_help: 'Uchovejte API klíč v bezpečí, znovu ho už neuvidíte.'
+        generated_api_key_successfully: 'API klíč byl úspěšně vygenerován!'
+        confirm_generate_new_api_key: 'Chcete vygenerovat nový API klíč? Starý zneplatní se.'
+        api_key_learn_more: 'Jak API používat'
     no_status: 'No status'
     select_placeholder: 'Select...'
     loading: 'Loading...'
@@ -56,6 +76,11 @@ cs:
       approve: 'Approve'
       reject: 'Reject'
       copy_to_clipboard: 'Copy to clipboard'
+      preview: 'Náhled'
+      move_up: 'Posunout výš'
+      move_down: 'Posunout níž'
+    errors:
+      not_found: 'Stránka nenalezena'
   header:
     menu:
       site_settings: 'Site settings'
@@ -63,9 +88,18 @@ cs:
       profile_header: 'Profile'
       profile_settings: 'Profile settings'
       sign_out: 'Sign out'
+      my_feedback: 'Moje zpětná vazba'
     log_in: 'Log in / Sign up'
   roadmap:
     title: 'Roadmap'
+    empty: 'Roadmapa je prázdná.'
+    filter_by_board: 'Filtrovat podle nástěnky'
+    more_posts:
+      one: '+ %{count} další příspěvek'
+      other: '+ %{count} dalších příspěvků'
+    sort_by:
+      most_voted: 'Nejvíc hlasů'
+      recently_updated: 'Nedávno upravené'
   blocked_tenant:
     title: 'This feedback space has been blocked'
   board:
@@ -80,10 +114,13 @@ cs:
       anonymous_submission_help: 'You are posting anonymously'
       non_anonymous_submission_help: 'You are posting as %{name}'
       submit_pending: 'Your feedback has been submitted and is now pending moderator approval!'
+      status: 'Počáteční stav (jen moderátoři)'
+      similar_posts_title: 'Podobné příspěvky už existují — hlasujte raději pro některý?'
     search_box:
       title: 'Search'
     filter_box:
       title: 'Filter by status'
+      tags: 'Filtrovat podle štítku'
     sort_by_box:
       title: 'Sort by'
       trending: 'Trending'
@@ -92,6 +129,8 @@ cs:
       oldest: 'Oldest'
     posts_list:
       empty: 'There are no posts'
+      load_more: 'Načíst další'
+    rss_feed: 'RSS kanál'
   post:
     published_by: 'Published by'
     published_anonymously: 'Published anonymously'
@@ -101,18 +140,54 @@ cs:
       title: 'Likes'
     action_box:
       follow_button: 'Follow post'
-      following_description: "you're receiving notifications about new updates on this post"
-      not_following_description: "you won't receive notifications about this post"
+      following_description: 'you''re receiving notifications about new updates on this post'
+      not_following_description: 'you won''t receive notifications about this post'
     comments:
       title: 'Activity'
       post_update_badge: 'Update'
       reply_button: 'Reply'
+      empty: 'Zatím tu nejsou žádné komentáře'
     new_comment:
       body_placeholder: 'Leave a comment'
       submit_button: 'Submit'
       is_post_update: 'Mark as update'
       user_notification: 'Users that follow this post will be notified'
       not_logged_in: 'You need to log in to post comments'
+    merge:
+      same_post: 'Příspěvek nelze sloučit sám se sebou.'
+      already_merged: 'Jeden z příspěvků už byl sloučen.'
+      button: 'Sloučit do jiného příspěvku'
+      search: 'Najít příspěvek, který ponechat'
+      help: 'Hlasy, sledující a komentáře se přesunou na příspěvek, který zvolíte; tenhle pak na něj odkazuje. Nelze vrátit.'
+      into_this: 'Sloučit sem'
+      confirmation: 'Sloučit tento příspěvek do „%{target}“? Hlasy, sledující a komentáře se přesunou. Nelze vrátit.'
+      merged_from: 'Sloučeno z:'
+    tags:
+      title: 'Štítky'
+    in_changelog: 'V changelogu:'
+    source:
+      title: 'Zdroj'
+      label: 'Zdroj'
+      url: 'Odkaz na zdroj'
+    ai_translation:
+      button: 'Přeložit'
+      loading: 'Překládá se…'
+      hide: 'Skrýt překlad'
+      label: 'AI překlad'
+      hint: 'Text se posílá nastavenému AI poskytovateli.'
+    ai_suggestion:
+      button: 'Navrhnout nástěnku a štítky'
+      loading: 'Přemýšlím…'
+      hint: 'Název a popis se posílají nastavenému AI poskytovateli.'
+      board: 'Nástěnka:'
+      tags: 'Štítky:'
+      none: 'Žádný návrh: nic se nehodí lépe, než co příspěvek už má.'
+      apply: 'Použít'
+    ai_summary:
+      title: 'AI shrnutí'
+      button: 'Shrnout diskusi'
+      loading: 'Shrnuji…'
+      hint: 'Název, popis a komentáře se posílají nastavenému AI poskytovateli.'
   site_settings:
     menu:
       title: 'Site settings'
@@ -123,6 +198,10 @@ cs:
       roadmap: 'Roadmap'
       invitations: 'Invitations'
       appearance: 'Appearance'
+      tags: 'Štítky'
+      widget: 'Widget'
+      webhooks: 'Webhooky'
+      audit_log: 'Auditní log'
     info_box:
       up_to_date: 'All changes saved'
       dirty: 'Changes not saved'
@@ -132,7 +211,7 @@ cs:
       brand_setting_name: 'Name only'
       brand_setting_logo: 'Logo only'
       brand_setting_none: 'None'
-      use_browser_locale_help: "If you enable this setting, the feedback space will be displayed in the user's browser preferred language. If the language is not available, the default language will be used."
+      use_browser_locale_help: 'If you enable this setting, the feedback space will be displayed in the user''s browser preferred language. If the language is not available, the default language will be used.'
       subtitle_privacy: 'Privacy'
       is_private_help: 'If you enable this setting, only logged in users will be able to see the content of the feedback space.'
       subtitle_moderation: 'Moderation'
@@ -153,12 +232,35 @@ cs:
       show_vote_count_help: 'If you enable this setting, users will be able to see the vote count of posts. This may incentivize users to vote on already popular posts, leading to a snowball effect.'
       show_vote_button_in_board_help: 'If you enable this setting, users will be able to vote posts from the board page. This may incentivize users to vote on more posts, leading to a higher number of votes but of lower significance.'
       hide_unused_statuses_in_filter_by_status_help: 'If you enable this setting, only statuses that are assigned to at least one post in that board will be shown in the filter by status sidebar filter.'
+      test_email: 'Poslat testovací e-mail'
+      test_email_help: 'Pošle e-mail na %{email} pro kontrolu e-mailových nastavení (proměnné prostředí EMAIL_*).'
+      test_email_sent: 'Testovací e-mail poslán na %{email} (%{method}, od %{from}). Zkontrolujte doručené a spam.'
+      use_gravatar_help: 'Profilové obrázky pochází z gravatar.com: prohlížeč každého návštěvníka si u gravatar.com vyžádá každý obrázek s hashem e-mailové adresy. Vypnutím zobrazíte místo nich iniciály a třetím stranám se nic neposílá.'
+      require_two_factor_for_staff_help: 'Administrátoři a moderátoři si musí dvoufaktorové ověření nastavit, než mohou moderovat nebo měnit nastavení. API klíče nejsou ovlivněny.'
+      subtitle_authentication: 'Ověřování'
+      subtitle_mail: 'E-maily'
+      feedback_approval_policy_new_users_require_approval: 'Vyžadovat schválení anonymní zpětné vazby a prvních příspěvků každého účtu'
+      require_user_approval_help: 'Registrace e-mailem nebo OAuth čekají, dokud je administrátor neschválí v Moderace › Uživatelé; na každou dostane administrátor e-mail. Pozvaní a přihlášení přes SAML, LDAP nebo widget se schvalují automaticky.'
+      trusted_after_posts_help: 'Po tolika schválených příspěvcích se nové příspěvky účtu schvalují automaticky. Zamítnuté se nepočítají.'
+      roadmap_enabled_help: 'Když toto vypnete, stránka roadmapy se stane nedostupnou a odkaz zmizí ze záhlaví.'
+      default_post_sorting_help: 'Příspěvky se takto řadí, když se nástěnka otevře bez explicitního řazení.'
+      custom_links_help: 'Další odkazy v záhlaví webu, jeden na řádku: Název|URL. Příklad: Dokumentace|https://example.com/docs'
+      login_only_with_oauth_help: 'Když toto zapnete, skryje se přihlášení e-mailem a heslem i registrace e-mailem. Uživatelé se mohou přihlašovat a registrovat jen přes OAuth poskytovatele. Odkazy pro obnovení hesla zůstávají dostupné.'
+      mail_logo_size_help: 'Velikost loga v pixelech v odchozích e-mailech.'
     boards:
       title: 'Boards'
       empty: 'There are no boards. Create one below!'
       form:
         name: 'Board name'
         description: 'Board description (optional)'
+        visibility: 'Kdo to může vidět'
+        visibility_help: 'Příspěvky nástěnky se skryjí všude lidem, kteří je vidět nesmí: seznamy, roadmapa, hledání, kanály, sitemap, e-maily. Moderator a administrátoři vidí vždy každou nástěnku.'
+        slug: 'URL (nepovinné)'
+        slug_help: 'Součást adresy nástěnky, např. /boards/feature-requests. Nechte prázdné a vygeneruje se z názvu.'
+      visibility:
+        everyone: 'Každý'
+        signed_in: 'Jen přihlášení'
+        staff: 'Jen moderátoři a administrátoři'
     post_statuses:
       title: 'Statuses'
       empty: 'There are no statuses. Create one below!'
@@ -173,6 +275,8 @@ cs:
       show_board_filter: 'Show board filter'
       show_post_status_filter: 'Show status filter'
       embed_help: 'You can embed the roadmap in your website by copying the code above.'
+      help_buttons: 'Šipkou přesunete stav do roadmapy nebo z ní. Stavy vytvoříte nebo přesunete v Nastavení webu > Stavy.'
+      embed_scope_help: 'Vyberete nástěnky nebo stavy, zobrazí se jen ty; prázdný výběr ukazuje vše.'
     invitations:
       new_invitations_title: 'New invitations'
       past_invitations_title: 'Invitations'
@@ -181,16 +285,7 @@ cs:
       subject: 'Email subject'
       subject_default: 'We value your feedback! Join us in shaping %{name}!'
       body: 'Email body'
-      body_default: |
-        Hello!
-
-        We truly appreciate your experience with %{name} and would love to hear your feedback. Your insights help us improve and continue delivering the best possible service.
-
-        Click the link below to share your thoughts and make your voice heard:
-
-        %link%
-
-        Have a great day!
+      body_default: "Hello!\n\nWe truly appreciate your experience with %{name} and would love to hear your feedback. Your insights help us improve and continue delivering the best possible service.\n\nClick the link below to share your thoughts and make your voice heard:\n\n%link%\n\nHave a great day!\n"
       send:
         one: 'Send invitation'
         few: 'Send %{count} invitations'
@@ -209,6 +304,8 @@ cs:
       accepted: 'Accepted'
       sent_at: 'Sent %{when}'
       accepted_at: 'Accepted %{when}'
+      skipped: 'Neposláno (už zaregistrováno, už přijato nebo neplatné): %{emails}'
+      expired: 'Vypršelo'
     appearance:
       title: 'Appearance'
       learn_more: 'Learn how to customize appearance'
@@ -236,6 +333,162 @@ cs:
         subtitle_oauth_config: 'OAuth configuration'
         subtitle_user_profile_config: 'User profile configuration'
         client_secret_help: 'hidden for security purposes'
+        profile_headers: 'Další hlavičky požadavku na profil (nepovinné)'
+      ldap:
+        title: 'LDAP / Active Directory'
+        intro: 'Nechte lidi přihlašovat se přihlašovacím jménem a heslem z firemního adresáře (OpenLDAP, Active Directory, FreeIPA, ...). Astuto najde záznam servisním účtem a zkontroluje heslo přihlášením (bind) k záznamu.'
+        encryption_start_tls: 'StartTLS (port 389)'
+        encryption_simple_tls: 'LDAPS (port 636)'
+        encryption_plain: 'Žádné (pouze v důvěryhodné síti)'
+        bind_dn_help: 'Nechte prázdné pro anonymní vyhledávání, pokud to adresář dovolí.'
+        bind_password_set: 'Heslo je uloženo. Nechte prázdné, chcete-li ho zachovat.'
+        user_filter_help: '%{login} znamená zadané přihlašovací jméno. Active Directory: (sAMAccountName=%{login}), OpenLDAP: (uid=%{login}).'
+        test_login: 'Test s přihlašovacím jménem'
+        test_help: 'Zkontroluje připojení, servisní účet a filtr s uloženými nastaveními; heslo není potřeba.'
+        test_found: 'Nalezeno:'
+      saml:
+        title: 'Jednotné přihlašování SAML'
+        intro: 'Nechte lidi přihlašovat se přes firemního poskytovatele identity (Microsoft Entra ID, Okta, Keycloak, ADFS, Google Workspace, ...). Zaregistrujte tam Astuto jako aplikaci se dvěma hodnotami níže, poté vložte metadata poskytovatele identity nebo vyplňte jeho pole.'
+        sp_entity_id: 'Entity ID / URL metadat'
+        acs_url: 'Odpovědní URL (Assertion Consumer Service)'
+        metadata: 'Metadata XML poskytovatele identity'
+        import_metadata: 'Vyplnit z metadat'
+        email_attribute_help: 'Nechte prázdné a použijí se běžné názvy atributů, poté NameID.'
+        auto_create_help: 'Jinak se mohou přihlásit jen lidé, kteří už účet mají (např. přes pozvánku).'
+      empty: 'Zatím žádní OAuth poskytovatelé.'
+    widget:
+      title: 'Widget'
+      intro: 'Tlačítko zpětné vazby pro váš web nebo aplikaci. Otevírá nástěnky, roadmapu a changelog v panelu. Přihlášení návštěvníci vaší aplikace hlasují a přispívají pod vlastním účtem: váš server podepisuje krátký token návštěvníka tajemstvím níže.'
+      enabled: 'Zapnout widget'
+      allowed_origins: 'Weby, které smí widget zobrazovat'
+      allowed_origins_help: 'Jeden origin na řádek, např. https://app.example.com. Prázdné: libovolný web.'
+      auto_create_users: 'Vytvořit účet pro nové návštěvníky'
+      auto_create_users_help: 'Jinak se přihlásí jen lidé, kteří už mají účet (stejný e-mail). Moderator a administrátoři se widgetem nikdy nepřihlásí.'
+      install_title: 'Instalace'
+      install_intro: 'Přidejte toto na stránky svého webu; VISITOR_TOKEN nahraďte tokenem ze svého serveru, nebo data-token vynechte pro anonymní návštěvníky.'
+      token_intro: 'Váš server podepisuje token návštěvníka tímto tajemstvím. Nechte ho na serveru, nikdy v prohlížeči.'
+      rotate: 'Nové tajemství'
+      rotate_confirm: 'Vytvořit nové tajemství? Tokeny podepsané aktuálním přestanou fungovat.'
+      token_rules: 'Claims: email (povinný), name, id (vaše ID uživatele, propojí účet i při změně e-mailu). Jen HS256; token musí vypršet během dne.'
+    tags:
+      title: 'Štítky'
+      empty: 'Zatím žádné štítky. Štítky seskupují příspěvky napříč nástěnkami, např. podle produktové oblasti; moderátoři je dávají na příspěvky a návštěvníci podle nich filtrují.'
+      delete_confirmation: 'Smazat tento štítek? Bude odebrán ze všech příspěvků.'
+      form:
+        name: 'Název'
+        color: 'Barva'
+    audit_log:
+      description: 'Změny administrátorů a moderátorů: moderace, uživatelé, nástěnky, stavy, nastavení, poskytovatelé přihlášení, webhooky, pozvánky a API klíče. Položky se uchovávají rok.'
+      filter: 'Filtrovat podle oblasti'
+      all: 'Vše'
+      empty: 'Zatím žádné položky.'
+      load_more: 'Zobrazit starší položky'
+      unknown_actor: 'Někdo'
+      value_yes: 'ano'
+      value_no: 'ne'
+      filtered: '(skryté)'
+      invitations_sent:
+        one: '1 pozvánka'
+        other: '%{count} pozvánek'
+      categories:
+        tag: 'Štítky'
+        post: 'Příspěvky'
+        comment: 'Komentáře'
+        user: 'Uživatelé'
+        board: 'Nástěnky'
+        post_status: 'Stavy'
+        changelog: 'Changelog'
+        site_settings: 'Obecné'
+        o_auth: 'Poskytovatelé přihlášení'
+        saml: 'SAML'
+        ldap: 'LDAP'
+        widget: 'Widget'
+        webhook: 'Webhooky'
+        invitation: 'Pozvánky'
+        api_key: 'API klíče'
+      sources:
+        api: 'REST API'
+        mcp: 'MCP'
+      actions:
+        tag_create: 'vytvořil(a) štítek'
+        tag_update: 'změnil(a) štítek'
+        tag_delete: 'smazal(a) štítek'
+        tag_reorder: 'přearanžoval(a) štítky'
+        post_create_for_author: 'přispěl(a) za:'
+        post_update: 'změnil(a) příspěvek'
+        post_delete: 'smazal(a) příspěvek'
+        post_merge: 'sloučil(a):'
+        comment_update: 'upravil(a) komentář'
+        comment_delete: 'smazal(a) komentář'
+        user_create: 'vytvořil(a) uživatele'
+        user_update: 'změnil(a) uživatele'
+        user_export: 'stáhl(a) data uživatele'
+        user_delete: 'smazal(a) účet uživatele'
+        user_two_factor_enable: 'zapnul(a) dvoufaktorové ověření:'
+        user_two_factor_disable: 'vypnul(a) dvoufaktorové ověření:'
+        board_create: 'vytvořil(a) nástěnku'
+        board_update: 'změnil(a) nástěnku'
+        board_delete: 'smazal(a) nástěnku'
+        board_reorder: 'přearanžoval(a) nástěnky'
+        post_status_create: 'vytvořil(a) stav'
+        post_status_update: 'změnil(a) stav'
+        post_status_delete: 'smazal(a) stav'
+        post_status_reorder: 'přearanžoval(a) stavy'
+        changelog_create: 'napsal(a) changelog položku'
+        changelog_update: 'změnil(a) changelog položku'
+        changelog_publish: 'publikoval(a) changelog položku'
+        changelog_delete: 'smazal(a) changelog položku'
+        site_settings_update: 'změnil(a) nastavení webu'
+        o_auth_create: 'přidal(a) poskytovatele přihlášení'
+        o_auth_update: 'změnil(a) poskytovatele přihlášení'
+        o_auth_delete: 'odebral(a) poskytovatele přihlášení'
+        saml_update: 'změnil(a) jednotné přihlašování SAML:'
+        ldap_update: 'změnil(a) LDAP přihlašování:'
+        widget_update: 'změnil(a) nastavení widgetu'
+        widget_rotate_secret: 'vytvořil(a) nové tajemství widgetu'
+        webhook_create: 'vytvořil(a) webhook'
+        webhook_update: 'změnil(a) webhook'
+        webhook_delete: 'smazal(a) webhook'
+        webhook_rotate_secret: 'vytvořil(a) nové podpisové tajemství webhooku'
+        invitation_send: 'poslal(a)'
+        api_key_create: 'vytvořil(a) nový API klíč pro'
+    webhooks:
+      deliveries:
+        title: 'Nedávná doručení'
+        show: 'Doručení'
+        empty: 'Zatím žádná doručení.'
+        success: 'Doručeno'
+        failure: 'Selhalo'
+        test: 'Test'
+        last: 'Poslední doručení: %{status} %{when}'
+      signing:
+        title: 'Podpis'
+        help: 'Každý požadavek obsahuje X-Astuto-Signature: sha256=HMAC-SHA256(secret, "<X-Astuto-Timestamp>.<body>"). Na straně příjemce jej zkontrolujte, abyste měli jistotu, že požadavek pochází z tohoto prostoru zpětné vazby.'
+        rotate: 'Nové tajemství'
+        rotate_confirmation: 'Příjemci, kteří podpis kontrolují, potřebují nové tajemství okamžitě. Pokračovat?'
+      title: 'Webhooky'
+      learn_more: 'Jak webhooky konfigurovat a používat'
+      empty: 'Nejsou tu žádné webhooky.'
+      triggers:
+        new_post: 'Nový příspěvek'
+        new_post_pending_approval: 'Nový příspěvek (čeká na schválení)'
+        delete_post: 'Smazat příspěvek'
+        post_status_change: 'Změna stavu příspěvku'
+        new_comment: 'Nový komentář'
+        new_vote: 'Nový hlas'
+        new_user: 'Nový uživatel'
+      form:
+        title_new: 'Nový webhook'
+        title_edit: 'Upravit webhook'
+        add_header: 'Přidat hlavičku'
+        header_n_key: 'Klíč hlavičky %{n}'
+        header_n_value: 'Hodnota hlavičky %{n}'
+        template_variables_selector_placeholder: 'Vyberte šablonovou proměnnou...'
+        templates_label: 'Vyplnit pro'
+        templates_help: 'Nastaví metodu, hlavičku Content-Type a tělo zprávy pro vybraný spouštěč. Jako URL použijte příchozí webhook adresu chatovacího nástroje.'
+        templates_confirm: 'Nahradit současné tělo?'
+      test_page:
+        title: 'Výsledky testu webhooku'
   moderation:
     menu:
       feedback: 'Feedback'
@@ -247,10 +500,10 @@ cs:
     users:
       block: 'Block'
       unblock: 'Unblock'
-      block_confirmation: "%{name} won't be able to log in until it is unblocked. Are you sure?"
-      unblock_confirmation: "%{name} will be able to log in and submit feedback. Are you sure?"
-      role_to_moderator_confirmation: "%{name} will be able to manage posts and users. Proceed only if you trust this person. Are you sure?"
-      role_to_admin_confirmation: "%{name} will be able to manage boards, posts, statuses, users and more. Proceed only if you trust this person. Are you sure?"
+      block_confirmation: '%{name} won''t be able to log in until it is unblocked. Are you sure?'
+      unblock_confirmation: '%{name} will be able to log in and submit feedback. Are you sure?'
+      role_to_moderator_confirmation: '%{name} will be able to manage posts and users. Proceed only if you trust this person. Are you sure?'
+      role_to_admin_confirmation: '%{name} will be able to manage boards, posts, statuses, users and more. Proceed only if you trust this person. Are you sure?'
       role_user: 'User'
       role_moderator: 'Moderator'
       role_admin: 'Administrator'
@@ -258,3 +511,250 @@ cs:
       status_active: 'Active'
       status_blocked: 'Blocked'
       status_deleted: 'Deleted'
+      export_data: 'Stáhnout data (GDPR)'
+      delete_account: 'Smazat účet'
+      delete_account_confirmation: 'Smazat účet uživatele %{name}? Příspěvky a komentáře zůstanou a zobrazí „Smazaný uživatel“. Nelze vrátit.'
+      status_pending_approval: 'Čeká na schválení'
+      approve: 'Schválit'
+      search_placeholder: 'Hledat podle jména nebo e-mailu'
+      filter_all_statuses: 'Všechny stavy'
+      filter_all_roles: 'Všechny role'
+      empty: 'Nebyli nalezeni žádní uživatelé'
+  number:
+    format:
+      round_mode: 'default'
+    currency:
+      format:
+        negative_format: '-%u%n'
+    human:
+      storage_units:
+        units:
+          pb: 'PB'
+          eb: 'EB'
+          zb: 'ZB'
+  errors:
+    messages:
+      model_invalid: 'Ověření selhalo: %{errors}'
+      too_long:
+        one: 'je příliš dlouhé (maximálně %{count} znak)'
+        other: 'je příliš dlouhé (maximálně %{count} znaků)'
+      password_too_long: 'je příliš dlouhé'
+      too_short:
+        one: 'je příliš krátké (nejméně %{count} znak)'
+        other: 'je příliš krátké (nejméně %{count} znaků)'
+      wrong_length:
+        one: 'má nesprávnou délku (mělo by být %{count} znak)'
+        other: 'má nesprávnou délku (mělo by být %{count} znaků)'
+      in: 'musí být v %{count}'
+    user_pending_approval: 'Váš účet čeká na schválení administrátorem. E-mail dostanete, jakmile se budete moct přihlásit.'
+    unavailable_session: "Relace %{id} už není v paměti dostupná.\n\nPokud provozujete multi-procesní server (jako Unicorn nebo Puma), proces, který tuto\npožadavek obsloužil, %{id} v paměti neuchovává. Nastavte počet procesů/workerů na jeden (1) nebo ve vývojovém prostředí použijte jiný server.\n"
+    unacceptable_request: "V hlavičce Accept se očekává podporovaná verze.\n"
+    connection_refused: "K middleware Web Console se nepodařilo připojit.\nZkontrolujte prosím, že běží Rails server ve vývojovém režimu.\n"
+  datetime:
+    distance_in_words:
+      x_years:
+        one: '%{count} rok'
+        other: '%{count} roky'
+    relative:
+      future: 'za %{time}'
+      past: 'před %{time}'
+  helpers:
+    page_entries_info:
+      entry:
+        zero: 'položek'
+        one: 'položka'
+        other: 'položek'
+      one_page:
+        display_entries:
+          zero: 'Nenalezeny žádné %{entry_name}'
+          one: 'Zobrazena <b>1</b> %{entry_name}'
+          other: 'Zobrazeny <b>všechny %{count}</b> %{entry_name}'
+      more_pages:
+        display_entries: 'Zobrazují se %{entry_name} <b>%{first}–%{last}</b> z celkem <b>%{total}</b>'
+  flash:
+    actions:
+      create:
+        notice: '%{resource_name} bylo úspěšně vytvořeno.'
+      update:
+        notice: '%{resource_name} bylo úspěšně upraveno.'
+      destroy:
+        notice: '%{resource_name} bylo úspěšně smazáno.'
+        alert: '%{resource_name} se nepodařilo smazat.'
+  widget:
+    errors:
+      disabled: 'Widget není zapnutý.'
+      invalid_token: 'Token návštěvníka je neplatný nebo vypršel.'
+      linked_elsewhere: 'Tato e-mailová adresa patří k jinému účtu.'
+      no_account: 'Pro tohoto návštěvníka neexistuje účet.'
+      staff_account: 'Moderátoři a administrátoři se přihlašují webu zpětné vazby, ne přes widget.'
+      blocked: 'Tento účet je zablokován.'
+    tabs:
+      feedback: 'Zpětná vazba'
+      roadmap: 'Roadmapa'
+      changelog: 'Changelog'
+    close: 'Zavřít'
+    board: 'Nástěnka'
+    signed_in_as: 'Přihlášeno jako %{name}'
+    open_site: 'Otevřít web zpětné vazby'
+  webhook_templates:
+    new_post: 'Nová zpětná vazba na nástěnce %{board}: %{post}'
+    new_post_pending_approval: 'Zpětná vazba čekající na schválení na nástěnce %{board}: %{post}'
+    delete_post: 'Příspěvek #%{id} byl smazán'
+    post_status_change: '%{post} je nyní: %{status}'
+    new_comment: '%{author} okomentoval(a) %{post}'
+    new_vote: '%{author} hlasoval(a) pro %{post}'
+    new_user: 'Nový uživatel: %{user}'
+    open: 'Otevřít'
+  mailers:
+    admin:
+      test_email:
+        subject: '[%{site_name}] Testovací e-mail'
+        body: 'Tento testovací e-mail z %{site_name} dorazil, takže odesílání funguje.'
+        details: 'Odesláno přes %{delivery_method} z %{from}.'
+      user_pending_approval:
+        subject: '[%{site_name}] Nový účet čeká na schválení: %{name}'
+        body_html: '<strong>%{name}</strong> (%{email}) se zaregistroval(a) a čeká na vaše schválení.'
+        review: 'Zkontrolovat v Moderace › Uživatelé'
+    user:
+      notify_follower_of_changelog_entry:
+        subject: '[%{site_name}] Nové v changelogu: %{title}'
+        body_html: 'Changelog má novou položku, <strong>%{title}</strong>. Dodává zpětnou vazbu, kterou sledujete'
+        read_entry: 'Přečíst changelog'
+      account_approved:
+        subject: '[%{site_name}] Váš účet je schválen'
+        body_html: 'Administrátor schválil váš účet. Nyní se můžete přihlásit.'
+        sign_in: 'Přihlásit se'
+      recap:
+        subject: '[%{site_name}] %{frequency} souhrn aktivit ve zpětné vazbě'
+        body_html: 'Zde je %{frequency} souhrn aktivit ve vašem prostoru pro zpětnou vazbu'
+        published_posts_count_html: 'Nová publikovaná zpětná vazba: %{count}'
+        pending_posts_count_html: 'Nová zpětná vazba čekající na schválení: %{count}'
+        status_changes_title: 'Změny stavů příspěvků, které sledujete'
+        no_status: 'bez stavu'
+        top_posts_title: 'Nejhlasovanější v tomto období'
+        period_votes:
+          one: '%{count} nový hlas'
+          other: '%{count} nových hlasů'
+        more_posts: 'a %{count} další'
+  instance_admin:
+    title: 'Správa instance'
+    tenants:
+      title: 'Prostory zpětné vazby'
+      new: 'Nový prostor pro zpětnou vazbu'
+      create: 'Vytvořit prostor pro zpětnou vazbu'
+      site_name: 'Název'
+      subdomain: 'Subdoména'
+      subdomain_hint: 'Písmena, číslice a pomlčky. Adresa bude <subdoména>.%{host}.'
+      owner_email: 'E-mail vlastníka'
+      owner_name: 'Jméno vlastníka'
+      locale: 'Jazyk'
+      address: 'Adresa'
+      status: 'Stav'
+      users: 'Uživatelé'
+      posts: 'Příspěvky'
+      created: 'Vytvořeno'
+      actions: 'Akce'
+      edit: 'Upravit'
+      save: 'Uložit'
+      back: 'Zpět na seznam'
+      block: 'Blokovat'
+      unblock: 'Odblokovat'
+      empty: 'Zatím žádné prostory zpětné vazby.'
+      statuses:
+        active: 'Aktivní'
+        pending: 'Čeká'
+        blocked: 'Zablokováno'
+      custom_domain: 'Vlastní doména'
+      custom_domain_hint: 'Nepovinné. Nejprve přidejte CNAME záznam ukazující doménu na %{target}. Pro odstranění ponechte prázdné.'
+      created_title: '%{site_name} je připraveno'
+      owner_credentials: 'Přihlašovací údaje vlastníka. Heslo se zobrazí jen nyní:'
+      password_hint: 'Pošlete ho vlastníkovi bezpečným kanálem a požádejte ho, aby si je po prvním přihlášení změnil.'
+      updated: '%{subdomain} uloženo.'
+      blocked: '%{subdomain} je zablokováno. Jeho stránky zobrazují upozornění; data zůstávají.'
+      unblocked: '%{subdomain} je opět aktivní.'
+      deleted: '%{subdomain} a všechna jeho data byla smazána.'
+      delete_title: 'Smazat prostor zpětné vazby'
+      delete_warning: 'Smaže nástěnky, příspěvky, komentáře, hlasy, uživatele, webhooky a nastavení tohoto prostoru zpětné vazby. Nelze vrátit zpět. Chcete-li data zachovat, prostor místo toho zablokujte.'
+      confirm_label: 'Potvrďte zadáním "%{subdomain}"'
+      confirm_mismatch: 'Subdoména nesouhlasila. Nic nebylo smazáno.'
+      delete: 'Smazat trvale'
+  pending_tenant:
+    title: 'Ověřte svou e-mailovou adresu'
+    body: 'Podívejte se do e-mailu (a do složky spam) a klikněte na aktivační odkaz.'
+    help: 'Potřebujete pomoc? Kontaktujte administrátora této instance.'
+  two_factor:
+    invalid_code: 'Kód není platný. Použijte aktuální kód z ověřovací aplikace, nebo nevyužitý záložní kód.'
+    login_expired: 'Přihlášení trvalo příliš dlouho. Zadejte znovu e-mail a heslo.'
+    setup_required: 'Tento prostor zpětné vazby vyžaduje dvoufaktorové ověření pro administrátory a moderátory. Nejprve si ho nastavte v profilu.'
+    already_enabled: 'Dvoufaktorové ověření je už zapnuté.'
+    not_enabled: 'Dvoufaktorové ověření je vypnuté.'
+    title: 'Dvoufaktorové ověření'
+    intro: 'Chraňte svůj účet druhým krokem: po hesle zadejte kód z ověřovací aplikace (například Aegis, Google Authenticator, Microsoft Authenticator nebo 1Password).'
+    set_up: 'Nastavit dvoufaktorové ověření'
+    scan_help: 'Naskenujte QR kód ověřovací aplikací a zadejte šestimístný kód, který zobrazuje.'
+    qr_code_alt: 'QR kód pro ověřovací aplikaci'
+    manual_entry: 'Nebo tento klíč zadejte ručně:'
+    code: 'Kód'
+    turn_on: 'Zapnout'
+    code_for_changes: 'Zadejte aktuální kód, chcete-li vytvořit nové záložní kódy.'
+    new_backup_codes: 'Vytvořit nové záložní kódy'
+    turn_off: 'Vypnout dvoufaktorové ověření'
+    turn_off_confirmation: 'Vypnout dvoufaktorové ověření? Váš účet pak chrání jen heslo.'
+    backup_codes: 'Záložní kódy'
+    backup_codes_help: 'Uchovejte tyto záložní kódy v bezpečí. Každý vás jednou přihlásí, když nemáte telefon po ruce. Zobrazují se jen nyní.'
+    saved_codes: 'Kódy jsem si uložil(a)'
+    required_notice: 'Tento prostor zpětné vazby vyžaduje dvoufaktorové ověření pro administrátory a moderátory.'
+    login_title: 'Dvoufaktorové ověření'
+    login_help: 'Zadejte kód z ověřovací aplikace, nebo jeden ze záložních kódů.'
+    verify: 'Ověřit'
+    start_over: 'Přihlásit se jiným účtem'
+    enabled:
+      one: 'Zapnuto. Zbývá 1 záložní kód.'
+      other: 'Zapnuto. Zbývá %{count} záložních kódů.'
+  saml:
+    metadata_invalid: 'Nejsou to metadata SAML poskytovatele identity (XML s SingleSignOnService).'
+  ldap:
+    invalid_login: 'Neplatné přihlašovací jméno nebo heslo pro váš %{label}.'
+    not_found: 'Pro tohoto přihlašovací jméno nebyl nalezen jedinečný záznam. Zkontrolujte base DN a filtr uživatelů.'
+  my_feedback:
+    title: 'Moje zpětná vazba'
+    filters:
+      created: 'Přispěl(a)'
+      voted: 'Hlasoval(a)'
+      followed: 'Sleduje'
+    empty:
+      created: 'Ještě jste nepřispěl(a) žádnou zpětnou vazbou.'
+      voted: 'Ještě jste nehlasoval(a) pro žádný příspěvek.'
+      followed: 'Zatím nesledujete žádný příspěvek.'
+    approval:
+      pending: 'Čeká na schválení'
+      rejected: 'Zamítnuto'
+      merged: 'Sloučeno'
+  changelog:
+    title: 'Changelog'
+    empty: 'Zatím tu nic není.'
+    new_entry: 'Nová položka'
+    draft: 'Koncept'
+    delivers: 'Dodává:'
+    rss_feed: 'RSS kanál'
+    form:
+      title: 'Nadpis'
+      body: 'Text (Markdown)'
+      posts: 'Dodané příspěvky'
+      posts_help: 'Sledující těchto příspěvků dostanou e-mail, když se položka poprvé publikuje.'
+      search_posts: 'Najít příspěvky'
+      add_post: 'Přidat'
+      remove_post: 'Odebrat'
+      save_draft: 'Uložit koncept'
+      publish: 'Publikovat'
+      unpublish: 'Zpět na koncept'
+      ai_draft: 'Návrh textu s AI'
+      ai_draft_loading: 'Píšu…'
+      ai_draft_hint: 'Názvy a popisy dodaných příspěvků se posílají nastavenému AI poskytovateli.'
+  views:
+    pagination:
+      first: '&laquo; První'
+      last: 'Poslední &raquo;'
+      previous: '&lsaquo; Předchozí'
+      next: 'Další &rsaquo;'
+      truncate: '&hellip;'

@@ -31,7 +31,7 @@ de:
         new_password_confirmation: 'Neues Passwort bestätigen'
         current_password: 'Aktuelles Passwort'
         notifications_enabled: 'Benachrichtigungen aktiviert'
-        notifications_enabled_help: "Wenn deaktiviert, erhältst du keine Benachrichtigungen"
+        notifications_enabled_help: 'Wenn deaktiviert, erhältst du keine Benachrichtigungen'
         waiting_confirmation: 'Warte auf Bestätigung von: %{email}'
         no_password_set: 'Sie müssen ein Passwort festlegen, um Ihr Profil zu aktualisieren'
         set_password: 'Passwort festlegen'
@@ -50,8 +50,8 @@ de:
         my_data_help: 'Lade alles herunter, was dieser Feedback-Bereich über dich speichert: Profil, Posts, Kommentare, Votes und gefolgte Posts (JSON).'
         download_my_data: 'Meine Daten herunterladen'
         forgot_password: 'Passwort vergessen?'
-        confirmation_instructions_not_received: "Keine Anweisungen zur Bestätigung erhalten?"
-        unlock_instructions_not_received: "Keine Anweisungen zum Entsperren erhalten?"
+        confirmation_instructions_not_received: 'Keine Anweisungen zur Bestätigung erhalten?'
+        unlock_instructions_not_received: 'Keine Anweisungen zum Entsperren erhalten?'
         send_reset_password_instructions: 'Anweisungen zum Zurücksetzen des Passworts an mich senden'
         resend_confirmation_instructions: 'Bestätigungsanweisungen erneut senden'
         resend_unlock_instructions: 'Anweisungen zum Entsperren erneut senden'
@@ -217,8 +217,8 @@ de:
       hint: 'Titel, Beschreibung und Kommentare werden an den eingestellten KI-Anbieter gesendet.'
     action_box:
       follow_button: 'Beitrag folgen'
-      following_description: "Du erhältst Benachrichtigungen über neue Updates zu diesem Beitrag"
-      not_following_description: "Du erhältst keine Benachrichtigungen zu diesem Beitrag"
+      following_description: 'Du erhältst Benachrichtigungen über neue Updates zu diesem Beitrag'
+      not_following_description: 'Du erhältst keine Benachrichtigungen zu diesem Beitrag'
     comments:
       empty: 'Noch keine Kommentare'
       title: 'Aktivität'
@@ -485,16 +485,7 @@ de:
       subject: 'Betreff'
       subject_default: 'Deine Meinung zählt! Gestalte %{name} mit!'
       body: 'Text'
-      body_default: |
-        Hallo!
-
-        Danke, dass du %{name} nutzt. Wir würden gern hören, was du davon hältst: Dein Feedback hilft uns, besser zu werden.
-
-        Über diesen Link kannst du uns deine Meinung sagen:
-
-        %link%
-
-        Viele Grüße!
+      body_default: "Hallo!\n\nDanke, dass du %{name} nutzt. Wir würden gern hören, was du davon hältst: Dein Feedback hilft uns, besser zu werden.\n\nÜber diesen Link kannst du uns deine Meinung sagen:\n\n%link%\n\nViele Grüße!\n"
       send:
         one: 'Einladung senden'
         other: '%{count} Einladungen senden'
@@ -576,10 +567,10 @@ de:
       export_data: 'Daten herunterladen (DSGVO)'
       delete_account: 'Konto löschen'
       delete_account_confirmation: 'Konto von %{name} löschen? Posts und Kommentare bleiben und zeigen „Gelöschter Nutzer“. Das lässt sich nicht rückgängig machen.'
-      block_confirmation: "%{name} kann sich nicht anmelden, bis die Blockierung aufgehoben wird. Bist du dir sicher?"
-      unblock_confirmation: "%{name} kann sich anmelden und Feedback senden. Bist du dir sicher?"
-      role_to_moderator_confirmation: "%{name} wird Posts und Nutzer*innen verwalten können. Fahre nur fort, wenn du dieser Person vertraust. Bist du dir sicher?"
-      role_to_admin_confirmation: "%{name} hat die gleichen Rechte wie du, sodass sie dich sogar herabstufen oder blockieren könnten. Fahre nur fort, wenn du %{name} wirklich vertraust. Bist du dir sicher?"
+      block_confirmation: '%{name} kann sich nicht anmelden, bis die Blockierung aufgehoben wird. Bist du dir sicher?'
+      unblock_confirmation: '%{name} kann sich anmelden und Feedback senden. Bist du dir sicher?'
+      role_to_moderator_confirmation: '%{name} wird Posts und Nutzer*innen verwalten können. Fahre nur fort, wenn du dieser Person vertraust. Bist du dir sicher?'
+      role_to_admin_confirmation: '%{name} hat die gleichen Rechte wie du, sodass sie dich sogar herabstufen oder blockieren könnten. Fahre nur fort, wenn du %{name} wirklich vertraust. Bist du dir sicher?'
       role_user: 'Benutzer'
       role_moderator: 'Moderator'
       role_admin: 'Administrator'
@@ -593,3 +584,54 @@ de:
       filter_all_statuses: 'Alle Status'
       filter_all_roles: 'Alle Rollen'
       empty: 'Keine Nutzer gefunden'
+  datetime:
+    relative:
+      future: 'in %{time}'
+      past: 'vor %{time}'
+  errors:
+    connection_refused: "Hoppla! Verbindung zum Web-Console-Middleware fehlgeschlagen.\nBitte stelle sicher, dass ein Rails-Development-Server läuft."
+    unacceptable_request: 'Eine unterstützte Version wird im Accept-Header erwartet.'
+    unavailable_session: "Sitzung %{id} ist nicht mehr im Speicher verfügbar.\n\nWenn du auf einem Multi-Process-Server (wie Unicorn oder Puma) betreibst, speichert der Prozess, der diese Anfrage getroffen hat, %{id} nicht im Speicher. Setze die Anzahl der Prozesse/Worker auf einen (1) oder verwende in der Development-Umgebung einen anderen Server."
+  flash:
+    actions:
+      create:
+        notice: '%{resource_name} wurde erfolgreich erstellt.'
+      destroy:
+        alert: '%{resource_name} konnte nicht gelöscht werden.'
+        notice: '%{resource_name} wurde erfolgreich gelöscht.'
+      update:
+        notice: '%{resource_name} wurde erfolgreich geändert.'
+  helpers:
+    page_entries_info:
+      entry:
+        one: 'Eintrag'
+        other: 'Einträge'
+        zero: 'Einträge'
+      more_pages:
+        display_entries: 'Angezeigt werden %{entry_name} <b>%{first}–%{last}</b> von insgesamt <b>%{total}</b>'
+      one_page:
+        display_entries:
+          one: '<b>1</b> %{entry_name} wird angezeigt'
+          other: 'Alle <b>%{count}</b> %{entry_name} werden angezeigt'
+          zero: 'Kein %{entry_name} gefunden'
+  number:
+    currency:
+      format:
+        negative_format: '-%u%n'
+    human:
+      decimal_units:
+        units:
+          billion: 'Mrd.'
+          million: 'Mio.'
+          quadrillion: 'Brd.'
+          trillion: 'Bio.'
+      storage_units:
+        units:
+          zb: 'ZB'
+  views:
+    pagination:
+      first: '&laquo; Erste'
+      last: 'Letzte &raquo;'
+      next: 'Weiter &rsaquo;'
+      previous: '&lsaquo; Zurück'
+      truncate: '&hellip;'

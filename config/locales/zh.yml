@@ -15,7 +15,7 @@ zh-CN:
         new_password_confirmation: '确认新密码'
         current_password: '当前密码'
         notifications_enabled: '开启通知'
-        notifications_enabled_help: "关闭后，您将不会收到任何通知"
+        notifications_enabled_help: '关闭后，您将不会收到任何通知'
         waiting_confirmation: '正在等待验证 %{email}'
         no_password_set: 'You must set a password to update your profile'
         set_password: 'Set password'
@@ -28,14 +28,34 @@ zh-CN:
         profile_settings: '账号设置'
         cancel_account: '注销账号'
         forgot_password: '忘记密码'
-        confirmation_instructions_not_received: "未收到验证邮件"
-        unlock_instructions_not_received: "未收到解锁邮件"
+        confirmation_instructions_not_received: '未收到验证邮件'
+        unlock_instructions_not_received: '未收到解锁邮件'
         send_reset_password_instructions: '向我发送密码重置邮件'
         resend_confirmation_instructions: '重新发送验证邮件'
         resend_unlock_instructions: '重新发送解锁邮件'
         change_password: '修改密码'
         password_help: '至少需要 %{count} 个字符'
         email_registration_not_allowed: 'Email registration not allowed'
+        notifications: '通知'
+        recap_notification_frequency_daily: '每天'
+        recap_notification_frequency_weekly: '每周'
+        recap_notification_frequency_monthly: '每月'
+        recap_notification_frequency_help: '通过电子邮件发送摘要：新反馈、得票最多的帖子以及您关注的帖子的状态变更（版主：还包括待批准的反馈）。没有新情况时不会发送。'
+        log_in_with_email: '改为使用邮箱和密码登录'
+        login_name: '登录用户名'
+        ldap_info: '请使用您的%{label}登录。'
+        my_data: '我的数据'
+        my_data_help: '下载此反馈空间存储的关于您的全部内容：个人资料、帖子、评论、投票和关注的帖子（JSON）。'
+        download_my_data: '下载我的数据'
+        oauth_only_info: '请使用下方任一 OAuth 提供商登录或注册。本站点已停用邮箱登录。'
+      api_key:
+        title: 'API 密钥'
+        current_api_key_help: '您已经生成过 API 密钥，出于安全原因无法再次显示。如果遗失，可在下方重新生成。'
+        generate_api_key: '生成 API 密钥'
+        generated_api_key_help: '请将此 API 密钥保存在安全的地方，之后将无法再次查看。'
+        generated_api_key_successfully: 'API 密钥生成成功！'
+        confirm_generate_new_api_key: '确定要生成新的 API 密钥吗？旧密钥将失效。'
+        api_key_learn_more: '了解如何使用 API'
     no_status: '无状态'
     select_placeholder: 'Select...'
     loading: '加载中…'
@@ -56,6 +76,11 @@ zh-CN:
       approve: 'Approve'
       reject: 'Reject'
       copy_to_clipboard: 'Copy to clipboard'
+      preview: '预览'
+      move_up: '上移'
+      move_down: '下移'
+    errors:
+      not_found: '页面未找到'
   header:
     menu:
       site_settings: '网站设置'
@@ -63,9 +88,18 @@ zh-CN:
       profile_header: 'Profile'
       profile_settings: '账号设置'
       sign_out: '退出登录'
+      my_feedback: '我的反馈'
     log_in: '登录/注册'
   roadmap:
     title: '开发路线'
+    empty: '路线图暂无内容。'
+    filter_by_board: '按看板筛选'
+    more_posts:
+      one: '还有 %{count} 条帖子'
+      other: '还有 %{count} 条帖子'
+    sort_by:
+      most_voted: '得票最多'
+      recently_updated: '最近更新'
   blocked_tenant:
     title: '此反馈空间已被禁止访问'
   board:
@@ -80,10 +114,13 @@ zh-CN:
       anonymous_submission_help: 'You are posting anonymously'
       non_anonymous_submission_help: 'You are posting as %{name}'
       submit_pending: 'Your feedback has been submitted and is now pending moderator approval!'
+      status: '初始状态（仅版主）'
+      similar_posts_title: '已有相似的帖子——要不要改为给其中一条投票？'
     search_box:
       title: '搜索'
     filter_box:
       title: '按状态筛选'
+      tags: '按标签筛选'
     sort_by_box:
       title: '排序方式'
       trending: '热门'
@@ -92,6 +129,8 @@ zh-CN:
       oldest: '最早'
     posts_list:
       empty: '没有帖子'
+      load_more: '加载更多'
+    rss_feed: 'RSS 订阅源'
   post:
     published_by: '发布者'
     published_anonymously: 'Published anonymously'
@@ -101,18 +140,54 @@ zh-CN:
       title: '赞'
     action_box:
       follow_button: '关注帖子'
-      following_description: "您会收到关于此帖的更新的通知"
-      not_following_description: "您不会收到关于此帖的更新的通知"
+      following_description: '您会收到关于此帖的更新的通知'
+      not_following_description: '您不会收到关于此帖的更新的通知'
     comments:
       title: '活动'
       post_update_badge: '更新'
       reply_button: '回复'
+      empty: '还没有评论'
     new_comment:
       body_placeholder: '发表评论'
       submit_button: '提交'
       is_post_update: '标记为更新'
       user_notification: '关注此帖的用户将会收到通知'
       not_logged_in: '您需要登录才能发表评论'
+    merge:
+      same_post: '帖子不能与自身合并。'
+      already_merged: '其中一条帖子已被合并。'
+      button: '合并到另一条帖子'
+      search: '搜索要保留的帖子'
+      help: '投票、关注者和评论会移到您选择的帖子上；本帖此后会指向那里。此操作无法撤销。'
+      into_this: '合并到此处'
+      confirmation: '将本帖合并到“%{target}”？投票、关注者和评论会一并转移。无法撤销。'
+      merged_from: '由以下帖子合并而来：'
+    tags:
+      title: '标签'
+    in_changelog: '更新日志中：'
+    source:
+      title: '来源'
+      label: '来源'
+      url: '来源链接'
+    ai_translation:
+      button: '翻译'
+      loading: '翻译中…'
+      hide: '隐藏翻译'
+      label: 'AI 翻译'
+      hint: '文本会被发送到已配置的 AI 提供商。'
+    ai_suggestion:
+      button: '建议看板和标签'
+      loading: '思考中…'
+      hint: '标题和描述会被发送到已配置的 AI 提供商。'
+      board: '看板：'
+      tags: '标签：'
+      none: '无建议：没有比帖子现有属性更合适的选项。'
+      apply: '应用'
+    ai_summary:
+      title: 'AI 摘要'
+      button: '总结讨论'
+      loading: '正在总结…'
+      hint: '标题、描述和评论会被发送到已配置的 AI 提供商。'
   site_settings:
     menu:
       title: '网站设置'
@@ -123,6 +198,10 @@ zh-CN:
       roadmap: '开发路线'
       invitations: 'Invitations'
       appearance: '外观定制'
+      tags: '标签'
+      widget: '小组件'
+      webhooks: 'Webhook'
+      audit_log: '审计日志'
     info_box:
       up_to_date: '已保存所有更改'
       dirty: '更改尚未保存'
@@ -132,7 +211,7 @@ zh-CN:
       brand_setting_name: '仅名称'
       brand_setting_logo: '仅图标'
       brand_setting_none: '无'
-      use_browser_locale_help: "If you enable this setting, the feedback space will be displayed in the user's browser preferred language. If the language is not available, the default language will be used."
+      use_browser_locale_help: 'If you enable this setting, the feedback space will be displayed in the user''s browser preferred language. If the language is not available, the default language will be used.'
       subtitle_privacy: 'Privacy'
       is_private_help: 'If you enable this setting, only logged in users will be able to see the content of the feedback space.'
       subtitle_moderation: 'Moderation'
@@ -153,12 +232,35 @@ zh-CN:
       show_vote_count_help: '如果您启用此设置，用户将可以看到帖子的投票数。 这可能会鼓励用户对已经很受欢迎的帖子进行投票，导致雪球效应。'
       show_vote_button_in_board_help: '如果您启用此设置，用户将能够从版块页面直接对帖子投票。 这可能会鼓励用户对更多的帖子投票，导致更多的票数，但会稀释每一票的重要性。'
       hide_unused_statuses_in_filter_by_status_help: 'If you enable this setting, only statuses that are assigned to at least one post in that board will be shown in the filter by status sidebar filter.'
+      test_email: '发送测试邮件'
+      test_email_help: '向 %{email} 发送一封邮件以检查邮件设置（EMAIL_* 环境变量）。'
+      test_email_sent: '测试邮件已发送至 %{email}（%{method}，自 %{from}）。请检查收件箱和垃圾邮件文件夹。'
+      use_gravatar_help: '个人资料图片来自 gravatar.com：每位访客的浏览器都会向 gravatar.com 请求每张图片，并附带电子邮箱地址的哈希值。关闭后将改显姓名首字母，且不会向第三方发送任何内容。'
+      require_two_factor_for_staff_help: '管理员和版主必须先设置两步验证，才能进行审核或修改设置。API 密钥不受影响。'
+      subtitle_authentication: '身份验证'
+      subtitle_mail: '邮件'
+      feedback_approval_policy_new_users_require_approval: '匿名反馈和每个账号的最初帖子需要批准'
+      require_user_approval_help: '通过邮箱或 OAuth 的注册会等待管理员在“审核 › 用户”中批准；每份注册管理员都会收到一封电子邮件。受邀者以及通过 SAML、LDAP 或小组件的登录会自动批准。'
+      trusted_after_posts_help: '达到此数量的获批帖子后，该账号的新帖子将自动批准。被驳回的不计入。'
+      roadmap_enabled_help: '禁用此设置后，路线图页面将无法访问，页眉中的链接也会移除。'
+      default_post_sorting_help: '打开看板时若未显式指定排序，帖子将按此方式排序。'
+      custom_links_help: '网站页眉中的附加链接，每行一条：名称|URL。示例：文档|https://example.com/docs'
+      login_only_with_oauth_help: '启用此设置后，邮箱密码登录和邮箱注册将被隐藏。用户只能通过 OAuth 提供商登录或注册。密码重置链接仍然可用。'
+      mail_logo_size_help: '外发邮件中显示的 Logo 尺寸（以像素为单位）。'
     boards:
       title: '网站版块'
       empty: '尚无版块，在下方创建板块！'
       form:
         name: '版块名称'
         description: '版块描述 (可选)'
+        visibility: '谁能查看'
+        visibility_help: '无权查看者的所有界面入口都会隐藏该看板的帖子：列表、路线图、搜索、订阅源、站点地图、邮件。版主和管理员始终可见所有看板。'
+        slug: 'URL（可选）'
+        slug_help: '看板地址的一部分，例如 /boards/feature-requests。留空则根据名称自动生成。'
+      visibility:
+        everyone: '所有人'
+        signed_in: '仅已登录用户'
+        staff: '仅版主和管理员'
     post_statuses:
       title: '帖子状态'
       empty: '尚无状态，在下方创建状态！'
@@ -173,6 +275,8 @@ zh-CN:
       show_board_filter: 'Show board filter'
       show_post_status_filter: 'Show status filter'
       embed_help: 'You can embed the roadmap in your website by copying the code above.'
+      help_buttons: '使用箭头按钮将状态移入或移出路线图。要创建状态或调整顺序，请前往“站点设置 > 状态”。'
+      embed_scope_help: '选择看板或状态可仅显示所选；不选择则显示全部。'
     invitations:
       new_invitations_title: 'New invitations'
       past_invitations_title: 'Invitations'
@@ -181,18 +285,10 @@ zh-CN:
       subject: 'Email subject'
       subject_default: 'We value your feedback! Join us in shaping %{name}!'
       body: 'Email body'
-      body_default: |
-        Hello!
-
-        We truly appreciate your experience with %{name} and would love to hear your feedback. Your insights help us improve and continue delivering the best possible service.
-
-        Click the link below to share your thoughts and make your voice heard:
-
-        %link%
-
-        Have a great day!
+      body_default: "Hello!\n\nWe truly appreciate your experience with %{name} and would love to hear your feedback. Your insights help us improve and continue delivering the best possible service.\n\nClick the link below to share your thoughts and make your voice heard:\n\n%link%\n\nHave a great day!\n"
       send:
         other: 'Send %{count} invitations'
+        one: '发送邀请'
       submit_success: 'Invitations sent!'
       submit_failure: 'An error occurred while sending invitations'
       invalid_emails: 'Invalid email addresses: %{emails}'
@@ -206,6 +302,8 @@ zh-CN:
       accepted: 'Accepted'
       sent_at: 'Sent %{when}'
       accepted_at: 'Accepted %{when}'
+      skipped: '未发送（已注册、已接受或无效）：%{emails}'
+      expired: '已过期'
     appearance:
       title: '外观定制'
       learn_more: '了解如何自定义外观'
@@ -233,6 +331,162 @@ zh-CN:
         subtitle_oauth_config: 'OAuth 配置'
         subtitle_user_profile_config: '用户资料配置'
         client_secret_help: '出于安全隐藏'
+        profile_headers: '个人资料请求的附加请求头（可选）'
+      ldap:
+        title: 'LDAP / Active Directory'
+        intro: '允许用户使用公司目录（OpenLDAP、Active Directory、FreeIPA 等）的登录用户名和密码登录。Astuto 使用服务账号搜索条目，并以该条目身份绑定来校验密码。'
+        encryption_start_tls: 'StartTLS（端口 389）'
+        encryption_simple_tls: 'LDAPS（端口 636）'
+        encryption_plain: '无（仅限可信网络内部）'
+        bind_dn_help: '若目录允许，留空可匿名搜索。'
+        bind_password_set: '已保存密码。留空则保持不变。'
+        user_filter_help: '%{login} 代表用户输入的内容。Active Directory：（sAMAccountName=%{login}），OpenLDAP：（uid=%{login}）。'
+        test_login: '用登录用户名测试'
+        test_help: '使用已保存的设置检查连接、服务账号和筛选器；无需密码。'
+        test_found: '找到：'
+      saml:
+        title: 'SAML 单点登录'
+        intro: '允许用户使用公司的身份提供商（Microsoft Entra ID、Okta、Keycloak、ADFS、Google Workspace 等）登录。请在提供商处用下方两个值把 Astuto 注册为应用，然后粘贴身份提供商的元数据或填写其字段。'
+        sp_entity_id: 'Entity ID / 元数据 URL'
+        acs_url: '回复 URL（Assertion Consumer Service）'
+        metadata: '身份提供商的元数据 XML'
+        import_metadata: '从元数据填充'
+        email_attribute_help: '留空则使用常见属性名，其次使用 NameID。'
+        auto_create_help: '否则只有已拥有账号（例如通过邀请）的用户才能登录。'
+      empty: '还没有 OAuth 提供商。'
+    widget:
+      title: '小组件'
+      intro: '面向您自己的网站或应用的反馈按钮。它在面板中打开看板、路线图和更新日志。您应用中已登录的访客以自己的账号投票和发帖：您的服务器会用下方的密钥签署一个短期访客令牌。'
+      enabled: '开启小组件'
+      allowed_origins: '允许显示小组件的站点'
+      allowed_origins_help: '每行一个来源，例如 https://app.example.com。留空：任何站点。'
+      auto_create_users: '为新访客创建账号'
+      auto_create_users_help: '否则只有已有账号（相同邮箱）的用户才会登录。版主和管理员永远不会通过小组件登录。'
+      install_title: '安装'
+      install_intro: '把它加入您网站的页面；用您服务器生成的令牌替换 VISITOR_TOKEN，匿名访客则可省略 data-token。'
+      token_intro: '您的服务器用此密钥签署访客令牌。请保存在服务器上，切勿放入浏览器。'
+      rotate: '新密钥'
+      rotate_confirm: '创建新密钥？用当前密钥签署的令牌将失效。'
+      token_rules: '声明（Claims）：email（必需）、name、id（您的用户 ID，即使邮箱变更也能关联账号）。仅限 HS256；令牌必须在一天内过期。'
+    tags:
+      title: '标签'
+      empty: '还没有标签。标签可将帖子跨看板分组，例如按产品领域划分；版主将其添加到帖子上，访客可按其筛选。'
+      delete_confirmation: '删除此标签？它将从所有帖子上移除。'
+      form:
+        name: '名称'
+        color: '颜色'
+    audit_log:
+      description: '管理员和版主的变更记录：审核、用户、看板、状态、设置、登录提供商、Webhook、邀请和 API 密钥。记录保留一年。'
+      filter: '按类别筛选'
+      all: '全部'
+      empty: '暂无记录。'
+      load_more: '查看更早的记录'
+      unknown_actor: '某人'
+      value_yes: '是'
+      value_no: '否'
+      filtered: '（已隐藏）'
+      invitations_sent:
+        one: '1 个邀请'
+        other: '%{count} 个邀请'
+      categories:
+        tag: '标签'
+        post: '帖子'
+        comment: '评论'
+        user: '用户'
+        board: '看板'
+        post_status: '状态'
+        changelog: '更新日志'
+        site_settings: '常规'
+        o_auth: '登录提供商'
+        saml: 'SAML'
+        ldap: 'LDAP'
+        widget: '小组件'
+        webhook: 'Webhook'
+        invitation: '邀请'
+        api_key: 'API 密钥'
+      sources:
+        api: 'REST API'
+        mcp: 'MCP'
+      actions:
+        tag_create: '创建了标签'
+        tag_update: '修改了标签'
+        tag_delete: '删除了标签'
+        tag_reorder: '重新排定了标签'
+        post_create_for_author: '代发帖子：'
+        post_update: '修改了帖子'
+        post_delete: '删除了帖子'
+        post_merge: '合并了：'
+        comment_update: '编辑了评论'
+        comment_delete: '删除了评论'
+        user_create: '创建了用户'
+        user_update: '修改了用户'
+        user_export: '下载了用户数据：'
+        user_delete: '删除了用户的账号：'
+        user_two_factor_enable: '为以下人员开启了两步验证：'
+        user_two_factor_disable: '为以下人员关闭了两步验证：'
+        board_create: '创建了看板'
+        board_update: '修改了看板'
+        board_delete: '删除了看板'
+        board_reorder: '重新排定了看板'
+        post_status_create: '创建了状态'
+        post_status_update: '修改了状态'
+        post_status_delete: '删除了状态'
+        post_status_reorder: '重新排定了状态'
+        changelog_create: '撰写了更新日志记录'
+        changelog_update: '修改了更新日志记录'
+        changelog_publish: '发布了更新日志记录'
+        changelog_delete: '删除了更新日志记录'
+        site_settings_update: '修改了站点设置'
+        o_auth_create: '添加了登录提供商'
+        o_auth_update: '修改了登录提供商'
+        o_auth_delete: '移除了登录提供商'
+        saml_update: '修改了 SAML 单点登录：'
+        ldap_update: '修改了 LDAP 登录：'
+        widget_update: '修改了小组件设置'
+        widget_rotate_secret: '生成了新的小组件密钥'
+        webhook_create: '创建了 Webhook'
+        webhook_update: '修改了 Webhook'
+        webhook_delete: '删除了 Webhook'
+        webhook_rotate_secret: '为 Webhook 生成了新的签名密钥'
+        invitation_send: '发送了'
+        api_key_create: '为以下人员创建了新的 API 密钥：'
+    webhooks:
+      deliveries:
+        title: '近期投递记录'
+        show: '投递记录'
+        empty: '暂无投递记录。'
+        success: '已投递'
+        failure: '失败'
+        test: '测试'
+        last: '最近一次投递：%{status} %{when}'
+      signing:
+        title: '签名'
+        help: '每个请求都带有 X-Astuto-Signature: sha256=HMAC-SHA256(secret, "<X-Astuto-Timestamp>.<body>")。请在接收端校验，以确保请求来自此反馈空间。'
+        rotate: '新密钥'
+        rotate_confirmation: '校验签名的接收方需要立即获得新密钥。继续吗？'
+      title: 'Webhook'
+      learn_more: '了解如何配置和使用 Webhook'
+      empty: '还没有 Webhook。'
+      triggers:
+        new_post: '新帖子'
+        new_post_pending_approval: '新帖子（待批准）'
+        delete_post: '删除帖子'
+        post_status_change: '帖子状态变更'
+        new_comment: '新评论'
+        new_vote: '新投票'
+        new_user: '新用户'
+      form:
+        title_new: '新建 Webhook'
+        title_edit: '编辑 Webhook'
+        add_header: '添加请求头'
+        header_n_key: '请求头 %{n} 键'
+        header_n_value: '请求头 %{n} 值'
+        template_variables_selector_placeholder: '选择模板变量…'
+        templates_label: '套用模板于'
+        templates_help: '为所选触发器设置方法、Content-Type 请求头和消息正文。URL 请使用聊天工具的入站 Webhook 地址。'
+        templates_confirm: '替换当前正文吗？'
+      test_page:
+        title: 'Webhook 测试结果'
   moderation:
     menu:
       feedback: 'Feedback'
@@ -244,10 +498,10 @@ zh-CN:
     users:
       block: '封禁'
       unblock: '解除封禁'
-      block_confirmation: "%{name} 在被解除封禁前无法登录，您确定吗？"
-      unblock_confirmation: "%{name} 将可以登录和发表反馈，您确定吗？"
-      role_to_moderator_confirmation: "%{name} 将可以管理帖子和用户，请仅在信任此人的情况下继续。您确定吗？"
-      role_to_admin_confirmation: "%{name} 将拥有和您同等的权限，包括把您降级和封禁，请仅在信任此人的情况下继续。 您确定吗？"
+      block_confirmation: '%{name} 在被解除封禁前无法登录，您确定吗？'
+      unblock_confirmation: '%{name} 将可以登录和发表反馈，您确定吗？'
+      role_to_moderator_confirmation: '%{name} 将可以管理帖子和用户，请仅在信任此人的情况下继续。您确定吗？'
+      role_to_admin_confirmation: '%{name} 将拥有和您同等的权限，包括把您降级和封禁，请仅在信任此人的情况下继续。 您确定吗？'
       role_user: '用户'
       role_moderator: '版主'
       role_admin: '管理员'
@@ -255,3 +509,289 @@ zh-CN:
       status_active: '已启用'
       status_blocked: '已封禁'
       status_deleted: '已删除'
+      export_data: '下载数据（GDPR）'
+      delete_account: '删除账号'
+      delete_account_confirmation: '删除 %{name} 的账号？帖子和评论会保留并显示“已删除用户”。此操作无法撤销。'
+      status_pending_approval: '等待批准'
+      approve: '批准'
+      search_placeholder: '按姓名或邮箱搜索'
+      filter_all_statuses: '全部状态'
+      filter_all_roles: '全部角色'
+      empty: '未找到用户'
+  number:
+    format:
+      round_mode: 'default'
+    currency:
+      format:
+        negative_format: '-%u%n'
+    human:
+      storage_units:
+        units:
+          byte:
+            one: '字节'
+            other: '字节'
+          zb: 'ZB'
+  errors:
+    messages:
+      too_long:
+        one: '过长（最多 %{count} 个字符）'
+        other: '过长（最多 %{count} 个字符）'
+      password_too_long: '过长'
+      too_short:
+        one: '过短（至少 %{count} 个字符）'
+        other: '过短（至少 %{count} 个字符）'
+      wrong_length:
+        one: '长度有误（应为 %{count} 个字符）'
+        other: '长度有误（应为 %{count} 个字符）'
+      in: '必须属于 %{count}'
+      not_saved:
+        one: '有 1 个错误，导致此 %{resource} 未能保存：'
+    template:
+      header:
+        one: '有 %{count} 个错误，导致此 %{model} 未能保存'
+        other: '有 %{count} 个错误，导致此 %{model} 未能保存'
+    user_pending_approval: '您的账号正在等待管理员批准。您将收到一封电子邮件，届时即可登录。'
+    unavailable_session: "会话 %{id} 已不在内存中。\n\n如果您运行的是多进程服务器（如 Unicorn 或 Puma），处理此请求的进程\n不会在内存中保留 %{id}。请将进程/工作进程数设为一（1），或在开发环境使用其他服务器。\n"
+    unacceptable_request: "Accept 头中需要受支持的版本。\n"
+    connection_refused: "无法连接到 Web Console 中间件。\n请确保一个 Rails 开发服务器正在运行。\n"
+  datetime:
+    distance_in_words:
+      less_than_x_seconds:
+        one: '不足 %{count} 秒'
+        other: '不足 %{count} 秒'
+      x_seconds:
+        one: '%{count} 秒'
+        other: '%{count} 秒'
+      less_than_x_minutes:
+        one: '不到一分钟'
+        other: '不足 %{count} 分钟'
+      x_minutes:
+        one: '%{count} 分钟'
+        other: '%{count} 分钟'
+      about_x_hours:
+        one: '约 %{count} 小时'
+        other: '约 %{count} 小时'
+      x_days:
+        one: '%{count} 天'
+        other: '%{count} 天'
+      about_x_months:
+        one: '约 %{count} 个月'
+        other: '约 %{count} 个月'
+      x_months:
+        one: '%{count} 个月'
+        other: '%{count} 个月'
+      about_x_years:
+        one: '约 %{count} 年'
+        other: '约 %{count} 年'
+      over_x_years:
+        one: '超过 %{count} 年'
+        other: '超过 %{count} 年'
+      almost_x_years:
+        one: '接近 %{count} 年'
+        other: '接近 %{count} 年'
+      x_years:
+        one: '%{count} 年'
+        other: '%{count} 年'
+    relative:
+      future: '%{time}后'
+      past: '%{time}前'
+  helpers:
+    page_entries_info:
+      entry:
+        zero: '条'
+        one: '条'
+        other: '条'
+      one_page:
+        display_entries:
+          zero: '未找到 %{entry_name}'
+          one: '显示 <b>1</b> 条 %{entry_name}'
+          other: '显示全部 <b>%{count}</b> 条 %{entry_name}'
+      more_pages:
+        display_entries: '共 <b>%{total}</b> 条，正在显示 %{entry_name} <b>%{first}–%{last}</b>'
+  flash:
+    actions:
+      create:
+        notice: '%{resource_name}创建成功。'
+      update:
+        notice: '%{resource_name}更新成功。'
+      destroy:
+        notice: '%{resource_name}删除成功。'
+        alert: '%{resource_name}删除失败。'
+  widget:
+    errors:
+      disabled: '小组件未开启。'
+      invalid_token: '访客令牌无效或已过期。'
+      linked_elsewhere: '此电子邮箱地址属于另一个账号。'
+      no_account: '该访客没有账号。'
+      staff_account: '版主和管理员请在反馈站点登录，不要通过小组件。'
+      blocked: '此账号已被封禁。'
+    tabs:
+      feedback: '反馈'
+      roadmap: '路线图'
+      changelog: '更新日志'
+    close: '关闭'
+    board: '看板'
+    signed_in_as: '已登录为 %{name}'
+    open_site: '打开反馈站点'
+  webhook_templates:
+    new_post: '%{board} 的新反馈：%{post}'
+    new_post_pending_approval: '%{board} 有待批准的反馈：%{post}'
+    delete_post: '帖子 #%{id} 已删除'
+    post_status_change: '%{post} 现为：%{status}'
+    new_comment: '%{author} 评论了 %{post}'
+    new_vote: '%{author} 为 %{post} 投了票'
+    new_user: '新用户：%{user}'
+    open: '打开'
+  mailers:
+    admin:
+      test_email:
+        subject: '[%{site_name}] 测试邮件'
+        body: '来自 %{site_name} 的这封测试邮件已经送达，说明邮件发送功能正常。'
+        details: '通过 %{delivery_method} 从 %{from} 发送。'
+      user_pending_approval:
+        subject: '[%{site_name}] 新账号等待批准：%{name}'
+        body_html: '<strong>%{name}</strong>（%{email}）已注册，正在等待您的批准。'
+        review: '在“审核 › 用户”中查看'
+    user:
+      notify_follower_of_changelog_entry:
+        subject: '[%{site_name}] 更新日志新内容：%{title}'
+        body_html: '更新日志有一条新记录：<strong>%{title}</strong>。它交付了您关注的反馈'
+        read_entry: '阅读更新日志'
+      account_approved:
+        subject: '[%{site_name}] 您的账号已获批准'
+        body_html: '管理员已批准您的账号。现在可以登录了。'
+        sign_in: '登录'
+      recap:
+        subject: '[%{site_name}] 反馈空间活动%{frequency}摘要'
+        body_html: '以下是您反馈空间活动的%{frequency}摘要'
+        published_posts_count_html: '新发布的反馈：%{count}'
+        pending_posts_count_html: '待批准的新反馈：%{count}'
+        status_changes_title: '您关注的帖子的状态变更'
+        no_status: '无状态'
+        top_posts_title: '本时段得票最多'
+        period_votes:
+          one: '%{count} 张新票'
+          other: '%{count} 张新票'
+        more_posts: '以及另外 %{count} 条'
+  instance_admin:
+    title: '实例管理'
+    tenants:
+      title: '反馈空间'
+      new: '新建反馈空间'
+      create: '创建反馈空间'
+      site_name: '名称'
+      subdomain: '子域名'
+      subdomain_hint: '字母、数字和连字符。地址将变为 <子域名>.%{host}。'
+      owner_email: '所有者邮箱'
+      owner_name: '所有者姓名'
+      locale: '语言'
+      address: '地址'
+      status: '状态'
+      users: '用户'
+      posts: '帖子'
+      created: '创建时间'
+      actions: '操作'
+      edit: '编辑'
+      save: '保存'
+      back: '返回列表'
+      block: '封禁'
+      unblock: '解除封禁'
+      empty: '还没有反馈空间。'
+      statuses:
+        active: '活跃'
+        pending: '待处理'
+        blocked: '已封禁'
+      custom_domain: '自定义域名'
+      custom_domain_hint: '可选。先添加一条将域名指向 %{target} 的 CNAME 记录。留空即移除。'
+      created_title: '%{site_name} 已就绪'
+      owner_credentials: '所有者的登录信息。密码只显示这一次：'
+      password_hint: '请通过安全渠道发送给所有者，并请其登录后修改。'
+      updated: '%{subdomain} 已保存。'
+      blocked: '%{subdomain} 已被封禁。其页面会显示提示；数据保留。'
+      unblocked: '%{subdomain} 已恢复活跃。'
+      deleted: '%{subdomain} 及其所有数据已删除。'
+      delete_title: '删除反馈空间'
+      delete_warning: '将删除此反馈空间的看板、帖子、评论、投票、用户、Webhook 和设置。此操作无法撤销。如需保留数据，请改为封禁。'
+      confirm_label: '输入“%{subdomain}”以确认'
+      confirm_mismatch: '子域名不匹配，未删除任何内容。'
+      delete: '永久删除'
+  pending_tenant:
+    title: '请验证您的电子邮箱地址'
+    body: '请查看您的邮箱收件箱（和垃圾邮件文件夹），并点击激活链接。'
+    help: '需要帮助？请联系本实例的管理员。'
+  two_factor:
+    invalid_code: '代码无效。请使用身份验证器应用中的当前代码或未使用的备用代码。'
+    login_expired: '登录耗时过长。请重新输入邮箱和密码。'
+    setup_required: '本反馈空间要求管理员和版主使用两步验证。请先在个人资料设置中开启。'
+    already_enabled: '两步验证已开启。'
+    not_enabled: '两步验证未开启。'
+    title: '两步验证'
+    intro: '用第二道步骤保护账号：输入密码后，输入身份验证器应用（例如 Aegis、Google Authenticator、Microsoft Authenticator 或 1Password）中的代码。'
+    set_up: '设置两步验证'
+    scan_help: '用身份验证器应用扫描二维码，然后输入其显示的六位数字代码。'
+    qr_code_alt: '供身份验证器应用扫描的二维码'
+    manual_entry: '或者手动输入此密钥：'
+    code: '代码'
+    turn_on: '开启'
+    code_for_changes: '输入当前代码以生成新的备用代码。'
+    new_backup_codes: '生成新的备用代码'
+    turn_off: '关闭两步验证'
+    turn_off_confirmation: '关闭两步验证？此后您的账号将只受密码保护。'
+    backup_codes: '备用代码'
+    backup_codes_help: '请妥善保存这些备用代码。手机不在手边时，每个代码可登录一次。只显示这一次。'
+    saved_codes: '我已保存这些代码'
+    required_notice: '本反馈空间要求管理员和版主使用两步验证。'
+    login_title: '两步验证'
+    login_help: '输入身份验证器应用中的代码，或某个备用代码。'
+    verify: '验证'
+    start_over: '使用其他账号登录'
+    enabled:
+      one: '已开启。剩余 1 个备用代码。'
+      other: '已开启。剩余 %{count} 个备用代码。'
+  saml:
+    metadata_invalid: '这不是 SAML 身份提供商元数据（包含 SingleSignOnService 的 XML）。'
+  ldap:
+    invalid_login: '%{label} 的登录用户名或密码无效。'
+    not_found: '未找到与此登录用户名对应的唯一条目。请检查 Base DN 和用户筛选器。'
+  my_feedback:
+    title: '我的反馈'
+    filters:
+      created: '发表过'
+      voted: '投过票'
+      followed: '关注中'
+    empty:
+      created: '您还没有发表任何反馈。'
+      voted: '您还没有为任何帖子投票。'
+      followed: '您还没有关注任何帖子。'
+    approval:
+      pending: '等待批准'
+      rejected: '已驳回'
+      merged: '已合并'
+  changelog:
+    title: '更新日志'
+    empty: '这里还没有内容。'
+    new_entry: '新记录'
+    draft: '草稿'
+    delivers: '交付：'
+    rss_feed: 'RSS 订阅源'
+    form:
+      title: '标题'
+      body: '正文（Markdown）'
+      posts: '交付的帖子'
+      posts_help: '这些帖子的关注者会在记录首次发布时收到一封电子邮件。'
+      search_posts: '搜索帖子'
+      add_post: '添加'
+      remove_post: '移除'
+      save_draft: '保存草稿'
+      publish: '发布'
+      unpublish: '退回草稿'
+      ai_draft: '用 AI 起草正文'
+      ai_draft_loading: '正在撰写…'
+      ai_draft_hint: '所交付帖子的标题和描述会被发送到已配置的 AI 提供商。'
+  views:
+    pagination:
+      first: '&laquo; 首页'
+      last: '末页 &raquo;'
+      previous: '&lsaquo; 上一页'
+      next: '下一页 &rsaquo;'
+      truncate: '&hellip;'

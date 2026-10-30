@@ -15,7 +15,7 @@ hi:
         new_password_confirmation: 'New password confirmation'
         current_password: 'Current password'
         notifications_enabled: 'Notifications enabled'
-        notifications_enabled_help: "if disabled, you won't receive any notification"
+        notifications_enabled_help: 'if disabled, you won''t receive any notification'
         waiting_confirmation: 'Currently waiting confirmation for %{email}'
         no_password_set: 'You must set a password to update your profile'
         set_password: 'Set password'
@@ -28,14 +28,34 @@ hi:
         profile_settings: 'Profile settings'
         cancel_account: 'Cancel account'
         forgot_password: 'Forgot your password?'
-        confirmation_instructions_not_received: "Didn't receive confirmation instructions?"
-        unlock_instructions_not_received: "Didn't receive unlock instructions?"
+        confirmation_instructions_not_received: 'Didn''t receive confirmation instructions?'
+        unlock_instructions_not_received: 'Didn''t receive unlock instructions?'
         send_reset_password_instructions: 'Send me reset password instructions'
         resend_confirmation_instructions: 'Resend confirmation instructions'
         resend_unlock_instructions: 'Resend unlock instructions'
         change_password: 'Change password'
         password_help: '%{count} characters minimum'
         email_registration_not_allowed: 'Email registration not allowed'
+        notifications: 'सूचनाएँ'
+        recap_notification_frequency_daily: 'दैनिक'
+        recap_notification_frequency_weekly: 'साप्ताहिक'
+        recap_notification_frequency_monthly: 'मासिक'
+        recap_notification_frequency_help: 'ईमेल से सारांश: नया फ़ीडबैक, सबसे अधिक वोट वाली पोस्टें और अनुसरण की पोस्टों के स्थिति परिवर्तन (मॉडरेटर: स्वीकृति की प्रतीक्षा में फ़ीडबैक भी)। कुछ न होने पर कुछ नहीं भेजा जाता।'
+        log_in_with_email: 'बजाय ईमेल और पासवर्ड से लॉग इन करें'
+        login_name: 'लॉगिन नाम'
+        ldap_info: 'अपने %{label} से लॉग इन करें।'
+        my_data: 'मेरा डेटा'
+        my_data_help: 'यह फ़ीडबैक स्पेस आपके बारे में जो सब सुरक्षित करता है उसे डाउनलोड करें: प्रोफ़ाइल, पोस्ट, टिप्पणियाँ, वोट और अनुसरण की पोस्टें (JSON)।'
+        download_my_data: 'मेरा डेटा डाउनलोड करें'
+        oauth_only_info: 'नीचे किसी OAuth प्रदाता से लॉग इन और पंजीकरण करें। इस साइट पर ईमेल लॉगिन अक्षित है।'
+      api_key:
+        title: 'API कुंजी'
+        current_api_key_help: 'आपने पहले API कुंजी बनाई है और सुरक्षा कारणों से उसे फिर नहीं दिखाया जा सकता। खो दी हो तो नीचे नई बना सकते हैं।'
+        generate_api_key: 'API कुंजी बनाएँ'
+        generated_api_key_help: 'इस API कुंजी को सुरक्षित जगह पर रखें, आप इसे फिर नहीं देख पाएँगे।'
+        generated_api_key_successfully: 'API कुंजी सफलतापूर्वक बनाई गई!'
+        confirm_generate_new_api_key: 'नई API कुंजी बनाएँ? पुरानी अमान्य हो जाएगी।'
+        api_key_learn_more: 'API का उपयोग कैसे करें, जानें'
     no_status: 'No status'
     select_placeholder: 'Select...'
     loading: 'Loading...'
@@ -56,6 +76,11 @@ hi:
       approve: 'Approve'
       reject: 'Reject'
       copy_to_clipboard: 'Copy to clipboard'
+      preview: 'पूर्वावलोकन'
+      move_up: 'ऊपर ले जाएँ'
+      move_down: 'नीचे ले जाएँ'
+    errors:
+      not_found: 'पृष्ठ नहीं मिला'
   header:
     menu:
       site_settings: 'Site settings'
@@ -63,9 +88,18 @@ hi:
       profile_header: 'Profile'
       profile_settings: 'Profile settings'
       sign_out: 'Sign out'
+      my_feedback: 'मेरा फ़ीडबैक'
     log_in: 'Log in / Sign up'
   roadmap:
     title: 'Roadmap'
+    empty: 'रोडमैप खाली है।'
+    filter_by_board: 'बोर्ड से फ़िल्टर करें'
+    more_posts:
+      one: '+ %{count} और पोस्ट'
+      other: '+ %{count} और पोस्टें'
+    sort_by:
+      most_voted: 'सबसे अधिक वोट'
+      recently_updated: 'हाल में अद्यतन'
   blocked_tenant:
     title: 'This feedback space has been blocked'
   board:
@@ -80,10 +114,13 @@ hi:
       anonymous_submission_help: 'You are posting anonymously'
       non_anonymous_submission_help: 'You are posting as %{name}'
       submit_pending: 'Your feedback has been submitted and is now pending moderator approval!'
+      status: 'प्रारंभिक स्थिति (केवल मॉडरेटर)'
+      similar_posts_title: 'समान पोस्टें पहले से हैं — बेहतर उनमें से किसी को वोट दें?'
     search_box:
       title: 'Search'
     filter_box:
       title: 'Filter by status'
+      tags: 'टैग से फ़िल्टर करें'
     sort_by_box:
       title: 'Sort by'
       trending: 'Trending'
@@ -92,6 +129,8 @@ hi:
       oldest: 'Oldest'
     posts_list:
       empty: 'There are no posts'
+      load_more: 'और लोड करें'
+    rss_feed: 'RSS फ़ीड'
   post:
     published_by: 'Published by'
     published_anonymously: 'Published anonymously'
@@ -101,18 +140,54 @@ hi:
       title: 'Likes'
     action_box:
       follow_button: 'Follow post'
-      following_description: "you're receiving notifications about new updates on this post"
-      not_following_description: "you won't receive notifications about this post"
+      following_description: 'you''re receiving notifications about new updates on this post'
+      not_following_description: 'you won''t receive notifications about this post'
     comments:
       title: 'Activity'
       post_update_badge: 'Update'
       reply_button: 'Reply'
+      empty: 'अभी कोई टिप्पणी नहीं है'
     new_comment:
       body_placeholder: 'Leave a comment'
       submit_button: 'Submit'
       is_post_update: 'Mark as update'
       user_notification: 'Users that follow this post will be notified'
       not_logged_in: 'You need to log in to post comments'
+    merge:
+      same_post: 'पोस्ट खुद में ही विलय नहीं हो सकती।'
+      already_merged: 'पोस्टों में से एक पहले से विलय है।'
+      button: 'दूसरी पोस्ट में विलय करें'
+      search: 'वह पोस्ट खोजें जिसे रखना है'
+      help: 'वोट, अनुयायी और टिप्पणियाँ आपकी चुनी पोस्ट पर चले जाते हैं; यह पोस्ट फिर वहाँ ले जाएगी। यह पलटाया नहीं जा सकता।'
+      into_this: 'यहाँ विलय करें'
+      confirmation: 'इस पोस्ट का "%{target}" में विलय? वोट, अनुयायी और टिप्पणियाँ वहाँ चली जाती हैं। पलटाया नहीं जा सकता।'
+      merged_from: 'से विलय:'
+    tags:
+      title: 'टैग'
+    in_changelog: 'परिवर्तन-लॉग में:'
+    source:
+      title: 'स्रोत'
+      label: 'स्रोत'
+      url: 'स्रोत का लिंक'
+    ai_translation:
+      button: 'अनुवाद करें'
+      loading: 'अनुवाद हो रहा है…'
+      hide: 'अनुवाद छिपाएँ'
+      label: 'AI अनुवाद'
+      hint: 'पाठ कॉन्फ़िगर AI प्रदाता को भेजा जाता है।'
+    ai_suggestion:
+      button: 'बोर्ड और टैग सुझाएँ'
+      loading: 'सोच रहा है…'
+      hint: 'शीर्षक और विवरण कॉन्फ़िगर AI प्रदाता को भेजे जाते हैं।'
+      board: 'बोर्ड:'
+      tags: 'टैग:'
+      none: 'कोई सुझाव नहीं: पोस्ट के पास जो है उससे बेहतर कुछ फिट नहीं बैठता।'
+      apply: 'लागू करें'
+    ai_summary:
+      title: 'AI सारांश'
+      button: 'चर्चा का सारांश बनाएँ'
+      loading: 'सारांश बन रहा है…'
+      hint: 'शीर्षक, विवरण और टिप्पणियाँ कॉन्फ़िगर AI प्रदाता को भेजी जाती हैं।'
   site_settings:
     menu:
       title: 'Site settings'
@@ -123,6 +198,10 @@ hi:
       roadmap: 'Roadmap'
       invitations: 'Invitations'
       appearance: 'Appearance'
+      tags: 'टैग'
+      widget: 'विजेट'
+      webhooks: 'Webhooks'
+      audit_log: 'ऑडिट लॉग'
     info_box:
       up_to_date: 'All changes saved'
       dirty: 'Changes not saved'
@@ -132,7 +211,7 @@ hi:
       brand_setting_name: 'Name only'
       brand_setting_logo: 'Logo only'
       brand_setting_none: 'None'
-      use_browser_locale_help: "If you enable this setting, the feedback space will be displayed in the user's browser preferred language. If the language is not available, the default language will be used."
+      use_browser_locale_help: 'If you enable this setting, the feedback space will be displayed in the user''s browser preferred language. If the language is not available, the default language will be used.'
       subtitle_privacy: 'Privacy'
       is_private_help: 'If you enable this setting, only logged in users will be able to see the content of the feedback space.'
       subtitle_moderation: 'Moderation'
@@ -153,12 +232,35 @@ hi:
       show_vote_count_help: 'If you enable this setting, users will be able to see the vote count of posts. This may incentivize users to vote on already popular posts, leading to a snowball effect.'
       show_vote_button_in_board_help: 'If you enable this setting, users will be able to vote posts from the board page. This may incentivize users to vote on more posts, leading to a higher number of votes but of lower significance.'
       hide_unused_statuses_in_filter_by_status_help: 'If you enable this setting, only statuses that are assigned to at least one post in that board will be shown in the filter by status sidebar filter.'
+      test_email: 'परीक्षण ईमेल भेजें'
+      test_email_help: 'ईमेल सेटिंग्स जाँचने को %{email} पर ईमेल भेजता है (EMAIL_* पर्यावरण चर)।'
+      test_email_sent: 'परीक्षण ईमेल %{email} पर भेजा गया (%{method}, %{from} से)। इनबॉक्स और स्पैम देखें।'
+      use_gravatar_help: 'प्रोफ़ाइल चित्र gravatar.com से आते हैं: हर आगंतुक का ब्राउज़र हर चित्र, ईमेल पते के हैश के साथ, gravatar.com से मांगता है। बंद करने से उनकी जगह आद्याक्षर दिखते हैं और तीसरे पक्षों को कुछ नहीं भेजा जाता।'
+      require_two_factor_for_staff_help: 'प्रशासकों और मॉडरेटरों को मॉडरेट या सेटिंग्स बदलने से पहले दो-चरणीय प्रमाणीकरण सेट करना होता है। API कुंजियाँ प्रभावित नहीं होतीं।'
+      subtitle_authentication: 'प्रमाणीकरण'
+      subtitle_mail: 'ईमेल'
+      feedback_approval_policy_new_users_require_approval: 'अनामित फ़ीडबैक और हर खाते की पहली पोस्टों के लिए स्वीकृति अपेक्षित करें'
+      require_user_approval_help: 'ईमेल या OAuth पंजीकरण मॉडरेशन › उपयोगकर्ता में प्रशासक की स्वीकृति तक इंतज़ार करते हैं; हर पंजीकरण पर प्रशासक ईमेल पाता है। आमंत्रित और SAML, LDAP या विजेट से लॉग-इन स्वतः स्वीकृत होते हैं।'
+      trusted_after_posts_help: 'इतनी स्वीकृत पोस्टों के बाद खाते की नई पोस्टें स्वतः स्वीकृत होती हैं। निरस्त नहीं गिनी जातीं।'
+      roadmap_enabled_help: 'यह अक्षित करने पर रोडमैप पृष्ठ अनुपलब्ध हो जाता है और लिंक हेडर से हट जाता है।'
+      default_post_sorting_help: 'बोर्ड स्पष्ट क्रमविन्यास के बिना खुलने पर पोस्टें इस तरह क्रमित होती हैं।'
+      custom_links_help: 'साइट हेडर में अतिरिक्त लिंक, प्रति पंक्ति एक: शीर्षक|URL। उदाहरण: दस्तावेज़|https://example.com/docs'
+      login_only_with_oauth_help: 'यह चालू करने पर ईमेल-पासवर्ड लॉगिन और ईमेल पंजीकरण छिप जाते हैं। उपयोगकर्ता केवल OAuth प्रदाताओं से लॉग इन और पंजीकरण कर सकते हैं। पासवर्ड रीसेट लिंक उपलब्ध रहते हैं।'
+      mail_logo_size_help: 'भेजे जाने वाले ईमेल में दिखाए लोगो का पिक्सेल में आकार।'
     boards:
       title: 'Boards'
       empty: 'There are no boards. Create one below!'
       form:
         name: 'Board name'
         description: 'Board description (optional)'
+        visibility: 'कौन देख सकता है'
+        visibility_help: 'बोर्ड की पोस्टें हर जगह उन लोगों से छिपती हैं जो नहीं देख सकते: सूचियाँ, रोडमैप, खोज, फ़ीड, साइटमैप, ईमेल। मॉडरेटर और प्रशासक हर बोर्ड हमेशा देखते हैं।'
+        slug: 'URL (वैकल्पिक)'
+        slug_help: 'बोर्ड के पते का भाग, जैसे /boards/feature-requests. नाम से बनने के लिए खाली छोड़ें।'
+      visibility:
+        everyone: 'सभी'
+        signed_in: 'केवल लॉग-इन लोग'
+        staff: 'केवल मॉडरेटर और प्रशासक'
     post_statuses:
       title: 'Statuses'
       empty: 'There are no statuses. Create one below!'
@@ -173,6 +275,8 @@ hi:
       show_board_filter: 'Show board filter'
       show_post_status_filter: 'Show status filter'
       embed_help: 'You can embed the roadmap in your website by copying the code above.'
+      help_buttons: 'तीर बटन से स्थिति को रोडमैप में या से बाहर ले जाएँ। स्थितियाँ बनाने या क्रम बदलने के लिए साइट सेटिंग्स > स्थितियाँ पर जाएँ।'
+      embed_scope_help: 'केवल वे दिखाने के लिए बोर्ड या स्थितियाँ चुनें; कुछ न चुनने पर सभी दिखते हैं।'
     invitations:
       new_invitations_title: 'New invitations'
       past_invitations_title: 'Invitations'
@@ -181,16 +285,7 @@ hi:
       subject: 'Email subject'
       subject_default: 'We value your feedback! Join us in shaping %{name}!'
       body: 'Email body'
-      body_default: |
-        Hello!
-
-        We truly appreciate your experience with %{name} and would love to hear your feedback. Your insights help us improve and continue delivering the best possible service.
-
-        Click the link below to share your thoughts and make your voice heard:
-
-        %link%
-
-        Have a great day!
+      body_default: "Hello!\n\nWe truly appreciate your experience with %{name} and would love to hear your feedback. Your insights help us improve and continue delivering the best possible service.\n\nClick the link below to share your thoughts and make your voice heard:\n\n%link%\n\nHave a great day!\n"
       send:
         one: 'Send invitation'
         other: 'Send %{count} invitations'
@@ -207,6 +302,8 @@ hi:
       accepted: 'Accepted'
       sent_at: 'Sent %{when}'
       accepted_at: 'Accepted %{when}'
+      skipped: 'नहीं भेजे गए (पहले से पंजीकृत, पहले से स्वीकृत या अमान्य): %{emails}'
+      expired: 'समाप्त'
     appearance:
       title: 'Appearance'
       learn_more: 'Learn how to customize appearance'
@@ -234,6 +331,162 @@ hi:
         subtitle_oauth_config: 'OAuth configuration'
         subtitle_user_profile_config: 'User profile configuration'
         client_secret_help: 'hidden for security purposes'
+        profile_headers: 'प्रोफ़ाइल अनुरोध के अतिरिक्त हेडर (वैकल्पिक)'
+      ldap:
+        title: 'LDAP / Active Directory'
+        intro: 'लोगों को आपकी कंपनी की डायरेक्टरी के लॉगिन नाम और पासवर्ड से लॉग इन करने दें (OpenLDAP, Active Directory, FreeIPA, ...)। Astuto सेवा खाते से प्रविष्टि खोजता है और उसी प्रविष्टि के रूप में बाँधकर पासवर्ड जाँचता है।'
+        encryption_start_tls: 'StartTLS (पोर्ट 389)'
+        encryption_simple_tls: 'LDAPS (पोर्ट 636)'
+        encryption_plain: 'कोई नहीं (केवल विश्वसनीय नेटवर्क में)'
+        bind_dn_help: 'यदि डायरेक्टरी अनुमति दे तो अनाम खोज के लिए खाली छोड़ें।'
+        bind_password_set: 'एक पासवर्ड सहेजा है। रखने के लिए खाली छोड़ें।'
+        user_filter_help: '%{login} वह होता है जो लोग लिखते हैं। Active Directory: (sAMAccountName=%{login}), OpenLDAP: (uid=%{login})।'
+        test_login: 'लॉगिन नाम से परीक्षण करें'
+        test_help: 'सहेजी सेटिंग्स से संपर्क, सेवा खाता और फ़िल्टर जाँचता है; पासवर्ड आवश्यक नहीं।'
+        test_found: 'मिला:'
+      saml:
+        title: 'SAML एकल साइन-ऑन'
+        intro: 'लोगों को अपनी कंपनी के पहचान प्रदाता से साइन इन करने दें (Microsoft Entra ID, Okta, Keycloak, ADFS, Google Workspace, ...)। वहाँ नीचे की दो मूल्यों से Astuto को ऐप के रूप में पंजीकृत करें, फिर पहचान प्रदाता का मेटाडेटा चिपकाएँ या उसके फ़ील्ड भरें।'
+        sp_entity_id: 'Entity ID / मेटाडेटा URL'
+        acs_url: 'उत्तर URL (Assertion Consumer Service)'
+        metadata: 'पहचान प्रदाता का मेटाडेटा XML'
+        import_metadata: 'मेटाडेटा से भरें'
+        email_attribute_help: 'सामान्य गुण नाम उपयोग होने के लिए खाली छोड़ें, उसके बाद NameID।'
+        auto_create_help: 'अन्यथा केवल वे लोग साइन इन कर सकते हैं जिनका खाता पहले से है (उदाहरण के लिए आमंत्रण से)।'
+      empty: 'अभी कोई OAuth प्रदाता नहीं।'
+    widget:
+      title: 'विजेट'
+      intro: 'आपकी वेबसाइट या ऐप के लिए फ़ीडबैक बटन। यह बोर्ड, रोडमैप और परिवर्तन-लॉग एक पैनल में खोलता है। आपकी ऐप के लॉग-इन आगंतुक अपने खाते से वोट देते और पोस्ट करते हैं: आपका सर्वर नीचे की गुप्त कुंजी से छोटा आगंतुक टोकन हस्ताक्षरित करता है।'
+      enabled: 'विजेट चालू करें'
+      allowed_origins: 'ऐसे साइट जो विजेट दिखा सकते हैं'
+      allowed_origins_help: 'प्रति पंक्ति एक origin, जैसे https://app.example.com. खाली: कोई भी साइट।'
+      auto_create_users: 'नए आगंतुकों के लिए खाता बनाएँ'
+      auto_create_users_help: 'अन्यथा केवल वे लोग लॉग इन होते हैं जिनका खाता पहले से है (वही ईमेल)। मॉडरेटर और प्रशासक कभी विजेट से लॉग इन नहीं होते।'
+      install_title: 'स्थापना'
+      install_intro: 'यह अपनी साइट के पृष्ठों में जोड़ें; VISITOR_TOKEN को अपने सर्वर के टोकन से बदलें, या अनामित आगंतुकों के लिए data-token छोड़ दें।'
+      token_intro: 'आपका सर्वर आगंतुक टोकन इस गुप्त कुंजी से हस्ताक्षरित करता है। इसे सर्वर पर रखें, ब्राउज़र में कभी नहीं।'
+      rotate: 'नई गुप्त कुंजी'
+      rotate_confirm: 'नई गुप्त कुंजी बनाएँ? वर्तमान से हस्ताक्षरित टोकन काम करना बंद कर देंगे।'
+      token_rules: 'Claims: email (आवश्यक), name, id (आपकी उपयोगकर्ता-ID, ईमेल बदलने पर भी खाता जोड़ती है)। केवल HS256; टोकन को एक दिन के भीतर समाप्त होना चाहिए।'
+    tags:
+      title: 'टैग'
+      empty: 'अभी कोई टैग नहीं। टैग पोस्टों को बोर्डों के बीच समूहित करते हैं, जैसे उत्पाद क्षेत्र के हिसाब से; मॉडरेटर उन्हें पोस्टों पर लगाते हैं और आगंतुक उनसे फ़िल्टर करते हैं।'
+      delete_confirmation: 'यह टैग हटाएँ? यह सभी पोस्टों से हटा दिया जाता है।'
+      form:
+        name: 'नाम'
+        color: 'रंग'
+    audit_log:
+      description: 'प्रशासकों और मॉडरेटरों के परिवर्तन: मॉडरेशन, उपयोगकर्ता, बोर्ड, स्थितियाँ, सेटिंग्स, साइन-इन प्रदाता, webhooks, आमंत्रण और API कुंजियाँ। प्रविष्टियाँ एक वर्ष रखी जाती हैं।'
+      filter: 'क्षेत्र से फ़िल्टर करें'
+      all: 'सभी'
+      empty: 'अभी कोई प्रविष्टि नहीं।'
+      load_more: 'पुरानी प्रविष्टियाँ दिखाएँ'
+      unknown_actor: 'कोई'
+      value_yes: 'हाँ'
+      value_no: 'नहीं'
+      filtered: '(छिपा)'
+      invitations_sent:
+        one: '1 आमंत्रण'
+        other: '%{count} आमंत्रण'
+      categories:
+        tag: 'टैग'
+        post: 'पोस्ट'
+        comment: 'टिप्पणियाँ'
+        user: 'उपयोगकर्ता'
+        board: 'बोर्ड'
+        post_status: 'स्थितियाँ'
+        changelog: 'परिवर्तन-लॉग'
+        site_settings: 'सामान्य'
+        o_auth: 'साइन-इन प्रदाता'
+        saml: 'SAML'
+        ldap: 'LDAP'
+        widget: 'विजेट'
+        webhook: 'Webhooks'
+        invitation: 'आमंत्रण'
+        api_key: 'API कुंजियाँ'
+      sources:
+        api: 'REST API'
+        mcp: 'MCP'
+      actions:
+        tag_create: 'ने टैग बनाया'
+        tag_update: 'ने टैग बदला'
+        tag_delete: 'ने टैग हटाया'
+        tag_reorder: 'ने टैग पुनः क्रमित किए'
+        post_create_for_author: 'की ओर से पोस्ट की:'
+        post_update: 'ने पोस्ट बदली'
+        post_delete: 'ने पोस्ट हटाई'
+        post_merge: 'ने विलय किया:'
+        comment_update: 'ने टिप्पणी संपादित की'
+        comment_delete: 'ने टिप्पणी हटाई'
+        user_create: 'ने उपयोगकर्ता बनाया'
+        user_update: 'ने उपयोगकर्ता बदला'
+        user_export: 'ने इसका डेटा डाउनलोड किया:'
+        user_delete: 'ने इसका खाता हटाया:'
+        user_two_factor_enable: 'ने दो-चरणीय प्रमाणीकरण चालू किया:'
+        user_two_factor_disable: 'ने दो-चरणीय प्रमाणीकरण बंद किया:'
+        board_create: 'ने बोर्ड बनाया'
+        board_update: 'ने बोर्ड बदला'
+        board_delete: 'ने बोर्ड हटाया'
+        board_reorder: 'ने बोर्डों का क्रम बदला'
+        post_status_create: 'ने स्थिति बनाई'
+        post_status_update: 'ने स्थिति बदली'
+        post_status_delete: 'ने स्थिति हटाई'
+        post_status_reorder: 'ने स्थितियों का क्रम बदला'
+        changelog_create: 'ने परिवर्तन-लॉग प्रविष्टि लिखी'
+        changelog_update: 'ने परिवर्तन-लॉग प्रविष्टि बदली'
+        changelog_publish: 'ने परिवर्तन-लॉग प्रविष्टि प्रकाशित की'
+        changelog_delete: 'ने परिवर्तन-लॉग प्रविष्टि हटाई'
+        site_settings_update: 'ने साइट सेटिंग्स बदलीं'
+        o_auth_create: 'ने साइन-इन प्रदाता जोड़ा'
+        o_auth_update: 'ने साइन-इन प्रदाता बदला'
+        o_auth_delete: 'ने साइन-इन प्रदाता हटाया'
+        saml_update: 'ने SAML एकल साइन-ऑन बदला:'
+        ldap_update: 'ने LDAP लॉगिन बदला:'
+        widget_update: 'ने विजेट सेटिंग्स बदलीं'
+        widget_rotate_secret: 'ने विजेट की नई गुप्त कुंजी बनाई'
+        webhook_create: 'ने webhook बनाया'
+        webhook_update: 'ने webhook बदला'
+        webhook_delete: 'ने webhook हटाया'
+        webhook_rotate_secret: 'ने webhook की नई हस्ताक्षर कुंजी बनाई'
+        invitation_send: 'ने भेजे'
+        api_key_create: 'ने इसके लिए नई API कुंजी बनाई:'
+    webhooks:
+      deliveries:
+        title: 'हाल की वितरणें'
+        show: 'वितरणें'
+        empty: 'अभी कोई वितरण नहीं।'
+        success: 'पहुँचा दिया'
+        failure: 'विफल'
+        test: 'परीक्षण'
+        last: 'अंतिम वितरण: %{status} %{when}'
+      signing:
+        title: 'हस्ताक्षर'
+        help: 'हर अनुरोध X-Astuto-Signature रखता है: sha256=HMAC-SHA256(secret, "<X-Astuto-Timestamp>.<body>")। पक्का करने के लिए कि अनुरोध इसी फ़ीडबैक स्पेस से आया, प्राप्त करने वाली ओर इसे जाँचें।'
+        rotate: 'नई गुप्त कुंजी'
+        rotate_confirmation: 'जो प्राप्तकर्ता हस्ताक्षर जाँचते हैं उन्हें नई गुप्त कुंजी तुरंत चाहिए। जारी रखें?'
+      title: 'Webhooks'
+      learn_more: 'webhooks कैसे कॉन्फ़िगर और उपयोग करें, जानें'
+      empty: 'कोई webhook नहीं है।'
+      triggers:
+        new_post: 'नई पोस्ट'
+        new_post_pending_approval: 'नई पोस्ट (स्वीकृति की प्रतीक्षा में)'
+        delete_post: 'पोस्ट हटाएँ'
+        post_status_change: 'पोस्ट स्थिति परिवर्तन'
+        new_comment: 'नई टिप्पणी'
+        new_vote: 'नया वोट'
+        new_user: 'नया उपयोगकर्ता'
+      form:
+        title_new: 'नया webhook'
+        title_edit: 'webhook संपादित करें'
+        add_header: 'हेडर जोड़ें'
+        header_n_key: 'हेडर %{n} कुंजी'
+        header_n_value: 'हेडर %{n} मान'
+        template_variables_selector_placeholder: 'कोई टेम्पलेट चर चुनें...'
+        templates_label: 'के लिए भरें'
+        templates_help: 'चुने ट्रिगर के लिए विधि, Content-Type हेडर और संदेश-विषयवस्तु सेट करता है। URL के रूप में चैट उपकरण का आने वाला webhook URL उपयोग करें।'
+        templates_confirm: 'वर्तमान विषयवस्तु बदलें?'
+      test_page:
+        title: 'webhook परीक्षण के परिणाम'
   moderation:
     menu:
       feedback: 'Feedback'
@@ -245,10 +498,10 @@ hi:
     users:
       block: 'Block'
       unblock: 'Unblock'
-      block_confirmation: "%{name} won't be able to log in until it is unblocked. Are you sure?"
-      unblock_confirmation: "%{name} will be able to log in and submit feedback. Are you sure?"
-      role_to_moderator_confirmation: "%{name} will be able to manage posts and users. Proceed only if you trust this person. Are you sure?"
-      role_to_admin_confirmation: "%{name} will be able to manage boards, posts, statuses, users and more. Proceed only if you trust this person. Are you sure?"
+      block_confirmation: '%{name} won''t be able to log in until it is unblocked. Are you sure?'
+      unblock_confirmation: '%{name} will be able to log in and submit feedback. Are you sure?'
+      role_to_moderator_confirmation: '%{name} will be able to manage posts and users. Proceed only if you trust this person. Are you sure?'
+      role_to_admin_confirmation: '%{name} will be able to manage boards, posts, statuses, users and more. Proceed only if you trust this person. Are you sure?'
       role_user: 'User'
       role_moderator: 'Moderator'
       role_admin: 'Administrator'
@@ -256,3 +509,256 @@ hi:
       status_active: 'Active'
       status_blocked: 'Blocked'
       status_deleted: 'Deleted'
+      export_data: 'डेटा डाउनलोड करें (GDPR)'
+      delete_account: 'खाता हटाएँ'
+      delete_account_confirmation: '%{name} का खाता हटाएँ? पोस्टें और टिप्पणियाँ रहती हैं और "हटाया उपयोगकर्ता" दिखाती हैं। पलटाया नहीं जा सकता।'
+      status_pending_approval: 'स्वीकृति की प्रतीक्षा में'
+      approve: 'स्वीकृत करें'
+      search_placeholder: 'नाम या ईमेल से खोजें'
+      filter_all_statuses: 'सभी स्थितियाँ'
+      filter_all_roles: 'सभी भूमिकाएँ'
+      empty: 'कोई उपयोगकर्ता नहीं मिला'
+  number:
+    format:
+      round_mode: 'default'
+    currency:
+      format:
+        negative_format: '-%u%n'
+    percentage:
+      format:
+        format: '%n%'
+    human:
+      storage_units:
+        units:
+          pb: 'PB'
+          eb: 'EB'
+          zb: 'ZB'
+  errors:
+    messages:
+      model_invalid: 'सत्यापन विफल रहा: %{errors}'
+      present: 'खाली होना चाहिए'
+      too_long:
+        one: 'बहुत लंबा है (अधिकतम %{count} वर्ण)'
+        other: 'बहुत लंबा है (अधिकतम %{count} वर्ण)'
+      password_too_long: 'बहुत लंबा है'
+      too_short:
+        one: 'बहुत छोटा है (कम से कम %{count} वर्ण)'
+        other: 'बहुत छोटा है (कम से कम %{count} वर्ण)'
+      wrong_length:
+        one: 'लंबाई गलत है (यह %{count} वर्ण का होना चाहिए)'
+        other: 'लंबाई गलत है (यह %{count} वर्ण का होना चाहिए)'
+      other_than: '%{count} के अलावा कुछ और होना चाहिए'
+      in: '%{count} में होना चाहिए'
+      required: 'मौजूद होना चाहिए'
+    user_pending_approval: 'आपका खाता किसी प्रशासक की स्वीकृति की प्रतीक्षा में है। जब आप लॉग इन कर सकेंगे, तब आपको एक ईमेल मिलेगा।'
+    unavailable_session: "सत्र %{id} अब मेमोरी में उपलब्ध नहीं है।\n\nअगर आप बहु-प्रक्रिया सर्वर (जैसे Unicorn या Puma) पर चल रहे हैं, तो जिस प्रक्रिया ने\nयह अनुरोध संभाला उसने %{id} मेमोरी में रखा नहीं है। प्रक्रियाओं/वर्करों की संख्या एक (1) पर करें या विकास मोड में दूसरा सर्वर इस्तेमाल करें।\n"
+    unacceptable_request: "Accept हेडर में एक समर्थित संस्करण अपेक्षित है।\n"
+    connection_refused: "Web Console मिडलवेयर से जुड़ने में विफल।\nकृपया सुनिश्चित करें कि Rails विकास सर्वर चल रहा है।\n"
+  datetime:
+    distance_in_words:
+      x_years:
+        one: '%{count} वर्ष'
+        other: '%{count} वर्ष'
+    relative:
+      future: '%{time} में'
+      past: '%{time} पहले'
+  helpers:
+    page_entries_info:
+      entry:
+        zero: 'प्रविष्टियाँ'
+        one: 'प्रविष्टि'
+        other: 'प्रविष्टियाँ'
+      one_page:
+        display_entries:
+          zero: 'कोई %{entry_name} नहीं मिली'
+          one: '<b>1</b> %{entry_name} दिखाई जा रही है'
+          other: '<b>सभी %{count}</b> %{entry_name} दिखाई जा रही हैं'
+      more_pages:
+        display_entries: 'कुल <b>%{total}</b> में से %{entry_name} <b>%{first}–%{last}</b> दिखाई जा रही हैं'
+  flash:
+    actions:
+      create:
+        notice: '%{resource_name} सफलतापूर्वक बनाया गया।'
+      update:
+        notice: '%{resource_name} सफलतापूर्वक अद्यतन किया गया।'
+      destroy:
+        notice: '%{resource_name} सफलतापूर्वक हटाया गया।'
+        alert: '%{resource_name} हटाया नहीं जा सका।'
+  widget:
+    errors:
+      disabled: 'विजेट चालू नहीं है।'
+      invalid_token: 'आगंतुक टोकन अमान्य है या उसकी अवधि समाप्त है।'
+      linked_elsewhere: 'यह ईमेल पता दूसरे खाते का है।'
+      no_account: 'इस आगंतुक के लिए कोई खाता नहीं है।'
+      staff_account: 'मॉडरेटर और प्रशासक फ़ीडबैक साइट पर लॉग इन करते हैं, विजेट से नहीं।'
+      blocked: 'यह खाता अवरुद्ध है।'
+    tabs:
+      feedback: 'फ़ीडबैक'
+      roadmap: 'रोडमैप'
+      changelog: 'परिवर्तन-लॉग'
+    close: 'बंद करें'
+    board: 'बोर्ड'
+    signed_in_as: '%{name} के रूप में लॉग इन'
+    open_site: 'फ़ीडबैक साइट खोलें'
+  webhook_templates:
+    new_post: '%{board} पर नया फ़ीडबैक: %{post}'
+    new_post_pending_approval: '%{board} पर स्वीकृति की प्रतीक्षा में फ़ीडबैक: %{post}'
+    delete_post: 'पोस्ट #%{id} हटाई गई'
+    post_status_change: '%{post} अब: %{status}'
+    new_comment: '%{author} ने %{post} पर टिप्पणी की'
+    new_vote: '%{author} ने %{post} के लिए वोट किया'
+    new_user: 'नया उपयोगकर्ता: %{user}'
+    open: 'खोलें'
+  mailers:
+    admin:
+      test_email:
+        subject: '[%{site_name}] परीक्षण ईमेल'
+        body: '%{site_name} से यह परीक्षण ईमेल आया, ईमेल भेजना काम कर रहा है।'
+        details: '%{delivery_method} से %{from} की ओर से भेजा गया।'
+      user_pending_approval:
+        subject: '[%{site_name}] नया खाता स्वीकृति की प्रतीक्षा में: %{name}'
+        body_html: '<strong>%{name}</strong> (%{email}) ने पंजीकरण किया और आपकी स्वीकृति का इंतज़ार कर रहा है।'
+        review: 'मॉडरेशन › उपयोगकर्ता में समीक्षा करें'
+    user:
+      notify_follower_of_changelog_entry:
+        subject: '[%{site_name}] परिवर्तन-लॉग में नया: %{title}'
+        body_html: 'परिवर्तन-लॉग में नई प्रविष्टि है, <strong>%{title}</strong>। यह आपके अनुसरण किए फ़ीडबैक को पहुँचाती है'
+        read_entry: 'परिवर्तन-लॉग पढ़ें'
+      account_approved:
+        subject: '[%{site_name}] आपका खाता स्वीकृत हो गया'
+        body_html: 'एक प्रशासक ने आपका खाता स्वीकृत कर दिया। अब आप लॉग इन कर सकते हैं।'
+        sign_in: 'लॉग इन करें'
+      recap:
+        subject: '[%{site_name}] फ़ीडबैक स्पेस की गतिविधि का %{frequency} सारांश'
+        body_html: 'यहाँ आपके फ़ीडबैक स्पेस की गतिविधियों का %{frequency} सारांश है'
+        published_posts_count_html: 'नई प्रकाशित फ़ीडबैक: %{count}'
+        pending_posts_count_html: 'स्वीकृति की प्रतीक्षा में नई फ़ीडबैक: %{count}'
+        status_changes_title: 'आपके अनुसरण की पोस्टों के स्थिति परिवर्तन'
+        no_status: 'कोई स्थिति नहीं'
+        top_posts_title: 'इस अवधि में सबसे अधिक वोट'
+        period_votes:
+          one: '%{count} नया वोट'
+          other: '%{count} नए वोट'
+        more_posts: 'और %{count} और'
+  instance_admin:
+    title: 'इंस्टेंस प्रशासन'
+    tenants:
+      title: 'फ़ीडबैक स्पेस'
+      new: 'नया फ़ीडबैक स्पेस'
+      create: 'फ़ीडबैक स्पेस बनाएँ'
+      site_name: 'नाम'
+      subdomain: 'उपडोमेन'
+      subdomain_hint: 'अक्षर, अंक और हाइफ़न। पता <उपडोमेन>.%{host} होगा।'
+      owner_email: 'स्वामी का ईमेल'
+      owner_name: 'स्वामी का नाम'
+      locale: 'भाषा'
+      address: 'पता'
+      status: 'स्थिति'
+      users: 'उपयोगकर्ता'
+      posts: 'पोस्ट'
+      created: 'बनाया गया'
+      actions: 'क्रियाएँ'
+      edit: 'संपादित करें'
+      save: 'सहेजें'
+      back: 'सूची पर वापस'
+      block: 'अवरुद्ध करें'
+      unblock: 'अनवरुद्ध करें'
+      empty: 'अभी कोई फ़ीडबैक स्पेस नहीं है।'
+      statuses:
+        active: 'सक्रिय'
+        pending: 'प्रतीक्षारत'
+        blocked: 'अवरुद्ध'
+      custom_domain: 'अपना डोमेन'
+      custom_domain_hint: 'वैकल्पिक। पहले %{target} की ओर इशारा करता CNAME रिकॉर्ड जोड़ें। हटाने के लिए खाली छोड़ें।'
+      created_title: '%{site_name} तैयार है'
+      owner_credentials: 'स्वामी का लॉगिन। पासवर्ड केवल अब दिखता है:'
+      password_hint: 'इसे स्वामी को सुरक्षित माध्यम से भेजें और पहले लॉगिन के बाद बदलने को कहें।'
+      updated: '%{subdomain} सहेजा गया।'
+      blocked: '%{subdomain} अवरुद्ध है। उसके पृष्ठ सूचना दिखाते हैं; डेटा रहता है।'
+      unblocked: '%{subdomain} फिर सक्रिय है।'
+      deleted: '%{subdomain} और उसका सारा डेटा हटा दिया गया।'
+      delete_title: 'फ़ीडबैक स्पेस हटाएँ'
+      delete_warning: 'यह इस फ़ीडबैक स्पेस के बोर्ड, पोस्ट, टिप्पणियाँ, वोट, उपयोगकर्ता, webhooks और सेटिंग्स हटाता है। यह पलटाया नहीं जा सकता। डेटा रखने के लिए बजाय अवरुद्ध करें।'
+      confirm_label: 'पुष्टि के लिए "%{subdomain}" लिखें'
+      confirm_mismatch: 'उपडोमेन मेल नहीं खाया। कुछ नहीं हटाया गया।'
+      delete: 'स्थायी रूप से हटाएँ'
+  pending_tenant:
+    title: 'अपना ईमेल पता सत्यापित करें'
+    body: 'कृपया अपना ईमेल इनबॉक्स (और स्पैम फ़ोल्डर) देखें और सक्रियण लिंक पर क्लिक करें।'
+    help: 'मदद चाहिए? इस इंस्टेंस के प्रशासक से संपर्क करें।'
+  two_factor:
+    invalid_code: 'कोड मान्य नहीं है। अपनी प्रमाणीकरण ऐप का वर्तमान कोड या अप्रयुक्त बैकअप कोड उपयोग करें।'
+    login_expired: 'लॉगिन में बहुत समय लगा। कृपया अपना ईमेल और पासवर्ड फिर से दर्ज करें।'
+    setup_required: 'इस फ़ीडबैक स्पेस में प्रशासकों और मॉडरेटरों के लिए दो-चरणीय प्रमाणीकरण अपेक्षित है। पहले अपनी प्रोफ़ाइल सेटिंग्स में सेट करें।'
+    already_enabled: 'दो-चरणीय प्रमाणीकरण पहले से चालू है।'
+    not_enabled: 'दो-चरणीय प्रमाणीकरण बंद है।'
+    title: 'दो-चरणीय प्रमाणीकरण'
+    intro: 'दूसरे चरण से अपना खाता सुरक्षित करें: पासवर्ड के बाद प्रमाणीकरण ऐप से कोड दर्ज करें (जैसे Aegis, Google Authenticator, Microsoft Authenticator या 1Password)।'
+    set_up: 'दो-चरणीय प्रमाणीकरण सेट करें'
+    scan_help: 'अपनी प्रमाणीकरण ऐप से QR कोड स्कैन करें, फिर उसके दिखाए छह-अंकीय कोड को दर्ज करें।'
+    qr_code_alt: 'प्रमाणीकरण ऐप के लिए QR कोड'
+    manual_entry: 'या यह कुंजी हाथ से दर्ज करें:'
+    code: 'कोड'
+    turn_on: 'चालू करें'
+    code_for_changes: 'नए बैकअप कोड बनाने के लिए वर्तमान कोड दर्ज करें।'
+    new_backup_codes: 'नए बैकअप कोड बनाएँ'
+    turn_off: 'दो-चरणीय प्रमाणीकरण बंद करें'
+    turn_off_confirmation: 'दो-चरणीय प्रमाणीकरण बंद करें? आपका खाता तब केवल पासवर्ड से सुरक्षित रहेगा।'
+    backup_codes: 'बैकअप कोड'
+    backup_codes_help: 'इन बैकअप कोडों को सुरक्षित जगह पर रखें। फ़ोन हाथ में न होने पर हर एक आपको एक बार लॉग इन कराता है। ये केवल अब दिखते हैं।'
+    saved_codes: 'मैंने कोड सहेज लिए हैं'
+    required_notice: 'इस फ़ीडबैक स्पेस में प्रशासकों और मॉडरेटरों के लिए दो-चरणीय प्रमाणीकरण अपेक्षित है।'
+    login_title: 'दो-चरणीय प्रमाणीकरण'
+    login_help: 'अपनी प्रमाणीकरण ऐप का कोड या अपने बैकअप कोडों में से कोई दर्ज करें।'
+    verify: 'सत्यापित करें'
+    start_over: 'दूसरे खाते से लॉग इन करें'
+    enabled:
+      one: 'चालू। 1 बैकअप कोड शेष है।'
+      other: 'चालू। %{count} बैकअप कोड शेष हैं।'
+  saml:
+    metadata_invalid: 'यह SAML पहचान प्रदाता का मेटाडेटा नहीं है (SingleSignOnService वाला XML)।'
+  ldap:
+    invalid_login: 'आपके %{label} के लिए लॉगिन नाम या पासवर्ड अमान्य है।'
+    not_found: 'इस लॉगिन नाम के लिए अद्वितीय प्रविष्टि नहीं मिली। Base DN और उपयोगकर्ता फ़िल्टर जाँचें।'
+  my_feedback:
+    title: 'मेरा फ़ीडबैक'
+    filters:
+      created: 'प्रकाशित'
+      voted: 'वोट किए'
+      followed: 'अनुसरित'
+    empty:
+      created: 'आपने अभी कोई फ़ीडबैक प्रकाशित नहीं किया।'
+      voted: 'आपने अभी किसी पोस्ट के लिए वोट नहीं किया।'
+      followed: 'आप अभी किसी पोस्ट का अनुसरण नहीं कर रहे।'
+    approval:
+      pending: 'स्वीकृति की प्रतीक्षा में'
+      rejected: 'निरस्त'
+      merged: 'विलय हुआ'
+  changelog:
+    title: 'परिवर्तन-लॉग'
+    empty: 'यहाँ अभी कुछ नहीं है।'
+    new_entry: 'नई प्रविष्टि'
+    draft: 'प्रारूप'
+    delivers: 'पहुँचाता है:'
+    rss_feed: 'RSS फ़ीड'
+    form:
+      title: 'शीर्षक'
+      body: 'पाठ (Markdown)'
+      posts: 'पहुँचाई गई पोस्टें'
+      posts_help: 'इन पोस्टों के अनुयायियों को ईमेल मिलता है जब प्रविष्टि पहली बार प्रकाशित होती है।'
+      search_posts: 'पोस्टें खोजें'
+      add_post: 'जोड़ें'
+      remove_post: 'हटाएँ'
+      save_draft: 'प्रारूप सहेजें'
+      publish: 'प्रकाशित करें'
+      unpublish: 'प्रारूप पर वापस'
+      ai_draft: 'AI से पाठ का प्रारूप बनाएँ'
+      ai_draft_loading: 'लिख रहा है…'
+      ai_draft_hint: 'पहुँचाई गई पोस्टों के शीर्षक और विवरण कॉन्फ़िगर AI प्रदाता को भेजे जाते हैं।'
+  views:
+    pagination:
+      first: '&laquo; पहला'
+      last: 'अंतिम &raquo;'
+      previous: '&lsaquo; पिछला'
+      next: 'अगला &rsaquo;'
+      truncate: '&hellip;'

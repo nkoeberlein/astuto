@@ -22,14 +22,14 @@ pl:
         body: 'You can confirm your account email through the link below:'
         action: 'Confirm my account'
       email_changed:
-        body: "We're contacting you to notify you that your email is being changed to %{email}."
-        body2: "We're contacting you to notify you that your email has been changed to %{email}."
+        body: 'We''re contacting you to notify you that your email is being changed to %{email}.'
+        body2: 'We''re contacting you to notify you that your email has been changed to %{email}.'
       password_change:
-        body: "We're contacting you to notify you that your password has been changed."
+        body: 'We''re contacting you to notify you that your password has been changed.'
       reset_password:
         body: 'Someone has requested a link to change your password. You can do this through the link below.'
-        body2: "If you didn't request this, please ignore this email."
-        body3: "Your password won't change until you access the link above and create a new one."
+        body2: 'If you didn''t request this, please ignore this email.'
+        body3: 'Your password won''t change until you access the link above and create a new one.'
         action: 'Change my password'
     user:
       opening_greeting: 'Hello %{name}!'
@@ -87,11 +87,15 @@ pl:
         few: 'Users'
         many: 'Users'
         other: 'Users'
+      webhook:
+        one: 'Webhook'
+        other: 'Webhooki'
     attributes:
       board:
         name: 'Name'
         description: 'Description'
         order: 'Order'
+        visibility: 'Widoczność'
       comment:
         body: 'Body'
         is_post_update: 'Post update'
@@ -137,6 +141,7 @@ pl:
         subdomain: 'Subdomain'
         locale: 'Language'
         custom_domain: 'Custom domain'
+        site_favicon: 'Adres favicony'
       tenant_setting:
         brand_display: 'Display'
         use_browser_locale: 'Use browser language'
@@ -155,6 +160,15 @@ pl:
         show_roadmap_in_header: 'Show roadmap link in header'
         collapse_boards_in_header: 'Collapse boards in header'
         custom_css: 'Custom CSS'
+        use_gravatar: 'Pokazuj avatary z Gravatara'
+        require_two_factor_for_staff: 'Wymagaj uwierzytelniania dwuskładnikowego od administratorów i moderatorów'
+        require_user_approval: 'Zatwierdzaj nowe konta'
+        trusted_after_posts: 'Zaufany po zatwierdzonych wpisach'
+        roadmap_enabled: 'Włącz plan rozwoju'
+        default_post_sorting: 'Domyślne sortowanie wpisów'
+        custom_links: 'Niestandardowe linki w nagłówku'
+        login_only_with_oauth: 'Pokazuj tylko logowanie OAuth'
+        mail_logo_size: 'Rozmiar logo w e-mailach'
       user:
         email: 'Email'
         full_name: 'Full name'
@@ -162,6 +176,39 @@ pl:
         password_confirmation: 'Password confirmation'
         role: 'Role'
         notifications_enabled: 'Notifications enabled'
+        recap_notification_frequency: 'Częstotliwość podsumowań'
+      ldap_config:
+        enabled: 'Używaj logowania LDAP'
+        label: 'Nazwa konta na stronie logowania'
+        host: 'Serwer'
+        port: 'Port'
+        encryption: 'Szyfrowanie'
+        verify_certificate: 'Sprawdzaj certyfikat serwera'
+        base_dn: 'Base DN'
+        bind_dn: 'Konto serwisowe (bind DN)'
+        bind_password: 'Hasło konta serwisowego'
+        user_filter: 'Filtr użytkowników'
+        email_attribute: 'Atrybut z adresem e-mail'
+        name_attribute: 'Atrybut z nazwą'
+        auto_create_users: 'Twórz konto przy pierwszym logowaniu'
+      saml_config:
+        enabled: 'Używaj logowania jednokrotnego SAML'
+        label: 'Tekst przycisku'
+        idp_entity_id: 'Identyfikator providera tożsamości (issuer)'
+        idp_sso_url: 'Adres logowania jednokrotnego providera tożsamości'
+        idp_cert: 'Certyfikat podpisujący providera tożsamości'
+        email_attribute: 'Atrybut z adresem e-mail'
+        name_attribute: 'Atrybut z nazwą'
+        auto_create_users: 'Twórz konto przy pierwszym logowaniu'
+      webhook:
+        name: 'Nazwa'
+        description: 'Opis'
+        is_enabled: 'Włączony'
+        trigger: 'Wyzwalacz'
+        url: 'Adres URL'
+        http_body: 'Treść żądania HTTP'
+        http_method: 'Metoda HTTP'
+        http_headers: 'Nagłówki żądania HTTP'
     errors:
       messages:
         invalid: 'is invalid'

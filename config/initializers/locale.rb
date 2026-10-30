@@ -1,7 +1,7 @@
 # Configure I18n to look at subfolders too
 I18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.yml')]
 
-I18n.available_locales = [:en, :it, :de, :fr, :es, :pt, 'zh-CN', :ru, :vi, :tr, :cs, :pl, :el, :hi, :nl, :sr, :sv]
+I18n.available_locales = [:en, :it, :de, :fr, :es, :pt, 'zh-CN', :ru, :vi, :tr, :cs, :pl, :el, :hi, :nl, :sr, :sv, :ja, :ko]
 
 # Custom pluralization rules
 # The frontend (frontend/src/lib/i18n.tsx) picks one/other from `count` on its own

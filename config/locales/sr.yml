@@ -15,7 +15,7 @@ sr:
         new_password_confirmation: 'New password confirmation'
         current_password: 'Current password'
         notifications_enabled: 'Notifications enabled'
-        notifications_enabled_help: "if disabled, you won't receive any notification"
+        notifications_enabled_help: 'if disabled, you won''t receive any notification'
         waiting_confirmation: 'Currently waiting confirmation for %{email}'
         no_password_set: 'You must set a password to update your profile'
         set_password: 'Set password'
@@ -28,14 +28,34 @@ sr:
         profile_settings: 'Profile settings'
         cancel_account: 'Cancel account'
         forgot_password: 'Forgot your password?'
-        confirmation_instructions_not_received: "Didn't receive confirmation instructions?"
-        unlock_instructions_not_received: "Didn't receive unlock instructions?"
+        confirmation_instructions_not_received: 'Didn''t receive confirmation instructions?'
+        unlock_instructions_not_received: 'Didn''t receive unlock instructions?'
         send_reset_password_instructions: 'Send me reset password instructions'
         resend_confirmation_instructions: 'Resend confirmation instructions'
         resend_unlock_instructions: 'Resend unlock instructions'
         change_password: 'Change password'
         password_help: '%{count} characters minimum'
         email_registration_not_allowed: 'Email registration not allowed'
+        notifications: 'Obaveštenja'
+        recap_notification_frequency_daily: 'Svakodnevno'
+        recap_notification_frequency_weekly: 'Nedeljno'
+        recap_notification_frequency_monthly: 'Mesečno'
+        recap_notification_frequency_help: 'Sažetak poštom: nove povratne informacije, objave s najviše glasova i promene statusa objava koje pratite (moderatori: i povratne informacije koje čekaju odobrenje). Ništa se ne šalje kada se ništa nije desilo.'
+        log_in_with_email: 'Prijavite se pre e-poštom i lozinkom'
+        login_name: 'Ime za prijavu'
+        ldap_info: 'Prijavite se svojim %{label}.'
+        my_data: 'Moji podaci'
+        my_data_help: 'Preuzmite sve što ovaj prostor za povratne informacije čuva o vama: profil, objave, komentare, glasove i praćene objave (JSON).'
+        download_my_data: 'Preuzmi moje podatke'
+        oauth_only_info: 'Prijavite se i registrujte nekim od OAuth dobavljača ispod. Prijava e-poštom je na ovom sajtu isključena.'
+      api_key:
+        title: 'API ključ'
+        current_api_key_help: 'Već imate napravljen API ključ i iz sigurnosnih razloga ne može se ponovo prikazati. Ako ste ga izgubili, možete napraviti novi ispod.'
+        generate_api_key: 'Napravi API ključ'
+        generated_api_key_help: 'Sačuvajte ovaj API ključ na bezbednom mestu, nećete ga videti ponovo.'
+        generated_api_key_successfully: 'API ključ je uspešno napravljen!'
+        confirm_generate_new_api_key: 'Napraviti novi API ključ? Stari se poništava.'
+        api_key_learn_more: 'Naučite kako se koristi API'
     no_status: 'No status'
     select_placeholder: 'Select...'
     loading: 'Loading...'
@@ -56,6 +76,11 @@ sr:
       approve: 'Approve'
       reject: 'Reject'
       copy_to_clipboard: 'Copy to clipboard'
+      preview: 'Pregled'
+      move_up: 'Pomeri gore'
+      move_down: 'Pomeri dole'
+    errors:
+      not_found: 'Stranica nije pronađena'
   header:
     menu:
       site_settings: 'Site settings'
@@ -63,9 +88,18 @@ sr:
       profile_header: 'Profile'
       profile_settings: 'Profile settings'
       sign_out: 'Sign out'
+      my_feedback: 'Moje povratne informacije'
     log_in: 'Log in / Sign up'
   roadmap:
     title: 'Roadmap'
+    empty: 'Plan razvoja je prazan.'
+    filter_by_board: 'Filtriraj po tabli'
+    more_posts:
+      one: '+ %{count} objava više'
+      other: '+ %{count} objava više'
+    sort_by:
+      most_voted: 'Najviše glasova'
+      recently_updated: 'Nedavno izmenjeno'
   blocked_tenant:
     title: 'This feedback space has been blocked'
   board:
@@ -80,10 +114,13 @@ sr:
       anonymous_submission_help: 'You are posting anonymously'
       non_anonymous_submission_help: 'You are posting as %{name}'
       submit_pending: 'Your feedback has been submitted and is now pending moderator approval!'
+      status: 'Početni status (samo moderatori)'
+      similar_posts_title: 'Slične objave već postoje — glasajte radije za neku od njih?'
     search_box:
       title: 'Search'
     filter_box:
       title: 'Filter by status'
+      tags: 'Filtriraj po oznaci'
     sort_by_box:
       title: 'Sort by'
       trending: 'Trending'
@@ -92,6 +129,8 @@ sr:
       oldest: 'Oldest'
     posts_list:
       empty: 'There are no posts'
+      load_more: 'Učitaj više'
+    rss_feed: 'RSS tok'
   post:
     published_by: 'Published by'
     published_anonymously: 'Published anonymously'
@@ -101,18 +140,54 @@ sr:
       title: 'Likes'
     action_box:
       follow_button: 'Follow post'
-      following_description: "you're receiving notifications about new updates on this post"
-      not_following_description: "you won't receive notifications about this post"
+      following_description: 'you''re receiving notifications about new updates on this post'
+      not_following_description: 'you won''t receive notifications about this post'
     comments:
       title: 'Activity'
       post_update_badge: 'Update'
       reply_button: 'Reply'
+      empty: 'Još nema komentara'
     new_comment:
       body_placeholder: 'Leave a comment'
       submit_button: 'Submit'
       is_post_update: 'Mark as update'
       user_notification: 'Users that follow this post will be notified'
       not_logged_in: 'You need to log in to post comments'
+    merge:
+      same_post: 'Objava se ne može spoiti sa samom sobom.'
+      already_merged: 'Jedna od objava je već spojena.'
+      button: 'Spoji u drugu objavu'
+      search: 'Nađi objavu koju treba zadržati'
+      help: 'Glasovi, pratioci i komentari prelaze na objavu koju izaberete; ona potom vodi tamo. Ne može se poništiti.'
+      into_this: 'Spoji ovde'
+      confirmation: 'Spojiti ovu objavu u „%{target}“? Glasovi, pratioci i komentari prelaze tamo. Ne može se poništiti.'
+      merged_from: 'Spojeno iz:'
+    tags:
+      title: 'Oznake'
+    in_changelog: 'U dnevniku izmena:'
+    source:
+      title: 'Izvor'
+      label: 'Izvor'
+      url: 'Veza do izvora'
+    ai_translation:
+      button: 'Prevedi'
+      loading: 'Prevodim…'
+      hide: 'Sakrij prevod'
+      label: 'AI prevod'
+      hint: 'Tekst se šalje podešenom dobavljaču veštačke inteligencije.'
+    ai_suggestion:
+      button: 'Predloži tablu i oznake'
+      loading: 'Razmišljam…'
+      hint: 'Naslov i opis se šalju podešenom dobavljaču veštačke inteligencije.'
+      board: 'Tabla:'
+      tags: 'Oznake:'
+      none: 'Nema predloga: ništa ne odgovara bolje od onoga što objava već ima.'
+      apply: 'Primeni'
+    ai_summary:
+      title: 'AI sažetak'
+      button: 'Sažmi raspravu'
+      loading: 'Sažimam…'
+      hint: 'Naslov, opis i komentari se šalju podešenom dobavljaču veštačke inteligencije.'
   site_settings:
     menu:
       title: 'Site settings'
@@ -123,6 +198,10 @@ sr:
       roadmap: 'Roadmap'
       invitations: 'Invitations'
       appearance: 'Appearance'
+      tags: 'Oznake'
+      widget: 'Vidžet'
+      webhooks: 'Webhook-ovi'
+      audit_log: 'Dnevnik pregleda'
     info_box:
       up_to_date: 'All changes saved'
       dirty: 'Changes not saved'
@@ -132,7 +211,7 @@ sr:
       brand_setting_name: 'Name only'
       brand_setting_logo: 'Logo only'
       brand_setting_none: 'None'
-      use_browser_locale_help: "If you enable this setting, the feedback space will be displayed in the user's browser preferred language. If the language is not available, the default language will be used."
+      use_browser_locale_help: 'If you enable this setting, the feedback space will be displayed in the user''s browser preferred language. If the language is not available, the default language will be used.'
       subtitle_privacy: 'Privacy'
       is_private_help: 'If you enable this setting, only logged in users will be able to see the content of the feedback space.'
       subtitle_moderation: 'Moderation'
@@ -153,12 +232,35 @@ sr:
       show_vote_count_help: 'If you enable this setting, users will be able to see the vote count of posts. This may incentivize users to vote on already popular posts, leading to a snowball effect.'
       show_vote_button_in_board_help: 'If you enable this setting, users will be able to vote posts from the board page. This may incentivize users to vote on more posts, leading to a higher number of votes but of lower significance.'
       hide_unused_statuses_in_filter_by_status_help: 'If you enable this setting, only statuses that are assigned to at least one post in that board will be shown in the filter by status sidebar filter.'
+      test_email: 'Pošalji probnu e-poruku'
+      test_email_help: 'Šalje e-poruku na %{email} radi provere podešavanja e-pošte (EMAIL_* promenljive okruženja).'
+      test_email_sent: 'Probna e-poruka poslata na %{email} (%{method}, od %{from}). Proverite sanduče i neželjenu poštu.'
+      use_gravatar_help: 'Slike profila dolaze sa gravatar.com: pregledač svakog posetioca traži svaku sliku od gravatar.com s hešom adrese e-pošte. Isključite da bi se umesto toga prikazivala početna slova i ništa ne slalo trećima.'
+      require_two_factor_for_staff_help: 'Administratori i moderatori moraju podesiti dvo-faktorsku proveru pre nego što mogu moderirati ili menjati podešavanja. API ključevi nisu obuhvaćeni.'
+      subtitle_authentication: 'Autentifikacija'
+      subtitle_mail: 'E-poruke'
+      feedback_approval_policy_new_users_require_approval: 'Zahtevaj odobrenje za anonimne povratne informacije i prve objave svakog naloga'
+      require_user_approval_help: 'Prijava e-poštom ili OAuth čeka dok ih administrator odobri u Moderaciji › Korisnici; administrator dobija e-mail za svaku. Pozvani i prijave preko SAML, LDAP ili vidžeta odobravaju se sami.'
+      trusted_after_posts_help: 'Posle toliko odobrenih objava nove objave naloga odobravaju se sami. Odbijene se ne računaju.'
+      roadmap_enabled_help: 'Ako ovo isključite, stranica plana razvoja postaje nedostupna i veza se uklanja iz zaglavlja.'
+      default_post_sorting_help: 'Objave se ovako sortiraju kada se tabla otvori bez izričitog sortiranja.'
+      custom_links_help: 'Dodatne veze u zaglavlju sajta, jedna po redu: Naziv|URL. Primer: Dokumentacija|https://example.com/docs'
+      login_only_with_oauth_help: 'Ako ovo uključite, prijava e-poštom i lozinkom i registracija e-poštom se skrivaju. Korisnici mogu da se prijavljuju i registruju samo preko OAuth dobavljača. Veze za reset lozinke ostaju dostupne.'
+      mail_logo_size_help: 'Veličina logotipa u pikselima u odlazećim e-porukama.'
     boards:
       title: 'Boards'
       empty: 'There are no boards. Create one below!'
       form:
         name: 'Board name'
         description: 'Board description (optional)'
+        visibility: 'Ko to može videti'
+        visibility_help: 'Objave table skrivaju se svugde od ljudi koji ih ne smeju videti: spiskovi, plan razvoja, pretraga, tokovi, mapa sajta, e-pošta. Moderatori i administratori uvek vide svaku tablu.'
+        slug: 'URL (neobavezno)'
+        slug_help: 'Deo adrese table, npr. /boards/feature-requests. Ostavite prazno da se generiše iz naziva.'
+      visibility:
+        everyone: 'Svi'
+        signed_in: 'Samo prijavljeni'
+        staff: 'Samo moderatori i administratori'
     post_statuses:
       title: 'Statuses'
       empty: 'There are no statuses. Create one below!'
@@ -173,6 +275,8 @@ sr:
       show_board_filter: 'Show board filter'
       show_post_status_filter: 'Show status filter'
       embed_help: 'You can embed the roadmap in your website by copying the code above.'
+      help_buttons: 'Dugmetom strelice premeštate status u plan razvoja ili iz njega. Statusove pravite ili menjajte redosled u Podešavanja sajta > Statusovi.'
+      embed_scope_help: 'Izaberite table ili statusove da biste prikazali samo njih; bez izbora prikazuje se sve.'
     invitations:
       new_invitations_title: 'New invitations'
       past_invitations_title: 'Invitations'
@@ -181,16 +285,7 @@ sr:
       subject: 'Email subject'
       subject_default: 'We value your feedback! Join us in shaping %{name}!'
       body: 'Email body'
-      body_default: |
-        Hello!
-
-        We truly appreciate your experience with %{name} and would love to hear your feedback. Your insights help us improve and continue delivering the best possible service.
-
-        Click the link below to share your thoughts and make your voice heard:
-
-        %link%
-
-        Have a great day!
+      body_default: "Hello!\n\nWe truly appreciate your experience with %{name} and would love to hear your feedback. Your insights help us improve and continue delivering the best possible service.\n\nClick the link below to share your thoughts and make your voice heard:\n\n%link%\n\nHave a great day!\n"
       send:
         one: 'Send invitation'
         few: 'Send %{count} invitations'
@@ -208,6 +303,8 @@ sr:
       accepted: 'Accepted'
       sent_at: 'Sent %{when}'
       accepted_at: 'Accepted %{when}'
+      skipped: 'Nije poslato (već prijavljeni, već prihvaćeni ili nevažeći): %{emails}'
+      expired: 'Isteklo'
     appearance:
       title: 'Appearance'
       learn_more: 'Learn how to customize appearance'
@@ -235,6 +332,162 @@ sr:
         subtitle_oauth_config: 'OAuth configuration'
         subtitle_user_profile_config: 'User profile configuration'
         client_secret_help: 'hidden for security purposes'
+        profile_headers: 'Dodatna zaglavlja za zahtev profila (neobavezno)'
+      ldap:
+        title: 'LDAP / Active Directory'
+        intro: 'Dozvolite ljudima da se prijavljuju imenom i lozinkom iz poslovnog imenika (OpenLDAP, Active Directory, FreeIPA, ...). Astuto traži zapis servisnim nalogom i proverava lozinku vezivanjem na taj zapis.'
+        encryption_start_tls: 'StartTLS (port 389)'
+        encryption_simple_tls: 'LDAPS (port 636)'
+        encryption_plain: 'Nema (samo unutar poverljive mreže)'
+        bind_dn_help: 'Ostavite prazno za anonimnu pretragu, ako imenik to dozvoljava.'
+        bind_password_set: 'Lozinka je sačuvana. Ostavite prazno da se zadrži.'
+        user_filter_help: '%{login} označava ono što ljudi upišu. Active Directory: (sAMAccountName=%{login}), OpenLDAP: (uid=%{login}).'
+        test_login: 'Proverite imenom za prijavu'
+        test_help: 'Proverava vezu, servisni nalog i filter sa sačuvanim podešavanjima; lozinka nije potrebna.'
+        test_found: 'Nađeno:'
+      saml:
+        title: 'SAML jedinstvena prijava'
+        intro: 'Dozvolite ljudima da se prijavljuju preko poslovnog dobavljača identiteta (Microsoft Entra ID, Okta, Keycloak, ADFS, Google Workspace, ...). Registrujte tamo Astuto kao aplikaciju s dve vrednosti ispod, pa nalepite metapodatke dobavljača ili popunite njegove unosnice.'
+        sp_entity_id: 'Entity ID / adresa metapodataka'
+        acs_url: 'Adresa odgovora (Assertion Consumer Service)'
+        metadata: 'XML metapodaci dobavljača identiteta'
+        import_metadata: 'Popuni iz metapodataka'
+        email_attribute_help: 'Ostavite prazno da bi se koristila uobičajena imena atributa, pa NameID.'
+        auto_create_help: 'Inače se prijavljuju samo ljudi koji već imaju nalog (na primer preko poziva).'
+      empty: 'Još nema OAuth dobavljača.'
+    widget:
+      title: 'Vidžet'
+      intro: 'Dugme za povratne informacije za vaš sajt ili aplikaciju. Otvara table, plan razvoja i dnevnik izmena u panelu. Prijavljeni posetioci vaše aplikacije glasaju i objavljuju pod svojim nalogom: vaš server potpisuje kratak token posetioca tajnom ispod.'
+      enabled: 'Uključi vidžet'
+      allowed_origins: 'Sajtovi smeju prikazati vidžet'
+      allowed_origins_help: 'Jedan origin po redu, npr. https://app.example.com. Prazno: bilo koji sajt.'
+      auto_create_users: 'Napravi nalog novim posetiocima'
+      auto_create_users_help: 'Inače se prijavljuju samo ljudi koji već imaju nalog (ista e-pošta). Moderatori i administratori se nikad ne prijavljuju kroz vidžet.'
+      install_title: 'Ugradnja'
+      install_intro: 'Dodajte ovo na stranice sajta; zamenite VISITOR_TOKEN tokenom sa svog servera ili izostavite data-token za anonimne posetioce.'
+      token_intro: 'Vaš server potpisuje token posetioca ovom tajnom. Držite je na serveru, nikad u pregledaču.'
+      rotate: 'Nova tajna'
+      rotate_confirm: 'Napraviti novu tajnu? Tokeni potpisani sadašnjom prestaju da rade.'
+      token_rules: 'Claims: email (obavezno), name, id (vaš korisnički ID, povezuje nalog i kad se e-pošta menja). Samo HS256; token mora istekći u roku od jednog dana.'
+    tags:
+      title: 'Oznake'
+      empty: 'Još nema oznaka. Oznake grupišu objave preko tabala, npr. po oblasti proizvoda; moderatore ih stavljaju na objave, a posetioci filtriraju po njima.'
+      delete_confirmation: 'Obrisati ovu oznaku? Uklanja se sa svih objava.'
+      form:
+        name: 'Naziv'
+        color: 'Boja'
+    audit_log:
+      description: 'Izmene administratora i moderatora: moderacija, korisnici, table, statusi, podešavanja, dobavljači prijave, webhook-ovi, pozivi i API ključevi. Unosi se čuvaju godinu dana.'
+      filter: 'Filtriraj po oblasti'
+      all: 'Sve'
+      empty: 'Još nema unosa.'
+      load_more: 'Prikaži starije unose'
+      unknown_actor: 'Neko'
+      value_yes: 'da'
+      value_no: 'ne'
+      filtered: '(skriveno)'
+      invitations_sent:
+        one: '1 poziv'
+        other: '%{count} poziva'
+      categories:
+        tag: 'Oznake'
+        post: 'Objave'
+        comment: 'Komentari'
+        user: 'Korisnici'
+        board: 'Table'
+        post_status: 'Statusi'
+        changelog: 'Dnevnik izmena'
+        site_settings: 'Opšte'
+        o_auth: 'Dobavljači prijave'
+        saml: 'SAML'
+        ldap: 'LDAP'
+        widget: 'Vidžet'
+        webhook: 'Webhook-ovi'
+        invitation: 'Pozivi'
+        api_key: 'API ključevi'
+      sources:
+        api: 'REST API'
+        mcp: 'MCP'
+      actions:
+        tag_create: 'je napravio oznaku'
+        tag_update: 'je izmenio oznaku'
+        tag_delete: 'je obrisao oznaku'
+        tag_reorder: 'je preredio oznake'
+        post_create_for_author: 'je objavio za:'
+        post_update: 'je izmenio objavu'
+        post_delete: 'je obrisao objavu'
+        post_merge: 'je spojio:'
+        comment_update: 'je uredio komentar'
+        comment_delete: 'je obrisao komentar'
+        user_create: 'je napravio korisnika'
+        user_update: 'je izmenio korisnika'
+        user_export: 'je preuzeo podatke korisnika'
+        user_delete: 'je obrisao nalog korisnika'
+        user_two_factor_enable: 'je uključio dvo-faktorsku proveru:'
+        user_two_factor_disable: 'je isključio dvo-faktorsku proveru:'
+        board_create: 'je napravio tablu'
+        board_update: 'je izmenio tablu'
+        board_delete: 'je obrisao tablu'
+        board_reorder: 'je preredio table'
+        post_status_create: 'je napravio status'
+        post_status_update: 'je izmenio status'
+        post_status_delete: 'je obrisao status'
+        post_status_reorder: 'je preredio statusove'
+        changelog_create: 'je napisao unos dnevnika izmena'
+        changelog_update: 'je izmenio unos dnevnika izmena'
+        changelog_publish: 'je objavio unos dnevnika izmena'
+        changelog_delete: 'je obrisao unos dnevnika izmena'
+        site_settings_update: 'je izmenio podešavanja sajta'
+        o_auth_create: 'je dodao dobavljača prijave'
+        o_auth_update: 'je izmenio dobavljača prijave'
+        o_auth_delete: 'je uklonio dobavljača prijave'
+        saml_update: 'je izmenio SAML jedinstvenu prijavu:'
+        ldap_update: 'je izmenio LDAP prijavu:'
+        widget_update: 'je izmenio podešavanja vidžeta'
+        widget_rotate_secret: 'je napravio novu tajnu vidžeta'
+        webhook_create: 'je napravio webhook'
+        webhook_update: 'je izmenio webhook'
+        webhook_delete: 'je obrisao webhook'
+        webhook_rotate_secret: 'je napravio novu tajnu potpisivanja za webhook'
+        invitation_send: 'je poslao'
+        api_key_create: 'je napravio novi API ključ za'
+    webhooks:
+      deliveries:
+        title: 'Skorašnje dostave'
+        show: 'Dostave'
+        empty: 'Još nema dostava.'
+        success: 'Dostavljeno'
+        failure: 'Nije uspelo'
+        test: 'Proba'
+        last: 'Poslednja dostava: %{status} %{when}'
+      signing:
+        title: 'Potpis'
+        help: 'Svaki zahtev nosi X-Astuto-Signature: sha256=HMAC-SHA256(secret, "<X-Astuto-Timestamp>.<body>"). Proverite ga na prijemnoj strani da biste bili sigurni da zahtev potiče iz ovog prostora.'
+        rotate: 'Nova tajna'
+        rotate_confirmation: 'Prijemnici koji proveravaju potpis odmah trebaju novu tajnu. Nastaviti?'
+      title: 'Webhook-ovi'
+      learn_more: 'Naučite kako se podešavaju i koriste webhook-ovi'
+      empty: 'Nema webhook-ova.'
+      triggers:
+        new_post: 'Nova objava'
+        new_post_pending_approval: 'Nova objava (čekа odobrenje)'
+        delete_post: 'Brisanje objave'
+        post_status_change: 'Promena statusa objave'
+        new_comment: 'Novi komentar'
+        new_vote: 'Novi glas'
+        new_user: 'Novi korisnik'
+      form:
+        title_new: 'Novi webhook'
+        title_edit: 'Uredi webhook'
+        add_header: 'Dodaj zaglavlje'
+        header_n_key: 'Ključ zaglavlja %{n}'
+        header_n_value: 'Vrednost zaglavlja %{n}'
+        template_variables_selector_placeholder: 'Izaberite promenljivu šablona...'
+        templates_label: 'Popuni za'
+        templates_help: 'Postavlja metod, zaglavlje Content-Type i telo poruke za izabran okidač. Kao URL koristite dolazeću webhook adresu alata za razgovor.'
+        templates_confirm: 'Zameniti postojeće telo?'
+      test_page:
+        title: 'Rezultati probe webhooka'
   moderation:
     menu:
       feedback: 'Feedback'
@@ -246,10 +499,10 @@ sr:
     users:
       block: 'Block'
       unblock: 'Unblock'
-      block_confirmation: "%{name} won't be able to log in until it is unblocked. Are you sure?"
-      unblock_confirmation: "%{name} will be able to log in and submit feedback. Are you sure?"
-      role_to_moderator_confirmation: "%{name} will be able to manage posts and users. Proceed only if you trust this person. Are you sure?"
-      role_to_admin_confirmation: "%{name} will be able to manage boards, posts, statuses, users and more. Proceed only if you trust this person. Are you sure?"
+      block_confirmation: '%{name} won''t be able to log in until it is unblocked. Are you sure?'
+      unblock_confirmation: '%{name} will be able to log in and submit feedback. Are you sure?'
+      role_to_moderator_confirmation: '%{name} will be able to manage posts and users. Proceed only if you trust this person. Are you sure?'
+      role_to_admin_confirmation: '%{name} will be able to manage boards, posts, statuses, users and more. Proceed only if you trust this person. Are you sure?'
       role_user: 'User'
       role_moderator: 'Moderator'
       role_admin: 'Administrator'
@@ -257,3 +510,247 @@ sr:
       status_active: 'Active'
       status_blocked: 'Blocked'
       status_deleted: 'Deleted'
+      export_data: 'Preuzmi podatke (GDPR)'
+      delete_account: 'Obriši nalog'
+      delete_account_confirmation: 'Obrisati nalog korisnika %{name}? Objave i komentari ostaju i prikazuju „Obrisan korisnik“. Ne može se poništiti.'
+      status_pending_approval: 'Čeka odobrenje'
+      approve: 'Odobri'
+      search_placeholder: 'Traži po imenu ili e-pošti'
+      filter_all_statuses: 'Svi statusovi'
+      filter_all_roles: 'Sve uloge'
+      empty: 'Nije nađen nijedan korisnik'
+  number:
+    format:
+      round_mode: 'default'
+    currency:
+      format:
+        negative_format: '-%u%n'
+    human:
+      storage_units:
+        units:
+          pb: 'PB'
+          eb: 'EB'
+          zb: 'ZB'
+      decimal_units:
+        units:
+          thousand: 'hiljada'
+          million: 'mil.'
+          billion: 'mlrd'
+          trillion: 'bil.'
+          quadrillion: 'kvadr.'
+  errors:
+    messages:
+      password_too_long: 'je predugačko'
+      in: 'mora biti u %{count}'
+    user_pending_approval: 'Vaš nalog čeka odobrenje administratora. Dobićete e-mail kada budete mogli da se prijavite.'
+    unavailable_session: "Sesija %{id} više nije u memoriji.\n\nAko radite na serveru sa više procesa (poput Unicorn ili Puma), proces koji je\nopslužio ovaj zahtev ne čuva %{id} u memoriji. Postavite broj procesa/workera na jedan (1) ili koristite drugi server u razvojnom režimu.\n"
+    unacceptable_request: "U zaglavlju Accept očekuje se podržana verzija.\n"
+    connection_refused: "Nije uspelo povezivanje sa Web Console posrednikom.\nUverite se da radi Rails razvojni server.\n"
+  datetime:
+    distance_in_words:
+      x_years:
+        one: '%{count} godina'
+        other: '%{count} godine'
+    relative:
+      future: 'za %{time}'
+      past: 'pre %{time}'
+  helpers:
+    page_entries_info:
+      entry:
+        zero: 'stavki'
+        one: 'stavka'
+        other: 'stavke'
+      one_page:
+        display_entries:
+          zero: 'Nije pronađena nijedna %{entry_name}'
+          one: 'Prikazana je <b>1</b> %{entry_name}'
+          other: 'Prikazane su <b>sve %{count}</b> %{entry_name}'
+      more_pages:
+        display_entries: 'Prikazane su %{entry_name} <b>%{first}–%{last}</b> od ukupno <b>%{total}</b>'
+  flash:
+    actions:
+      create:
+        notice: '%{resource_name} je uspešno napravljeno.'
+      update:
+        notice: '%{resource_name} je uspešno izmenjeno.'
+      destroy:
+        notice: '%{resource_name} je uspešno obrisano.'
+        alert: '%{resource_name} nije moglo da se obriše.'
+  widget:
+    errors:
+      disabled: 'Vidžet nije uključen.'
+      invalid_token: 'Token posetioca je nevažeći ili je istekao.'
+      linked_elsewhere: 'Ova adresa e-pošte pripada drugom nalogu.'
+      no_account: 'Za ovog posetioca ne postoji nalog.'
+      staff_account: 'Moderatori i administratori se prijavljuju na sajtu povratnih informacija, ne kroz vidžet.'
+      blocked: 'Ovaj nalog je blokiran.'
+    tabs:
+      feedback: 'Povratne informacije'
+      roadmap: 'Plan razvoja'
+      changelog: 'Dnevnik izmena'
+    close: 'Zatvori'
+    board: 'Tabla'
+    signed_in_as: 'Prijavljeni ste kao %{name}'
+    open_site: 'Otvori sajt povratnih informacija'
+  webhook_templates:
+    new_post: 'Nova povratna informacija na tabli %{board}: %{post}'
+    new_post_pending_approval: 'Povratna informacija koja čeka odobrenje na tabli %{board}: %{post}'
+    delete_post: 'Objava #%{id} je obrisana'
+    post_status_change: '%{post} je sada: %{status}'
+    new_comment: '%{author} je komentarisao %{post}'
+    new_vote: '%{author} je glasao za %{post}'
+    new_user: 'Novi korisnik: %{user}'
+    open: 'Otvori'
+  mailers:
+    admin:
+      test_email:
+        subject: '[%{site_name}] Probajna e-poruka'
+        body: 'Ova probna e-poruka sa %{site_name} je stigla, slanje e-poruka radi.'
+        details: 'Poslato putem %{delivery_method} od %{from}.'
+      user_pending_approval:
+        subject: '[%{site_name}] Novi nalog čeka odobrenje: %{name}'
+        body_html: '<strong>%{name}</strong> (%{email}) se prijavio i čeka vaše odobrenje.'
+        review: 'Pregledaj u Moderaciji › Korisnici'
+    user:
+      notify_follower_of_changelog_entry:
+        subject: '[%{site_name}] Novo u dnevniku izmena: %{title}'
+        body_html: 'Dnevnik izmena ima novi unos, <strong>%{title}</strong>. Donosi povratne informacije koje pratite'
+        read_entry: 'Pročitaj dnevnik izmena'
+      account_approved:
+        subject: '[%{site_name}] Vaš nalog je odobren'
+        body_html: 'Administrator je odobrio vaš nalog. Sada se možete prijaviti.'
+        sign_in: 'Prijavi se'
+      recap:
+        subject: '[%{site_name}] %{frequency} sažetak aktivnosti u prostoru za povratne informacije'
+        body_html: 'Evo %{frequency} sažetka aktivnosti u vašem prostoru za povratne informacije'
+        published_posts_count_html: 'Novih objavljenih povratnih informacija: %{count}'
+        pending_posts_count_html: 'Novih povratnih informacija koje čekaju odobrenje: %{count}'
+        status_changes_title: 'Promene statusa objava koje pratite'
+        no_status: 'bez statusa'
+        top_posts_title: 'Najviše glasova u tom periodu'
+        period_votes:
+          one: '%{count} novi glas'
+          other: '%{count} nova glasa'
+        more_posts: 'i još %{count}'
+  instance_admin:
+    title: 'Administracija instance'
+    tenants:
+      title: 'Prostori za povratne informacije'
+      new: 'Novi prostor za povratne informacije'
+      create: 'Napravi prostor za povratne informacije'
+      site_name: 'Naziv'
+      subdomain: 'Pod-domen'
+      subdomain_hint: 'Slova, cifre i crtice. Adresa postaje <poddomen>.%{host}.'
+      owner_email: 'E-mail vlasnika'
+      owner_name: 'Ime vlasnika'
+      locale: 'Jezik'
+      address: 'Adresa'
+      status: 'Status'
+      users: 'Korisnici'
+      posts: 'Objave'
+      created: 'Napravljeno'
+      actions: 'Radnje'
+      edit: 'Izmeni'
+      save: 'Sačuvaj'
+      back: 'Nazad na spisak'
+      block: 'Blokiraj'
+      unblock: 'Odblokiraj'
+      empty: 'Još nema prostora za povratne informacije.'
+      statuses:
+        active: 'Aktivan'
+        pending: 'U toku'
+        blocked: 'Blokiran'
+      custom_domain: 'Sopstveni domen'
+      custom_domain_hint: 'Neobavezno. Prvo dodajte CNAME zapis koji ukazuje domen ka %{target}. Ostavite prazno da se ukloni.'
+      created_title: '%{site_name} je spreman'
+      owner_credentials: 'Prijava vlasnika. Lozinka se pokazuje samo sada:'
+      password_hint: 'Pošaljite je vlasniku bezbednim kanalom i zamolite ga da je promeni nakon prve prijave.'
+      updated: '%{subdomain} sačuvano.'
+      blocked: '%{subdomain} je blokiran. Stranice prikazuju obaveštenje; podaci ostaju.'
+      unblocked: '%{subdomain} je ponovo aktivan.'
+      deleted: '%{subdomain} i svi njegovi podaci su obrisani.'
+      delete_title: 'Obriši prostor za povratne informacije'
+      delete_warning: 'Briše table, objave, komentare, glasove, korisnike, webhook-ove i podešavanja tog prostora. Ne može se poništiti. Da biste zadržali podatke, umesto toga ga blokirajte.'
+      confirm_label: 'Upišite "%{subdomain}" za potvrdu'
+      confirm_mismatch: 'Pod-domen se nije poklopio. Ništa nije obrisano.'
+      delete: 'Trajno obriši'
+  pending_tenant:
+    title: 'Potvrdite svoju adresu e-pošte'
+    body: 'Proverite sanduče (i fasciklu za neželjenu poštu) i kliknite na link za aktivaciju.'
+    help: 'Treba vam pomoć? Obratite se administratoru ove instance.'
+  two_factor:
+    invalid_code: 'Kod nije važeći. Koristite trenutni kod iz aplikacije za autentifikaciju ili nekorišćen rezervni kod.'
+    login_expired: 'Prijava je trajala predugo. Ponovo unesite e-mail i lozinku.'
+    setup_required: 'Ovaj prostor za povratne informacije zahteva dvo-faktorsku proveru od administratora i moderatora. Najpre je podesite u podešavanjima profila.'
+    already_enabled: 'Dvo-faktorska provera je već uključena.'
+    not_enabled: 'Dvo-faktorska provera je isključena.'
+    title: 'Dvo-faktorska provera'
+    intro: 'Zaštitite svoj nalog drugim korakom: posle lozinke unesite kod iz aplikacije za autentifikaciju (na primer Aegis, Google Authenticator, Microsoft Authenticator ili 1Password).'
+    set_up: 'Podesi dvo-faktorsku proveru'
+    scan_help: 'Skenirajte QR kod aplikacijom za autentifikaciju, pa unesite šestocifreni kod koji prikazuje.'
+    qr_code_alt: 'QR kod za aplikaciju za autentifikaciju'
+    manual_entry: 'Ili ručno unesite ovaj ključ:'
+    code: 'Kod'
+    turn_on: 'Uključi'
+    code_for_changes: 'Unesite važeći kod da biste napravili nove rezervne kodove.'
+    new_backup_codes: 'Napravi nove rezervne kodove'
+    turn_off: 'Isključi dvo-faktorsku proveru'
+    turn_off_confirmation: 'Isključiti dvo-faktorsku proveru? Vaš nalog će biti zaštićen samo lozinkom.'
+    backup_codes: 'Rezervni kodovi'
+    backup_codes_help: 'Čuvajte ove rezervne kodove na bezbednom mestu. Svaki vas jednom prijavi ako telefon nije pri ruci. Prikazuju se samo sada.'
+    saved_codes: 'Sačuvao sam kodove'
+    required_notice: 'Ovaj prostor za povratne informacije zahteva dvo-faktorsku proveru od administratora i moderatora.'
+    login_title: 'Dvo-faktorska provera'
+    login_help: 'Unesite kod iz aplikacije za autentifikaciju ili jedan od rezervnih kodova.'
+    verify: 'Proveri'
+    start_over: 'Prijavi se drugim nalogom'
+    enabled:
+      one: 'Uključeno. Ostao je 1 rezervni kod.'
+      other: 'Uključeno. Ostala su %{count} rezervna kodova.'
+  saml:
+    metadata_invalid: 'Ovo nisu SAML metapodaci dobavljača identiteta (XML sa SingleSignOnService).'
+  ldap:
+    invalid_login: 'Neispravno ime za prijavu ili lozinka za vaš %{label}.'
+    not_found: 'Nije nađen jedinstveni zapis za ovo ime prijave. Proverite base DN i filter korisnika.'
+  my_feedback:
+    title: 'Moje povratne informacije'
+    filters:
+      created: 'Objavljene'
+      voted: 'Glasane'
+      followed: 'Praćene'
+    empty:
+      created: 'Još niste objavili povratnu informaciju.'
+      voted: 'Još niste glasali ni za jednu objavu.'
+      followed: 'Još ne pratite ni jednu objavu.'
+    approval:
+      pending: 'Čeka odobrenje'
+      rejected: 'Odbijeno'
+      merged: 'Spojeno'
+  changelog:
+    title: 'Dnevnik izmena'
+    empty: 'Ovde još nema ničega.'
+    new_entry: 'Novi unos'
+    draft: 'Nacrt'
+    delivers: 'Obuhvata:'
+    rss_feed: 'RSS tok'
+    form:
+      title: 'Naslov'
+      body: 'Tekst (Markdown)'
+      posts: 'Obuhvaćene objave'
+      posts_help: 'Pratioci ovih objava dobijaju e-mail kad se unos prvi put objavi.'
+      search_posts: 'Nađi objave'
+      add_post: 'Dodaj'
+      remove_post: 'Ukloni'
+      save_draft: 'Sačuvaj nacrt'
+      publish: 'Objavi'
+      unpublish: 'Vrati u nacrt'
+      ai_draft: 'Nacrtaj tekst uz AI'
+      ai_draft_loading: 'Pišem…'
+      ai_draft_hint: 'Naslovi i opisi obuhvaćenih objava šalju se podešenom dobavljaču veštačke inteligencije.'
+  views:
+    pagination:
+      first: '&laquo; Prva'
+      last: 'Poslednja &raquo;'
+      previous: '&lsaquo; Prethodna'
+      next: 'Sledeća &rsaquo;'
+      truncate: '&hellip;'

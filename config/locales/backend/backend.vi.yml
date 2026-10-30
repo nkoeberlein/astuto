@@ -22,14 +22,14 @@ vi:
         body: 'Bạn có thể xác nhận email tài khoản của bạn qua liên kết dưới đây:'
         action: 'Xác nhận tài khoản của tôi'
       email_changed:
-        body: "Chúng tôi liên hệ với bạn để thông báo rằng địa chỉ email của bạn đang được thay đổi thành %{email}."
-        body2: "Chúng tôi liên hệ với bạn để thông báo rằng địa chỉ email của bạn đã được thay đổi thành %{email}."
+        body: 'Chúng tôi liên hệ với bạn để thông báo rằng địa chỉ email của bạn đang được thay đổi thành %{email}.'
+        body2: 'Chúng tôi liên hệ với bạn để thông báo rằng địa chỉ email của bạn đã được thay đổi thành %{email}.'
       password_change:
-        body: "Chúng tôi liên hệ với bạn để thông báo rằng mật khẩu của bạn đã được thay đổi."
+        body: 'Chúng tôi liên hệ với bạn để thông báo rằng mật khẩu của bạn đã được thay đổi.'
       reset_password:
         body: 'Ai đó đã yêu cầu một liên kết để đổi mật khẩu của bạn. Bạn có thể làm điều này thông qua liên kết dưới đây.'
-        body2: "Nếu bạn không yêu cầu điều này, vui lòng bỏ qua email này."
-        body3: "Mật khẩu của bạn sẽ không thay đổi cho đến khi bạn truy cập vào liên kết trên và tạo một mật khẩu mới."
+        body2: 'Nếu bạn không yêu cầu điều này, vui lòng bỏ qua email này.'
+        body3: 'Mật khẩu của bạn sẽ không thay đổi cho đến khi bạn truy cập vào liên kết trên và tạo một mật khẩu mới.'
         action: 'Đổi mật khẩu của tôi'
     user:
       opening_greeting: 'Hello %{name}!'
@@ -54,23 +54,34 @@ vi:
     models:
       board:
         other: 'Bảng'
+        one: 'Bảng'
       comment:
         other: 'Bình luận'
+        one: 'Bình luận'
       like:
         other: 'Phiếu bầu'
+        one: 'Lượt bình chọn'
       o_auth:
         other: 'Xác thực OAuth'
+        one: 'OAuth'
       post_status:
         other: 'Trạng thái'
+        one: 'Trạng thái'
       post:
         other: 'Bài viết'
+        one: 'Bài đăng'
       user:
         other: 'Người dùng'
+        one: 'Người dùng'
+      webhook:
+        one: 'Webhook'
+        other: 'Webhook'
     attributes:
       board:
         name: 'Tên'
         description: 'Mô tả'
         order: 'Thứ tự'
+        visibility: 'Hiển thị'
       comment:
         body: 'Nội dung'
         is_post_update: 'Cập nhật bài viết'
@@ -116,6 +127,7 @@ vi:
         subdomain: 'Tên miền phụ'
         locale: 'Ngôn ngữ'
         custom_domain: 'Custom domain'
+        site_favicon: 'URL favicon'
       tenant_setting:
         brand_display: 'Hiển thị'
         use_browser_locale: 'Use browser language'
@@ -134,6 +146,15 @@ vi:
         show_roadmap_in_header: 'Hiển thị liên kết lộ trình trên tiêu đề'
         collapse_boards_in_header: 'Thu gọn các bảng trong tiêu đề'
         custom_css: 'Tùy chỉnh CSS'
+        use_gravatar: 'Hiển thị đại diện từ Gravatar'
+        require_two_factor_for_staff: 'Yêu cầu xác thực hai bước cho quản trị viên và điều hành viên'
+        require_user_approval: 'Phê duyệt tài khoản mới'
+        trusted_after_posts: 'Được tin cậy sau số bài đăng đã phê duyệt'
+        roadmap_enabled: 'Bật lộ trình phát triển'
+        default_post_sorting: 'Cách sắp xếp bài mặc định'
+        custom_links: 'Liên kết tùy chỉnh trong đầu trang'
+        login_only_with_oauth: 'Chỉ hiện đăng nhập OAuth'
+        mail_logo_size: 'Cỡ logo trong thư'
       user:
         email: 'Email'
         full_name: 'Họ và tên'
@@ -141,6 +162,39 @@ vi:
         password_confirmation: 'Xác nhận mật khẩu'
         role: 'Vai trò'
         notifications_enabled: 'Cho phép thông báo'
+        recap_notification_frequency: 'Tần suất thư tổng hợp'
+      ldap_config:
+        enabled: 'Dùng đăng nhập LDAP'
+        label: 'Tên tài khoản hiển thị ở trang đăng nhập'
+        host: 'Máy chủ'
+        port: 'Cổng'
+        encryption: 'Mã hóa'
+        verify_certificate: 'Kiểm tra chứng chỉ máy chủ'
+        base_dn: 'Base DN'
+        bind_dn: 'Tài khoản dịch vụ (bind DN)'
+        bind_password: 'Mật khẩu tài khoản dịch vụ'
+        user_filter: 'Bộ lọc người dùng'
+        email_attribute: 'Thuộc tính chứa địa chỉ email'
+        name_attribute: 'Thuộc tính chứa tên'
+        auto_create_users: 'Tạo tài khoản khi đăng nhập lần đầu'
+      saml_config:
+        enabled: 'Dùng đăng nhập một lần SAML'
+        label: 'Chữ trên nút'
+        idp_entity_id: 'Entity ID của nhà cung cấp định danh (issuer)'
+        idp_sso_url: 'URL đăng nhập một lần của nhà cung cấp định danh'
+        idp_cert: 'Chứng chỉ ký của nhà cung cấp định danh'
+        email_attribute: 'Thuộc tính chứa địa chỉ email'
+        name_attribute: 'Thuộc tính chứa tên'
+        auto_create_users: 'Tạo tài khoản khi đăng nhập lần đầu'
+      webhook:
+        name: 'Tên'
+        description: 'Mô tả'
+        is_enabled: 'Đã bật'
+        trigger: 'Kích hoạt'
+        url: 'URL'
+        http_body: 'Nội dung yêu cầu HTTP'
+        http_method: 'Phương thức HTTP'
+        http_headers: 'Tiêu đề yêu cầu HTTP'
     errors:
       messages:
         invalid: 'không hợp lệ'

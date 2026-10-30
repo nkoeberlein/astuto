@@ -72,6 +72,9 @@ gem 'sidekiq-cron', '2.4.0'
 # Template language
 gem 'liquid', '5.14.0'
 
+# Rails framework strings (dates, numbers, errors) for all locales
+gem 'rails-i18n', '~> 8.0'
+
 group :development, :test do
   gem 'debug', '1.11.1', platforms: [:mri, :windows], require: false
   

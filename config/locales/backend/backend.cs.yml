@@ -22,14 +22,14 @@ cs:
         body: 'You can confirm your account email through the link below:'
         action: 'Confirm my account'
       email_changed:
-        body: "We're contacting you to notify you that your email is being changed to %{email}."
-        body2: "We're contacting you to notify you that your email has been changed to %{email}."
+        body: 'We''re contacting you to notify you that your email is being changed to %{email}.'
+        body2: 'We''re contacting you to notify you that your email has been changed to %{email}.'
       password_change:
-        body: "We're contacting you to notify you that your password has been changed."
+        body: 'We''re contacting you to notify you that your password has been changed.'
       reset_password:
         body: 'Someone has requested a link to change your password. You can do this through the link below.'
-        body2: "If you didn't request this, please ignore this email."
-        body3: "Your password won't change until you access the link above and create a new one."
+        body2: 'If you didn''t request this, please ignore this email.'
+        body3: 'Your password won''t change until you access the link above and create a new one.'
         action: 'Change my password'
     user:
       opening_greeting: 'Hello %{name}!'
@@ -87,11 +87,15 @@ cs:
         few: 'Users'
         many: 'Users'
         other: 'Users'
+      webhook:
+        one: 'Webhook'
+        other: 'Webhooky'
     attributes:
       board:
         name: 'Name'
         description: 'Description'
         order: 'Order'
+        visibility: 'Viditelnost'
       comment:
         body: 'Body'
         is_post_update: 'Post update'
@@ -137,6 +141,7 @@ cs:
         subdomain: 'Subdomain'
         locale: 'Language'
         custom_domain: 'Custom domain'
+        site_favicon: 'URL faviconu'
       tenant_setting:
         brand_display: 'Display'
         use_browser_locale: 'Use browser language'
@@ -155,6 +160,15 @@ cs:
         show_roadmap_in_header: 'Show roadmap link in header'
         collapse_boards_in_header: 'Collapse boards in header'
         custom_css: 'Custom CSS'
+        use_gravatar: 'Zobrazovat avatary z Gravataru'
+        require_two_factor_for_staff: 'Vyžadovat dvoufaktorové ověření pro administrátory a moderátory'
+        require_user_approval: 'Schvalovat nové účty'
+        trusted_after_posts: 'Důvěryhodný po schválených příspěvcích'
+        roadmap_enabled: 'Zapnout roadmapu'
+        default_post_sorting: 'Výchozí řazení příspěvků'
+        custom_links: 'Vlastní odkazy v záhlaví'
+        login_only_with_oauth: 'Zobrazit jen přihlášení přes OAuth'
+        mail_logo_size: 'Velikost loga v e-mailech'
       user:
         email: 'Email'
         full_name: 'Full name'
@@ -162,6 +176,39 @@ cs:
         password_confirmation: 'Password confirmation'
         role: 'Role'
         notifications_enabled: 'Notifications enabled'
+        recap_notification_frequency: 'Frekvence souhrnných notifikací'
+      ldap_config:
+        enabled: 'Použít přihlašování přes LDAP'
+        label: 'Název účtu na přihlašovací stránce'
+        host: 'Server'
+        port: 'Port'
+        encryption: 'Šifrování'
+        verify_certificate: 'Ověřit certifikát serveru'
+        base_dn: 'Base DN'
+        bind_dn: 'Servisní účet (bind DN)'
+        bind_password: 'Heslo servisního účtu'
+        user_filter: 'Filtr uživatelů'
+        email_attribute: 'Atribut s e-mailovou adresou'
+        name_attribute: 'Atribut s názvem'
+        auto_create_users: 'Vytvořit účet při prvním přihlášení'
+      saml_config:
+        enabled: 'Použít jednotné přihlašování SAML'
+        label: 'Text tlačítka'
+        idp_entity_id: 'Entity ID poskytovatele identity (issuer)'
+        idp_sso_url: 'URL jednotného přihlašování poskytovatele identity'
+        idp_cert: 'Podpisový certifikát poskytovatele identity'
+        email_attribute: 'Atribut s e-mailovou adresou'
+        name_attribute: 'Atribut s názvem'
+        auto_create_users: 'Vytvořit účet při prvním přihlášení'
+      webhook:
+        name: 'Název'
+        description: 'Popis'
+        is_enabled: 'Aktivní'
+        trigger: 'Spouštěč'
+        url: 'URL'
+        http_body: 'Tělo HTTP požadavku'
+        http_method: 'HTTP metoda'
+        http_headers: 'Hlavičky HTTP požadavku'
     errors:
       messages:
         invalid: 'is invalid'

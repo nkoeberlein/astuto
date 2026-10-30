@@ -15,7 +15,7 @@ nl:
         new_password_confirmation: 'New password confirmation'
         current_password: 'Current password'
         notifications_enabled: 'Notifications enabled'
-        notifications_enabled_help: "if disabled, you won't receive any notification"
+        notifications_enabled_help: 'if disabled, you won''t receive any notification'
         waiting_confirmation: 'Currently waiting confirmation for %{email}'
         no_password_set: 'You must set a password to update your profile'
         set_password: 'Set password'
@@ -28,14 +28,34 @@ nl:
         profile_settings: 'Profile settings'
         cancel_account: 'Cancel account'
         forgot_password: 'Forgot your password?'
-        confirmation_instructions_not_received: "Didn't receive confirmation instructions?"
-        unlock_instructions_not_received: "Didn't receive unlock instructions?"
+        confirmation_instructions_not_received: 'Didn''t receive confirmation instructions?'
+        unlock_instructions_not_received: 'Didn''t receive unlock instructions?'
         send_reset_password_instructions: 'Send me reset password instructions'
         resend_confirmation_instructions: 'Resend confirmation instructions'
         resend_unlock_instructions: 'Resend unlock instructions'
         change_password: 'Change password'
         password_help: '%{count} characters minimum'
         email_registration_not_allowed: 'Email registration not allowed'
+        notifications: 'Meldingen'
+        recap_notification_frequency_daily: 'Dagelijks'
+        recap_notification_frequency_weekly: 'Wekelijks'
+        recap_notification_frequency_monthly: 'Maandelijks'
+        recap_notification_frequency_help: 'Een overzicht per e-mail: nieuwe feedback, de meest gestemde berichten en statuswijzigingen van berichten die je volgt (moderatoren: ook feedback dat op goedkeuring wacht). Er wordt niets verstuurd als er niets gebeurde.'
+        log_in_with_email: 'Liever met e-mail en wachtwoord inloggen'
+        login_name: 'Gebruikersnaam'
+        ldap_info: 'Log in met je %{label}.'
+        my_data: 'Mijn gegevens'
+        my_data_help: 'Download alles wat deze feedbackruimte over je opslaat: profiel, berichten, reacties, stemmen en gevolgde berichten (JSON).'
+        download_my_data: 'Mijn gegevens downloaden'
+        oauth_only_info: 'Log in en meld je aan met een van de OAuth-providers hieronder. Inloggen met e-mail is op deze site uitgeschakeld.'
+      api_key:
+        title: 'API-sleutel'
+        current_api_key_help: 'Je hebt al een API-sleutel aangemaakt en om veiligheidsredenen kan deze niet opnieuw getoond worden. Als je die kwijt bent, kun je hieronder een nieuwe aanmaken.'
+        generate_api_key: 'API-sleutel aanmaken'
+        generated_api_key_help: 'Bewaar deze API-sleutel op een veilige plek, je kunt hem niet opnieuw zien.'
+        generated_api_key_successfully: 'API-sleutel succesvol aangemaakt!'
+        confirm_generate_new_api_key: 'Wil je een nieuwe API-sleutel aanmaken? De oude wordt ongeldig.'
+        api_key_learn_more: 'Leer hoe je de API gebruikt'
     no_status: 'No status'
     select_placeholder: 'Select...'
     loading: 'Loading...'
@@ -56,6 +76,11 @@ nl:
       approve: 'Approve'
       reject: 'Reject'
       copy_to_clipboard: 'Copy to clipboard'
+      preview: 'Voorbeeld'
+      move_up: 'Omhoog'
+      move_down: 'Omlaag'
+    errors:
+      not_found: 'Pagina niet gevonden'
   header:
     menu:
       site_settings: 'Site settings'
@@ -63,9 +88,18 @@ nl:
       profile_header: 'Profile'
       profile_settings: 'Profile settings'
       sign_out: 'Sign out'
+      my_feedback: 'Mijn feedback'
     log_in: 'Log in / Sign up'
   roadmap:
     title: 'Roadmap'
+    empty: 'De roadmap is leeg.'
+    filter_by_board: 'Filteren op bord'
+    more_posts:
+      one: '+ %{count} bericht meer'
+      other: '+ %{count} berichten meer'
+    sort_by:
+      most_voted: 'Meest gestemd'
+      recently_updated: 'Onlangs bijgewerkt'
   blocked_tenant:
     title: 'This feedback space has been blocked'
   board:
@@ -80,10 +114,13 @@ nl:
       anonymous_submission_help: 'You are posting anonymously'
       non_anonymous_submission_help: 'You are posting as %{name}'
       submit_pending: 'Your feedback has been submitted and is now pending moderator approval!'
+      status: 'Beginstatus (alleen moderatoren)'
+      similar_posts_title: 'Er bestaan al vergelijkbare berichten — stem in plaats daarvan op een?'
     search_box:
       title: 'Search'
     filter_box:
       title: 'Filter by status'
+      tags: 'Filteren op label'
     sort_by_box:
       title: 'Sort by'
       trending: 'Trending'
@@ -92,6 +129,8 @@ nl:
       oldest: 'Oldest'
     posts_list:
       empty: 'There are no posts'
+      load_more: 'Meer laden'
+    rss_feed: 'RSS-feed'
   post:
     published_by: 'Published by'
     published_anonymously: 'Published anonymously'
@@ -101,18 +140,54 @@ nl:
       title: 'Likes'
     action_box:
       follow_button: 'Follow post'
-      following_description: "you're receiving notifications about new updates on this post"
-      not_following_description: "you won't receive notifications about this post"
+      following_description: 'you''re receiving notifications about new updates on this post'
+      not_following_description: 'you won''t receive notifications about this post'
     comments:
       title: 'Activity'
       post_update_badge: 'Update'
       reply_button: 'Reply'
+      empty: 'Er zijn nog geen reacties'
     new_comment:
       body_placeholder: 'Leave a comment'
       submit_button: 'Submit'
       is_post_update: 'Mark as update'
       user_notification: 'Users that follow this post will be notified'
       not_logged_in: 'You need to log in to post comments'
+    merge:
+      same_post: 'Een bericht kan niet met zichzelf samengevoegd worden.'
+      already_merged: 'Eén van de berichten is al samengevoegd.'
+      button: 'Samenvoegen in een ander bericht'
+      search: 'Zoek het bericht om te houden'
+      help: 'Stemmen, volgers en reacties verhuizen naar het bericht dat je kiest; dit bericht leidt daarna daarheen. Dit kan niet ongedaan gemaakt worden.'
+      into_this: 'Hier samenvoegen'
+      confirmation: 'Dit bericht samenvoegen in "%{target}"? Stemmen, volgers en reacties verhuizen daarheen. Dit kan niet ongedaan gemaakt worden.'
+      merged_from: 'Samengevoegd uit:'
+    tags:
+      title: 'Labels'
+    in_changelog: 'In de changelog:'
+    source:
+      title: 'Bron'
+      label: 'Bron'
+      url: 'Link naar de bron'
+    ai_translation:
+      button: 'Vertalen'
+      loading: 'Vertalen…'
+      hide: 'Vertaling verbergen'
+      label: 'AI-vertaling'
+      hint: 'De tekst wordt naar de ingestelde AI-provider gestuurd.'
+    ai_suggestion:
+      button: 'Bord en labels voorstellen'
+      loading: 'Denken…'
+      hint: 'Titel en omschrijving worden naar de ingestelde AI-provider gestuurd.'
+      board: 'Bord:'
+      tags: 'Labels:'
+      none: 'Geen voorstel: niets past beter dan wat het bericht al heeft.'
+      apply: 'Toepassen'
+    ai_summary:
+      title: 'AI-overzicht'
+      button: 'Discussie samenvatten'
+      loading: 'Samenvatten…'
+      hint: 'Titel, omschrijving en reacties worden naar de ingestelde AI-provider gestuurd.'
   site_settings:
     menu:
       title: 'Site settings'
@@ -123,6 +198,10 @@ nl:
       roadmap: 'Roadmap'
       invitations: 'Invitations'
       appearance: 'Appearance'
+      tags: 'Labels'
+      widget: 'Widget'
+      webhooks: 'Webhooks'
+      audit_log: 'Auditlog'
     info_box:
       up_to_date: 'All changes saved'
       dirty: 'Changes not saved'
@@ -132,7 +211,7 @@ nl:
       brand_setting_name: 'Name only'
       brand_setting_logo: 'Logo only'
       brand_setting_none: 'None'
-      use_browser_locale_help: "If you enable this setting, the feedback space will be displayed in the user's browser preferred language. If the language is not available, the default language will be used."
+      use_browser_locale_help: 'If you enable this setting, the feedback space will be displayed in the user''s browser preferred language. If the language is not available, the default language will be used.'
       subtitle_privacy: 'Privacy'
       is_private_help: 'If you enable this setting, only logged in users will be able to see the content of the feedback space.'
       subtitle_moderation: 'Moderation'
@@ -153,12 +232,35 @@ nl:
       show_vote_count_help: 'If you enable this setting, users will be able to see the vote count of posts. This may incentivize users to vote on already popular posts, leading to a snowball effect.'
       show_vote_button_in_board_help: 'If you enable this setting, users will be able to vote posts from the board page. This may incentivize users to vote on more posts, leading to a higher number of votes but of lower significance.'
       hide_unused_statuses_in_filter_by_status_help: 'If you enable this setting, only statuses that are assigned to at least one post in that board will be shown in the filter by status sidebar filter.'
+      test_email: 'Test-e-mail versturen'
+      test_email_help: 'Verstuurt een e-mail naar %{email} om de e-mailinstellingen te controleren (EMAIL_*-omgevingsvariabelen).'
+      test_email_sent: 'Test-e-mail verstuurd naar %{email} (%{method}, vanaf %{from}). Controleer de inbox en de spammap.'
+      use_gravatar_help: 'Profielfoto''s komen van gravatar.com: de browser van elke bezoeker vraagt elke foto aan gravatar.com met een hash van het e-mailadres. Zet het uit om initialen te tonen en niets aan derden te sturen.'
+      require_two_factor_for_staff_help: 'Beheerders en moderatoren moeten tweestapsverificatie instellen vóórdat ze kunnen modereren of instellingen wijzigen. API-sleutels worden niet beïnvloed.'
+      subtitle_authentication: 'Authenticatie'
+      subtitle_mail: 'E-mails'
+      feedback_approval_policy_new_users_require_approval: 'Goedkeuring vereisen voor anonieme feedback en de eerste berichten per account'
+      require_user_approval_help: 'Aanmeldingen via e-mail of OAuth wachten tot een beheerder ze goedkeurt bij Moderatie › Gebruikers; beheerders krijgen per aanmelding een e-mail. Uitgenodigden en logins via SAML, LDAP of de widget worden automatisch goedgekeurd.'
+      trusted_after_posts_help: 'Na zoveel goedgekeurde berichten worden nieuwe berichten van het account automatisch goedgekeurd. Afgekeurde tellen niet mee.'
+      roadmap_enabled_help: 'Zet je dit uit, dan wordt de roadmappagina onbeschikbaar en verdwijnt de koppeling uit de kop.'
+      default_post_sorting_help: 'Berichten worden zo gesorteerd als een bord zonder expliciete sortering wordt geopend.'
+      custom_links_help: 'Extra koppelingen in de sitemet kop, één per regel: Label|URL. Voorbeeld: Docs|https://example.com/docs'
+      login_only_with_oauth_help: 'Zet je dit aan, dan worden inloggen met e-mail en wachtwoord en registratie per e-mail verborgen. Gebruikers kunnen alleen met OAuth-providers inloggen en aanmelden. Koppelingen voor wachtwoordreset blijven beschikbaar.'
+      mail_logo_size_help: 'Grootte in pixels van het logo in uitgaande e-mails.'
     boards:
       title: 'Boards'
       empty: 'There are no boards. Create one below!'
       form:
         name: 'Board name'
         description: 'Board description (optional)'
+        visibility: 'Wie kan het zien'
+        visibility_help: 'Berichten van het bord zijn overal verborgen voor mensen die ze niet mogen zien: lijsten, roadmap, zoeken, feeds, sitemap, e-mails. Moderatoren en beheerders zien altijd elk bord.'
+        slug: 'URL (optioneel)'
+        slug_help: 'Deel van het bordadres, b.v. /boards/feature-requests. Laat leeg om hem uit de naam te genereren.'
+      visibility:
+        everyone: 'Iedereen'
+        signed_in: 'Alleen ingelogde mensen'
+        staff: 'Alleen moderatoren en beheerders'
     post_statuses:
       title: 'Statuses'
       empty: 'There are no statuses. Create one below!'
@@ -173,6 +275,8 @@ nl:
       show_board_filter: 'Show board filter'
       show_post_status_filter: 'Show status filter'
       embed_help: 'You can embed the roadmap in your website by copying the code above.'
+      help_buttons: 'Gebruik de pijlknop om een status in of uit de roadmap te zetten. Statussen maak of herorden je bij Site-instellingen > Statussen.'
+      embed_scope_help: 'Kies borden of statussen om alleen die te tonen; zonder keuze worden ze allemaal getoond.'
     invitations:
       new_invitations_title: 'New invitations'
       past_invitations_title: 'Invitations'
@@ -181,16 +285,7 @@ nl:
       subject: 'Email subject'
       subject_default: 'We value your feedback! Join us in shaping %{name}!'
       body: 'Email body'
-      body_default: |
-        Hello!
-
-        We truly appreciate your experience with %{name} and would love to hear your feedback. Your insights help us improve and continue delivering the best possible service.
-
-        Click the link below to share your thoughts and make your voice heard:
-
-        %link%
-
-        Have a great day!
+      body_default: "Hello!\n\nWe truly appreciate your experience with %{name} and would love to hear your feedback. Your insights help us improve and continue delivering the best possible service.\n\nClick the link below to share your thoughts and make your voice heard:\n\n%link%\n\nHave a great day!\n"
       send:
         one: 'Send invitation'
         other: 'Send %{count} invitations'
@@ -207,6 +302,8 @@ nl:
       accepted: 'Accepted'
       sent_at: 'Sent %{when}'
       accepted_at: 'Accepted %{when}'
+      skipped: 'Niet verstuurd (al geregistreerd, al geaccepteerd of ongeldig): %{emails}'
+      expired: 'Verlopen'
     appearance:
       title: 'Appearance'
       learn_more: 'Learn how to customize appearance'
@@ -234,6 +331,162 @@ nl:
         subtitle_oauth_config: 'OAuth configuration'
         subtitle_user_profile_config: 'User profile configuration'
         client_secret_help: 'hidden for security purposes'
+        profile_headers: 'Extra headers voor het profielverzoek (optioneel)'
+      ldap:
+        title: 'LDAP / Active Directory'
+        intro: 'Laat mensen inloggen met de gebruikersnaam en het wachtwoord van je bedrijfsmap (OpenLDAP, Active Directory, FreeIPA, ...). Astuto zoekt de ingang met het serviceaccount en controleert het wachtwoord door als die ingang te binden.'
+        encryption_start_tls: 'StartTLS (poort 389)'
+        encryption_simple_tls: 'LDAPS (poort 636)'
+        encryption_plain: 'Geen (alleen in een vertrouwd netwerk)'
+        bind_dn_help: 'Laat leeg om anoniem te zoeken, als de map dat toestaat.'
+        bind_password_set: 'Er is een wachtwoord opgeslagen. Laat leeg om het te behouden.'
+        user_filter_help: '%{login} staat voor wat mensen typen. Active Directory: (sAMAccountName=%{login}), OpenLDAP: (uid=%{login}).'
+        test_login: 'Test met een gebruikersnaam'
+        test_help: 'Controleert verbinding, serviceaccount en filter met de opgeslagen instellingen; geen wachtwoord nodig.'
+        test_found: 'Gevonden:'
+      saml:
+        title: 'SAML single sign-on'
+        intro: 'Laat mensen inloggen met de identity provider van je bedrijf (Microsoft Entra ID, Okta, Keycloak, ADFS, Google Workspace, ...). Registreer Astuto daar als applicatie met de twee waarden hieronder, plak daarna de metadata van de identity provider of vul de velden in.'
+        sp_entity_id: 'Entity-ID / metadata-URL'
+        acs_url: 'Antwoord-URL (Assertion Consumer Service)'
+        metadata: 'Metadata-XML van de identity provider'
+        import_metadata: 'Vanuit metadata invullen'
+        email_attribute_help: 'Laat leeg om de gebruikelijke attribuutnamen te gebruiken en daarna de NameID.'
+        auto_create_help: 'Anders kunnen alleen mensen die al een account hebben (bijvoorbeeld via een uitnodiging) inloggen.'
+      empty: 'Er zijn nog geen OAuth-providers.'
+    widget:
+      title: 'Widget'
+      intro: 'Een feedbackknop voor je eigen website of app. Die opent borden, roadmap en changelog in een paneel. Ingelogde bezoekers van je app stemmen en plaatsen met hun eigen account: je server tekent een korte bezoekertoken met het hieronder staande geheim.'
+      enabled: 'Widget inschakelen'
+      allowed_origins: 'Sites die de widget mogen tonen'
+      allowed_origins_help: 'Eén origin per regel, b.v. https://app.example.com. Leeg: elke site.'
+      auto_create_users: 'Account voor nieuwe bezoekers aanmaken'
+      auto_create_users_help: 'Anders loggen alleen mensen die al een account hebben (zelfde e-mail) in. Moderatoren en beheerders loggen nooit via de widget in.'
+      install_title: 'Installatie'
+      install_intro: 'Voeg dit toe aan de pagina''s van je site; vervang VISITOR_TOKEN door een token van je server, of laat data-token weg voor anonieme bezoekers.'
+      token_intro: 'Je server tekent de bezoekertoken met dit geheim. Bewaar het op de server, nooit in de browser.'
+      rotate: 'Nieuw geheim'
+      rotate_confirm: 'Een nieuw geheim aanmaken? Tokens getekend met het huidige stoppen te werken.'
+      token_rules: 'Claims: email (vereist), name, id (je gebruikers-ID, koppelt het account ook bij wijziging van e-mail). Alleen HS256; de token moet binnen een dag verlopen.'
+    tags:
+      title: 'Labels'
+      empty: 'Nog geen labels. Labels groeperen berichten over borden heen, b.v. per productgebied; moderatoren zetten ze op berichten en bezoekers filteren erop.'
+      delete_confirmation: 'Dit label verwijderen? Het wordt van alle berichten gehaald.'
+      form:
+        name: 'Naam'
+        color: 'Kleur'
+    audit_log:
+      description: 'Wijzigingen door beheerders en moderatoren: moderatie, gebruikers, borden, statussen, instellingen, inlogproviders, webhooks, uitnodigingen en API-sleutels. Ingangen worden een jaar bewaard.'
+      filter: 'Filteren op gebied'
+      all: 'Alle'
+      empty: 'Nog geen ingangen.'
+      load_more: 'Oudere ingangen tonen'
+      unknown_actor: 'Iemand'
+      value_yes: 'ja'
+      value_no: 'nee'
+      filtered: '(verborgen)'
+      invitations_sent:
+        one: '1 uitnodiging'
+        other: '%{count} uitnodigingen'
+      categories:
+        tag: 'Labels'
+        post: 'Berichten'
+        comment: 'Reacties'
+        user: 'Gebruikers'
+        board: 'Borden'
+        post_status: 'Statussen'
+        changelog: 'Changelog'
+        site_settings: 'Algemeen'
+        o_auth: 'Inlogproviders'
+        saml: 'SAML'
+        ldap: 'LDAP'
+        widget: 'Widget'
+        webhook: 'Webhooks'
+        invitation: 'Uitnodigingen'
+        api_key: 'API-sleutels'
+      sources:
+        api: 'REST-API'
+        mcp: 'MCP'
+      actions:
+        tag_create: 'heeft het label aangemaakt'
+        tag_update: 'heeft het label gewijzigd'
+        tag_delete: 'heeft het label verwijderd'
+        tag_reorder: 'heeft de labels herordend'
+        post_create_for_author: 'heeft geplaatst voor:'
+        post_update: 'heeft het bericht gewijzigd'
+        post_delete: 'heeft het bericht verwijderd'
+        post_merge: 'heeft samengevoegd:'
+        comment_update: 'heeft een reactie bewerkt'
+        comment_delete: 'heeft een reactie verwijderd'
+        user_create: 'heeft de gebruiker aangemaakt'
+        user_update: 'heeft de gebruiker gewijzigd'
+        user_export: 'heeft de gegevens gedownload van'
+        user_delete: 'heeft het account verwijderd van'
+        user_two_factor_enable: 'heeft tweestapsverificatie ingeschakeld:'
+        user_two_factor_disable: 'heeft tweestapsverificatie uitgeschakeld:'
+        board_create: 'heeft het bord aangemaakt'
+        board_update: 'heeft het bord gewijzigd'
+        board_delete: 'heeft het bord verwijderd'
+        board_reorder: 'heeft de borden herordend'
+        post_status_create: 'heeft de status aangemaakt'
+        post_status_update: 'heeft de status gewijzigd'
+        post_status_delete: 'heeft de status verwijderd'
+        post_status_reorder: 'heeft de statussen herordend'
+        changelog_create: 'heeft de changelog-ingang geschreven'
+        changelog_update: 'heeft de changelog-ingang gewijzigd'
+        changelog_publish: 'heeft de changelog-ingang gepubliceerd'
+        changelog_delete: 'heeft de changelog-ingang verwijderd'
+        site_settings_update: 'heeft de site-instellingen gewijzigd'
+        o_auth_create: 'heeft de inlogprovider toegevoegd'
+        o_auth_update: 'heeft de inlogprovider gewijzigd'
+        o_auth_delete: 'heeft de inlogprovider verwijderd'
+        saml_update: 'heeft SAML single sign-on gewijzigd:'
+        ldap_update: 'heeft de LDAP-login gewijzigd:'
+        widget_update: 'heeft de widgetinstellingen gewijzigd'
+        widget_rotate_secret: 'heeft een nieuw widgetgeheim aangemaakt'
+        webhook_create: 'heeft de webhook aangemaakt'
+        webhook_update: 'heeft de webhook gewijzigd'
+        webhook_delete: 'heeft de webhook verwijderd'
+        webhook_rotate_secret: 'heeft een nieuw ondertekeninggeheim voor de webhook aangemaakt'
+        invitation_send: 'heeft verstuurd'
+        api_key_create: 'heeft een nieuwe API-sleutel aangemaakt voor'
+    webhooks:
+      deliveries:
+        title: 'Recente leveringen'
+        show: 'Leveringen'
+        empty: 'Nog geen leveringen.'
+        success: 'Geleverd'
+        failure: 'Mislukt'
+        test: 'Test'
+        last: 'Laatste levering: %{status} %{when}'
+      signing:
+        title: 'Ondertekening'
+        help: 'Elk verzoek bevat X-Astuto-Signature: sha256=HMAC-SHA256(secret, "<X-Astuto-Timestamp>.<body>"). Controleer die aan de ontvangende kant om zeker te zijn dat het verzoek uit deze feedbackruimte komt.'
+        rotate: 'Nieuw geheim'
+        rotate_confirmation: 'Ontvangers die de ondertekening controleren hebben het nieuwe geheim direct nodig. Doorgaan?'
+      title: 'Webhooks'
+      learn_more: 'Leer hoe je webhooks configureert en gebruikt'
+      empty: 'Er zijn geen webhooks.'
+      triggers:
+        new_post: 'Nieuw bericht'
+        new_post_pending_approval: 'Nieuw bericht (wacht op goedkeuring)'
+        delete_post: 'Bericht verwijderen'
+        post_status_change: 'Statuswijziging van bericht'
+        new_comment: 'Nieuwe reactie'
+        new_vote: 'Nieuwe stem'
+        new_user: 'Nieuwe gebruiker'
+      form:
+        title_new: 'Nieuwe webhook'
+        title_edit: 'Webhook bewerken'
+        add_header: 'Header toevoegen'
+        header_n_key: 'Sleutel van header %{n}'
+        header_n_value: 'Waarde van header %{n}'
+        template_variables_selector_placeholder: 'Kies een sjabloonvariabele...'
+        templates_label: 'Invullen voor'
+        templates_help: 'Zet methode, Content-Type-header en een berichtbody voor de gekozen trigger. Gebruik als URL de inkomende webhook-URL van de chattool.'
+        templates_confirm: 'De huidige body vervangen?'
+      test_page:
+        title: 'Webhooktestresultaten'
   moderation:
     menu:
       feedback: 'Feedback'
@@ -245,10 +498,10 @@ nl:
     users:
       block: 'Block'
       unblock: 'Unblock'
-      block_confirmation: "%{name} won't be able to log in until it is unblocked. Are you sure?"
-      unblock_confirmation: "%{name} will be able to log in and submit feedback. Are you sure?"
-      role_to_moderator_confirmation: "%{name} will be able to manage posts and users. Proceed only if you trust this person. Are you sure?"
-      role_to_admin_confirmation: "%{name} will be able to manage boards, posts, statuses, users and more. Proceed only if you trust this person. Are you sure?"
+      block_confirmation: '%{name} won''t be able to log in until it is unblocked. Are you sure?'
+      unblock_confirmation: '%{name} will be able to log in and submit feedback. Are you sure?'
+      role_to_moderator_confirmation: '%{name} will be able to manage posts and users. Proceed only if you trust this person. Are you sure?'
+      role_to_admin_confirmation: '%{name} will be able to manage boards, posts, statuses, users and more. Proceed only if you trust this person. Are you sure?'
       role_user: 'User'
       role_moderator: 'Moderator'
       role_admin: 'Administrator'
@@ -256,3 +509,236 @@ nl:
       status_active: 'Active'
       status_blocked: 'Blocked'
       status_deleted: 'Deleted'
+      export_data: 'Gegevens downloaden (AVG)'
+      delete_account: 'Account verwijderen'
+      delete_account_confirmation: 'Het account van %{name} verwijderen? Berichten en reacties blijven en tonen "Verwijderde gebruiker". Dit kan niet ongedaan gemaakt worden.'
+      status_pending_approval: 'Wacht op goedkeuring'
+      approve: 'Goedkeuren'
+      search_placeholder: 'Zoek op naam of e-mail'
+      filter_all_statuses: 'Alle statussen'
+      filter_all_roles: 'Alle rollen'
+      empty: 'Geen gebruikers gevonden'
+  number:
+    format:
+      round_mode: 'default'
+    currency:
+      format:
+        negative_format: '-%u%n'
+    human:
+      storage_units:
+        units:
+          pb: 'PB'
+          eb: 'EB'
+          zb: 'ZB'
+  errors:
+    messages:
+      password_too_long: 'is te lang'
+      in: 'moet in %{count} zitten'
+    user_pending_approval: 'Je account wacht op goedkeuring door een beheerder. Je krijgt een e-mail zodra je kunt inloggen.'
+    unavailable_session: "Sessie %{id} is niet meer in het geheugen.\n\nAls je op een multi-proces server draait (zoals Unicorn of Puma), bewaart het proces dat\nhet verzoek had niet %{id} in het geheugen. Zet het aantal processen/workers op één (1) of gebruik in development een andere server.\n"
+    unacceptable_request: "In de Accept-header wordt een ondersteunde versie verwacht.\n"
+    connection_refused: "Verbinding met de Web Console-middleware mislukt.\nZorg dat een Rails-ontwikkelserver draait.\n"
+  datetime:
+    relative:
+      future: 'over %{time}'
+      past: '%{time} geleden'
+  helpers:
+    page_entries_info:
+      entry:
+        zero: 'items'
+        one: 'item'
+        other: 'items'
+      one_page:
+        display_entries:
+          zero: 'Geen %{entry_name} gevonden'
+          one: '<b>1</b> %{entry_name} weergegeven'
+          other: 'Alle <b>%{count}</b> %{entry_name} weergegeven'
+      more_pages:
+        display_entries: '%{entry_name} <b>%{first}–%{last}</b> van <b>%{total}</b> weergegeven'
+  flash:
+    actions:
+      create:
+        notice: '%{resource_name} is aangemaakt.'
+      update:
+        notice: '%{resource_name} is bijgewerkt.'
+      destroy:
+        notice: '%{resource_name} is verwijderd.'
+        alert: '%{resource_name} kon niet worden verwijderd.'
+  widget:
+    errors:
+      disabled: 'De widget is niet ingeschakeld.'
+      invalid_token: 'De bezoekertoken is ongeldig of verlopen.'
+      linked_elsewhere: 'Dit e-mailadres hoort bij een ander account.'
+      no_account: 'Voor deze bezoeker bestaat geen account.'
+      staff_account: 'Moderatoren en beheerders loggen in op de feedbacksite, niet via de widget.'
+      blocked: 'Dit account is geblokkeerd.'
+    tabs:
+      feedback: 'Feedback'
+      roadmap: 'Roadmap'
+      changelog: 'Changelog'
+    close: 'Sluiten'
+    board: 'Bord'
+    signed_in_as: 'Ingelogd als %{name}'
+    open_site: 'Open de feedbacksite'
+  webhook_templates:
+    new_post: 'Nieuwe feedback in %{board}: %{post}'
+    new_post_pending_approval: 'Feedback dat op goedkeuring wacht in %{board}: %{post}'
+    delete_post: 'Bericht #%{id} is verwijderd'
+    post_status_change: '%{post} is nu: %{status}'
+    new_comment: '%{author} reageerde op %{post}'
+    new_vote: '%{author} stemde op %{post}'
+    new_user: 'Nieuwe gebruiker: %{user}'
+    open: 'Openen'
+  mailers:
+    admin:
+      test_email:
+        subject: '[%{site_name}] Test-e-mail'
+        body: 'Deze test-e-mail van %{site_name} is aangekomen, dus het versturen van e-mails werkt.'
+        details: 'Verstuurd met %{delivery_method} vanaf %{from}.'
+      user_pending_approval:
+        subject: '[%{site_name}] Nieuw account wacht op goedkeuring: %{name}'
+        body_html: '<strong>%{name}</strong> (%{email}) heeft zich aangemeld en wacht op jouw goedkeuring.'
+        review: 'Beoordelen bij Moderatie › Gebruikers'
+    user:
+      notify_follower_of_changelog_entry:
+        subject: '[%{site_name}] Nieuw in de changelog: %{title}'
+        body_html: 'De changelog heeft een nieuwe ingang, <strong>%{title}</strong>. Hij levert feedback die je volgt'
+        read_entry: 'Lees de changelog'
+      account_approved:
+        subject: '[%{site_name}] Je account is goedgekeurd'
+        body_html: 'Een beheerder heeft je account goedgekeurd. Je kunt nu inloggen.'
+        sign_in: 'Inloggen'
+      recap:
+        subject: '[%{site_name}] %{frequency} overzicht van activiteit in de feedbackruimte'
+        body_html: 'Hier is het %{frequency} overzicht van de activiteiten in jouw feedbackruimte'
+        published_posts_count_html: 'Nieuwe gepubliceerde feedback: %{count}'
+        pending_posts_count_html: 'Nieuwe feedback wachtend op goedkeuring: %{count}'
+        status_changes_title: 'Statuswijzigingen van berichten die je volgt'
+        no_status: 'geen status'
+        top_posts_title: 'Meest gestemd in deze periode'
+        period_votes:
+          one: '%{count} nieuwe stem'
+          other: '%{count} nieuwe stemmen'
+        more_posts: 'en %{count} meer'
+  instance_admin:
+    title: 'Instance-admin'
+    tenants:
+      title: 'Feedbackruimtes'
+      new: 'Nieuwe feedbackruimte'
+      create: 'Feedbackruimte aanmaken'
+      site_name: 'Naam'
+      subdomain: 'Subdomein'
+      subdomain_hint: 'Letters, cijfers en koppeltekens. Het adres wordt <subdomein>.%{host}.'
+      owner_email: 'E-mail van de eigenaar'
+      owner_name: 'Naam van de eigenaar'
+      locale: 'Taal'
+      address: 'Adres'
+      status: 'Status'
+      users: 'Gebruikers'
+      posts: 'Berichten'
+      created: 'Aangemaakt'
+      actions: 'Acties'
+      edit: 'Bewerken'
+      save: 'Opslaan'
+      back: 'Terug naar de lijst'
+      block: 'Blokkeren'
+      unblock: 'Deblokkeren'
+      empty: 'Nog geen feedbackruimtes.'
+      statuses:
+        active: 'Actief'
+        pending: 'In behandeling'
+        blocked: 'Geblokkeerd'
+      custom_domain: 'Eigen domein'
+      custom_domain_hint: 'Optioneel. Voeg eerst een CNAME-record toe dat het domein naar %{target} wijst. Laat leeg om het te verwijderen.'
+      created_title: '%{site_name} is klaar'
+      owner_credentials: 'Login van de eigenaar. Het wachtwoord wordt alleen nu getoond:'
+      password_hint: 'Stuur het via een veilig kanaal naar de eigenaar en vraag om het na de eerste login te wijzigen.'
+      updated: '%{subdomain} opgeslagen.'
+      blocked: '%{subdomain} is geblokkeerd. De pagina''s tonen een melding; de gegevens blijven.'
+      unblocked: '%{subdomain} is weer actief.'
+      deleted: '%{subdomain} en alle gegevens zijn verwijderd.'
+      delete_title: 'Feedbackruimte verwijderen'
+      delete_warning: 'Verwijdert borden, berichten, reacties, stemmen, gebruikers, webhooks en instellingen van deze feedbackruimte. Dit kan niet ongedaan gemaakt. Wil je de gegevens houden, blokkeer dan in plaats daarvan.'
+      confirm_label: 'Typ "%{subdomain}" om te bevestigen'
+      confirm_mismatch: 'Het subdomein kwam niet overeen. Er is niets verwijderd.'
+      delete: 'Definitief verwijderen'
+  pending_tenant:
+    title: 'Bevestig je e-mailadres'
+    body: 'Controleer je inbox (en je spammappen) en klik op de activeringslink.'
+    help: 'Hulp nodig? Neem contact op met de beheerder van deze instance.'
+  two_factor:
+    invalid_code: 'De code is niet geldig. Gebruik de huidige code uit je authenticator-app of een ongebruikte herstelcode.'
+    login_expired: 'Het inloggen duurde te lang. Voer je e-mail en wachtwoord opnieuw in.'
+    setup_required: 'Deze feedbackruimte vereist tweestapsverificatie voor beheerders en moderatoren. Stel die eerst in je profielinstellingen in.'
+    already_enabled: 'Tweestapsverificatie staat al aan.'
+    not_enabled: 'Tweestapsverificatie staat uit.'
+    title: 'Tweestapsverificatie'
+    intro: 'Bescherm je account met een tweede stap: na het wachtwoord voer je een code uit een authenticator-app in (bijvoorbeeld Aegis, Google Authenticator, Microsoft Authenticator of 1Password).'
+    set_up: 'Tweestapsverificatie instellen'
+    scan_help: 'Scan de QR-code met je authenticator-app en voer de zescijferige code in die de app toont.'
+    qr_code_alt: 'QR-code voor de authenticator-app'
+    manual_entry: 'Of voer deze sleutel handmatig in:'
+    code: 'Code'
+    turn_on: 'Inschakelen'
+    code_for_changes: 'Voer een actuele code in om nieuwe herstelcodes te maken.'
+    new_backup_codes: 'Nieuwe herstelcodes maken'
+    turn_off: 'Tweestapsverificatie uitschakelen'
+    turn_off_confirmation: 'Tweestapsverificatie uitschakelen? Je account wordt dan alleen door het wachtwoord beschermd.'
+    backup_codes: 'Herstelcodes'
+    backup_codes_help: 'Bewaar deze herstelcodes op een veilige plek. Elke code logt je een keer in als je telefoon niet bij de hand is. Ze worden alleen nu getoond.'
+    saved_codes: 'Ik heb de codes opgeslagen'
+    required_notice: 'Deze feedbackruimte vereist tweestapsverificatie voor beheerders en moderatoren.'
+    login_title: 'Tweestapsverificatie'
+    login_help: 'Voer de code uit je authenticator-app in, of een van je herstelcodes.'
+    verify: 'Verifiëren'
+    start_over: 'Met een ander account inloggen'
+    enabled:
+      one: 'Aan. Nog 1 herstelcode.'
+      other: 'Aan. Nog %{count} herstelcodes.'
+  saml:
+    metadata_invalid: 'Dit zijn geen SAML-metadata van een identity provider (XML met een SingleSignOnService).'
+  ldap:
+    invalid_login: 'Ongeldige gebruikersnaam of wachtwoord voor je %{label}.'
+    not_found: 'Er is geen unieke ingang gevonden voor deze gebruikersnaam. Controleer de base DN en het gebruikersfilter.'
+  my_feedback:
+    title: 'Mijn feedback'
+    filters:
+      created: 'Geplaatst'
+      voted: 'Gestemd'
+      followed: 'Volgend'
+    empty:
+      created: 'Je hebt nog geen feedback geplaatst.'
+      voted: 'Je hebt nog niet op een bericht gestemd.'
+      followed: 'Je volgt nog geen bericht.'
+    approval:
+      pending: 'Wacht op goedkeuring'
+      rejected: 'Afgekeurd'
+      merged: 'Samengevoegd'
+  changelog:
+    title: 'Changelog'
+    empty: 'Hier is nog niets.'
+    new_entry: 'Nieuwe ingang'
+    draft: 'Concept'
+    delivers: 'Levert:'
+    rss_feed: 'RSS-feed'
+    form:
+      title: 'Titel'
+      body: 'Tekst (Markdown)'
+      posts: 'Geleverde berichten'
+      posts_help: 'Volgers van deze berichten krijgen een e-mail zodra de ingang voor het eerst gepubliceerd wordt.'
+      search_posts: 'Berichten zoeken'
+      add_post: 'Toevoegen'
+      remove_post: 'Verwijderen'
+      save_draft: 'Concept opslaan'
+      publish: 'Publiceren'
+      unpublish: 'Terug naar concept'
+      ai_draft: 'Tekst met AI schrijven'
+      ai_draft_loading: 'Schrijven…'
+      ai_draft_hint: 'Titels en omschrijvingen van de geleverde berichten worden naar de ingestelde AI-provider gestuurd.'
+  views:
+    pagination:
+      first: '&laquo; Eerste'
+      last: 'Laatste &raquo;'
+      previous: '&lsaquo; Vorige'
+      next: 'Volgende &rsaquo;'
+      truncate: '&hellip;'

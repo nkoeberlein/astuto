@@ -22,14 +22,14 @@ it:
         body: 'Puoi confermare il tuo account cliccando il link qua sotto:'
         action: 'Conferma il mio account'
       email_changed:
-        body: "Ti contattiamo per segnalarti che la tua email sta per essere modificata in %{email}."
-        body2: "Ti contattiamo per segnalarti che la tua email è stata modificata in %{email}."
+        body: 'Ti contattiamo per segnalarti che la tua email sta per essere modificata in %{email}.'
+        body2: 'Ti contattiamo per segnalarti che la tua email è stata modificata in %{email}.'
       password_change:
-        body: "Ti contattiamo per segnalarti che la tua password è stata modificata."
+        body: 'Ti contattiamo per segnalarti che la tua password è stata modificata.'
       reset_password:
         body: 'Qualcuno ha richiesto un link per modificare la tua password. Puoi modificare la tua password cliccando sul link qua sotto.'
-        body2: "Se non sei stato tu a richiedere la modifica, ti preghiamo di ignorare questa email."
-        body3: "La tua password non sarà modificata finché non cliccherai sul link qua sopra e ne creerai una nuova."
+        body2: 'Se non sei stato tu a richiedere la modifica, ti preghiamo di ignorare questa email.'
+        body3: 'La tua password non sarà modificata finché non cliccherai sul link qua sopra e ne creerai una nuova.'
         action: 'Cambia la mia password'
     user:
       opening_greeting: 'Ciao %{name}!'
@@ -73,11 +73,15 @@ it:
       user:
         one: 'Utente'
         other: 'Utenti'
+      webhook:
+        one: 'Webhook'
+        other: 'Webhook'
     attributes:
       board:
         name: 'Nome'
         description: 'Descrizione'
         order: 'Ordine'
+        visibility: 'Visibilità'
       comment:
         body: 'Corpo'
         is_post_update: 'Aggiornamento post'
@@ -123,6 +127,7 @@ it:
         subdomain: 'Sottodominio'
         locale: 'Lingua'
         custom_domain: 'Dominio personalizzato'
+        site_favicon: 'URL della favicon'
       tenant_setting:
         brand_display: 'Mostra'
         use_browser_locale: 'Usa lingua del browser'
@@ -141,6 +146,15 @@ it:
         show_roadmap_in_header: 'Mostra roadmap nel menu in alto'
         collapse_boards_in_header: 'Comprimi le bacheche nel menu in alto'
         custom_css: 'CSS personalizzato'
+        use_gravatar: 'Mostra gli avatar da Gravatar'
+        require_two_factor_for_staff: 'Richiedi l''autenticazione a due fattori per amministratori e moderatori'
+        require_user_approval: 'Approva i nuovi account'
+        trusted_after_posts: 'Attendibile dopo post approvati'
+        roadmap_enabled: 'Attiva la roadmap'
+        default_post_sorting: 'Ordinamento predefinito dei post'
+        custom_links: 'Link personalizzati nell''intestazione'
+        login_only_with_oauth: 'Mostra solo l''accesso OAuth'
+        mail_logo_size: 'Dimensione del logo nelle email'
       user:
         email: 'E-mail'
         full_name: 'Nome e cognome'
@@ -148,6 +162,39 @@ it:
         password_confirmation: 'Conferma password'
         role: 'Ruolo'
         notifications_enabled: 'Notifiche abilitate'
+        recap_notification_frequency: 'Frequenza del riepilogo'
+      ldap_config:
+        enabled: 'Usa il login LDAP'
+        label: 'Nome dell''account nella pagina di accesso'
+        host: 'Server'
+        port: 'Porta'
+        encryption: 'Cifratura'
+        verify_certificate: 'Verifica il certificato del server'
+        base_dn: 'Base DN'
+        bind_dn: 'Account di servizio (bind DN)'
+        bind_password: 'Password dell''account di servizio'
+        user_filter: 'Filtro utenti'
+        email_attribute: 'Attributo con l''indirizzo email'
+        name_attribute: 'Attributo con il nome'
+        auto_create_users: 'Crea un account al primo accesso'
+      saml_config:
+        enabled: 'Usa l''accesso unico SAML'
+        label: 'Testo del pulsante'
+        idp_entity_id: 'Entity ID del fornitore di identità (issuer)'
+        idp_sso_url: 'URL di unico accesso del fornitore di identità'
+        idp_cert: 'Certificato di firma del fornitore di identità'
+        email_attribute: 'Attributo con l''indirizzo email'
+        name_attribute: 'Attributo con il nome'
+        auto_create_users: 'Crea un account al primo accesso'
+      webhook:
+        name: 'Nome'
+        description: 'Descrizione'
+        is_enabled: 'Attivo'
+        trigger: 'Trigger'
+        url: 'URL'
+        http_body: 'Corpo della richiesta HTTP'
+        http_method: 'Metodo HTTP'
+        http_headers: 'Intestazioni della richiesta HTTP'
     errors:
       messages:
         invalid: 'è invalido'

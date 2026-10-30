@@ -15,7 +15,7 @@ ru:
         new_password_confirmation: 'Подтверждение нового пароля'
         current_password: 'Текущий пароль'
         notifications_enabled: 'Уведомления включены'
-        notifications_enabled_help: "если отключено, вы не получите никаких уведомлений"
+        notifications_enabled_help: 'если отключено, вы не получите никаких уведомлений'
         waiting_confirmation: 'Ожидаем подтверждения %{email}'
         no_password_set: 'Вы должны установить пароль, чтобы обновить профиль'
         set_password: 'Установить пароль'
@@ -28,14 +28,34 @@ ru:
         profile_settings: 'Настройки профиля'
         cancel_account: 'Закрыть учетную запись'
         forgot_password: 'Забыли пароль?'
-        confirmation_instructions_not_received: "Не получили подтверждение?"
-        unlock_instructions_not_received: "Не получили инструкции по разблокировке?"
+        confirmation_instructions_not_received: 'Не получили подтверждение?'
+        unlock_instructions_not_received: 'Не получили инструкции по разблокировке?'
         send_reset_password_instructions: 'Отправьте мне инструкции по сбросу пароля'
         resend_confirmation_instructions: 'Отправить подтверждение инструкции'
         resend_unlock_instructions: 'Отправить письмо для разблокирования'
         change_password: 'Изменить пароль'
         password_help: 'минимальное количство знаков %{count} '
         email_registration_not_allowed: 'Email registration not allowed'
+        notifications: 'Уведомления'
+        recap_notification_frequency_daily: 'Ежедневно'
+        recap_notification_frequency_weekly: 'Еженедельно'
+        recap_notification_frequency_monthly: 'Ежемесячно'
+        recap_notification_frequency_help: 'Сводка письмом: новая обратная связь, посты с наибольшим числом голосов и изменения статусов отслеживаемых постов (модераторы: также обратная связь, ожидающая одобрения). Если ничего не произошло, ничего не отправляется.'
+        log_in_with_email: 'Войти по почте и паролю'
+        login_name: 'Имя для входа'
+        ldap_info: 'Войдите со своим %{label}.'
+        my_data: 'Мои данные'
+        my_data_help: 'Скачайте всё, что это пространство обратной связи хранит о вас: профиль, посты, комментарии, голоса и отслеживаемые посты (JSON).'
+        download_my_data: 'Скачать мои данные'
+        oauth_only_info: 'Входите и регистрируйтесь через одного из OAuth-провайдеров ниже. Вход по почте на этом сайте отключён.'
+      api_key:
+        title: 'Ключ API'
+        current_api_key_help: 'Ключ API уже создан и из соображений безопасности не показывается снова. Если потеряли его, создайте новый ниже.'
+        generate_api_key: 'Создать ключ API'
+        generated_api_key_help: 'Сохраните этот ключ API в надёжном месте — больше вы его не увидите.'
+        generated_api_key_successfully: 'Ключ API успешно создан!'
+        confirm_generate_new_api_key: 'Создать новый ключ API? Старый станет недействительным.'
+        api_key_learn_more: 'Как пользоваться API'
     no_status: 'Нет статуса'
     select_placeholder: 'Select...'
     loading: 'Загрузка...'
@@ -56,6 +76,11 @@ ru:
       approve: 'Утвердить'
       reject: 'Отклонить'
       copy_to_clipboard: 'Copy to clipboard'
+      preview: 'Предпросмотр'
+      move_up: 'Вверх'
+      move_down: 'Вниз'
+    errors:
+      not_found: 'Страница не найдена'
   header:
     menu:
       site_settings: 'Настройки сайта'
@@ -63,9 +88,18 @@ ru:
       profile_header: 'Профиль'
       profile_settings: 'Настройки профиля'
       sign_out: 'Выйти'
+      my_feedback: 'Моя обратная связь'
     log_in: 'Войти / Зарегистрироваться'
   roadmap:
     title: 'Дорожная Карта'
+    empty: 'Дорожная карта пуста.'
+    filter_by_board: 'Фильтр по доске'
+    more_posts:
+      one: '+ %{count} пост ещё'
+      other: '+ %{count} постов ещё'
+    sort_by:
+      most_voted: 'Наибольшее число голосов'
+      recently_updated: 'Недавно обновлённые'
   blocked_tenant:
     title: 'Сообщение обратной связи было сохранено'
   board:
@@ -80,10 +114,13 @@ ru:
       anonymous_submission_help: 'Вы публикуете анонимно'
       non_anonymous_submission_help: 'Вы публикуете как  %{name}'
       submit_pending: 'Ваш отзыв отправлен и теперь ожидает одобрения модератора!'
+      status: 'Начальный статус (только модераторы)'
+      similar_posts_title: 'Похожие посты уже есть — проголосовать за один из них?'
     search_box:
       title: 'Поиск'
     filter_box:
       title: 'Фильтр по статусу'
+      tags: 'Фильтр по тегу'
     sort_by_box:
       title: 'Сортировать по'
       trending: 'Популярные'
@@ -92,6 +129,8 @@ ru:
       oldest: 'Старые'
     posts_list:
       empty: 'Нет публикаций'
+      load_more: 'Показать ещё'
+    rss_feed: 'RSS-лента'
   post:
     published_by: 'Опубликован'
     published_anonymously: 'Опубликовано анонимно'
@@ -101,18 +140,54 @@ ru:
       title: 'Нравится'
     action_box:
       follow_button: 'Подписаться на пост'
-      following_description: "вы получаете уведомления о новых обновлениях на этот пост"
-      not_following_description: "Вы не подписаны на уведомления об активности в этом посте."
+      following_description: 'вы получаете уведомления о новых обновлениях на этот пост'
+      not_following_description: 'Вы не подписаны на уведомления об активности в этом посте.'
     comments:
       title: 'Активность'
       post_update_badge: 'Обновление'
       reply_button: 'Ответить'
+      empty: 'Комментариев пока нет'
     new_comment:
       body_placeholder: 'Оставить комментарий'
       submit_button: 'Отправить'
       is_post_update: 'Пометить как обновление'
       user_notification: 'Пользователи, подписавшиеся на это сообщение, будут уведомлены'
       not_logged_in: 'Для просмотра этого содержимого необходимо войти в систему.'
+    merge:
+      same_post: 'Пост нельзя объединить с самим собой.'
+      already_merged: 'Один из постов уже объединён.'
+      button: 'Объединить с другим постом'
+      search: 'Найти пост, который останется'
+      help: 'Голоса, подписчики и комментарии переносятся в выбранный вами пост; этот затем ведёт туда. Отменить нельзя.'
+      into_this: 'Объединить сюда'
+      confirmation: 'Объединить этот пост в «%{target}»? Голоса, подписчики и комментарии переносятся туда. Отменить нельзя.'
+      merged_from: 'Объединено из:'
+    tags:
+      title: 'Теги'
+    in_changelog: 'В changelog-е:'
+    source:
+      title: 'Источник'
+      label: 'Источник'
+      url: 'Ссылка на источник'
+    ai_translation:
+      button: 'Перевести'
+      loading: 'Перевожу…'
+      hide: 'Скрыть перевод'
+      label: 'Перевод ИИ'
+      hint: 'Текст отправляется настроенному ИИ-провайдеру.'
+    ai_suggestion:
+      button: 'Предложить доску и теги'
+      loading: 'Думаю…'
+      hint: 'Заголовок и описание отправляются настроенному ИИ-провайдеру.'
+      board: 'Доска:'
+      tags: 'Теги:'
+      none: 'Нет предложения: ничего не подходит лучше, чем уже есть у поста.'
+      apply: 'Применить'
+    ai_summary:
+      title: 'Резюме от ИИ'
+      button: 'Суммировать обсуждение'
+      loading: 'Суммирую…'
+      hint: 'Заголовок, описание и комментарии отправляются настроенному ИИ-провайдеру.'
   site_settings:
     menu:
       title: 'Настройки сайта'
@@ -123,6 +198,10 @@ ru:
       roadmap: 'Дорожная Карта'
       invitations: 'Invitations'
       appearance: 'Внешний вид'
+      tags: 'Теги'
+      widget: 'Виджет'
+      webhooks: 'Webhook-и'
+      audit_log: 'Журнал аудита'
     info_box:
       up_to_date: 'Все изменения сохранены'
       dirty: 'Не удалось сохранить изменения'
@@ -132,7 +211,7 @@ ru:
       brand_setting_name: 'Только название'
       brand_setting_logo: 'Только логотип'
       brand_setting_none: 'Нет'
-      use_browser_locale_help: "If you enable this setting, the feedback space will be displayed in the user's browser preferred language. If the language is not available, the default language will be used."
+      use_browser_locale_help: 'If you enable this setting, the feedback space will be displayed in the user''s browser preferred language. If the language is not available, the default language will be used.'
       subtitle_privacy: 'Privacy'
       is_private_help: 'If you enable this setting, only logged in users will be able to see the content of the feedback space.'
       subtitle_moderation: 'Модерация'
@@ -153,12 +232,35 @@ ru:
       show_vote_count_help: 'При включении этой настройки, пользователи смогут видеть количество голосов. Это может стимулировать пользователей голосовать за уже популярные записи, приводя к эффекту снежного кома (эффект накопления и усиления).'
       show_vote_button_in_board_help: 'Если включить эту опцию, пользователи смогут голосовать за сообщения со страницы форума. Это может стимулировать пользователей голосовать за больше записей, что приведет к большему количеству голосов, но менее значимому результату.'
       hide_unused_statuses_in_filter_by_status_help: 'If you enable this setting, only statuses that are assigned to at least one post in that board will be shown in the filter by status sidebar filter.'
+      test_email: 'Отправить тестовое письмо'
+      test_email_help: 'Отправляет письмо на %{email}, чтобы проверить настройки почты (переменные окружения EMAIL_*).'
+      test_email_sent: 'Тестовое письмо отправлено на %{email} (%{method}, от %{from}). Проверьте «Входящие» и «Спам».'
+      use_gravatar_help: 'Фотографии профиля приходят с gravatar.com: браузер каждого посетителя запрашивает каждую картинку у gravatar.com с хешем адреса почты. Отключите, чтобы показывать инициалы и не отправлять ничего третьим лицам.'
+      require_two_factor_for_staff_help: 'Администраторы и модераторы должны настроить двухфакторную аутентификацию, прежде чем смогут модерировать или менять настройки. Ключи API это не затрагивает.'
+      subtitle_authentication: 'Аутентификация'
+      subtitle_mail: 'Письма'
+      feedback_approval_policy_new_users_require_approval: 'Требовать одобрения анонимной обратной связи и первых постов каждой учётной записи'
+      require_user_approval_help: 'Регистрации по почте или через OAuth ждут, пока администратор одобрит их в разделе Модерация › Пользователи; администратор получает письмо на каждую. Приглашённые и входы через SAML, LDAP или виджет одобряются автоматически.'
+      trusted_after_posts_help: 'После этого количества одобренных постов новые посты учётной записи одобряются автоматически. Отклонённые не считаются.'
+      roadmap_enabled_help: 'Если отключить, страница дорожной карты станет недоступной, а ссылка исчезнет из шапки.'
+      default_post_sorting_help: 'Посты сортируются так, когда доска открывается без явной сортировки.'
+      custom_links_help: 'Дополнительные ссылки в шапке сайта, по одной на строку: Название|URL. Пример: Документы|https://example.com/docs'
+      login_only_with_oauth_help: 'Если включить, вход по почте и паролю и регистрация по почте скрываются. Входить и регистрироваться пользователи могут только через OAuth-провайдеров. Ссылки сброса пароля остаются доступными.'
+      mail_logo_size_help: 'Размер логотипа в пикселях в исходящих письмах.'
     boards:
       title: 'Доски'
       empty: 'Доски отсутствуют. Создайте доску!'
       form:
         name: 'Название доски'
         description: 'Описание доски (опционально)'
+        visibility: 'Кто может видеть'
+        visibility_help: 'Посты доски скрываются везде от тех, кто не может их видеть: списки, дорожная карта, поиск, ленты, карта сайта, письма. Модераторы и администраторы всегда видят все доски.'
+        slug: 'URL (необязательно)'
+        slug_help: 'Часть адреса доски, например /boards/feature-requests. Оставьте пустым, чтобы сгенерировать из названия.'
+      visibility:
+        everyone: 'Все'
+        signed_in: 'Только вошедшие'
+        staff: 'Только модераторы и администраторы'
     post_statuses:
       title: 'Статусы'
       empty: 'Нет статусов. Создайте новую!'
@@ -173,6 +275,8 @@ ru:
       show_board_filter: 'Show board filter'
       show_post_status_filter: 'Show status filter'
       embed_help: 'You can embed the roadmap in your website by copying the code above.'
+      help_buttons: 'Кнопкой со стрелкой переносите статус в дорожную карту или из неё. Статусы создаются и переупорядочиваются в Настройки сайта > Статусы.'
+      embed_scope_help: 'Выберите доски или статусы, чтобы показать только их; без выбора показываются все.'
     invitations:
       new_invitations_title: 'New invitations'
       past_invitations_title: 'Invitations'
@@ -181,16 +285,7 @@ ru:
       subject: 'Email subject'
       subject_default: 'We value your feedback! Join us in shaping %{name}!'
       body: 'Email body'
-      body_default: |
-        Hello!
-
-        We truly appreciate your experience with %{name} and would love to hear your feedback. Your insights help us improve and continue delivering the best possible service.
-
-        Click the link below to share your thoughts and make your voice heard:
-
-        %link%
-
-        Have a great day!
+      body_default: "Hello!\n\nWe truly appreciate your experience with %{name} and would love to hear your feedback. Your insights help us improve and continue delivering the best possible service.\n\nClick the link below to share your thoughts and make your voice heard:\n\n%link%\n\nHave a great day!\n"
       send:
         one: 'Send invitation'
         few: 'Send %{count} invitations'
@@ -209,6 +304,8 @@ ru:
       accepted: 'Accepted'
       sent_at: 'Sent %{when}'
       accepted_at: 'Accepted %{when}'
+      skipped: 'Не отправлено (уже зарегистрированы, уже приняты или недействительны): %{emails}'
+      expired: 'Истекло'
     appearance:
       title: 'Внешний вид'
       learn_more: 'Узнайте, как настроить внешний вид'
@@ -236,6 +333,162 @@ ru:
         subtitle_oauth_config: 'Конфигурация OAuth'
         subtitle_user_profile_config: 'Настройка профиля пользователя'
         client_secret_help: 'скрытые в целях безопасности'
+        profile_headers: 'Дополнительные заголовки для запроса профиля (необязательно)'
+      ldap:
+        title: 'LDAP / Active Directory'
+        intro: 'Позвольте людям входить с именем и паролем корпоративного каталога (OpenLDAP, Active Directory, FreeIPA, ...). Astuto находит запись служебной учётной записью и проверяет пароль, подключаясь от имени этой записи.'
+        encryption_start_tls: 'StartTLS (порт 389)'
+        encryption_simple_tls: 'LDAPS (порт 636)'
+        encryption_plain: 'Нет (только внутри доверенной сети)'
+        bind_dn_help: 'Оставьте пустым для анонимного поиска, если каталог это разрешает.'
+        bind_password_set: 'Пароль сохранён. Оставьте пустым, чтобы сохранить его.'
+        user_filter_help: '%{login} означает то, что вводят люди. Active Directory: (sAMAccountName=%{login}), OpenLDAP: (uid=%{login}).'
+        test_login: 'Проверить именем для входа'
+        test_help: 'Проверяет соединение, служебную учётную запись и фильтр с сохранёнными настройками; пароль не нужен.'
+        test_found: 'Найдено:'
+      saml:
+        title: 'Единый вход SAML'
+        intro: 'Позвольте людям входить через поставщика идентификационных данных вашей компании (Microsoft Entra ID, Okta, Keycloak, ADFS, Google Workspace, ...). Зарегистрируйте там Astuto как приложение с двумя значениями ниже, затем вставьте метаданные поставщика или заполните его поля.'
+        sp_entity_id: 'Идентификатор Entity / адрес метаданных'
+        acs_url: 'URL ответа (Assertion Consumer Service)'
+        metadata: 'Метаданные XML поставщика идентификационных данных'
+        import_metadata: 'Заполнить из метаданных'
+        email_attribute_help: 'Оставьте пустым, чтобы использовались обычные имена атрибутов, затем NameID.'
+        auto_create_help: 'Иначе войти могут только те, у кого уже есть учётная запись (например, по приглашению).'
+      empty: 'OAuth-провайдеров пока нет.'
+    widget:
+      title: 'Виджет'
+      intro: 'Кнопка обратной связи для вашего сайта или приложения. Открывает доски, дорожную карту и changelog в панели. Вошедшие посетители вашего приложения голосуют и публикуют под своей учётной записью: ваш сервер подписывает короткий токен посетителя секретом ниже.'
+      enabled: 'Включить виджет'
+      allowed_origins: 'Сайты, которые могут показывать виджет'
+      allowed_origins_help: 'Одна origin на строку, например https://app.example.com. Пусто: любой сайт.'
+      auto_create_users: 'Создавать учётную запись для новых посетителей'
+      auto_create_users_help: 'Иначе вход выполняют только люди, у которых уже есть учётная запись (та же почта). Модераторы и администраторы через виджет никогда не входят.'
+      install_title: 'Установка'
+      install_intro: 'Добавьте это на страницы вашего сайта; замените VISITOR_TOKEN токеном с вашего сервера либо уберите data-token для анонимных посетителей.'
+      token_intro: 'Ваш сервер подписывает токен посетителя этим секретом. Держите его на сервере, никогда в браузере.'
+      rotate: 'Новый секрет'
+      rotate_confirm: 'Создать новый секрет? Токены, подписанные текущим, перестанут работать.'
+      token_rules: 'Claims: email (обязателен), name, id (ваш ID пользователя, связывает учётную запись даже при смене почты). Только HS256; токен должен истекать в течение дня.'
+    tags:
+      title: 'Теги'
+      empty: 'Тегов пока нет. Теги группируют посты между досками, например по области продукта; модераторы ставят их на посты, а посетители фильтруют по ним.'
+      delete_confirmation: 'Удалить этот тег? Он будет убран со всех постов.'
+      form:
+        name: 'Название'
+        color: 'Цвет'
+    audit_log:
+      description: 'Изменения администраторов и модераторов: модерация, пользователи, доски, статусы, настройки, провайдеры входа, webhook-и, приглашения и ключи API. Записи хранятся год.'
+      filter: 'Фильтр по области'
+      all: 'Все'
+      empty: 'Записей пока нет.'
+      load_more: 'Показать более старые записи'
+      unknown_actor: 'Кто-то'
+      value_yes: 'да'
+      value_no: 'нет'
+      filtered: '(скрыто)'
+      invitations_sent:
+        one: '1 приглашение'
+        other: '%{count} приглашений'
+      categories:
+        tag: 'Теги'
+        post: 'Посты'
+        comment: 'Комментарии'
+        user: 'Пользователи'
+        board: 'Доски'
+        post_status: 'Статусы'
+        changelog: 'Changelog'
+        site_settings: 'Общие'
+        o_auth: 'Провайдеры входа'
+        saml: 'SAML'
+        ldap: 'LDAP'
+        widget: 'Виджет'
+        webhook: 'Webhook-и'
+        invitation: 'Приглашения'
+        api_key: 'Ключи API'
+      sources:
+        api: 'REST API'
+        mcp: 'MCP'
+      actions:
+        tag_create: 'создал тег'
+        tag_update: 'изменил тег'
+        tag_delete: 'удалил тег'
+        tag_reorder: 'переупорядочил теги'
+        post_create_for_author: 'опубликовал за:'
+        post_update: 'изменил пост'
+        post_delete: 'удалил пост'
+        post_merge: 'объединил:'
+        comment_update: 'изменил комментарий'
+        comment_delete: 'удалил комментарий'
+        user_create: 'создал пользователя'
+        user_update: 'изменил пользователя'
+        user_export: 'скачал данные пользователя'
+        user_delete: 'удалил учётную запись'
+        user_two_factor_enable: 'включил двухфакторную аутентификацию:'
+        user_two_factor_disable: 'отключил двухфакторную аутентификацию:'
+        board_create: 'создал доску'
+        board_update: 'изменил доску'
+        board_delete: 'удалил доску'
+        board_reorder: 'переупорядочил доски'
+        post_status_create: 'создал статус'
+        post_status_update: 'изменил статус'
+        post_status_delete: 'удалил статус'
+        post_status_reorder: 'переупорядочил статусы'
+        changelog_create: 'написал запись changelog-а'
+        changelog_update: 'изменил запись changelog-а'
+        changelog_publish: 'опубликовал запись changelog-а'
+        changelog_delete: 'удалил запись changelog-а'
+        site_settings_update: 'изменил настройки сайта'
+        o_auth_create: 'добавил провайдера входа'
+        o_auth_update: 'изменил провайдера входа'
+        o_auth_delete: 'убрал провайдера входа'
+        saml_update: 'изменил единый вход SAML:'
+        ldap_update: 'изменил вход через LDAP:'
+        widget_update: 'изменил настройки виджета'
+        widget_rotate_secret: 'создал новый секрет виджета'
+        webhook_create: 'создал webhook'
+        webhook_update: 'изменил webhook'
+        webhook_delete: 'удалил webhook'
+        webhook_rotate_secret: 'создал новый секрет подписи для webhook-а'
+        invitation_send: 'отправил'
+        api_key_create: 'создал ключ API для'
+    webhooks:
+      deliveries:
+        title: 'Недавние доставки'
+        show: 'Доставки'
+        empty: 'Доставок пока нет.'
+        success: 'Доставлено'
+        failure: 'Неудача'
+        test: 'Тест'
+        last: 'Последняя доставка: %{status} %{when}'
+      signing:
+        title: 'Подпись'
+        help: 'Каждый запрос несёт X-Astuto-Signature: sha256=HMAC-SHA256(secret, "<X-Astuto-Timestamp>.<body>"). Проверяйте его на принимающей стороне, чтобы убедиться, что запрос пришёл из этого пространства обратной связи.'
+        rotate: 'Новый секрет'
+        rotate_confirmation: 'Принимающим, кто проверяет подпись, новый секрет нужен сразу. Продолжить?'
+      title: 'Webhook-и'
+      learn_more: 'Узнайте, как настраивать и использовать webhook-и'
+      empty: 'Webhook-ов нет.'
+      triggers:
+        new_post: 'Новый пост'
+        new_post_pending_approval: 'Новый пост (ожидает одобрения)'
+        delete_post: 'Удаление поста'
+        post_status_change: 'Изменение статуса поста'
+        new_comment: 'Новый комментарий'
+        new_vote: 'Новый голос'
+        new_user: 'Новый пользователь'
+      form:
+        title_new: 'Новый webhook'
+        title_edit: 'Изменить webhook'
+        add_header: 'Добавить заголовок'
+        header_n_key: 'Заголовок %{n}: ключ'
+        header_n_value: 'Заголовок %{n}: значение'
+        template_variables_selector_placeholder: 'Выберите переменную шаблона…'
+        templates_label: 'Заполнить для'
+        templates_help: 'Задаёт метод, заголовок Content-Type и тело сообщения для выбранного триггера. В качестве URL используйте входящий адрес webhook-а чат-инструмента.'
+        templates_confirm: 'Заменить текущее тело?'
+      test_page:
+        title: 'Результаты теста webhook-а'
   moderation:
     menu:
       feedback: 'Отзывы'
@@ -247,10 +500,10 @@ ru:
     users:
       block: 'Заблокировать'
       unblock: 'Разблокировать'
-      block_confirmation: "%{name} не сможет войти в систему, пока ее не разблокируют. Вы уверены?"
-      unblock_confirmation: "%{name} не сможет войти в систему и оставить отзыв. Вы уверены?"
-      role_to_moderator_confirmation: "%{name} сможет управлять обращениями и пользователями. Действуйте только в том случае, если вы доверяете этому человеку. Вы уверены?"
-      role_to_admin_confirmation: "%{name} сможете управлять досками, обращениями, статусами, пользователями и многим другим. Действуйте только в том случае, если вы доверяете этому человеку. Вы уверены?"
+      block_confirmation: '%{name} не сможет войти в систему, пока ее не разблокируют. Вы уверены?'
+      unblock_confirmation: '%{name} не сможет войти в систему и оставить отзыв. Вы уверены?'
+      role_to_moderator_confirmation: '%{name} сможет управлять обращениями и пользователями. Действуйте только в том случае, если вы доверяете этому человеку. Вы уверены?'
+      role_to_admin_confirmation: '%{name} сможете управлять досками, обращениями, статусами, пользователями и многим другим. Действуйте только в том случае, если вы доверяете этому человеку. Вы уверены?'
       role_user: 'Пользователь'
       role_moderator: 'Модератор'
       role_admin: 'Администратор'
@@ -258,3 +511,238 @@ ru:
       status_active: 'Активный'
       status_blocked: 'Заблокирован'
       status_deleted: 'Удален'
+      export_data: 'Скачать данные (GDPR)'
+      delete_account: 'Удалить учётную запись'
+      delete_account_confirmation: 'Удалить учётную запись %{name}? Посты и комментарии останутся и будут показываться как «Удалённый пользователь». Отменить нельзя.'
+      status_pending_approval: 'Ожидает одобрения'
+      approve: 'Одобрить'
+      search_placeholder: 'Поиск по имени или почте'
+      filter_all_statuses: 'Все статусы'
+      filter_all_roles: 'Все роли'
+      empty: 'Пользователи не найдены'
+  number:
+    currency:
+      format:
+        negative_format: '-%u%n'
+    human:
+      storage_units:
+        units:
+          zb: 'ЗБ'
+      decimal_units:
+        units:
+          thousand: 'тыс'
+          million: 'млн'
+          billion: 'млрд'
+          trillion: 'трлн'
+          quadrillion: 'квдрлн'
+  errors:
+    messages:
+      password_too_long: 'слишком длинный'
+    user_pending_approval: 'Ваша учётная запись ждёт одобрения администратора. Вы получите письмо, когда сможете войти.'
+    unavailable_session: "Сессия %{id} больше не в памяти.\n\nЕсли вы работаете на многопроцессном сервере (например, Unicorn или Puma), процесс,\nобслуживший этот запрос, не хранит %{id} в памяти. Установите число процессов/воркеров в один (1) или используйте в среде разработки другой сервер.\n"
+    unacceptable_request: "В заголовке Accept ожидается поддерживаемая версия.\n"
+    connection_refused: "Не удалось подключиться к middleware Web Console.\nУбедитесь, что запущен сервер разработки Rails.\n"
+  datetime:
+    relative:
+      future: 'через %{time}'
+      past: '%{time} назад'
+  helpers:
+    page_entries_info:
+      entry:
+        zero: 'записей'
+        one: 'запись'
+        other: 'записей'
+      one_page:
+        display_entries:
+          zero: '%{entry_name} не найдено'
+          one: 'Показана <b>1</b> %{entry_name}'
+          other: 'Показаны <b>все %{count}</b> %{entry_name}'
+      more_pages:
+        display_entries: 'Показаны %{entry_name} <b>%{first}–%{last}</b> из <b>%{total}</b> всего'
+  flash:
+    actions:
+      create:
+        notice: '%{resource_name} успешно создано.'
+      update:
+        notice: '%{resource_name} успешно обновлено.'
+      destroy:
+        notice: '%{resource_name} успешно удалено.'
+        alert: 'Не удалось удалить %{resource_name}.'
+  widget:
+    errors:
+      disabled: 'Виджет не включён.'
+      invalid_token: 'Токен посетителя недействителен или истёк.'
+      linked_elsewhere: 'Этот адрес почты принадлежит другой учётной записи.'
+      no_account: 'Для этого посетителя нет учётной записи.'
+      staff_account: 'Модераторы и администраторы входят на сайт обратной связи, не через виджет.'
+      blocked: 'Эта учётная запись заблокирована.'
+    tabs:
+      feedback: 'Обратная связь'
+      roadmap: 'Дорожная карта'
+      changelog: 'Changelog'
+    close: 'Закрыть'
+    board: 'Доска'
+    signed_in_as: 'Вошли как %{name}'
+    open_site: 'Открыть сайт обратной связи'
+  webhook_templates:
+    new_post: 'Новая обратная связь в %{board}: %{post}'
+    new_post_pending_approval: 'Обратная связь, ожидающая одобрения, в %{board}: %{post}'
+    delete_post: 'Пост #%{id} удалён'
+    post_status_change: '%{post} теперь: %{status}'
+    new_comment: '%{author} прокомментировал %{post}'
+    new_vote: '%{author} проголосовал за %{post}'
+    new_user: 'Новый пользователь: %{user}'
+    open: 'Открыть'
+  mailers:
+    admin:
+      test_email:
+        subject: '[%{site_name}] Тестовое письмо'
+        body: 'Это тестовое письмо с %{site_name} пришло — отправка писем работает.'
+        details: 'Отправлено через %{delivery_method} с %{from}.'
+      user_pending_approval:
+        subject: '[%{site_name}] Новая учётная запись ждёт одобрения: %{name}'
+        body_html: '<strong>%{name}</strong> (%{email}) зарегистрировался и ждёт вашего одобрения.'
+        review: 'Проверить в разделе Модерация › Пользователи'
+    user:
+      notify_follower_of_changelog_entry:
+        subject: '[%{site_name}] Новое в changelog-е: %{title}'
+        body_html: 'В changelog-е новая запись, <strong>%{title}</strong>. Она освещает обратную связь, за которой вы следите'
+        read_entry: 'Прочитать changelog'
+      account_approved:
+        subject: '[%{site_name}] Ваша учётная запись одобрена'
+        body_html: 'Администратор одобрил вашу учётную запись. Теперь вы можете войти.'
+        sign_in: 'Войти'
+      recap:
+        subject: '[%{site_name}] %{frequency} сводка активности пространства обратной связи'
+        body_html: 'Вот %{frequency} сводка активности в вашем пространстве обратной связи'
+        published_posts_count_html: 'Новая опубликованная обратная связь: %{count}'
+        pending_posts_count_html: 'Новая обратная связь, ожидающая одобрения: %{count}'
+        status_changes_title: 'Изменения статусов постов, за которыми вы следите'
+        no_status: 'без статуса'
+        top_posts_title: 'С наибольшим числом голосов за период'
+        period_votes:
+          one: '%{count} новый голос'
+          other: '%{count} новых голосов'
+        more_posts: 'и ещё %{count}'
+  instance_admin:
+    title: 'Администрирование экземпляра'
+    tenants:
+      title: 'Пространства обратной связи'
+      new: 'Новое пространство обратной связи'
+      create: 'Создать пространство обратной связи'
+      site_name: 'Название'
+      subdomain: 'Поддомен'
+      subdomain_hint: 'Буквы, цифры и дефисы. Адрес станет <поддомен>.%{host}.'
+      owner_email: 'Электронная почта владельца'
+      owner_name: 'Имя владельца'
+      locale: 'Язык'
+      address: 'Адрес'
+      status: 'Статус'
+      users: 'Пользователи'
+      posts: 'Посты'
+      created: 'Создано'
+      actions: 'Действия'
+      edit: 'Изменить'
+      save: 'Сохранить'
+      back: 'Вернуться к списку'
+      block: 'Заблокировать'
+      unblock: 'Разблокировать'
+      empty: 'Пространств обратной связи пока нет.'
+      statuses:
+        active: 'Активно'
+        pending: 'Ожидает'
+        blocked: 'Заблокировано'
+      custom_domain: 'Свой домен'
+      custom_domain_hint: 'Необязательно. Сначала добавьте CNAME-запись, направляющую домен на %{target}. Оставьте пустым, чтобы убрать.'
+      created_title: '%{site_name} готово'
+      owner_credentials: 'Логин владельца. Пароль показывается только сейчас:'
+      password_hint: 'Отправьте его владельцу по защищённому каналу и попросите сменить после первого входа.'
+      updated: '%{subdomain} сохранено.'
+      blocked: '%{subdomain} заблокировано. На страницах показывается уведомление; данные остаются.'
+      unblocked: '%{subdomain} снова активно.'
+      deleted: '%{subdomain} и все его данные удалены.'
+      delete_title: 'Удалить пространство обратной связи'
+      delete_warning: 'Удаляет доски, посты, комментарии, голоса, пользователей, webhook-и и настройки этого пространства обратной связи. Отменить нельзя. Чтобы сохранить данные, заблокируйте вместо этого.'
+      confirm_label: 'Введите "%{subdomain}" для подтверждения'
+      confirm_mismatch: 'Поддомен не совпал. Ничего не удалено.'
+      delete: 'Удалить навсегда'
+  pending_tenant:
+    title: 'Подтвердите адрес электронной почты'
+    body: 'Проверьте папку «Входящие» (и «Спам») и нажмите ссылку активации.'
+    help: 'Нужна помощь? Свяжитесь с администратором этого экземпляра.'
+  two_factor:
+    invalid_code: 'Код недействителен. Используйте текущий код из приложения-аутентификатора или неиспользованный резервный код.'
+    login_expired: 'Вход занял слишком много времени. Введите почту и пароль заново.'
+    setup_required: 'Это пространство обратной связи требует двухфакторную аутентификацию от администраторов и модераторов. Сначала настройте её в профиле.'
+    already_enabled: 'Двухфакторная аутентификация уже включена.'
+    not_enabled: 'Двухфакторная аутентификация выключена.'
+    title: 'Двухфакторная аутентификация'
+    intro: 'Защитите свою учётную запись вторым шагом: после пароля введите код из приложения-аутентификатора (например, Aegis, Google Authenticator, Microsoft Authenticator или 1Password).'
+    set_up: 'Настроить двухфакторную аутентификацию'
+    scan_help: 'Отсканируйте QR-код приложением-аутентификатором и введите показанный шестизначный код.'
+    qr_code_alt: 'QR-код для приложения-аутентификатора'
+    manual_entry: 'Либо введите этот ключ вручную:'
+    code: 'Код'
+    turn_on: 'Включить'
+    code_for_changes: 'Введите текущий код, чтобы создать новые резервные коды.'
+    new_backup_codes: 'Создать новые резервные коды'
+    turn_off: 'Выключить двухфакторную аутентификацию'
+    turn_off_confirmation: 'Выключить двухфакторную аутентификацию? Учётная запись будет защищена только паролем.'
+    backup_codes: 'Резервные коды'
+    backup_codes_help: 'Храните эти резервные коды в надёжном месте. Каждый из них входит один раз, если телефон не под рукой. Показываются только сейчас.'
+    saved_codes: 'Коды сохранены'
+    required_notice: 'Это пространство обратной связи требует двухфакторную аутентификацию от администраторов и модераторов.'
+    login_title: 'Двухфакторная аутентификация'
+    login_help: 'Введите код из приложения-аутентификатора или один из резервных кодов.'
+    verify: 'Проверить'
+    start_over: 'Войти другой учётной записью'
+    enabled:
+      one: 'Включена. Остался 1 резервный код.'
+      other: 'Включена. Осталось %{count} резервных кодов.'
+  saml:
+    metadata_invalid: 'Это не SAML-метаданные поставщика идентификационных данных (XML с SingleSignOnService).'
+  ldap:
+    invalid_login: 'Недействительное имя для входа или пароль для вашего %{label}.'
+    not_found: 'Уникальная запись для этого имени входа не найдена. Проверьте base DN и фильтр пользователей.'
+  my_feedback:
+    title: 'Моя обратная связь'
+    filters:
+      created: 'Опубликованные'
+      voted: 'Голосованные'
+      followed: 'Отслеживаемые'
+    empty:
+      created: 'Вы ещё не публиковали обратную связь.'
+      voted: 'Вы ещё не голосовали ни за один пост.'
+      followed: 'Вы пока не следите ни за одним постом.'
+    approval:
+      pending: 'Ожидает одобрения'
+      rejected: 'Отклонено'
+      merged: 'Объединено'
+  changelog:
+    title: 'Changelog'
+    empty: 'Здесь пока ничего нет.'
+    new_entry: 'Новая запись'
+    draft: 'Черновик'
+    delivers: 'Охватывает:'
+    rss_feed: 'RSS-лента'
+    form:
+      title: 'Заголовок'
+      body: 'Текст (Markdown)'
+      posts: 'Охваченные посты'
+      posts_help: 'Подписчики этих постов получат письмо, когда запись впервые опубликуют.'
+      search_posts: 'Найти посты'
+      add_post: 'Добавить'
+      remove_post: 'Убрать'
+      save_draft: 'Сохранить черновик'
+      publish: 'Опубликовать'
+      unpublish: 'Вернуть в черновики'
+      ai_draft: 'Набросать текст с ИИ'
+      ai_draft_loading: 'Пишу…'
+      ai_draft_hint: 'Заголовки и описания охваченных постов отправляются настроенному ИИ-провайдеру.'
+  views:
+    pagination:
+      first: '&laquo; Первая'
+      last: 'Последняя &raquo;'
+      previous: '&lsaquo; Предыдущая'
+      next: 'Следующая &rsaquo;'
+      truncate: '&hellip;'
