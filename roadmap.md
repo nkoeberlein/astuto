@@ -122,17 +122,17 @@ The most frequent problems from the upstream issues: HTTPS behind a reverse prox
 - Privacy: what goes to the AI provider is documented and can be switched off; a local model via Ollama is supported
 - **Feedback from other sources via MCP** instead of own connectors: an assistant in Slack or Teams reads a thread and creates the post. All it needed was a "source/link" field on the post and "on behalf of" in `create_post`
 
-### Phase 5 – Niche features · P2
-- **Changelog** with RSS and email to followers; **RSS per board** with the same technique
-- **Digest for users** (opt-in: top requests, status changes of followed posts), extension of the existing recap emails for moderators
-- **Trust levels:** check the first N posts of an account, then approve automatically (#362 family)
-- **Private boards** (#414), **tags** (#171), **attachments** (#253, #482; mind the storage rule: no Active Storage, decide between S3-compatible and Postgres, see todo.md)
-- **Import** from Canny, Fider and CSV (#368) to welcome switchers
-- **Widget with visitor identification** (signed JWT per tenant from your own app): prerequisite for attributing widget votes to real customers, and "login from your own app" without OAuth
-- **Embeddable widget**, **webhook templates** for Slack, Discord and Teams (#419), **signed webhooks** (HMAC header)
-- **LDAP/SAML** (#8) for companies and agencies
+### Phase 5 – Niche features · P2 (mostly done in 2.0.0-beta.1)
+- ✅ **Changelog** with RSS and email to followers; ✅ **RSS per board** with the same technique
+- ✅ **Digest for users** (opt-in: top requests, status changes of followed posts), extension of the existing recap emails for moderators
+- ✅ **Trust levels:** check the first N posts of an account, then approve automatically (#362 family)
+- ✅ **Private boards** (#414), ✅ **tags** (#171); ⬜ **attachments** (#253, #482; mind the storage rule: no Active Storage, decide between S3-compatible and Postgres, see todo.md)
+- ⬜ **Import** from Canny, Fider and CSV (#368) to welcome switchers
+- ✅ **Widget with visitor identification** (signed JWT per tenant from your own app): attributes widget votes to real customers, and "login from your own app" without OAuth
+- ✅ **Embeddable widget**, ✅ **webhook templates** for Slack, Discord and Teams (#419), ✅ **signed webhooks** (HMAC header)
+- ✅ **LDAP/SAML** (#8) for companies and agencies
 - Later: **user segments** (filter or weight votes by customer group; needs visitor identification and custom fields #420, weighting is in the v3 schema) and **stale rules** (filter "X months without activity", automatic archiving as opt-in only)
-- Quick wins from the issues: roadmap can be switched off (#361), default sorting (#193, #363, #483), OAuth-only login (#471), favicon (#452)
+- ✅ Quick wins from the issues: roadmap can be switched off (#361), default sorting (#193, #363, #483), OAuth-only login (#471), favicon (#452)
 
 ### Cross-cutting – project and community
 - Take over the documentation from `astuto/astuto-docs` (check the license first) and update it for the new version → decided to write own guides in `docs/` (the upstream docs repository has no license)
@@ -145,11 +145,11 @@ The most frequent problems from the upstream issues: HTTPS behind a reverse prox
 
 | Version | Content | Criterion |
 |---|---|---|
-| `2.0.0-alpha` | Phase 1 + 2 | Rails 8.1, Ruby 4.0, PG 19, tests green, image on GHCR, migration from 1.x documented |
-| `2.0.0-beta` | + Phase 3 (public pages), MCP server | New frontend for all visitor pages, MCP with basic tools |
+| `2.0.0-alpha` | Phase 1 + 2 | Rails 8.1, Ruby 4.0, PG 19, tests green, image on GHCR, migration from 1.x documented → ✅ alpha.3 (26.10.2026) |
+| `2.0.0-beta` | + Phase 3 (public pages), MCP server | New frontend for all visitor pages, MCP with basic tools → ✅ **beta.1 (30.10.2026)**; open until GA: RTL translations, the sign-up-requirements decision (#30), a migration test against real data |
 | `2.0.0` | + Phase 3 complete | React 16/Redux/Bootstrap 4 fully removed, docs adopted |
-| `2.1` | Phase 4 | Duplicate detection, AI features, changelog |
-| `2.2+` | Phase 5 | Widget, import, private boards, LDAP |
+| `2.1` | Phase 4 | Duplicate detection, AI features, changelog → largely delivered in beta.1; still open: semantic duplicates (pgvector) |
+| `2.2+` | Phase 5 | Widget, import, private boards, LDAP → largely delivered in beta.1; still open: attachments (#253), imports (#368) |
 | `3.0.0` | Full TypeScript | TanStack Start + Drizzle + Tailwind, Rails gone, automatic data migration from v2 |
 
 ## 6. Preparing v3 – data model, migration, license

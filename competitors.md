@@ -136,6 +136,13 @@ ratings (Trustpilot ~2.8/5).
 
 ✓ = available · ~ = partial / paid only · ✗ = missing · ? = unclear
 
+The **Astuto column reflects upstream Astuto 1.x.** Astuto Evolution
+2.0.0-beta.1 has since closed most of these gaps: changelog, tags (#171),
+private boards (#414), the embeddable widget with visitor identification,
+duplicate detection with merging (#455), the MCP server, AI summaries,
+suggestions and translation, Slack/Discord/Teams webhook templates (#419) and
+signed webhooks. Still open: file upload (#253) and imports (#368).
+
 | Feature | Astuto | Fider | Quackback | ClearFlask | Canny | Featurebase | UserJot |
 |---|---|---|---|---|---|---|---|
 | Boards, votes, comments | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |

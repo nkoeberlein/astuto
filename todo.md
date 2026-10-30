@@ -8,7 +8,7 @@ Issue numbers refer to `astuto/astuto`. See [roadmap.md](roadmap.md) for the pha
 ### Setup
 - [x] Check the local setup: the original image no longer built (Debian 11 EOL). After the Ruby 3.3 upgrade: 374 tests, 2 failures (UserMailer, keyword arguments under Rails 6.1 + Ruby ≥ 3.2, fixed with Rails 7.0)
 - [x] Rename `spec/system/user_o_auth_sign_up_and_log_in.rb` to `…_spec.rb` (it never ran); same for `spec/requests/posts_controller_test.rb` and `post_statuses_controller_test.rb`, adapted to the current behaviour. The OAuth system spec could not be checked locally (no Chromium in the dev container) and only runs in CI
-- [ ] Local port 3000 is occupied by an SSH tunnel here: `ASTUTO_PORT=3456 docker compose up`
+- [ ] Local port 3000 is occupied by an SSH tunnel here; `docker-compose.override.yml` maps the app to `:3005`
 - [x] Point `.github/workflows/push-to-registry.yml` at GHCR (`ghcr.io/nkoeberlein/astuto`), remove `riggraz/astuto`
 - [x] `run-tests.yml`: runner `ubuntu-24.04`
 - [x] README and CONTRIBUTING rewritten as Astuto Evolution, links to `nkoeberlein/astuto`
@@ -38,7 +38,7 @@ Issue numbers refer to `astuto/astuto`. See [roadmap.md](roadmap.md) for the pha
 - [x] Node 26 (builder, compose service, frontend CI); runtime image without Node at all (Debian's Node 20 was EOL and not needed)
 - [x] `yarn audit` without critical findings (old UI: 15 high, 17 moderate, 4 low; moot with its removal), verified via `bin/yarn-audit-critical`
 - [ ] **Urgent (PG 14 EOL 12.11.2026):** PostgreSQL 14.5 → 18 (#247): dev compose runs on `postgres:18-trixie` (fresh volume; the 19rc1 dev volume was discarded, dev data was scratch), guide in `UPGRADING.md` (dump/restore tested). Open: the GA of PG 19 is announced for **19.11.2026**, one week after PG 14's EOL. Then switch to `postgres:19-trixie` (same steps, see `UPGRADING.md`)
-- [x] Docker multi-arch build amd64 + arm64 with `docker/build-push-action` + QEMU (#399, #254, #475), not yet run in CI
+- [x] Docker multi-arch build amd64 + arm64 with `docker/build-push-action` + QEMU (#399, #254, #475), running green in CI since 2.0.0-beta.1
 - [x] Dependabot: Bundler, npm (frontend; old UI only security updates), Docker, compose, Actions; minor/patch grouped. Enable "Dependabot security updates" in the repository settings
 
 ### Security
@@ -125,7 +125,7 @@ Recommendation (roadmap.md section 3): a separate frontend with React 19 + TS 7 
 - [x] Roadmap page (`/next/roadmap`, `GET /api/app/v1/roadmap`): columns per status, board and status filters in the URL, the start page without a root board shows the roadmap like the old UI
 - [x] Embeddable roadmap (`/next/embedded_roadmap`) in the new frontend: without header/footer, posts in a new tab, the old parameters `show_boards`, `show_statuses`, `show_board_filter`, `show_status_filter`; only this page is framable by other sites (`SpaController`), and only when the roadmap is enabled
 - [x] Login/sign-up/password as SPA pages (Devise JSON: `POST/DELETE /api/app/v1/session`, `POST /api/app/v1/registration`, `POST/PATCH /api/app/v1/password`), OAuth buttons (`/next/login`, `/next/register`, `/next/password/forgot`, `/next/password/reset`)
-- [x] CI: regenerate the OpenAPI and compare with `frontend/src/api/schema.d.ts` (drift check in `run-tests.yml`, uses the OpenAPI file generated during the image build; not yet run in CI)
+- [x] CI: regenerate the OpenAPI and compare with `frontend/src/api/schema.d.ts` (drift check in `run-tests.yml`, uses the OpenAPI file generated during the image build), running green in CI since 2.0.0-beta.1
 - [x] Meta tags (title, description, Open Graph) for public pages set server-side in `SpaController` (`spec/requests/spa_meta_tags_spec.rb`)
 - [x] `hide_unused_statuses_in_filter_by_status` and `custom_css` honoured in the new frontend (`GET /api/app/v1/post_statuses?board_id=`, `__root.tsx`)
 - [x] Cutover `/next` → `/`: all pages via the `SpaController` (routes in `config/routes.rb`, named routes for mail links), `/next/*` → 301 to `/*`, Devise HTML pages redirect to the v2 pages (flash via `<meta name="astuto-flash">`), assets stay under `/next/assets`. Removed: the old page controllers (moderation, site settings, board/post page, roadmap) with views and Capybara system specs. Afterwards also into the new frontend or without JS: resend the confirmation and unlock links (`/confirmation/new`, `/unlock/new`, links in mails lead there on errors), the "pending"/"blocked" notice pages (own layout without JS, were broken with 500); only the disabled tenant sign-up remains
@@ -144,11 +144,11 @@ Recommendation (roadmap.md section 3): a separate frontend with React 19 + TS 7 
 - [x] Site settings › Webhooks (`/next/site_settings/webhooks`): CRUD, header rows, variables per trigger for insertion (the list now lives once in the backend: `CreateLiquidTemplateContextWorkflow::TEMPLATE_VARIABLES`), preview with a JSON error hint, test with status and response. Fixed along the way: PUT/PATCH/DELETE always went out as POST; after saving, URL and headers were shown encrypted in the form
 - [x] Site settings › Invitations (`/next/site_settings/invitations`): up to 20 invitations, test to yourself, list with status; links to the v2 sign-up; sending in `SendInvitationsWorkflow` (also used by the old UI), the limit and `%link%` now checked server-side. With this, all site-settings areas are in the new frontend
 - [x] Profile settings (`/next/profile`, `GET/PATCH/DELETE /api/app/v1/profile`, `POST …/api_key`): name, email, password, notifications, recap frequency, API key (moderators), delete account; the current password only for email, password and deletion; the owner cannot delete their own account
-- [x] E2E tests with Playwright (`frontend/e2e`, `npm run e2e`): public pages, embed, login, all settings, moderation and profile pages, the admin flow (board → post → vote → comment) and anonymous feedback through approval; in `run-tests.yml` against the production container (not yet run in CI). The Capybara system specs could not run locally in the cloud session (chromedriver did not match the browser)
+- [x] E2E tests with Playwright (`frontend/e2e`, `npm run e2e`): public pages, embed, login, all settings, moderation and profile pages, the admin flow (board → post → vote → comment) and anonymous feedback through approval; in `run-tests.yml` against the production container, running green in CI since 2.0.0-beta.1. The Capybara system specs could not run locally in the cloud session (chromedriver did not match the browser)
 - [x] Old frontend removed: `app/javascript` (~200 files React 16/Redux), Sass/Bootstrap, Webpack, Sprockets, the gems `react-rails`, `i18n-js`, `turbolinks`, `jsbundling-rails`, `cssbundling-rails`, `sprockets-rails`, Capybara/Selenium; the old JSON controllers (boards, posts, comments, likes, follows, status history, users, webhooks, OAuth CRUD, tenants, invitations, API keys) with routes; the tenant sign-up; `yarn audit` in CI replaced by `npm audit` of `frontend/`. Along the way: `GET /users/send_set_password_instructions` sent reset emails to arbitrary addresses unchecked (removed); `sign_in_from_oauth_token` crashed on an invalid token
 - [x] `app/controllers` reorganized: after removing the old UI 13 files at the top (Devise, OAuth, SPA, MCP, notice pages), the rest in `api/v1`, `api/app/v1` (with `moderation/`, `site_settings/`) and `instance_admin/`
 - [x] Introduce RuboCop and run it in CI: own bundle `lint/Gemfile` (RuboCop's parser needs prism 1.x, the app has 2.0), `.rubocop.yml` only Lint, Security and some Rails/RSpec cops (no style, no mass reformatting before v3); all 51 findings fixed; `.github/workflows/lint.yml`, step in `bin/ci`
-- [x] CI: there is no `develop` branch, work happens with PRs against `main`; `run-tests.yml` runs on PRs and now also on pushes to `main`
+- [x] CI: work flows from `develop` branches via PRs against `main`; `run-tests.yml` runs on PRs and on pushes to `main`, `frontend.yml` also on pushes to `develop`
 - [ ] TypeScript 7 also for `openapi-typescript` once supported (runs via `npx` with TS 5.9 until then)
 
 ## P3 – v3: full TypeScript (after 2.0)
@@ -202,7 +202,7 @@ Recommendation (roadmap.md section 3): a separate frontend with React 19 + TS 7 
 
 ## P2 – Project and community
 - [x] `SECURITY.md` with a reporting path (GitHub private vulnerability reporting), deadlines and scope
-- [x] `CHANGELOG.md` and the release process (SemVer, release notes, image tags): CHANGELOG and the first tag `v2.0.0-alpha.1` exist; the version lives in `AstutoProject::VERSION` and `frontend/package.json`. The release checklist is in [docs/releasing.md](docs/releasing.md); images are signed keylessly with cosign and get provenance and an SBOM (`push-to-registry.yml`). Open: the first CI run of the signing (not testable here)
+- [x] `CHANGELOG.md` and the release process (SemVer, release notes, image tags): CHANGELOG and the first tag `v2.0.0-alpha.1` exist; the version lives in `AstutoProject::VERSION` and `frontend/package.json`. The release checklist is in [docs/releasing.md](docs/releasing.md); images are signed keylessly with cosign and get provenance and an SBOM (`push-to-registry.yml`), running green in CI since 2.0.0-beta.1
 - [x] Docs from `astuto/astuto-docs`: the license checked – the repository has **no license** (only "Copyright © Astuto"), so the text was not adopted. Instead own guides for the missing topics (`docs/appearance.md`, `docs/api.md`, OAuth providers with endpoints in `docs/sso.md`); the links in `project.rb`/`project.ts` point to the `docs/` of this repository (three of the four old links were dead anyway). Adopting text only with the author's permission
 - [ ] Decide on a translation platform (e.g. Weblate)
 - [ ] Demo instance, entries at awesome-selfhosted and AlternativeTo
